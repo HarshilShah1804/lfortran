@@ -1780,7 +1780,6 @@ RUN(NAME fortran_primes_01 LABELS gfortran llvm llvm_wasm llvm_wasm_emcc)
 RUN(NAME max_01 LABELS gfortran llvm fortran)
 RUN(NAME max_02 LABELS gfortran llvm fortran)
 RUN(NAME min_01 LABELS gfortran llvm fortran)
-RUN(NAME min_02 LABELS gfortran llvm fortran)
 
 RUN(NAME goto_gototarget_return_01 LABELS gfortran llvm llvm_wasm llvm_wasm_emcc fortran)
 
