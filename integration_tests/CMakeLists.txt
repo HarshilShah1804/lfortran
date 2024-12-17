@@ -1777,6 +1777,11 @@ RUN(NAME equivalence_09 LABELS gfortran llvm llvm_wasm llvm_wasm_emcc)
 
 RUN(NAME fortran_primes_01 LABELS gfortran llvm llvm_wasm llvm_wasm_emcc)
 
+RUN(NAME max_01 LABELS gfortran llvm llvm_wasm llvm_wasm_emcc)
+RUN(NAME max_02 LABELS gfortran llvm llvm_wasm llvm_wasm_emcc)
+RUN(NAME min_01 LABELS gfortran llvm llvm_wasm llvm_wasm_emcc)
+RUN(NAME min_02 LABELS gfortran llvm llvm_wasm llvm_wasm_emcc)
+
 RUN(NAME goto_gototarget_return_01 LABELS gfortran llvm llvm_wasm llvm_wasm_emcc fortran)
 
 RUN(NAME selected_int_kind_01 LABELS gfortran llvm llvm_wasm llvm_wasm_emcc fortran)
