@@ -13,6 +13,22 @@
 
 set -ex
 
+# Set default Git identity if not configured
+git config user.name "GitHub Actions"
+git config user.email "runner@github.com"
+
+
+# Check if tags exist; if not, create a default tag
+if ! git tag -l | grep -q "v"; then
+  git tag v0.0.0
+  echo "No tags found. Created default tag v0.0.0"
+else
+  echo "Tag already exists."
+fi
+
+# Extract version using git describe
 version=$(git describe --tags --dirty)
 version="${version:1}"
+
+# Save version to a file
 echo $version > version
