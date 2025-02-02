@@ -14,8 +14,8 @@
 set -ex
 
 # Set default Git identity if not configured
-git config user.name "GitHub Actions"
-git config user.email "runner@github.com"
+git config user.name "HarshilShah1804"
+git config user.email "hkshah1978@gmail.com"
 
 
 # Check if tags exist; if not, create a default tag
