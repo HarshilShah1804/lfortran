@@ -542,8 +542,14 @@ jobs:
             FC="$(pwd)/src/bin/lfortran"
             git clone https://github.com/gxyd/pot3d.git
             cd pot3d
-            git checkout -t origin/build_pot3d_custom_mpi_wrappers_and_without_hdf5
-            git checkout 33c078020dcea467e763b52879a480450a0494fe
+            # Only workarounds used now are (also tracked at: https://github.com/lfortran/lfortran/issues/2862):
+            # 1. HDF5 support replaced with binary file read (see: https://github.com/lfortran/lfortran/issues/6561)
+            # 2. namelist reading support replaced with use of file read (see: https://github.com/lfortran/lfortran/issues/1999)
+            # 3. MPI support replaced with custom MPI wrappers (we've C MPI wrappers from https://github.com/gxyd/c_mpi)
+            # 4. moved global procedures to module procedures (see: https://github.com/lfortran/lfortran/issues/6059)
+            git checkout -t origin/hdf5_mpi_namelist_global_deallocate_workaround
+            # this checkout doesn't have deallocate workaround
+            git checkout 68414dcf82e895af9a293b9c1338f679e416adfd
             cd src
             if [[ "${{matrix.os}}" == "macos-latest" ]]; then
               CC=clang
@@ -559,6 +565,22 @@ jobs:
             cp pot3d ../bin/
             cd ..
             ./validate.sh
+
+            if [[ "${{matrix.os}}" == "macos-latest" ]]; then
+              # this checkout has deallocate workaround
+              git checkout b7aa6cd25297d39c9481292d51035a431beac205
+              cd src
+              ${CC} -I$CONDA_PREFIX/include -c mpi_wrapper.c
+              ${FC} -c --fast mpi_c_bindings.f90
+              ${FC} -c --fast mpi.f90
+              ${FC} -c --fast psi_io.f90 --no-style-warnings --no-warnings
+              ${FC} -c --fast --skip-pass="dead_code_removal" --cpp --implicit-interface pot3d.F90 --no-style-warnings --no-warnings
+              ${FC} --fast mpi_wrapper.o mpi_c_bindings.o mpi.o psi_io.o pot3d.o -o pot3d -L$CONDA_PREFIX/lib -lmpi -Wl,-rpath,$CONDA_PREFIX/lib
+              cp pot3d ../bin/
+              cd ..
+              ./validate.sh
+            fi
+
 
       - name: Test PRIMA
         shell: bash -e -l {0}
@@ -923,7 +945,7 @@ jobs:
         # exactly the same manner, to ensure that users can just change the
         # `llvmdev` version in their conda environment and everything will just
         # work.
-        llvm-version: ["10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
+        llvm-version: ["10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"]
         python-version: ["3.10"]
     steps:
       - uses: actions/checkout@v4
@@ -1146,7 +1168,7 @@ jobs:
 
       - name: Test fastGPT ( ubuntu-latest )
         shell: bash -e -x -l {0}
-        if: contains(matrix.os, 'ubuntu')
+        if: ${{! (contains(matrix.llvm-version, '20'))}}
         run: |
             git clone https://github.com/certik/fastGPT.git
             cd fastGPT
@@ -1226,7 +1248,7 @@ jobs:
 
       - name: Test fpm
         shell: bash -e -x -l {0}
-        if: contains(matrix.os, 'ubuntu')
+        if: ${{! (contains(matrix.llvm-version, '20'))}}
         run: |
             git clone https://github.com/certik/fpm.git
             cd fpm
@@ -1237,6 +1259,7 @@ jobs:
 
       - name: Test stdlib
         shell: bash -e -x -l {0}
+        if: ${{! (contains(matrix.llvm-version, '20'))}}
         run: |
             git clone https://github.com/czgdp1807/stdlib.git
             cd stdlib
@@ -1252,6 +1275,7 @@ jobs:
 
       - name: Test SNAP
         shell: bash -e -x -l {0}
+        if: ${{! (contains(matrix.llvm-version, '20'))}}
         run: |
             git clone https://github.com/certik/SNAP.git
             cd SNAP

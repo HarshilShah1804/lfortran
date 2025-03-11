@@ -285,6 +285,7 @@ namespace LCompilers::LanguageServerProtocol {
                         documentSymbols.hierarchicalDocumentSymbolSupport.value();
                 }
                 clientSupportsHover = textDocument.hover.has_value();
+                clientSupportsHighlight = textDocument.documentHighlight.has_value();
             }
             logger.debug()
                 << "clientSupportsGotoDefinition = "
@@ -305,6 +306,10 @@ namespace LCompilers::LanguageServerProtocol {
             logger.debug()
                 << "clientSupportsHover = "
                 << clientSupportsHover
+                << std::endl;
+            logger.debug()
+                << "clientSupportsHighlight = "
+                << clientSupportsHighlight
                 << std::endl;
         }
 
@@ -332,6 +337,12 @@ namespace LCompilers::LanguageServerProtocol {
             ServerCapabilities_hoverProvider &hoverProvider =
                 capabilities.hoverProvider.emplace();
             hoverProvider = true;
+        }
+
+        if (clientSupportsHighlight) {
+            ServerCapabilities_documentHighlightProvider &documentHighlightProvider =
+                capabilities.documentHighlightProvider.emplace();
+            documentHighlightProvider = true;
         }
 
         return result;
@@ -429,14 +440,22 @@ namespace LCompilers::LanguageServerProtocol {
                 std::make_unique<WorkspaceEdit>();
             std::map<DocumentUri, std::vector<TextEdit>> &changes =
                 workspaceEdit->changes.emplace();
-            std::vector<TextEdit> &edits = changes.emplace(
-                std::piecewise_construct,
-                std::make_tuple(uri),
-                std::make_tuple()
-            ).first->second;
-            edits.reserve(symbols.size());
             for (const auto &symbol : symbols) {
-                TextEdit &edit = edits.emplace_back();
+                const std::string symbolUri =
+                    "file://" + resolve(symbol.filename, compilerOptions).string();
+                std::vector<TextEdit> *edits = nullptr;
+                auto iter = changes.find(symbolUri);
+                if (iter != changes.end()) {
+                    edits = &iter->second;
+                } else {
+                    edits = &changes.emplace_hint(
+                        iter,
+                        std::piecewise_construct,
+                        std::make_tuple(symbolUri),
+                        std::make_tuple()
+                    )->second;
+                }
+                TextEdit &edit = edits->emplace_back();
                 Position &start = edit.range.start;
                 Position &end = edit.range.end;
                 start.line = symbol.first_line - 1;  // 1-to-0 index
@@ -673,6 +692,46 @@ namespace LCompilers::LanguageServerProtocol {
             ErrorCodes::InvalidParams,
             "File not found: " + filename
         );
+    }
+
+    // request: "textDocument/documentHighlight"
+    auto LFortranLspLanguageServer::receiveTextDocument_documentHighlight(
+        DocumentHighlightParams &params
+    ) -> TextDocument_DocumentHighlightResult {
+        const DocumentUri &uri = params.textDocument.uri;
+        const Position &pos = params.position;
+        std::shared_ptr<LspTextDocument> document = getDocument(uri);
+        const std::string &path = document->path().string();
+        const std::string &text = document->text();
+        // NOTE: Copy the compiler options since we will modify them.
+        CompilerOptions compilerOptions = *getCompilerOptions(*document);
+        compilerOptions.line = std::to_string(pos.line + 1);  // 0-to-1 index
+        compilerOptions.column = std::to_string(pos.character + 1);  // 0-to-1 index
+        std::vector<lc::document_symbols> symbols =
+            lfortran.getAllOccurrences(path, text, compilerOptions);
+        TextDocument_DocumentHighlightResult result;
+        if (symbols.size() > 0) {
+            std::unique_ptr<std::vector<DocumentHighlight>> highlights =
+                std::make_unique<std::vector<DocumentHighlight>>();
+            highlights->reserve(symbols.size());
+            for (const auto &symbol : symbols) {
+                // NOTE: Only highlight symbols from the current document
+                if (document->path() == resolve(symbol.filename, compilerOptions)) {
+                    DocumentHighlight &highlight = highlights->emplace_back();
+                    Range &range = highlight.range;
+                    Position &start = range.start;
+                    Position &end = range.end;
+                    start.line = symbol.first_line - 1;  // 1-to-0 index
+                    start.character = symbol.first_column - 1;  // 1-to-0 index
+                    end.line = symbol.last_line - 1;  // 1-to-0 index
+                    end.character = symbol.last_column - 1;  // 1-to-0 index
+                }
+            }
+            result = std::move(highlights);
+        } else {
+            result = nullptr;
+        }
+        return result;
     }
 
     // notification: "workspace/didDeleteFiles"
