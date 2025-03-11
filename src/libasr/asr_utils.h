@@ -5760,7 +5760,7 @@ inline ASR::asr_t* make_ArrayConstructor_t_util(Allocator &al, const Location &a
         if (is_character(*a_type_->m_type)) {
             n_data = curr_idx * ASR::down_cast<ASR::String_t>(a_type_->m_type)->m_len;
         }
-        value = ASRUtils::EXPR(ASR::make_ArrayConstant_t(al, a_loc, n_data, data, new_type, a_storage_format));
+        value = ASRUtils::EXPR(ASR::make_ArrayConstant_t(al, a_loc, n_data, data, new_type, a_storage_format, false));
     }
 
     return is_array_item_constant && all_expr_evaluated ? (ASR::asr_t*) value :

@@ -1036,10 +1036,10 @@ namespace LCompilers {
             const Location& loc = x->base.base.loc;
             if( ASR::is_a<ASR::Var_t>(*replacer->result_var) ) {
                 [[maybe_unused]] ASR::ttype_t* result_var_type = ASRUtils::expr_type(replacer->result_var);
-                LCOMPILERS_ASSERT_MSG(ASRUtils::extract_n_dims_from_ttype(result_var_type) == 1,
+                LCOMPILERS_ASSERT_MSG((ASRUtils::extract_n_dims_from_ttype(result_var_type) == 1 || x->m_from_constant),
                                     "Initialisation using ArrayConstant is "
                                     "supported only for single dimensional arrays, found: " +
-                                    std::to_string(ASRUtils::extract_n_dims_from_ttype(result_var_type)))
+                                    std::to_string(ASRUtils::extract_n_dims_from_ttype(result_var_type)));
                 Vec<ASR::expr_t*> idx_vars;
                 PassUtils::create_idx_vars(idx_vars, 1, loc, replacer->al, replacer->current_scope);
                 ASR::expr_t* idx_var = idx_vars[0];

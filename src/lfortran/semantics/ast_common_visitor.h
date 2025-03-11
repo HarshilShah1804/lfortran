@@ -748,7 +748,7 @@ static inline ASR::expr_t* create_boolean_result_array(Allocator &al, Location l
                                                 al, loc,
                                                 left->m_n_data,arr_data,
                                                 left->m_type,
-                                                left->m_storage_format));
+                                                left->m_storage_format, false));
     return result_arr_const;
 }
 
@@ -3698,6 +3698,9 @@ public:
                                 args.p, args.n, type, ASR::arraystorageType::ColMajor))
                         );
                         LCOMPILERS_ASSERT(ASR::is_a<ASR::ArrayConstant_t>(*init_expr));
+                        ASR::ArrayConstant_t* array_const = ASR::down_cast<ASR::ArrayConstant_t>(init_expr);
+                        array_const->m_from_constant= true;
+                        init_expr = (ASR::expr_t*) array_const;
                         value = init_expr;
                     }
                     ASR::ttype_t *init_type = ASRUtils::expr_type(init_expr);
@@ -6644,7 +6647,7 @@ public:
                         }
                         array = ASRUtils::EXPR(
                             ASR::make_ArrayConstant_t(al, loc, n_data, data, new_type,
-                                                    ASR::arraystorageType::ColMajor)
+                                                    ASR::arraystorageType::ColMajor, false)
                         );
                     }
                 }
@@ -6718,7 +6721,7 @@ public:
                     }
                     array = ASRUtils::EXPR(
                         ASR::make_ArrayConstant_t(al, loc, n_data, data, new_type,
-                                                ASR::arraystorageType::ColMajor)
+                                                ASR::arraystorageType::ColMajor, false)
                     );
                 }
             }
@@ -8003,7 +8006,7 @@ public:
             }
             if (data != nullptr) {
                 ASR::expr_t* value = ASRUtils::EXPR(ASR::make_ArrayConstant_t(al, x.base.base.loc, idl_size * ASRUtils::extract_kind_from_ttype_t(type), data,
-                        array_type, ASR::arraystorageType::ColMajor));
+                        array_type, ASR::arraystorageType::ColMajor, false));
                 idl->m_value = value;
                 tmp = (ASR::asr_t*) idl;
             }

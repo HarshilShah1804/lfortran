@@ -4827,7 +4827,7 @@ namespace Pack {
                 mask = EXPR(ASR::make_ArrayConstant_t(al, mask->base.loc, n_data,
                         ASRUtils::set_ArrayConstant_data(mask_expr.p, mask_expr.n, logical),
                         TYPE(ASR::make_Array_t(al, mask->base.loc, logical, array_dims, array_rank, ASR::array_physical_typeType::FixedSizeArray)),
-                        ASR::arraystorageType::ColMajor));
+                        ASR::arraystorageType::ColMajor, false));
             } else {
                 mask = EXPR(ASR::make_ArrayConstructor_t(al, mask->base.loc, mask_expr.p, mask_expr.n,
                     TYPE(ASR::make_Array_t(al, mask->base.loc, logical, array_dims, array_rank, ASR::array_physical_typeType::FixedSizeArray)),
