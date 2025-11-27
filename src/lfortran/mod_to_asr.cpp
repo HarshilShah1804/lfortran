@@ -237,8 +237,8 @@ ASR::TranslationUnit_t* parse_gfortran_mod_file(Allocator &al, const std::string
 {
     std::vector<std::string> s2 = split(s);
     int version = std::atoi(&str_(s2[3])[0]);
-    if (version != 14) {
-        throw LCompilersException("Only GFortran module version 14 is implemented so far");
+    if (version != 15) {
+        throw LCompilersException("Only GFortran module version 15 is implemented so far");
     }
     std::vector<std::string> s3 = slice(s2, 7);
     std::string s4 = "(" + join(" ", s3) + ")";
