@@ -1,9 +1,3 @@
-program expr2
-implicit none
-
-integer :: x
-
-x = (2+3)*5
-print *, x
-
+program main
+   use nf_embedding_layer
 end program

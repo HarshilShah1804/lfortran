@@ -7248,8 +7248,12 @@ public:
             if (ASR::is_a<ASR::StructInstanceMember_t>(*x.m_value)) {
                 value_desc = llvm_utils->CreateLoad2(value_desc_type->getPointerTo(), value_desc);
             }
-            value_data = arr_descr->get_pointer_to_data(value_desc_type, value_desc);
-            value_data = llvm_utils->CreateLoad2(value_el_type->getPointerTo(), value_data);
+            if (value_desc->getType() == value_el_type->getPointerTo()) {
+                value_data = value_desc;
+            } else {
+                value_data = arr_descr->get_pointer_to_data(value_desc_type, value_desc);
+                value_data = llvm_utils->CreateLoad2(value_el_type->getPointerTo(), value_data);
+            }
         } else if (value_physical_type == ASR::array_physical_typeType::FixedSizeArray ||
                    value_physical_type == ASR::array_physical_typeType::PointerArray) {
             llvm::Type* val_type = llvm_utils->get_type_from_ttype_t_util(x.m_value,
@@ -7277,6 +7281,7 @@ public:
             arr_descr->get_rank(target_type_llvm, new_desc, true));
         
         // Set dimension descriptors with the target bounds
+        llvm::Value* running_stride = llvm::ConstantInt::get(context, llvm::APInt(idx_bits, 1));
         for (int i = 0; i < target_rank; i++) {
             llvm::Value* dim_idx = llvm::ConstantInt::get(context, llvm::APInt(idx_bits, i));
             llvm::Value* dim_des = arr_descr->get_pointer_to_dimension_descriptor(dim_des_val, dim_idx);
@@ -7287,21 +7292,22 @@ public:
             llvm::Value* lb_ptr = arr_descr->get_lower_bound(dim_des, false);
             llvm::Value* size_ptr = arr_descr->get_dimension_size(dim_des, false);
 
-            // Set stride to 1 for contiguous data
-            builder->CreateStore(
-                llvm::ConstantInt::get(context, llvm::APInt(idx_bits, 1)),
-                stride_ptr);
+            // Set stride
+            builder->CreateStore(running_stride, stride_ptr);
 
             // Set lower bound from target section
             llvm::Value* lb_idx = builder->CreateSExtOrTrunc(lbs.p[i], idx_type);
             builder->CreateStore(lb_idx, lb_ptr);
 
-            // Calculate and set size: ub - lb + 1
+            // Set dimension size
             llvm::Value* ub_idx = builder->CreateSExtOrTrunc(ubs.p[i], idx_type);
-            llvm::Value* size = builder->CreateAdd(
+            llvm::Value* dim_size = builder->CreateAdd(
                 builder->CreateSub(ub_idx, lb_idx),
-                llvm::ConstantInt::get(idx_type, 1));
-            builder->CreateStore(size, size_ptr);
+                llvm::ConstantInt::get(context, llvm::APInt(idx_bits, 1)));
+            builder->CreateStore(dim_size, size_ptr);
+
+            // Update running stride for next dimension
+            running_stride = builder->CreateMul(running_stride, dim_size);
         }
         
         // Store the new descriptor to the target pointer
