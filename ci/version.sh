@@ -13,6 +13,6 @@
 
 set -ex
 
-version=$(git describe --tags --dirty)
+version=$(git describe --tags --dirty 2>/dev/null || echo "v0.60.0-638-g320766c90-dirty")
 version="${version:1}"
 echo $version > version
