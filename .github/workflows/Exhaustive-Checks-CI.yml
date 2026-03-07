@@ -323,7 +323,6 @@ jobs:
             make=4.3
             openmpi=5.0.10
             gcc_linux-64
-            gxx_linux-64
             binutils
             zstd-static
 
