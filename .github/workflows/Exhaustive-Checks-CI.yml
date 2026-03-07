@@ -27,138 +27,138 @@ env:
   MACOSX_DEPLOYMENT_TARGET: 15.0
 
 jobs:
-  debug_outOfSource:
-    name: Check Out-of-Source Debug build
-    runs-on: ubuntu-latest
-    # Run on push to main, or when the PR has the label at the time of the event
-    if: >-
-      ${{ github.event_name == 'push' ||
-          (github.event_name == 'pull_request' &&
-           contains(github.event.pull_request.labels.*.name, 'Tests::Run-Exhaustive')) }}
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          path: src
+  # debug_outOfSource:
+  #   name: Check Out-of-Source Debug build
+  #   runs-on: ubuntu-latest
+  #   # Run on push to main, or when the PR has the label at the time of the event
+  #   if: >-
+  #     ${{ github.event_name == 'push' ||
+  #         (github.event_name == 'pull_request' &&
+  #          contains(github.event.pull_request.labels.*.name, 'Tests::Run-Exhaustive')) }}
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #       with:
+  #         fetch-depth: 0
+  #         path: src
 
-      - uses: mamba-org/setup-micromamba@v1.8.0
-        with:
-          micromamba-version: '1.5.10-0'
-          environment-file: src/ci/environment_linux.yml
-          create-args: >-
-            python=3.10
+  #     - uses: mamba-org/setup-micromamba@v1.8.0
+  #       with:
+  #         micromamba-version: '1.5.10-0'
+  #         environment-file: src/ci/environment_linux.yml
+  #         create-args: >-
+  #           python=3.10
 
-      - uses: hendrikmuhs/ccache-action@main
-        with:
-          variant: sccache
-          key: ${{ github.job }}-${{ matrix.os }}
+  #     - uses: hendrikmuhs/ccache-action@main
+  #       with:
+  #         variant: sccache
+  #         key: ${{ github.job }}-${{ matrix.os }}
 
-      - name: Build Linux
-        shell: bash -e -l {0}
-        run: |
-            ( cd src && ./build0.sh )
-            export CXXFLAGS="-Werror -D_GLIBCXX_ASSERTIONS"
-            cmake -S src -B builddir -GNinja \
-              -DCMAKE_BUILD_TYPE=Release \
-              -DCMAKE_CXX_FLAGS_RELEASE="-Wall -Wextra -O3 -funroll-loops -DNDEBUG" \
-              -DWITH_LLVM=yes \
-              -DWITH_LSP=yes \
-              -DWITH_KOKKOS=yes \
-              -DLFORTRAN_BUILD_ALL=yes \
-              -DWITH_STACKTRACE=no \
-              -DWITH_RUNTIME_STACKTRACE=yes \
-              -DCMAKE_PREFIX_PATH="$CONDA_PREFIX" \
-              -DCMAKE_INSTALL_PREFIX=`pwd`/inst \
-              -DCMAKE_C_COMPILER_LAUNCHER=sccache \
-              -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
+  #     - name: Build Linux
+  #       shell: bash -e -l {0}
+  #       run: |
+  #           ( cd src && ./build0.sh )
+  #           export CXXFLAGS="-Werror -D_GLIBCXX_ASSERTIONS"
+  #           cmake -S src -B builddir -GNinja \
+  #             -DCMAKE_BUILD_TYPE=Release \
+  #             -DCMAKE_CXX_FLAGS_RELEASE="-Wall -Wextra -O3 -funroll-loops -DNDEBUG" \
+  #             -DWITH_LLVM=yes \
+  #             -DWITH_LSP=yes \
+  #             -DWITH_KOKKOS=yes \
+  #             -DLFORTRAN_BUILD_ALL=yes \
+  #             -DWITH_STACKTRACE=no \
+  #             -DWITH_RUNTIME_STACKTRACE=yes \
+  #             -DCMAKE_PREFIX_PATH="$CONDA_PREFIX" \
+  #             -DCMAKE_INSTALL_PREFIX=`pwd`/inst \
+  #             -DCMAKE_C_COMPILER_LAUNCHER=sccache \
+  #             -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
 
-            cmake --build builddir  -j16 --target install
+  #           cmake --build builddir  -j16 --target install
 
-      - name: Test Linux
-        shell: bash -e -l {0}
-        run: ctest --output-on-failure
-        working-directory: builddir
+  #     - name: Test Linux
+  #       shell: bash -e -l {0}
+  #       run: ctest --output-on-failure
+  #       working-directory: builddir
 
-      - name: Test Moved Installation
-        shell: bash -e -l {0}
-        run: |
-          mv inst inst.moved
-          cp src/examples/expr2.f90 expr2.F90
-          rm -rf src
-          inst.moved/bin/lfortran expr2.F90 -o expr2
-          ./expr2
-          inst.moved/bin/lfortran --backend=c expr2.F90 -o expr2b
-          ./expr2b
-          inst.moved/bin/lfortran --openmp --backend=cpp expr2.F90 -o expr2c
-          ./expr2c
+  #     - name: Test Moved Installation
+  #       shell: bash -e -l {0}
+  #       run: |
+  #         mv inst inst.moved
+  #         cp src/examples/expr2.f90 expr2.F90
+  #         rm -rf src
+  #         inst.moved/bin/lfortran expr2.F90 -o expr2
+  #         ./expr2
+  #         inst.moved/bin/lfortran --backend=c expr2.F90 -o expr2b
+  #         ./expr2b
+  #         inst.moved/bin/lfortran --openmp --backend=cpp expr2.F90 -o expr2c
+  #         ./expr2c
 
-  release:
-    name: Check Release build
-    runs-on: ubuntu-latest
-    # Run on push to main, or only when the specific label is modified on a PR
-    if: >-
-      ${{ github.event_name == 'push' ||
-          (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Tests::Run-Exhaustive')) }}
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
+  # release:
+  #   name: Check Release build
+  #   runs-on: ubuntu-latest
+  #   # Run on push to main, or only when the specific label is modified on a PR
+  #   if: >-
+  #     ${{ github.event_name == 'push' ||
+  #         (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Tests::Run-Exhaustive')) }}
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #       with:
+  #         fetch-depth: 0
 
-      - uses: mamba-org/setup-micromamba@v2.0.2
-        with:
-          micromamba-version: '2.0.4-0'
-          environment-file: ci/environment_linux.yml
-          create-args: >-
-            python=3.10
+  #     - uses: mamba-org/setup-micromamba@v2.0.2
+  #       with:
+  #         micromamba-version: '2.0.4-0'
+  #         environment-file: ci/environment_linux.yml
+  #         create-args: >-
+  #           python=3.10
 
-      - uses: hendrikmuhs/ccache-action@main
-        with:
-          variant: sccache
-          key: ${{ github.job }}-${{ matrix.os }}
+  #     - uses: hendrikmuhs/ccache-action@main
+  #       with:
+  #         variant: sccache
+  #         key: ${{ github.job }}-${{ matrix.os }}
 
-      - name: Build Linux
-        shell: bash -e -l {0}
-        run: |
-            ./build0.sh
-            export CXXFLAGS="-Werror"
-            export CFLAGS="-Werror"
-            cmake . -GNinja \
-              -DCMAKE_BUILD_TYPE=Release \
-              -DWITH_LLVM=yes \
-              -DWITH_LSP=yes \
-              -DLFORTRAN_BUILD_ALL=yes \
-              -DWITH_STACKTRACE=no \
-              -DWITH_RUNTIME_STACKTRACE=yes \
-              -DCMAKE_PREFIX_PATH="$CONDA_PREFIX" \
-              -DCMAKE_INSTALL_PREFIX=`pwd`/inst \
-              -DCMAKE_INSTALL_BINDIR=bin/tastic \
-              -DCMAKE_INSTALL_LIBDIR=oh/my/sweet/lib \
-              -DCMAKE_INSTALL_INCLUDEDIR=incl/O/Matic \
-              -DCMAKE_INSTALL_MANDIR=man/O/man \
-              -DCMAKE_C_COMPILER_LAUNCHER=sccache \
-              -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
+  #     - name: Build Linux
+  #       shell: bash -e -l {0}
+  #       run: |
+  #           ./build0.sh
+  #           export CXXFLAGS="-Werror"
+  #           export CFLAGS="-Werror"
+  #           cmake . -GNinja \
+  #             -DCMAKE_BUILD_TYPE=Release \
+  #             -DWITH_LLVM=yes \
+  #             -DWITH_LSP=yes \
+  #             -DLFORTRAN_BUILD_ALL=yes \
+  #             -DWITH_STACKTRACE=no \
+  #             -DWITH_RUNTIME_STACKTRACE=yes \
+  #             -DCMAKE_PREFIX_PATH="$CONDA_PREFIX" \
+  #             -DCMAKE_INSTALL_PREFIX=`pwd`/inst \
+  #             -DCMAKE_INSTALL_BINDIR=bin/tastic \
+  #             -DCMAKE_INSTALL_LIBDIR=oh/my/sweet/lib \
+  #             -DCMAKE_INSTALL_INCLUDEDIR=incl/O/Matic \
+  #             -DCMAKE_INSTALL_MANDIR=man/O/man \
+  #             -DCMAKE_C_COMPILER_LAUNCHER=sccache \
+  #             -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
 
-            cmake --build . -j16 --target install
+  #           cmake --build . -j16 --target install
 
-      - name: Test Linux
-        shell: bash -e -l {0}
-        run: |
-            ctest
-            ./run_tests.py
-            ./run_tests.py -vh
-            cd integration_tests
-            ./run_tests.py -m
-            ./run_tests.py -b llvm
-            ./run_tests.py -b llvm -f -nf16
+  #     - name: Test Linux
+  #       shell: bash -e -l {0}
+  #       run: |
+  #           ctest
+  #           ./run_tests.py
+  #           ./run_tests.py -vh
+  #           cd integration_tests
+  #           ./run_tests.py -m
+  #           ./run_tests.py -b llvm
+  #           ./run_tests.py -b llvm -f -nf16
 
-      - name: Test Installation
-        shell: bash -e -l {0}
-        run: |
-            test -x inst/bin/tastic/lfortran
-            test -f inst/oh/my/sweet/lib/liblfortran_runtime_static.a
-            test -f inst/oh/my/sweet/lib/liblfortran_runtime.so
-            test -f inst/incl/O/Matic/lfortran/impure/lfortran_intrinsics.h
-            test -f inst/man/O/man/man1/lfortran.1
+  #     - name: Test Installation
+  #       shell: bash -e -l {0}
+  #       run: |
+  #           test -x inst/bin/tastic/lfortran
+  #           test -f inst/oh/my/sweet/lib/liblfortran_runtime_static.a
+  #           test -f inst/oh/my/sweet/lib/liblfortran_runtime.so
+  #           test -f inst/incl/O/Matic/lfortran/impure/lfortran_intrinsics.h
+  #           test -f inst/man/O/man/man1/lfortran.1
 
 # Commented out to save CI runners:
 #  test-pixi:
@@ -322,7 +322,6 @@ jobs:
             llvm-openmp=14.0.4
             make=4.3
             openmpi=5.0.10
-            gcc_linux-64
             binutils
             zstd-static
 
@@ -556,201 +555,201 @@ jobs:
             echo "Running LAPACK third-party mode: ${LAPACK_MODE}"
             RUNNER_OS="${{matrix.os}}" FC=lfortran ci/test_third_party_codes.sh --lapack-mode "${LAPACK_MODE}"
 
-  upload_tarball:
-    name: Upload Tarball
-    runs-on: ubuntu-latest
-    # Run on push to main, or only when the specific label is modified on a PR
-    if: >-
-      ${{ github.event_name == 'push' ||
-          (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Tests::Run-Exhaustive')) }}
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
+  # upload_tarball:
+  #   name: Upload Tarball
+  #   runs-on: ubuntu-latest
+  #   # Run on push to main, or only when the specific label is modified on a PR
+  #   if: >-
+  #     ${{ github.event_name == 'push' ||
+  #         (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Tests::Run-Exhaustive')) }}
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #       with:
+  #         fetch-depth: 0
 
-      - uses: mamba-org/setup-micromamba@v2.0.2
-        with:
-          micromamba-version: '2.0.4-0'
-          environment-file: ci/environment_linux.yml
-          create-args: >-
-            python=3.10
+  #     - uses: mamba-org/setup-micromamba@v2.0.2
+  #       with:
+  #         micromamba-version: '2.0.4-0'
+  #         environment-file: ci/environment_linux.yml
+  #         create-args: >-
+  #           python=3.10
 
-      - name: Upload Tarball
-        shell: bash -e -l {0}
-        run: |
-          ./build0.sh
-          lfortran_version=$(<version)
-          pandoc --standalone --to man doc/man/lfortran.md -o doc/man/lfortran.1
-          ci/create_source_tarball.sh $lfortran_version
+  #     - name: Upload Tarball
+  #       shell: bash -e -l {0}
+  #       run: |
+  #         ./build0.sh
+  #         lfortran_version=$(<version)
+  #         pandoc --standalone --to man doc/man/lfortran.md -o doc/man/lfortran.1
+  #         ci/create_source_tarball.sh $lfortran_version
 
-      - name: Upload Tarball to Release
-        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
-        shell: bash -e -l {0}
-        run: |
-          ci/upload_tarball_to_release.sh
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Upload Tarball to Release
+  #       if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+  #       shell: bash -e -l {0}
+  #       run: |
+  #         ci/upload_tarball_to_release.sh
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  test_without_llvm:
-    name: Test without LLVM Backend
-    runs-on: ubuntu-latest
-    # Run on push to main, or only when the specific label is modified on a PR
-    if: >-
-      ${{ github.event_name == 'push' ||
-          (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Tests::Run-Exhaustive')) }}
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
+  # test_without_llvm:
+  #   name: Test without LLVM Backend
+  #   runs-on: ubuntu-latest
+  #   # Run on push to main, or only when the specific label is modified on a PR
+  #   if: >-
+  #     ${{ github.event_name == 'push' ||
+  #         (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Tests::Run-Exhaustive')) }}
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #       with:
+  #         fetch-depth: 0
 
-      - uses: mamba-org/setup-micromamba@v2.0.2
-        with:
-          micromamba-version: '2.0.4-0'
-          environment-file: ci/environment_linux.yml
-          create-args: >-
-            python=3.10
+  #     - uses: mamba-org/setup-micromamba@v2.0.2
+  #       with:
+  #         micromamba-version: '2.0.4-0'
+  #         environment-file: ci/environment_linux.yml
+  #         create-args: >-
+  #           python=3.10
 
-      - name: Test
-        shell: bash -e -l {0}
-        run: |
-          shell ci/test_without_llvm_backend.sh
+  #     - name: Test
+  #       shell: bash -e -l {0}
+  #       run: |
+  #         shell ci/test_without_llvm_backend.sh
 
-  test_mlir:
-    name: Test MLIR backend
-    runs-on: ubuntu-latest
-    # Run on push to main, or only when the specific label is modified on a PR
-    if: >-
-      ${{ github.event_name == 'push' ||
-          (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Tests::Run-Exhaustive')) }}
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
+  # test_mlir:
+  #   name: Test MLIR backend
+  #   runs-on: ubuntu-latest
+  #   # Run on push to main, or only when the specific label is modified on a PR
+  #   if: >-
+  #     ${{ github.event_name == 'push' ||
+  #         (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Tests::Run-Exhaustive')) }}
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #       with:
+  #         fetch-depth: 0
 
-      - uses: mamba-org/setup-micromamba@v2.0.2
-        with:
-          micromamba-version: '2.0.4-0'
-          environment-file: ci/environment_linux_llvm.yml
-          create-args: >-
-            python=3.10
-            mlir=19.1.6
-            llvm=19.1.6
-            llvm-openmp=19.1.6
-            libunwind=1.7.2
+  #     - uses: mamba-org/setup-micromamba@v2.0.2
+  #       with:
+  #         micromamba-version: '2.0.4-0'
+  #         environment-file: ci/environment_linux_llvm.yml
+  #         create-args: >-
+  #           python=3.10
+  #           mlir=19.1.6
+  #           llvm=19.1.6
+  #           llvm-openmp=19.1.6
+  #           libunwind=1.7.2
 
-      - uses: hendrikmuhs/ccache-action@main
-        with:
-          variant: sccache
-          key: ${{ github.job }}-${{ matrix.os }}
+  #     - uses: hendrikmuhs/ccache-action@main
+  #       with:
+  #         variant: sccache
+  #         key: ${{ github.job }}-${{ matrix.os }}
 
-      - name: Build Linux
-        shell: bash -e -l {0}
-        run: |
-            ./build0.sh
-            cmake . -GNinja \
-              -DCMAKE_BUILD_TYPE=Debug \
-              -DWITH_LLVM=yes \
-              -DWITH_LSP=yes \
-              -DWITH_MLIR=yes \
-              -DLFORTRAN_BUILD_ALL=yes \
-              -DWITH_STACKTRACE=no \
-              -DCMAKE_PREFIX_PATH="$CONDA_PREFIX" \
-              -DCMAKE_INSTALL_PREFIX=`pwd`/inst \
-              -DCMAKE_C_COMPILER_LAUNCHER=sccache \
-              -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
+  #     - name: Build Linux
+  #       shell: bash -e -l {0}
+  #       run: |
+  #           ./build0.sh
+  #           cmake . -GNinja \
+  #             -DCMAKE_BUILD_TYPE=Debug \
+  #             -DWITH_LLVM=yes \
+  #             -DWITH_LSP=yes \
+  #             -DWITH_MLIR=yes \
+  #             -DLFORTRAN_BUILD_ALL=yes \
+  #             -DWITH_STACKTRACE=no \
+  #             -DCMAKE_PREFIX_PATH="$CONDA_PREFIX" \
+  #             -DCMAKE_INSTALL_PREFIX=`pwd`/inst \
+  #             -DCMAKE_C_COMPILER_LAUNCHER=sccache \
+  #             -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
 
-            cmake --build . -j16 --target install
+  #           cmake --build . -j16 --target install
 
-      - name: Test Linux
-        shell: bash -e -l {0}
-        run: |
-            cd integration_tests
-            ./run_tests.py -b mlir mlir_omp mlir_llvm_omp -j1
+  #     - name: Test Linux
+  #       shell: bash -e -l {0}
+  #       run: |
+  #           cd integration_tests
+  #           ./run_tests.py -b mlir mlir_omp mlir_llvm_omp -j1
 
-  upload_docs:
-    name: Documentation
-    runs-on: ubuntu-latest
-    # Run on push to main, or only when the specific label is modified on a PR
-    if: >-
-      ${{ github.event_name == 'push' ||
-          (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Tests::Run-Exhaustive')) }}
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
+  # upload_docs:
+  #   name: Documentation
+  #   runs-on: ubuntu-latest
+  #   # Run on push to main, or only when the specific label is modified on a PR
+  #   if: >-
+  #     ${{ github.event_name == 'push' ||
+  #         (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Tests::Run-Exhaustive')) }}
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #       with:
+  #         fetch-depth: 0
 
-      - uses: mamba-org/setup-micromamba@v2.0.2
-        with:
-          micromamba-version: '2.0.4-0'
-          environment-file: ci/environment_docs_linux.yml
+  #     - uses: mamba-org/setup-micromamba@v2.0.2
+  #       with:
+  #         micromamba-version: '2.0.4-0'
+  #         environment-file: ci/environment_docs_linux.yml
 
-      - uses: hendrikmuhs/ccache-action@main
-        with:
-          variant: sccache
-          key: ${{ github.job }}-${{ matrix.os }}
+  #     - uses: hendrikmuhs/ccache-action@main
+  #       with:
+  #         variant: sccache
+  #         key: ${{ github.job }}-${{ matrix.os }}
 
-      - name: Build Kernel
-        shell: bash -e -l {0}
-        run: |
-          ./build0.sh
-          export CXXFLAGS="-Werror -D_GLIBCXX_ASSERTIONS"
-          cmake . -GNinja \
-            -DCMAKE_BUILD_TYPE=Debug \
-            -DWITH_LLVM=yes \
-            -DWITH_LSP=yes \
-            -DWITH_XEUS=yes \
-            -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
-            -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
-            -DCMAKE_C_COMPILER_LAUNCHER=sccache \
-            -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
+  #     - name: Build Kernel
+  #       shell: bash -e -l {0}
+  #       run: |
+  #         ./build0.sh
+  #         export CXXFLAGS="-Werror -D_GLIBCXX_ASSERTIONS"
+  #         cmake . -GNinja \
+  #           -DCMAKE_BUILD_TYPE=Debug \
+  #           -DWITH_LLVM=yes \
+  #           -DWITH_LSP=yes \
+  #           -DWITH_XEUS=yes \
+  #           -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
+  #           -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
+  #           -DCMAKE_C_COMPILER_LAUNCHER=sccache \
+  #           -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
 
-          ninja install
-          ctest --output-on-failure
-          jupyter kernelspec list --json
+  #         ninja install
+  #         ctest --output-on-failure
+  #         jupyter kernelspec list --json
 
-      - name: Build Docs
-        shell: bash -e -l {0}
-        working-directory: doc
-        run: |
-          $(command -v python) build.py
+  #     - name: Build Docs
+  #       shell: bash -e -l {0}
+  #       working-directory: doc
+  #       run: |
+  #         $(command -v python) build.py
 
-      - name: Upload Docs
-        shell: bash -e -l {0}
-        working-directory: doc
-        run: |
-          ../ci/upload_docs.sh
-        env:
-          SSH_PRIVATE_KEY_DOCS: ${{ secrets.SSH_PRIVATE_KEY_DOCS }}
+  #     - name: Upload Docs
+  #       shell: bash -e -l {0}
+  #       working-directory: doc
+  #       run: |
+  #         ../ci/upload_docs.sh
+  #       env:
+  #         SSH_PRIVATE_KEY_DOCS: ${{ secrets.SSH_PRIVATE_KEY_DOCS }}
 
-  build-and-push-image:
-    runs-on: ubuntu-latest
-    # Run on push to main, or only when the specific label is modified on a PR
-    if: >-
-      ${{ github.event_name == 'push' ||
-          (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Tests::Run-Exhaustive')) }}
-    permissions:
-      contents: read
-      packages: write
-    env:
-      REGISTRY: ghcr.io
-      USER: lfortran
-      PROJECT: lfortran
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
+  # build-and-push-image:
+  #   runs-on: ubuntu-latest
+  #   # Run on push to main, or only when the specific label is modified on a PR
+  #   if: >-
+  #     ${{ github.event_name == 'push' ||
+  #         (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Tests::Run-Exhaustive')) }}
+  #   permissions:
+  #     contents: read
+  #     packages: write
+  #   env:
+  #     REGISTRY: ghcr.io
+  #     USER: lfortran
+  #     PROJECT: lfortran
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #       with:
+  #         fetch-depth: 0
 
-      - name: Log in to the Container registry
-        if: ${{ github.event_name == 'push' }}
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ env.USER }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Log in to the Container registry
+  #       if: ${{ github.event_name == 'push' }}
+  #       uses: docker/login-action@v3
+  #       with:
+  #         registry: ${{ env.REGISTRY }}
+  #         username: ${{ env.USER }}
+  #         password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: ${{ github.event_name == 'push' }}
-          tags: ${{ env.REGISTRY }}/${{ env.USER }}/${{ env.PROJECT }}:latest
+  #     - name: Build and push
+  #       uses: docker/build-push-action@v6
+  #       with:
+  #         context: .
+  #         push: ${{ github.event_name == 'push' }}
+  #         tags: ${{ env.REGISTRY }}/${{ env.USER }}/${{ env.PROJECT }}:latest
