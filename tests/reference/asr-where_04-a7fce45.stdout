@@ -29,6 +29,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             reldiff:
                                                 (Variable
@@ -52,6 +57,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     compare_solutions
@@ -85,6 +95,8 @@
                                             ColMajor
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 3 absdiff)
@@ -93,6 +105,8 @@
                                             (Real 4)
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Where
                                         (RealCompare
@@ -210,10 +224,13 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )]
                                         []
                                     )
                                     (If
+                                        ()
                                         (RealCompare
                                             (IntrinsicElementalFunction
                                                 Abs
@@ -253,6 +270,7 @@
                                         []
                                     )
                                     (If
+                                        ()
                                         (RealCompare
                                             (IntrinsicElementalFunction
                                                 Abs
@@ -296,7 +314,9 @@
                                             ()
                                             [(Var 3 reldiff)]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )]
@@ -335,6 +355,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     solution
@@ -375,11 +400,13 @@
                                             ColMajor
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 4 x)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })
@@ -390,6 +417,7 @@
                         ()
                         []
                         ()
+                        .false.
                     )]
                 )
         })

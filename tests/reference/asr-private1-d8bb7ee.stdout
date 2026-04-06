@@ -10,7 +10,9 @@
                             
                         })
                     foo1
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -50,11 +52,13 @@
                                             (Real 4)
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             y:
@@ -71,6 +75,7 @@
                                             2.000000
                                             (Real 4)
                                         )
+                                        ()
                                     )
                                     (RealConstant
                                         2.000000
@@ -85,10 +90,17 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     foo2
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -125,11 +137,14 @@
                             ()
                             [(Var 5 y)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -165,17 +180,21 @@
                         ()
                         []
                         ()
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 5 y)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs

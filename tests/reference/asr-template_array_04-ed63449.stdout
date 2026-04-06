@@ -45,6 +45,7 @@
                         ()
                         []
                         ()
+                        .false.
                     )]
                 ),
             reverse_m:
@@ -76,6 +77,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     default_behavior
@@ -116,6 +122,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             i:
                                                                 (Variable
@@ -134,6 +145,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             j:
                                                                 (Variable
@@ -152,6 +168,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     reverse
@@ -216,6 +237,8 @@
                                                                 ()
                                                             )
                                                             ()
+                                                            .false.
+                                                            .false.
                                                         )
                                                         (SubroutineCall
                                                             4 swap
@@ -243,13 +266,14 @@
                                                                 ()
                                                             ))]
                                                             ()
+                                                            .false.
                                                         )]
                                                         []
                                                     )]
                                                     ()
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             swap:
@@ -276,6 +300,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             x:
                                                                 (Variable
@@ -296,6 +325,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             y:
                                                                 (Variable
@@ -316,6 +350,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     swap
@@ -345,21 +384,27 @@
                                                         (Var 5 tmp)
                                                         (Var 5 x)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 5 x)
                                                         (Var 5 y)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 5 y)
                                                         (Var 5 tmp)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )]
                                                     ()
                                                     Private
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             t:
@@ -381,6 +426,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     reverse_tmpl
@@ -417,6 +467,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             x:
                                                                 (Variable
@@ -435,6 +490,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             y:
                                                                 (Variable
@@ -453,6 +513,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     __asr_swap
@@ -478,21 +543,27 @@
                                                         (Var 10 tmp)
                                                         (Var 10 x)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 10 x)
                                                         (Var 10 y)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 10 y)
                                                         (Var 10 tmp)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )]
                                                     ()
                                                     Private
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             a:
@@ -517,6 +588,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             ireverse:
                                                 (Function
@@ -545,6 +621,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             i:
                                                                 (Variable
@@ -563,6 +644,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             j:
                                                                 (Variable
@@ -581,6 +667,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     ireverse
@@ -643,6 +734,8 @@
                                                                 ()
                                                             )
                                                             ()
+                                                            .false.
+                                                            .false.
                                                         )
                                                         (SubroutineCall
                                                             7 __asr_swap
@@ -666,13 +759,14 @@
                                                                 ()
                                                             ))]
                                                             ()
+                                                            .false.
                                                         )]
                                                         []
                                                     )]
                                                     ()
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 )
                                         })
@@ -707,6 +801,8 @@
                                             ColMajor
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (SubroutineCall
                                         7 ireverse
@@ -724,17 +820,21 @@
                                             ()
                                         ))]
                                         ()
+                                        .false.
                                     )
                                     (Print
                                         (StringFormat
                                             ()
                                             [(Var 7 a)]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )
                                     (If
+                                        ()
                                         (IntegerCompare
                                             (ArrayItem
                                                 (Var 7 a)
@@ -756,6 +856,7 @@
                                         []
                                     )
                                     (If
+                                        ()
                                         (IntegerCompare
                                             (ArrayItem
                                                 (Var 7 a)
@@ -777,14 +878,16 @@
                                         []
                                     )]
                                     ()
-                                    Private
+                                    Public
                                     .false.
                                     .false.
                                     ()
                                 )
                         })
                     reverse_m
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

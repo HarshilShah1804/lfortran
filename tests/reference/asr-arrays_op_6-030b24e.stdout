@@ -33,6 +33,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             asquare:
                                 (Function
@@ -65,6 +70,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             b:
                                                 (Variable
@@ -92,6 +102,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             c:
                                                 (Variable
@@ -119,6 +134,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             d:
                                                 (Variable
@@ -146,6 +166,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     asquare
@@ -239,11 +264,13 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 3 d)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             b:
@@ -272,6 +299,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             c:
                                 (Variable
@@ -299,6 +331,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             check:
                                 (Function
@@ -331,6 +368,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             i:
                                                 (Variable
@@ -349,6 +391,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             j:
                                                 (Variable
@@ -367,6 +414,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             k:
                                                 (Variable
@@ -385,6 +437,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     check
@@ -468,6 +525,7 @@
                                                 )
                                                 ())
                                                 [(If
+                                                    ()
                                                     (RealCompare
                                                         (ArrayItem
                                                             (Var 4 c)
@@ -508,6 +566,7 @@
                                                             IntegerToReal
                                                             (Real 4)
                                                             ()
+                                                            ()
                                                         )
                                                         (Logical 4)
                                                         ()
@@ -525,8 +584,8 @@
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             d:
@@ -555,6 +614,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             i:
                                 (Variable
@@ -573,6 +637,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             j:
                                 (Variable
@@ -591,6 +660,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             k:
                                 (Variable
@@ -609,6 +683,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     array_op_5
@@ -682,8 +761,11 @@
                                         IntegerToReal
                                         (Real 4)
                                         ()
+                                        ()
                                     )
                                     ()
+                                    .false.
+                                    .false.
                                 )
                                 (Assignment
                                     (ArrayItem
@@ -742,8 +824,11 @@
                                         IntegerToReal
                                         (Real 4)
                                         ()
+                                        ()
                                     )
                                     ()
+                                    .false.
+                                    .false.
                                 )
                                 (Assignment
                                     (ArrayItem
@@ -769,8 +854,11 @@
                                             0.000000
                                             (Real 4)
                                         )
+                                        ()
                                     )
                                     ()
+                                    .false.
+                                    .false.
                                 )]
                                 []
                             )]
@@ -845,6 +933,8 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (SubroutineCall
                         2 check
@@ -866,6 +956,7 @@
                             ()
                         ))]
                         ()
+                        .false.
                     )]
                 )
         })

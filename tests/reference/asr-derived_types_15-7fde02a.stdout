@@ -39,6 +39,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             res:
                                                 (Variable
@@ -57,6 +62,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             self:
                                                 (Variable
@@ -67,22 +77,33 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (ClassType
-                                                        2 t_1
+                                                    (StructType
+                                                        [(Real 4)]
+                                                        []
+                                                        .false.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 t_1
                                                     Source
                                                     Private
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     multiply
                                     (FunctionType
-                                        [(ClassType
-                                            2 t_1
+                                        [(StructType
+                                            [(Real 4)]
+                                            []
+                                            .false.
+                                            .false.
                                         )
                                         (Real 4)]
                                         (Real 4)
@@ -115,11 +136,13 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 4 res)
                                     Private
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             sqrt_subtract:
@@ -154,6 +177,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             res:
                                                 (Variable
@@ -172,6 +200,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             self:
                                                 (Variable
@@ -182,22 +215,33 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (ClassType
-                                                        2 t_1
+                                                    (StructType
+                                                        [(Real 4)]
+                                                        []
+                                                        .false.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 t_1
                                                     Source
                                                     Private
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     sqrt_subtract
                                     (FunctionType
-                                        [(ClassType
-                                            2 t_1
+                                        [(StructType
+                                            [(Real 4)]
+                                            []
+                                            .false.
+                                            .false.
                                         )
                                         (Integer 4)]
                                         (Real 4)
@@ -231,6 +275,7 @@
                                                     IntegerToReal
                                                     (Real 4)
                                                     ()
+                                                    ()
                                                 )
                                                 Pow
                                                 (RealConstant
@@ -244,11 +289,13 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 5 res)
                                     Private
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             t_1:
@@ -281,9 +328,14 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             multiply:
-                                                (ClassProcedure
+                                                (StructMethodDeclaration
                                                     3
                                                     multiply
                                                     ()
@@ -294,7 +346,7 @@
                                                     .false.
                                                 ),
                                             sqrt_subtract:
-                                                (ClassProcedure
+                                                (StructMethodDeclaration
                                                     3
                                                     sqrt_subtract
                                                     ()
@@ -306,8 +358,15 @@
                                                 )
                                         })
                                     t_1
+                                    (StructType
+                                        [(Real 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [i]
+                                    []
                                     Source
                                     Private
                                     .false.
@@ -315,10 +374,13 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 )
                         })
                     derived_types_15_module_1
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -327,26 +389,6 @@
                     (SymbolTable
                         6
                         {
-                            1_multiply:
-                                (ExternalSymbol
-                                    6
-                                    1_multiply
-                                    3 multiply
-                                    t_1
-                                    []
-                                    multiply
-                                    Public
-                                ),
-                            1_sqrt_subtract:
-                                (ExternalSymbol
-                                    6
-                                    1_sqrt_subtract
-                                    3 sqrt_subtract
-                                    t_1
-                                    []
-                                    sqrt_subtract
-                                    Public
-                                ),
                             1_t_1_i:
                                 (ExternalSymbol
                                     6
@@ -357,22 +399,22 @@
                                     i
                                     Public
                                 ),
-                            multiply:
+                            1_t_1_multiply:
                                 (ExternalSymbol
                                     6
-                                    multiply
-                                    2 multiply
-                                    derived_types_15_module_1
+                                    1_t_1_multiply
+                                    3 multiply
+                                    t_1
                                     []
                                     multiply
                                     Public
                                 ),
-                            sqrt_subtract:
+                            1_t_1_sqrt_subtract:
                                 (ExternalSymbol
                                     6
-                                    sqrt_subtract
-                                    2 sqrt_subtract
-                                    derived_types_15_module_1
+                                    1_t_1_sqrt_subtract
+                                    3 sqrt_subtract
+                                    t_1
                                     []
                                     sqrt_subtract
                                     Public
@@ -397,15 +439,23 @@
                                     ()
                                     Default
                                     (StructType
-                                        6 t_1
+                                        [(Real 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    6 t_1
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     name
@@ -422,12 +472,15 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (RealCompare
                             (FunctionCall
-                                6 1_multiply
-                                3 compute
+                                6 1_t_1_multiply
+                                ()
                                 [((Var 6 type_1))
                                 ((RealConstant
                                     5.000000
@@ -435,7 +488,7 @@
                                 ))]
                                 (Real 4)
                                 ()
-                                ()
+                                (Var 6 type_1)
                             )
                             NotEq
                             (Cast
@@ -446,6 +499,7 @@
                                     500.000000
                                     (Real 4)
                                 )
+                                ()
                             )
                             (Logical 4)
                             ()
@@ -456,15 +510,16 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (FunctionCall
-                                6 1_sqrt_subtract
-                                3 compute
+                                6 1_t_1_sqrt_subtract
+                                ()
                                 [((Var 6 type_1))
                                 ((IntegerConstant 2500 (Integer 4) Decimal))]
                                 (Real 4)
                                 ()
-                                ()
+                                (Var 6 type_1)
                             )
                             NotEq
                             (Cast
@@ -475,6 +530,7 @@
                                     50.000000
                                     (Real 4)
                                 )
+                                ()
                             )
                             (Logical 4)
                             ()

@@ -13,11 +13,13 @@
                                     ia0
                                     []
                                     Local
-                                    (Iachar
-                                        (StringConstant
+                                    (IntrinsicElementalFunction
+                                        Iachar
+                                        [(StringConstant
                                             "0"
-                                            (String 1 1 () PointerString)
-                                        )
+                                            (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
+                                        )]
+                                        0
                                         (Integer 4)
                                         (IntegerConstant 48 (Integer 4) Decimal)
                                     )
@@ -31,6 +33,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             ia5:
                                 (Variable
@@ -38,11 +45,13 @@
                                     ia5
                                     []
                                     Local
-                                    (Iachar
-                                        (StringConstant
+                                    (IntrinsicElementalFunction
+                                        Iachar
+                                        [(StringConstant
                                             "5"
-                                            (String 1 1 () PointerString)
-                                        )
+                                            (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
+                                        )]
+                                        0
                                         (Integer 4)
                                         (IntegerConstant 53 (Integer 4) Decimal)
                                     )
@@ -56,6 +65,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             ia9:
                                 (Variable
@@ -63,11 +77,13 @@
                                     ia9
                                     []
                                     Local
-                                    (Iachar
-                                        (StringConstant
+                                    (IntrinsicElementalFunction
+                                        Iachar
+                                        [(StringConstant
                                             "9"
-                                            (String 1 1 () PointerString)
-                                        )
+                                            (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
+                                        )]
+                                        0
                                         (Integer 4)
                                         (IntegerConstant 57 (Integer 4) Decimal)
                                     )
@@ -81,11 +97,17 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     string_13
                     []
                     [(If
+                        ()
                         (IntegerCompare
                             (Var 2 ia0)
                             NotEq
@@ -102,6 +124,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 ia5)
                             NotEq
@@ -118,6 +141,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 ia9)
                             NotEq
@@ -140,7 +164,9 @@
                             (Var 2 ia5)
                             (Var 2 ia9)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]

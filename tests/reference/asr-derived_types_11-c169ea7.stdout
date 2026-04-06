@@ -23,26 +23,51 @@
                                     type_y
                                     []
                                     Local
-                                    (StructConstructor
+                                    (StructConstant
                                         2 y
-                                        [(())]
+                                        [((StringConstant
+                                            "\\"
+                                            (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
+                                        ))]
                                         (StructType
-                                            2 y
+                                            [(String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)]
+                                            []
+                                            .true.
+                                            .false.
                                         )
-                                        ()
                                     )
-                                    ()
+                                    (StructConstant
+                                        2 y
+                                        [((StringConstant
+                                            "\\"
+                                            (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
+                                        ))]
+                                        (StructType
+                                            [(String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)]
+                                            []
+                                            .true.
+                                            .false.
+                                        )
+                                    )
                                     Parameter
                                     (StructType
-                                        2 y
+                                        [(String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    2 y
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             x:
                                 (Variable
@@ -50,32 +75,34 @@
                                     x
                                     [type_y]
                                     Local
-                                    (StringConcat
-                                        (StringConstant
+                                    (IntrinsicElementalFunction
+                                        StringConcat
+                                        [(StringConstant
                                             "lf"
-                                            (String 1 2 () PointerString)
+                                            (String 1 (IntegerConstant 2 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                         (StructInstanceMember
                                             (Var 2 type_y)
                                             2 1_y_backslash
-                                            (String 1 1 () PointerString)
+                                            (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                             (StringConstant
                                                 "\\"
-                                                (String 1 1 () PointerString)
+                                                (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                             )
-                                        )
-                                        (String 1 3 () PointerString)
+                                        )]
+                                        0
+                                        (String 1 (IntegerConstant 3 (Integer 8) Decimal) ExpressionLength DescriptorString)
                                         (StringConstant
                                             "lf\\"
-                                            (String 1 3 () PointerString)
+                                            (String 1 (IntegerConstant 3 (Integer 8) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (StringConstant
                                         "lf\\"
-                                        (String 1 3 () PointerString)
+                                        (String 1 (IntegerConstant 3 (Integer 8) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Save
-                                    (String 1 3 () PointerString)
+                                    (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -83,6 +110,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             y:
                                 (Struct
@@ -97,14 +129,14 @@
                                                     Local
                                                     (StringConstant
                                                         "\\"
-                                                        (String 1 1 () PointerString)
+                                                        (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                     )
                                                     (StringConstant
                                                         "\\"
-                                                        (String 1 1 () PointerString)
+                                                        (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                     )
                                                     Save
-                                                    (String 1 1 () PointerString)
+                                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -112,11 +144,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     y
+                                    (StructType
+                                        [(String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [backslash]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -124,10 +168,13 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 )
                         })
                     derived_types_11
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -180,20 +227,21 @@
                     main
                     [derived_types_11]
                     [(If
+                        ()
                         (StringCompare
                             (StructInstanceMember
                                 (Var 4 type_y)
                                 4 1_y_backslash
-                                (String 1 1 () PointerString)
+                                (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 (StringConstant
                                     "\\"
-                                    (String 1 1 () PointerString)
+                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 )
                             )
                             NotEq
                             (StringConstant
                                 "\\"
-                                (String 1 1 () PointerString)
+                                (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Logical 4)
                             (LogicalConstant
@@ -207,12 +255,13 @@
                         []
                     )
                     (If
+                        ()
                         (StringCompare
                             (Var 4 x)
                             NotEq
                             (StringConstant
                                 "lf\\"
-                                (String 1 3 () PointerString)
+                                (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Logical 4)
                             ()

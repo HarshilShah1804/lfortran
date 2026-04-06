@@ -42,6 +42,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     expr_07
@@ -51,7 +56,9 @@
                             ()
                             [(Var 2 x)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]

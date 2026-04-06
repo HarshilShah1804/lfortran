@@ -51,6 +51,7 @@
                                             5.000000
                                             (Real 4)
                                         )
+                                        ()
                                     )
                                     (RealConstant
                                         5.000000
@@ -65,6 +66,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             q:
                                 (Variable
@@ -83,10 +89,17 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     functions_07
-                    [functions_07_c]
+                    [functions_07_c
+                    functions_07_a
+                    functions_07_b]
                     [(Assignment
                         (Var 8 q)
                         (FunctionCall
@@ -98,13 +111,17 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 8 q)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]
@@ -136,6 +153,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             v:
                                                 (Variable
@@ -154,6 +176,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     f_a
@@ -186,16 +213,20 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 3 v)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })
                     functions_07_a
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -236,6 +267,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             y:
                                                 (Variable
@@ -254,6 +290,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     f_b
@@ -293,16 +334,20 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 5 y)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })
                     functions_07_b
+                    ()
                     [functions_07_a]
+                    .false.
                     .false.
                     .false.
                 ),
@@ -353,6 +398,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             z:
                                                 (Variable
@@ -371,6 +421,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     f_c
@@ -410,16 +465,21 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 7 z)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })
                     functions_07_c
-                    [functions_07_b]
+                    ()
+                    [functions_07_b
+                    functions_07_a]
+                    .false.
                     .false.
                     .false.
                 )

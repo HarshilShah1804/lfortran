@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             dlog:
                                 (Variable
@@ -42,6 +47,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             dqk15w:
                                 (Function
@@ -109,6 +119,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             f_arg_0:
                                                 (Variable
@@ -127,6 +142,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             f_return_var_name:
                                                 (Variable
@@ -145,6 +165,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             hlgth:
                                                 (Variable
@@ -163,6 +188,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     f
@@ -206,12 +236,17 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     dqc25s
                     (FunctionType
                         [(FunctionType
-                            []
+                            [(Real 4)]
                             (Real 8)
                             BindC
                             Interface
@@ -243,6 +278,7 @@
                         ()
                         [((Var 2 f))]
                         ()
+                        .false.
                     )
                     (Print
                         (StringFormat
@@ -262,7 +298,9 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -283,7 +321,9 @@
                                 )
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]

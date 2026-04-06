@@ -44,6 +44,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             z:
                                 (Variable
@@ -62,6 +67,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     intrinsics_04
@@ -73,6 +83,8 @@
                             (Real 8)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 x)
@@ -84,17 +96,22 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 2 x)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -126,6 +143,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -178,6 +196,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -205,6 +224,7 @@
                                                     14.101420
                                                     (Real 8)
                                                 )
+                                                ()
                                             )
                                             Add
                                             (IntrinsicElementalFunction
@@ -245,6 +265,7 @@
                                             2.254825
                                             (Real 8)
                                         )
+                                        ()
                                     )
                                     (Real 8)
                                     ()
@@ -265,6 +286,7 @@
                                     0.000010
                                     (Real 8)
                                 )
+                                ()
                             )
                             (Logical 4)
                             ()
@@ -293,6 +315,8 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 z)
@@ -304,17 +328,22 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 2 z)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -352,6 +381,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Cast
                                 (IntrinsicElementalFunction
@@ -416,6 +446,7 @@
                                     0.000000
                                     (Real 8)
                                 )
+                                ()
                             )
                             Gt
                             (RealConstant
@@ -434,6 +465,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs

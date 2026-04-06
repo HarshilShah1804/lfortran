@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             x:
                                 (Variable
@@ -48,6 +53,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             z1:
                                 (Variable
@@ -66,6 +76,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             z2:
                                 (Variable
@@ -84,52 +99,76 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     complex_09
                     []
                     [(Assignment
                         (Var 2 z1)
-                        (ComplexConstructor
-                            (Cast
-                                (Var 2 i)
-                                IntegerToReal
-                                (Real 4)
-                                ()
-                            )
+                        (IntrinsicElementalFunction
+                            Cmplx
+                            [(Var 2 i)
                             (Var 2 x)
+                            (IntegerConstant 4 (Integer 4) Decimal)]
+                            0
                             (Complex 4)
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 2 z1)
-                            (ComplexConstructor
-                                (Cast
-                                    (Var 2 x)
-                                    RealToReal
-                                    (Real 8)
-                                    ()
-                                )
+                            (IntrinsicElementalFunction
+                                Cmplx
+                                [(Var 2 x)
                                 (RealConstant
                                     0.000000
-                                    (Real 8)
+                                    (Real 4)
                                 )
+                                (IntegerConstant 8 (Integer 4) Decimal)]
+                                0
                                 (Complex 8)
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (Assignment
                         (Var 2 z2)
-                        (Var 2 z2)
+                        (Cast
+                            (IntrinsicElementalFunction
+                                Cmplx
+                                [(Var 2 z2)
+                                (RealConstant
+                                    0.000000
+                                    (Real 4)
+                                )
+                                (IntegerConstant 8 (Integer 4) Decimal)]
+                                0
+                                (Complex 8)
+                                ()
+                            )
+                            ComplexToComplex
+                            (Complex 4)
+                            ()
+                            ()
+                        )
                         ()
+                        .false.
+                        .false.
                     )]
                 )
         })

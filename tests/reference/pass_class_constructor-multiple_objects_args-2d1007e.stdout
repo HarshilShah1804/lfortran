@@ -45,11 +45,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     circle
+                                    (StructType
+                                        [(Real 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [radius]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -57,6 +69,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             print_radius:
                                 (Function
@@ -83,15 +96,23 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 circle
+                                                        [(Real 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 circle
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             n:
                                                 (Variable
@@ -103,24 +124,38 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 circle
+                                                        [(Real 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 circle
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     print_radius
                                     (FunctionType
                                         [(StructType
-                                            2 circle
+                                            [(Real 4)]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         (StructType
-                                            2 circle
+                                            [(Real 4)]
+                                            []
+                                            .true.
+                                            .false.
                                         )]
                                         ()
                                         Source
@@ -153,7 +188,9 @@
                                                 ()
                                             )]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )
@@ -164,6 +201,8 @@
                                             (Logical 4)
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     ()
                                     Public
@@ -181,15 +220,23 @@
                                     ()
                                     Default
                                     (StructType
-                                        2 circle
+                                        [(Real 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    2 circle
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             temp_struct_var__1:
                                 (Variable
@@ -201,15 +248,23 @@
                                     ()
                                     Default
                                     (StructType
-                                        2 circle
+                                        [(Real 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    2 circle
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             was_called:
                                 (Variable
@@ -234,6 +289,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     main
@@ -250,6 +310,23 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
+                    )
+                    (Assignment
+                        (StructInstanceMember
+                            (Var 2 temp_struct_var__1)
+                            2 1_circle_radius
+                            (Real 4)
+                            ()
+                        )
+                        (RealConstant
+                            1.000000
+                            (Real 4)
+                        )
+                        ()
+                        .false.
+                        .false.
                     )
                     (SubroutineCall
                         2 print_radius
@@ -257,8 +334,10 @@
                         [((Var 2 temp_struct_var__))
                         ((Var 2 temp_struct_var__1))]
                         ()
+                        .false.
                     )
                     (If
+                        ()
                         (LogicalNot
                             (Var 2 was_called)
                             (Logical 4)

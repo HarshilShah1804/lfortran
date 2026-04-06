@@ -16,6 +16,7 @@
                         ()
                         []
                         ()
+                        .false.
                     )]
                 ),
             file_common_block_ls0001:
@@ -50,11 +51,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     ls0001
+                                    (StructType
+                                        []
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [rowns]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -62,6 +75,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             struct_instance_ls0001:
                                 (Variable
@@ -73,19 +87,29 @@
                                     ()
                                     Default
                                     (StructType
-                                        3 ls0001
+                                        []
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    3 ls0001
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     file_common_block_ls0001
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -116,8 +140,8 @@
                     []
                     ()
                     Public
-                    .false.
-                    .false.
+                    .true.
+                    .true.
                     ()
                 )
         })

@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             x:
                                 (Variable
@@ -42,6 +47,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             zero:
                                 (Variable
@@ -60,6 +70,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     complex_dp
@@ -78,8 +93,11 @@
                                 0.000000
                                 (Complex 4)
                             )
+                            ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 v)
@@ -107,8 +125,11 @@
                                 1.050000
                                 (Complex 8)
                             )
+                            ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 x)
@@ -136,8 +157,11 @@
                                 1.050000
                                 (Complex 4)
                             )
+                            ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
@@ -146,7 +170,9 @@
                             (Var 2 x)
                             (Var 2 zero)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]

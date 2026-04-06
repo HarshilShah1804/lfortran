@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             i2:
                                 (Variable
@@ -42,6 +47,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             i3:
                                 (Variable
@@ -60,6 +70,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             int32:
                                 (Variable
@@ -78,6 +93,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             int64:
                                 (Variable
@@ -96,6 +116,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     const_kind_02
@@ -104,6 +129,8 @@
                         (Var 2 i3)
                         (IntegerConstant 1 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 i3)
@@ -112,8 +139,11 @@
                             IntegerToInteger
                             (Integer 4)
                             (IntegerConstant 1 (Integer 4) Decimal)
+                            ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
@@ -124,7 +154,9 @@
                             (Var 2 i2)
                             (Var 2 i3)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]

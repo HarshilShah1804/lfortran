@@ -11,6 +11,7 @@
 #include <libasr/codegen/wasm_assembler.h>
 
 #include <libasr/pass/pass_manager.h>
+#include <libasr/pass/intrinsic_function_registry.h>
 
 #define INCLUDE_RUNTIME_FUNC(fn)                 \
     if (m_rt_func_used_idx[fn] == -1) {          \
@@ -82,12 +83,14 @@ enum RT_FUNCS {
 enum GLOBAL_VAR {
     cur_mem_loc = 0,
     tmp_reg_i32 = 1,
-    tmp_reg_i64 = 2,
-    tmp_reg_f32 = 3,
-    tmp_reg2_f32 = 4,
-    tmp_reg_f64 = 5,
-    tmp_reg2_f64 = 6,
-    GLOBAL_VARS_CNT = 7
+    tmp_reg2_i32 = 2,
+    tmp_reg_i64 = 3,
+    tmp_reg2_i64 = 4,
+    tmp_reg_f32 = 5,
+    tmp_reg2_f32 = 6,
+    tmp_reg_f64 = 7,
+    tmp_reg2_f64 = 8,
+    GLOBAL_VARS_CNT = 9
 };
 
 enum IMPORT_FUNC {
@@ -705,7 +708,7 @@ class ASRToWASMVisitor : public ASR::BaseVisitor<ASRToWASMVisitor> {
             }
             default: {
                 diag.codegen_warning_label("Declare Global: Type "
-                 + ASRUtils::type_to_str_fortran(v_m_type) + " not yet supported", {v->base.base.loc}, "");
+                 + ASRUtils::type_to_str_fortran_symbol(v_m_type, v->m_type_declaration) + " not yet supported", {v->base.base.loc}, "");
                 global_var_idx = m_wa.declare_global_var(i32, 0);
             }
         }
@@ -749,7 +752,9 @@ class ASRToWASMVisitor : public ASR::BaseVisitor<ASRToWASMVisitor> {
 
         m_compiler_globals[cur_mem_loc] = m_wa.declare_global_var(wasm::var_type::i32, 0);
         m_compiler_globals[tmp_reg_i32] = m_wa.declare_global_var(wasm::var_type::i32, 0);
+        m_compiler_globals[tmp_reg2_i32] = m_wa.declare_global_var(wasm::var_type::i32, 0);
         m_compiler_globals[tmp_reg_i64] = m_wa.declare_global_var(wasm::var_type::i64, 0);
+        m_compiler_globals[tmp_reg2_i64] = m_wa.declare_global_var(wasm::var_type::i64, 0);
         m_compiler_globals[tmp_reg_f32] = m_wa.declare_global_var(wasm::var_type::f32, 0);
         m_compiler_globals[tmp_reg2_f32] = m_wa.declare_global_var(wasm::var_type::f32, 0);
         m_compiler_globals[tmp_reg_f64] = m_wa.declare_global_var(wasm::var_type::f64, 0);
@@ -871,7 +876,7 @@ class ASRToWASMVisitor : public ASR::BaseVisitor<ASRToWASMVisitor> {
                 }
             } else {
                 diag.codegen_error_label("Type '" +
-                                             ASRUtils::type_to_str_python(v->m_type) +
+                                             ASRUtils::type_to_str_python_symbol(v->m_type, v->m_type_declaration) +
                                              "' not supported",
                                          {v->base.base.loc}, "");
                 throw CodeGenAbort();
@@ -963,7 +968,7 @@ class ASRToWASMVisitor : public ASR::BaseVisitor<ASRToWASMVisitor> {
                 }
             } else {
                 diag.codegen_warning_label("Unsupported variable type: " +
-                        ASRUtils::type_to_str_fortran(v->m_type), {v->base.base.loc},
+                        ASRUtils::type_to_str_fortran_symbol(v->m_type, v->m_type_declaration), {v->base.base.loc},
                         "Only integer, floats, logical and complex supported currently");
                 type_vec.push_back(i32);
             }
@@ -1202,7 +1207,7 @@ class ASRToWASMVisitor : public ASR::BaseVisitor<ASRToWASMVisitor> {
         }
     }
 
-    uint32_t emit_memory_store(ASR::ttype_t* type) {
+    uint32_t emit_memory_store(ASR::ttype_t* type, ASR::expr_t* expr) {
         auto ttype = ASRUtils::type_get_past_array(type);
         auto kind = ASRUtils::extract_kind_from_ttype_t(ttype);
         switch (ttype->type) {
@@ -1296,7 +1301,7 @@ class ASRToWASMVisitor : public ASR::BaseVisitor<ASRToWASMVisitor> {
             }
             default: {
                 throw CodeGenError("MemoryStore: Type " +
-                                   ASRUtils::type_to_str_fortran(ttype) +
+                                   ASRUtils::type_to_str_fortran_expr(ttype, expr) +
                                    " not yet supported");
             }
         }
@@ -1397,7 +1402,7 @@ class ASRToWASMVisitor : public ASR::BaseVisitor<ASRToWASMVisitor> {
             }
             default: {
                 throw CodeGenError("MemoryStore: Type " +
-                                   ASRUtils::type_to_str_fortran(ttype) +
+                                   ASRUtils::type_to_str_fortran_expr(ttype, v) +
                                    " not yet supported");
             }
         }
@@ -1485,7 +1490,7 @@ class ASRToWASMVisitor : public ASR::BaseVisitor<ASRToWASMVisitor> {
             }
             default: {
                 throw CodeGenError("MemoryLoad: Type " +
-                                   ASRUtils::type_to_str_fortran(ttype) +
+                                   ASRUtils::type_to_str_fortran_expr(ttype, v) +
                                    " not yet supported");
             }
         }
@@ -1572,7 +1577,8 @@ class ASRToWASMVisitor : public ASR::BaseVisitor<ASRToWASMVisitor> {
                     m_wa.emit_i32_shl();
                     break;
                 };
-                case ASR::binopType::BitRShift: {
+                case ASR::binopType::BitRShift:
+                case ASR::binopType::LBitRShift: {
                     m_wa.emit_i32_shr_s();
                     break;
                 };
@@ -1637,7 +1643,8 @@ class ASRToWASMVisitor : public ASR::BaseVisitor<ASRToWASMVisitor> {
                     m_wa.emit_i64_shl();
                     break;
                 };
-                case ASR::binopType::BitRShift: {
+                case ASR::binopType::BitRShift:
+                case ASR::binopType::LBitRShift: {
                     m_wa.emit_i64_shr_s();
                     break;
                 };
@@ -2582,7 +2589,7 @@ class ASRToWASMVisitor : public ASR::BaseVisitor<ASRToWASMVisitor> {
             }
             case ASR::ttypeType::String: {
                 ASR::String_t* char_type = ASR::down_cast<ASR::String_t>(type);
-                int len = char_type->m_len;
+                int len = ASRUtils::extract_value(char_type->m_len, len)? len : 0;
                 char* data_char = (char*)data + i*len;
                 // take first len characters
                 char* new_char = new char[len];
@@ -2609,11 +2616,164 @@ class ASRToWASMVisitor : public ASR::BaseVisitor<ASRToWASMVisitor> {
             m_wa.emit_i32_const(avail_mem_loc);
 
             process_ArrayConstant_value(x.m_data, x.m_type, i);
-            int element_size_in_bytes = emit_memory_store(x.m_type);
+            int element_size_in_bytes = emit_memory_store(x.m_type, const_cast<ASR::expr_t*>(&x.base));
             avail_mem_loc += element_size_in_bytes;
         }
         // leave array location in memory on the stack
         m_wa.emit_i32_const(cur_mem_loc);
+    }
+
+    void visit_IntrinsicElementalFunction(
+            const ASR::IntrinsicElementalFunction_t &x) {
+        if (x.m_value) {
+            visit_expr(*x.m_value);
+            return;
+        }
+        switch (x.m_intrinsic_id) {
+            case static_cast<int64_t>(ASRUtils::IntrinsicElementalFunctions::Abs): {
+                LCOMPILERS_ASSERT(x.n_args == 1);
+                ASR::ttype_t *arg_type = ASRUtils::expr_type(x.m_args[0]);
+                int kind = ASRUtils::extract_kind_from_ttype_t(arg_type);
+                this->visit_expr(*x.m_args[0]);
+                if (ASRUtils::is_real(*arg_type)) {
+                    if (kind == 4) {
+                        m_wa.emit_f32_abs();
+                    } else if (kind == 8) {
+                        m_wa.emit_f64_abs();
+                    } else {
+                        throw CodeGenError("Abs: Unsupported real kind");
+                    }
+                } else if (ASRUtils::is_integer(*arg_type)) {
+                    // abs(x) = x >= 0 ? x : -x (branchless with select)
+                    // Stack order for select: [val1, val2, cond]
+                    // Returns val1 if cond != 0, else val2
+                    if (kind == 4) {
+                        m_wa.emit_global_set(m_compiler_globals[tmp_reg_i32]);
+                        m_wa.emit_global_get(m_compiler_globals[tmp_reg_i32]);  // x (val1)
+                        m_wa.emit_i32_const(0);
+                        m_wa.emit_global_get(m_compiler_globals[tmp_reg_i32]);
+                        m_wa.emit_i32_sub();  // -x (val2)
+                        m_wa.emit_global_get(m_compiler_globals[tmp_reg_i32]);
+                        m_wa.emit_i32_const(0);
+                        m_wa.emit_i32_ge_s();  // x >= 0 (condition)
+                        m_wa.emit_select();
+                    } else if (kind == 8) {
+                        m_wa.emit_global_set(m_compiler_globals[tmp_reg_i64]);
+                        m_wa.emit_global_get(m_compiler_globals[tmp_reg_i64]);  // x (val1)
+                        m_wa.emit_i64_const(0);
+                        m_wa.emit_global_get(m_compiler_globals[tmp_reg_i64]);
+                        m_wa.emit_i64_sub();  // -x (val2)
+                        m_wa.emit_global_get(m_compiler_globals[tmp_reg_i64]);
+                        m_wa.emit_i64_const(0);
+                        m_wa.emit_i64_ge_s();  // x >= 0 (condition)
+                        m_wa.emit_select();
+                    } else {
+                        throw CodeGenError("Abs: Unsupported integer kind");
+                    }
+                } else {
+                    throw CodeGenError("Abs: Unsupported type");
+                }
+                break;
+            }
+            case static_cast<int64_t>(ASRUtils::IntrinsicElementalFunctions::Max): {
+                LCOMPILERS_ASSERT(x.n_args >= 2);
+                ASR::ttype_t *arg_type = ASRUtils::expr_type(x.m_args[0]);
+                int kind = ASRUtils::extract_kind_from_ttype_t(arg_type);
+                this->visit_expr(*x.m_args[0]);
+                for (size_t i = 1; i < x.n_args; i++) {
+                    this->visit_expr(*x.m_args[i]);
+                    if (ASRUtils::is_real(*arg_type)) {
+                        if (kind == 4) {
+                            m_wa.emit_f32_max();
+                        } else if (kind == 8) {
+                            m_wa.emit_f64_max();
+                        } else {
+                            throw CodeGenError("Max: Unsupported real kind");
+                        }
+                    } else if (ASRUtils::is_integer(*arg_type)) {
+                        // max(a, b) = a > b ? a : b
+                        // Stack: [a, b] -> need [val1=a, val2=b, cond=a>b]
+                        // Returns val1=a if a > b, else val2=b
+                        if (kind == 4) {
+                            m_wa.emit_global_set(m_compiler_globals[tmp_reg_i32]);  // b
+                            m_wa.emit_global_set(m_compiler_globals[tmp_reg2_i32]); // a
+                            m_wa.emit_global_get(m_compiler_globals[tmp_reg2_i32]); // a (val1)
+                            m_wa.emit_global_get(m_compiler_globals[tmp_reg_i32]);  // b (val2)
+                            m_wa.emit_global_get(m_compiler_globals[tmp_reg2_i32]);
+                            m_wa.emit_global_get(m_compiler_globals[tmp_reg_i32]);
+                            m_wa.emit_i32_gt_s();  // a > b (condition)
+                            m_wa.emit_select();
+                        } else if (kind == 8) {
+                            m_wa.emit_global_set(m_compiler_globals[tmp_reg_i64]);  // b
+                            m_wa.emit_global_set(m_compiler_globals[tmp_reg2_i64]); // a
+                            m_wa.emit_global_get(m_compiler_globals[tmp_reg2_i64]); // a (val1)
+                            m_wa.emit_global_get(m_compiler_globals[tmp_reg_i64]);  // b (val2)
+                            m_wa.emit_global_get(m_compiler_globals[tmp_reg2_i64]);
+                            m_wa.emit_global_get(m_compiler_globals[tmp_reg_i64]);
+                            m_wa.emit_i64_gt_s();  // a > b (condition)
+                            m_wa.emit_select();
+                        } else {
+                            throw CodeGenError("Max: Unsupported integer kind");
+                        }
+                    } else {
+                        throw CodeGenError("Max: Unsupported type");
+                    }
+                }
+                break;
+            }
+            case static_cast<int64_t>(ASRUtils::IntrinsicElementalFunctions::Min): {
+                LCOMPILERS_ASSERT(x.n_args >= 2);
+                ASR::ttype_t *arg_type = ASRUtils::expr_type(x.m_args[0]);
+                int kind = ASRUtils::extract_kind_from_ttype_t(arg_type);
+                this->visit_expr(*x.m_args[0]);
+                for (size_t i = 1; i < x.n_args; i++) {
+                    this->visit_expr(*x.m_args[i]);
+                    if (ASRUtils::is_real(*arg_type)) {
+                        if (kind == 4) {
+                            m_wa.emit_f32_min();
+                        } else if (kind == 8) {
+                            m_wa.emit_f64_min();
+                        } else {
+                            throw CodeGenError("Min: Unsupported real kind");
+                        }
+                    } else if (ASRUtils::is_integer(*arg_type)) {
+                        // min(a, b) = a < b ? a : b
+                        // Stack: [a, b] -> need [val1=a, val2=b, cond=a<b]
+                        // Returns val1=a if a < b, else val2=b
+                        if (kind == 4) {
+                            m_wa.emit_global_set(m_compiler_globals[tmp_reg_i32]);  // b
+                            m_wa.emit_global_set(m_compiler_globals[tmp_reg2_i32]); // a
+                            m_wa.emit_global_get(m_compiler_globals[tmp_reg2_i32]); // a (val1)
+                            m_wa.emit_global_get(m_compiler_globals[tmp_reg_i32]);  // b (val2)
+                            m_wa.emit_global_get(m_compiler_globals[tmp_reg2_i32]);
+                            m_wa.emit_global_get(m_compiler_globals[tmp_reg_i32]);
+                            m_wa.emit_i32_lt_s();  // a < b (condition)
+                            m_wa.emit_select();
+                        } else if (kind == 8) {
+                            m_wa.emit_global_set(m_compiler_globals[tmp_reg_i64]);  // b
+                            m_wa.emit_global_set(m_compiler_globals[tmp_reg2_i64]); // a
+                            m_wa.emit_global_get(m_compiler_globals[tmp_reg2_i64]); // a (val1)
+                            m_wa.emit_global_get(m_compiler_globals[tmp_reg_i64]);  // b (val2)
+                            m_wa.emit_global_get(m_compiler_globals[tmp_reg2_i64]);
+                            m_wa.emit_global_get(m_compiler_globals[tmp_reg_i64]);
+                            m_wa.emit_i64_lt_s();  // a < b (condition)
+                            m_wa.emit_select();
+                        } else {
+                            throw CodeGenError("Min: Unsupported integer kind");
+                        }
+                    } else {
+                        throw CodeGenError("Min: Unsupported type");
+                    }
+                }
+                break;
+            }
+            default: {
+                throw CodeGenError("IntrinsicElementalFunction: " +
+                    ASRUtils::IntrinsicElementalFunctionRegistry::
+                        get_intrinsic_function_name(x.m_intrinsic_id) +
+                    " not implemented for WASM backend");
+            }
+        }
     }
 
     void visit_FunctionCall(const ASR::FunctionCall_t &x) {
@@ -2690,7 +2850,7 @@ class ASRToWASMVisitor : public ASR::BaseVisitor<ASRToWASMVisitor> {
             }
             default: {
                 throw CodeGenError("temp_value_set: Type " +
-                                   ASRUtils::type_to_str_fortran(ttype) +
+                                   ASRUtils::type_to_str_fortran_expr(ttype, expr) +
                                    " not yet supported");
             }
         }
@@ -2739,7 +2899,7 @@ class ASRToWASMVisitor : public ASR::BaseVisitor<ASRToWASMVisitor> {
             }
             default: {
                 throw CodeGenError("temp_value_get: Type " +
-                                   ASRUtils::type_to_str_fortran(ttype) +
+                                   ASRUtils::type_to_str_fortran_expr(ttype, expr) +
                                    " not yet supported");
             }
         }
@@ -3009,6 +3169,10 @@ class ASRToWASMVisitor : public ASR::BaseVisitor<ASRToWASMVisitor> {
                 }
                 break;
             }
+            case (ASR::cast_kindType::LogicalToLogical): {
+                // No conversion needed for logical-to-logical in WASM
+                break;
+            }
             case (ASR::cast_kindType::LogicalToReal): {
                 int arg_kind = -1, dest_kind = -1;
                 extract_kinds(x, arg_kind, dest_kind);
@@ -3237,9 +3401,20 @@ class ASRToWASMVisitor : public ASR::BaseVisitor<ASRToWASMVisitor> {
 
     void visit_FileWrite(const ASR::FileWrite_t &x) {
         if (x.m_unit != nullptr) {
-            diag.codegen_error_label("unit in write() is not implemented yet",
-                                     {x.m_unit->base.loc}, "not implemented");
-            throw CodeGenAbort();
+            if (ASR::is_a<ASR::IntegerConstant_t>(*x.m_unit)) {
+                    int64_t unit = ASR::down_cast<ASR::IntegerConstant_t>(x.m_unit)->m_n;
+                    if (unit != 6) { //6 is default unit
+                        diag.codegen_error_label(
+                            "Only unit=6 (stdout) is supported in WASM write()",
+                            {x.m_unit->base.loc}, "not implemented");
+                        throw CodeGenAbort();
+                    }
+                } else {
+                    diag.codegen_error_label(
+                        "Non-constant unit in write() is not supported in WASM",
+                        {x.m_unit->base.loc}, "not implemented");
+                    throw CodeGenAbort();
+                }
         }
         if( x.n_values == 1 && ASR::is_a<ASR::StringFormat_t>(*x.m_values[0])){ // loop on stringformat args only.
             this->visit_expr(*x.m_values[0]);
@@ -3396,6 +3571,9 @@ class ASRToWASMVisitor : public ASR::BaseVisitor<ASRToWASMVisitor> {
     void visit_TypeInquiry(const ASR::TypeInquiry_t &x) {
         this->visit_expr(*x.m_value);
     }
+
+    void visit_DebugCheckArrayBounds(const ASR::DebugCheckArrayBounds_t& /*x*/) {
+    }
 };
 
 Result<Vec<uint8_t>> asr_to_wasm_bytes_stream(ASR::TranslationUnit_t &asr,
@@ -3409,7 +3587,8 @@ Result<Vec<uint8_t>> asr_to_wasm_bytes_stream(ASR::TranslationUnit_t &asr,
                 "implied_do_loops", "print_arr", "do_loops", "select_case",
                 "nested_vars", "unused_functions", "intrinsic_function"};
     LCompilers::PassManager pass_manager;
-    pass_manager.apply_passes(al, &asr, passes, co.po, diagnostics);
+    double cummulative_time_take_by_passes = 0.0;
+    pass_manager.apply_passes(al, &asr, passes, co.po, diagnostics, cummulative_time_take_by_passes);
 
 
 #ifdef SHOW_ASR

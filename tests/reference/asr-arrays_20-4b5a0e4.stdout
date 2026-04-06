@@ -18,7 +18,7 @@
                                     Default
                                     (Allocatable
                                         (Array
-                                            (String 1 5 () PointerString)
+                                            (String 1 (IntegerConstant 5 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                             [(()
                                             ())]
                                             DescriptorArray
@@ -31,6 +31,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             list_integer:
                                 (Variable
@@ -56,6 +61,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             list_logical:
                                 (Variable
@@ -81,6 +91,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     arrays_20
@@ -97,8 +112,11 @@
                             )
                             ()
                             ColMajor
+                            ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 list_logical)
@@ -112,23 +130,47 @@
                             )
                             ()
                             ColMajor
+                            ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 list_character)
                         (ArrayConstructor
                             []
                             (Array
-                                (String 1 1 () PointerString)
+                                (String 1 (StringLen
+                                    (ArrayItem
+                                        (Var 2 list_character)
+                                        [(()
+                                        (ArrayBound
+                                            (Var 2 list_character)
+                                            (IntegerConstant 1 (Integer 4) Decimal)
+                                            (Integer 4)
+                                            LBound
+                                            ()
+                                        )
+                                        ())]
+                                        (String 1 (IntegerConstant 5 (Integer 4) Decimal) ExpressionLength DescriptorString)
+                                        ColMajor
+                                        ()
+                                    )
+                                    (Integer 4)
+                                    (IntegerConstant 5 (Integer 4) Decimal)
+                                ) ExpressionLength DescriptorString)
                                 [((IntegerConstant 1 (Integer 4) Decimal)
                                 (IntegerConstant 0 (Integer 4) Decimal))]
-                                FixedSizeArray
+                                PointerArray
                             )
                             ()
                             ColMajor
+                            ()
                         )
                         ()
+                        .false.
+                        .false.
                     )]
                 )
         })

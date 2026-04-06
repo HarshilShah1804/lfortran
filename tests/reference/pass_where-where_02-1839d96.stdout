@@ -29,6 +29,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             b:
                                 (Variable
@@ -52,6 +57,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     main
@@ -71,6 +81,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (ArrayItem
@@ -87,6 +99,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (ArrayItem
@@ -103,6 +117,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (ArrayItem
@@ -119,8 +135,11 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (RealCompare
                             (Var 2 a)
                             Gt
@@ -170,6 +189,8 @@
                                 )
                             )
                             ()
+                            .false.
+                            .false.
                         )]
                         []
                     )
@@ -178,11 +199,14 @@
                             ()
                             [(Var 2 a)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -222,6 +246,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs

@@ -15,14 +15,14 @@
                                     Local
                                     (StringConstant
                                         "B"
-                                        (String 1 1 () PointerString)
+                                        (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     (StringConstant
                                         "B"
-                                        (String 1 1 () PointerString)
+                                        (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Save
-                                    (String 1 1 () PointerString)
+                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -30,21 +30,27 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     case_05
                     []
                     [(Select
+                        ()
                         (Var 2 grade)
                         [(CaseStmt
                             [(StringConstant
                                 "A"
-                                (String 1 1 () PointerString)
+                                (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )]
                             [(Print
                                 (StringConstant
                                     "Excellent!"
-                                    (String 1 10 () PointerString)
+                                    (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 )
                             )]
                             .false.
@@ -52,7 +58,7 @@
                         (CaseStmt
                             [(StringConstant
                                 "B"
-                                (String 1 1 () PointerString)
+                                (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )]
                             []
                             .false.
@@ -60,12 +66,12 @@
                         (CaseStmt
                             [(StringConstant
                                 "C"
-                                (String 1 1 () PointerString)
+                                (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )]
                             [(Print
                                 (StringConstant
                                     "Well done"
-                                    (String 1 9 () PointerString)
+                                    (String 1 (IntegerConstant 9 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 )
                             )]
                             .false.
@@ -73,12 +79,12 @@
                         (CaseStmt
                             [(StringConstant
                                 "D"
-                                (String 1 1 () PointerString)
+                                (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )]
                             [(Print
                                 (StringConstant
                                     "You passed"
-                                    (String 1 10 () PointerString)
+                                    (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 )
                             )]
                             .false.
@@ -86,12 +92,12 @@
                         (CaseStmt
                             [(StringConstant
                                 "F"
-                                (String 1 1 () PointerString)
+                                (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )]
                             [(Print
                                 (StringConstant
                                     "Better try again"
-                                    (String 1 16 () PointerString)
+                                    (String 1 (IntegerConstant 16 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 )
                             )]
                             .false.
@@ -99,7 +105,7 @@
                         [(Print
                             (StringConstant
                                 "Invalid grade"
-                                (String 1 13 () PointerString)
+                                (String 1 (IntegerConstant 13 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )]
                         .false.
@@ -109,11 +115,13 @@
                             ()
                             [(StringConstant
                                 "Your grade is "
-                                (String 1 14 () PointerString)
+                                (String 1 (IntegerConstant 14 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 2 grade)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]

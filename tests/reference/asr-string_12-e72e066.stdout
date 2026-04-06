@@ -15,27 +15,21 @@
                                     Local
                                     (StringSection
                                         (Var 2 hex_digits)
-                                        (IntegerBinOp
-                                            (IntegerConstant 1 (Integer 4) Decimal)
-                                            Sub
-                                            (IntegerConstant 1 (Integer 4) Decimal)
-                                            (Integer 4)
-                                            (IntegerConstant 0 (Integer 4) Decimal)
-                                        )
+                                        (IntegerConstant 1 (Integer 4) Decimal)
                                         (IntegerConstant 10 (Integer 4) Decimal)
                                         (IntegerConstant 1 (Integer 4) Decimal)
-                                        (String 1 22 () PointerString)
+                                        (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         (StringConstant
                                             "0123456789"
-                                            (String 1 22 () PointerString)
+                                            (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (StringConstant
                                         "0123456789"
-                                        (String 1 22 () PointerString)
+                                        (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Parameter
-                                    (String 1 22 () PointerString)
+                                    (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -43,6 +37,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             fullhex_digits:
                                 (Variable
@@ -52,14 +51,14 @@
                                     Local
                                     (StringConstant
                                         "0123456789ABCDEFabcdef"
-                                        (String 1 22 () PointerString)
+                                        (String 1 (IntegerConstant 22 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     (StringConstant
                                         "0123456789ABCDEFabcdef"
-                                        (String 1 22 () PointerString)
+                                        (String 1 (IntegerConstant 22 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Parameter
-                                    (String 1 22 () PointerString)
+                                    (String 1 (IntegerConstant 22 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -67,6 +66,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             hex_digits:
                                 (Variable
@@ -76,27 +80,21 @@
                                     Local
                                     (StringSection
                                         (Var 2 fullhex_digits)
-                                        (IntegerBinOp
-                                            (IntegerConstant 1 (Integer 4) Decimal)
-                                            Sub
-                                            (IntegerConstant 1 (Integer 4) Decimal)
-                                            (Integer 4)
-                                            (IntegerConstant 0 (Integer 4) Decimal)
-                                        )
+                                        (IntegerConstant 1 (Integer 4) Decimal)
                                         (IntegerConstant 16 (Integer 4) Decimal)
                                         (IntegerConstant 1 (Integer 4) Decimal)
-                                        (String 1 22 () PointerString)
+                                        (String 1 (IntegerConstant 16 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         (StringConstant
                                             "0123456789ABCDEF"
-                                            (String 1 22 () PointerString)
+                                            (String 1 (IntegerConstant 16 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (StringConstant
                                         "0123456789ABCDEF"
-                                        (String 1 22 () PointerString)
+                                        (String 1 (IntegerConstant 16 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Parameter
-                                    (String 1 22 () PointerString)
+                                    (String 1 (IntegerConstant 16 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -104,6 +102,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             letters:
                                 (Variable
@@ -113,14 +116,14 @@
                                     Local
                                     (StringConstant
                                         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-                                        (String 1 52 () PointerString)
+                                        (String 1 (IntegerConstant 52 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     (StringConstant
                                         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-                                        (String 1 52 () PointerString)
+                                        (String 1 (IntegerConstant 52 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Parameter
-                                    (String 1 52 () PointerString)
+                                    (String 1 (IntegerConstant 52 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -128,6 +131,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             lowercase:
                                 (Variable
@@ -137,27 +145,25 @@
                                     Local
                                     (StringSection
                                         (Var 2 letters)
-                                        (IntegerBinOp
-                                            (IntegerConstant 27 (Integer 4) Decimal)
-                                            Sub
-                                            (IntegerConstant 1 (Integer 4) Decimal)
+                                        (IntegerConstant 27 (Integer 4) Decimal)
+                                        (StringLen
+                                            (Var 2 letters)
                                             (Integer 4)
-                                            (IntegerConstant 26 (Integer 4) Decimal)
+                                            (IntegerConstant 52 (Integer 4) Decimal)
                                         )
-                                        ()
                                         (IntegerConstant 1 (Integer 4) Decimal)
-                                        (String 1 52 () PointerString)
+                                        (String 1 (IntegerConstant 26 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         (StringConstant
                                             "abcdefghijklmnopqrstuvwxyz"
-                                            (String 1 52 () PointerString)
+                                            (String 1 (IntegerConstant 26 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (StringConstant
                                         "abcdefghijklmnopqrstuvwxyz"
-                                        (String 1 52 () PointerString)
+                                        (String 1 (IntegerConstant 26 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Parameter
-                                    (String 1 52 () PointerString)
+                                    (String 1 (IntegerConstant 26 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -165,6 +171,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             lowerhex_digits:
                                 (Variable
@@ -174,14 +185,14 @@
                                     Local
                                     (StringConstant
                                         "0123456789abcdef"
-                                        (String 1 16 () PointerString)
+                                        (String 1 (IntegerConstant 16 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     (StringConstant
                                         "0123456789abcdef"
-                                        (String 1 16 () PointerString)
+                                        (String 1 (IntegerConstant 16 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Parameter
-                                    (String 1 16 () PointerString)
+                                    (String 1 (IntegerConstant 16 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -189,6 +200,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             octal_digits:
                                 (Variable
@@ -198,27 +214,21 @@
                                     Local
                                     (StringSection
                                         (Var 2 digits)
-                                        (IntegerBinOp
-                                            (IntegerConstant 1 (Integer 4) Decimal)
-                                            Sub
-                                            (IntegerConstant 1 (Integer 4) Decimal)
-                                            (Integer 4)
-                                            (IntegerConstant 0 (Integer 4) Decimal)
-                                        )
+                                        (IntegerConstant 1 (Integer 4) Decimal)
                                         (IntegerConstant 8 (Integer 4) Decimal)
                                         (IntegerConstant 1 (Integer 4) Decimal)
-                                        (String 1 22 () PointerString)
+                                        (String 1 (IntegerConstant 8 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         (StringConstant
                                             "01234567"
-                                            (String 1 22 () PointerString)
+                                            (String 1 (IntegerConstant 8 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (StringConstant
                                         "01234567"
-                                        (String 1 22 () PointerString)
+                                        (String 1 (IntegerConstant 8 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Parameter
-                                    (String 1 22 () PointerString)
+                                    (String 1 (IntegerConstant 8 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -226,6 +236,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             string:
                                 (Variable
@@ -241,18 +256,18 @@
                                             (IntegerConstant 52 (Integer 4) Decimal)
                                         )]
                                         0
-                                        (String 1 1 () PointerString)
+                                        (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         (StringConstant
                                             "4"
-                                            (String 1 1 () PointerString)
+                                            (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (StringConstant
                                         "4"
-                                        (String 1 1 () PointerString)
+                                        (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Parameter
-                                    (String 1 1 () PointerString)
+                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -260,6 +275,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             uppercase:
                                 (Variable
@@ -269,27 +289,21 @@
                                     Local
                                     (StringSection
                                         (Var 2 letters)
-                                        (IntegerBinOp
-                                            (IntegerConstant 1 (Integer 4) Decimal)
-                                            Sub
-                                            (IntegerConstant 1 (Integer 4) Decimal)
-                                            (Integer 4)
-                                            (IntegerConstant 0 (Integer 4) Decimal)
-                                        )
+                                        (IntegerConstant 1 (Integer 4) Decimal)
                                         (IntegerConstant 26 (Integer 4) Decimal)
                                         (IntegerConstant 1 (Integer 4) Decimal)
-                                        (String 1 52 () PointerString)
+                                        (String 1 (IntegerConstant 26 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         (StringConstant
                                             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                            (String 1 52 () PointerString)
+                                            (String 1 (IntegerConstant 26 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (StringConstant
                                         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                        (String 1 52 () PointerString)
+                                        (String 1 (IntegerConstant 26 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Parameter
-                                    (String 1 52 () PointerString)
+                                    (String 1 (IntegerConstant 26 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -297,6 +311,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     string_12
@@ -330,7 +349,7 @@
                             ()
                             [(StringConstant
                                 "char("
-                                (String 1 5 () PointerString)
+                                (String 1 (IntegerConstant 5 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (StringLen
                                 (Var 2 letters)
@@ -339,21 +358,24 @@
                             )
                             (StringConstant
                                 ") = "
-                                (String 1 4 () PointerString)
+                                (String 1 (IntegerConstant 4 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 2 string)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (StringCompare
                             (Var 2 string)
                             NotEq
                             (StringConstant
                                 "4"
-                                (String 1 1 () PointerString)
+                                (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Logical 4)
                             (LogicalConstant

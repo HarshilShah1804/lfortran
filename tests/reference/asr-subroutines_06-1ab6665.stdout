@@ -56,16 +56,6 @@
                                     []
                                     ~assign
                                     Public
-                                ),
-                            ~error_handler:
-                                (ExternalSymbol
-                                    7
-                                    ~error_handler
-                                    2 ~error_handler
-                                    subroutines_06_bitset
-                                    []
-                                    ~error_handler
-                                    Public
                                 )
                         })
                     subroutines_06
@@ -99,6 +89,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             set2:
                                                 (Variable
@@ -117,6 +112,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     assign_large
@@ -142,7 +142,7 @@
                                     ()
                                     Public
                                     .false.
-                                    .false.
+                                    .true.
                                     ()
                                 ),
                             assign_logint8_large:
@@ -172,6 +172,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             self:
                                                 (Variable
@@ -190,6 +195,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     assign_logint8_large
@@ -220,10 +230,17 @@
                                     ()
                                     Public
                                     .false.
-                                    .false.
+                                    .true.
                                     ()
                                 ),
                             error_handler:
+                                (GenericProcedure
+                                    2
+                                    error_handler
+                                    [2 error_handler~genericprocedure]
+                                    Public
+                                ),
+                            error_handler~genericprocedure:
                                 (Function
                                     (SymbolTable
                                         6
@@ -245,6 +262,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             message:
                                                 (Variable
@@ -255,7 +277,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 -1 () PointerString)
+                                                    (String 1 () AssumedLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -263,6 +285,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             module:
                                                 (Variable
@@ -273,7 +300,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 -1 () PointerString)
+                                                    (String 1 () AssumedLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -281,6 +308,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             procedure:
                                                 (Variable
@@ -291,7 +323,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 -1 () PointerString)
+                                                    (String 1 () AssumedLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -299,6 +331,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             status:
                                                 (Variable
@@ -317,15 +354,20 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
-                                    error_handler
+                                    error_handler~genericprocedure
                                     (FunctionType
-                                        [(String 1 -1 () PointerString)
+                                        [(String 1 () AssumedLength DescriptorString)
                                         (Integer 4)
                                         (Integer 4)
-                                        (String 1 -1 () PointerString)
-                                        (String 1 -1 () PointerString)]
+                                        (String 1 () AssumedLength DescriptorString)
+                                        (String 1 () AssumedLength DescriptorString)]
                                         ()
                                         Source
                                         Implementation
@@ -350,138 +392,12 @@
                                             [(Var 6 error)
                                             (Var 6 status)]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )]
-                                    ()
-                                    Public
-                                    .false.
-                                    .false.
-                                    ()
-                                ),
-                            error_handler~genericprocedure:
-                                (Function
-                                    (SymbolTable
-                                        5
-                                        {
-                                            error:
-                                                (Variable
-                                                    5
-                                                    error
-                                                    []
-                                                    In
-                                                    ()
-                                                    ()
-                                                    Default
-                                                    (Integer 4)
-                                                    ()
-                                                    Source
-                                                    Public
-                                                    Required
-                                                    .false.
-                                                    .false.
-                                                    .false.
-                                                ),
-                                            message:
-                                                (Variable
-                                                    5
-                                                    message
-                                                    []
-                                                    In
-                                                    ()
-                                                    ()
-                                                    Default
-                                                    (String 1 -1 () PointerString)
-                                                    ()
-                                                    Source
-                                                    Public
-                                                    Required
-                                                    .false.
-                                                    .false.
-                                                    .false.
-                                                ),
-                                            module:
-                                                (Variable
-                                                    5
-                                                    module
-                                                    []
-                                                    In
-                                                    ()
-                                                    ()
-                                                    Default
-                                                    (String 1 -1 () PointerString)
-                                                    ()
-                                                    Source
-                                                    Public
-                                                    Optional
-                                                    .false.
-                                                    .false.
-                                                    .false.
-                                                ),
-                                            procedure:
-                                                (Variable
-                                                    5
-                                                    procedure
-                                                    []
-                                                    In
-                                                    ()
-                                                    ()
-                                                    Default
-                                                    (String 1 -1 () PointerString)
-                                                    ()
-                                                    Source
-                                                    Public
-                                                    Optional
-                                                    .false.
-                                                    .false.
-                                                    .false.
-                                                ),
-                                            status:
-                                                (Variable
-                                                    5
-                                                    status
-                                                    []
-                                                    Out
-                                                    ()
-                                                    ()
-                                                    Default
-                                                    (Integer 4)
-                                                    ()
-                                                    Source
-                                                    Public
-                                                    Optional
-                                                    .false.
-                                                    .false.
-                                                    .false.
-                                                )
-                                        })
-                                    error_handler~genericprocedure
-                                    (FunctionType
-                                        [(String 1 -1 () PointerString)
-                                        (Integer 4)
-                                        (Integer 4)
-                                        (String 1 -1 () PointerString)
-                                        (String 1 -1 () PointerString)]
-                                        ()
-                                        Source
-                                        Interface
-                                        ()
-                                        .false.
-                                        .false.
-                                        .true.
-                                        .false.
-                                        .false.
-                                        []
-                                        .false.
-                                    )
-                                    []
-                                    [(Var 5 message)
-                                    (Var 5 error)
-                                    (Var 5 status)
-                                    (Var 5 module)
-                                    (Var 5 procedure)]
-                                    []
                                     ()
                                     Public
                                     .false.
@@ -495,19 +411,14 @@
                                     [2 assign_large
                                     2 assign_logint8_large]
                                     Public
-                                ),
-                            ~error_handler:
-                                (GenericProcedure
-                                    2
-                                    ~error_handler
-                                    [2 error_handler~genericprocedure]
-                                    Public
                                 )
                         })
                     subroutines_06_bitset
+                    ()
                     []
                     .false.
                     .false.
+                    .true.
                 )
         })
     []

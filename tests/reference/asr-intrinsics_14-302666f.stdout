@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             k1:
                                 (Variable
@@ -48,6 +53,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             k10:
                                 (Variable
@@ -59,7 +69,7 @@
                                         SelectedCharKind
                                         [(StringConstant
                                             "default"
-                                            (String 1 7 () PointerString)
+                                            (String 1 (IntegerConstant 7 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )]
                                         0
                                         (Integer 4)
@@ -75,6 +85,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             k11:
                                 (Variable
@@ -101,6 +116,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             k12:
                                 (Variable
@@ -127,6 +147,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             k2:
                                 (Variable
@@ -151,6 +176,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             k3:
                                 (Variable
@@ -175,6 +205,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             k4:
                                 (Variable
@@ -199,6 +234,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             k5:
                                 (Variable
@@ -223,6 +263,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             k6:
                                 (Variable
@@ -249,6 +294,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             k7:
                                 (Variable
@@ -275,6 +325,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             k8:
                                 (Variable
@@ -301,6 +356,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             k9:
                                 (Variable
@@ -327,6 +387,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             s1:
                                 (Variable
@@ -337,7 +402,7 @@
                                     ()
                                     ()
                                     Default
-                                    (String 1 7 () PointerString)
+                                    (String 1 (IntegerConstant 7 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -345,6 +410,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     intrinsics_14
@@ -353,14 +423,18 @@
                         (Var 2 s1)
                         (StringConstant
                             "default"
-                            (String 1 7 () PointerString)
+                            (String 1 (IntegerConstant 7 (Integer 4) Decimal) ExpressionLength DescriptorString)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 i1)
                         (IntegerConstant 5 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
@@ -374,7 +448,9 @@
                             )
                             (Var 2 k1)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -390,7 +466,9 @@
                             )
                             (Var 2 k2)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -406,7 +484,9 @@
                             )
                             (Var 2 k3)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -422,7 +502,9 @@
                             )
                             (Var 2 k4)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -438,7 +520,9 @@
                             )
                             (Var 2 k5)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -456,7 +540,9 @@
                             )
                             (Var 2 k6)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -474,7 +560,9 @@
                             )
                             (Var 2 k7)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -492,7 +580,9 @@
                             )
                             (Var 2 k8)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -510,7 +600,9 @@
                             )
                             (Var 2 k9)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -521,7 +613,7 @@
                                 SelectedCharKind
                                 [(StringConstant
                                     "default"
-                                    (String 1 7 () PointerString)
+                                    (String 1 (IntegerConstant 7 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 )]
                                 0
                                 (Integer 4)
@@ -529,7 +621,9 @@
                             )
                             (Var 2 k10)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -544,7 +638,9 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -561,7 +657,9 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -576,7 +674,9 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -594,7 +694,9 @@
                             )
                             (Var 2 k11)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -612,7 +714,9 @@
                             )
                             (Var 2 k12)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]

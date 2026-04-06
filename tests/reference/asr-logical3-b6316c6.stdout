@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             b:
                                 (Variable
@@ -42,6 +47,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     logical3
@@ -53,6 +63,8 @@
                             (Logical 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 b)
@@ -61,8 +73,11 @@
                             (Logical 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (LogicalBinOp
                             (Var 2 a)
                             And
@@ -73,7 +88,7 @@
                         [(Print
                             (StringConstant
                                 "Line 1 - Condition is true"
-                                (String 1 26 () PointerString)
+                                (String 1 (IntegerConstant 26 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )
                         (ErrorStop
@@ -82,11 +97,12 @@
                         [(Print
                             (StringConstant
                                 "Line 1 - Condition is false"
-                                (String 1 27 () PointerString)
+                                (String 1 (IntegerConstant 27 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )]
                     )
                     (If
+                        ()
                         (LogicalBinOp
                             (Var 2 a)
                             Or
@@ -97,13 +113,13 @@
                         [(Print
                             (StringConstant
                                 "Line 2 - Condition is true"
-                                (String 1 26 () PointerString)
+                                (String 1 (IntegerConstant 26 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )]
                         [(Print
                             (StringConstant
                                 "Line 2 - Condition is false"
-                                (String 1 27 () PointerString)
+                                (String 1 (IntegerConstant 27 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )
                         (ErrorStop
@@ -111,6 +127,7 @@
                         )]
                     )
                     (If
+                        ()
                         (LogicalBinOp
                             (Var 2 a)
                             Xor
@@ -121,13 +138,13 @@
                         [(Print
                             (StringConstant
                                 "Line xor - Condition is true"
-                                (String 1 28 () PointerString)
+                                (String 1 (IntegerConstant 28 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )]
                         [(Print
                             (StringConstant
                                 "Line xor - Condition is false"
-                                (String 1 29 () PointerString)
+                                (String 1 (IntegerConstant 29 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )
                         (ErrorStop
@@ -141,6 +158,8 @@
                             (Logical 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 b)
@@ -149,8 +168,11 @@
                             (Logical 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (LogicalNot
                             (LogicalBinOp
                                 (Var 2 a)
@@ -165,13 +187,13 @@
                         [(Print
                             (StringConstant
                                 "Line 3 - Condition is true"
-                                (String 1 26 () PointerString)
+                                (String 1 (IntegerConstant 26 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )]
                         [(Print
                             (StringConstant
                                 "Line 3 - Condition is false"
-                                (String 1 27 () PointerString)
+                                (String 1 (IntegerConstant 27 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )
                         (ErrorStop
@@ -179,6 +201,7 @@
                         )]
                     )
                     (If
+                        ()
                         (LogicalBinOp
                             (Var 2 b)
                             NEqv
@@ -189,13 +212,13 @@
                         [(Print
                             (StringConstant
                                 "Line 4 - Condition is true"
-                                (String 1 26 () PointerString)
+                                (String 1 (IntegerConstant 26 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )]
                         [(Print
                             (StringConstant
                                 "Line 4 - Condition is false"
-                                (String 1 27 () PointerString)
+                                (String 1 (IntegerConstant 27 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )
                         (ErrorStop
@@ -203,6 +226,7 @@
                         )]
                     )
                     (If
+                        ()
                         (LogicalBinOp
                             (Var 2 b)
                             Eqv
@@ -213,7 +237,7 @@
                         [(Print
                             (StringConstant
                                 "Line 5 - Condition is true"
-                                (String 1 26 () PointerString)
+                                (String 1 (IntegerConstant 26 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )
                         (ErrorStop
@@ -222,7 +246,7 @@
                         [(Print
                             (StringConstant
                                 "Line 5 - Condition is false"
-                                (String 1 27 () PointerString)
+                                (String 1 (IntegerConstant 27 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )]
                     )
@@ -233,6 +257,8 @@
                             (Logical 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 b)
@@ -241,8 +267,11 @@
                             (Logical 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (LogicalBinOp
                             (Var 2 a)
                             And
@@ -253,13 +282,13 @@
                         [(Print
                             (StringConstant
                                 "Line 6 - Condition is true"
-                                (String 1 26 () PointerString)
+                                (String 1 (IntegerConstant 26 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )]
                         [(Print
                             (StringConstant
                                 "Line 6 - Condition is false"
-                                (String 1 27 () PointerString)
+                                (String 1 (IntegerConstant 27 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )
                         (ErrorStop
@@ -267,6 +296,7 @@
                         )]
                     )
                     (If
+                        ()
                         (LogicalBinOp
                             (Var 2 a)
                             Or
@@ -277,13 +307,13 @@
                         [(Print
                             (StringConstant
                                 "Line 7 - Condition is true"
-                                (String 1 26 () PointerString)
+                                (String 1 (IntegerConstant 26 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )]
                         [(Print
                             (StringConstant
                                 "Line 7 - Condition is false"
-                                (String 1 27 () PointerString)
+                                (String 1 (IntegerConstant 27 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )
                         (ErrorStop
@@ -291,6 +321,7 @@
                         )]
                     )
                     (If
+                        ()
                         (LogicalBinOp
                             (Var 2 a)
                             Xor
@@ -301,7 +332,7 @@
                         [(Print
                             (StringConstant
                                 "Line 8 xor - Condition is true"
-                                (String 1 30 () PointerString)
+                                (String 1 (IntegerConstant 30 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )
                         (ErrorStop
@@ -310,7 +341,7 @@
                         [(Print
                             (StringConstant
                                 "Line 8 xor - Condition is false"
-                                (String 1 31 () PointerString)
+                                (String 1 (IntegerConstant 31 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                         )]
                     )]

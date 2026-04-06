@@ -258,8 +258,8 @@ public:
                 std::string encoded_type_name = "i" + std::to_string(t->m_kind * 8);
                 handle_array(t2, type_name, true)
             } else {
-                diag.codegen_error_label("Type number '"
-                    + ASRUtils::type_to_str_python(v.m_type)
+                diag.codegen_error_label("Type '"
+                    + ASRUtils::type_to_str_python_symbol(v.m_type, v.m_type_declaration)
                     + "' not supported", {v.base.base.loc}, "");
                 throw Abort();
             }
@@ -294,8 +294,7 @@ public:
                 dims = convert_dims(n_dims, m_dims, size);
                 sub = format_type(dims, "std::string", v.m_name, use_ref, dummy);
             } else if (ASR::is_a<ASR::StructType_t>(*v.m_type)) {
-                ASR::StructType_t *t = ASR::down_cast<ASR::StructType_t>(v_m_type);
-                std::string der_type_name = ASRUtils::symbol_name(t->m_derived_type);
+                std::string der_type_name = ASRUtils::symbol_name(v.m_type_declaration);
                 std::string encoded_type_name = "x" + der_type_name;
                 std::string type_name = std::string("struct ") + der_type_name;
                 handle_array(v.m_type, "struct", false)
@@ -305,8 +304,8 @@ public:
                 sub = format_type_c("", list_type_c, v.m_name,
                                     false, false);
             } else {
-                diag.codegen_error_label("Type number '"
-                    + ASRUtils::type_to_str_python(v.m_type)
+                diag.codegen_error_label("Type '"
+                    + ASRUtils::type_to_str_python_symbol(v.m_type, v.m_type_declaration)
                     + "' not supported", {v.base.base.loc}, "");
                 throw Abort();
             }

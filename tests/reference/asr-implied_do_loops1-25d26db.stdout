@@ -20,7 +20,12 @@
                                             (IntegerConstant 1 (Integer 4) Decimal)
                                             (IntegerConstant 10 (Integer 4) Decimal)
                                             ()
-                                            (Integer 4)
+                                            (Array
+                                                (Integer 4)
+                                                [((IntegerConstant 1 (Integer 4) Decimal)
+                                                (IntegerConstant 10 (Integer 4) Decimal))]
+                                                FixedSizeArray
+                                            )
                                             (ArrayConstant
                                                 40
                                                 [1, 2, 3, ...., 8, 9, 10]
@@ -36,8 +41,8 @@
                                         (Array
                                             (Integer 4)
                                             [((IntegerConstant 1 (Integer 4) Decimal)
-                                            ())]
-                                            DescriptorArray
+                                            (IntegerConstant 10 (Integer 4) Decimal))]
+                                            FixedSizeArray
                                         )
                                         (ArrayConstant
                                             40
@@ -46,11 +51,12 @@
                                                 (Integer 4)
                                                 [((IntegerConstant 1 (Integer 4) Decimal)
                                                 (IntegerConstant 10 (Integer 4) Decimal))]
-                                                DescriptorArray
+                                                FixedSizeArray
                                             )
                                             ColMajor
                                         )
                                         ColMajor
+                                        ()
                                     )
                                     (ArrayConstant
                                         40
@@ -59,7 +65,7 @@
                                             (Integer 4)
                                             [((IntegerConstant 1 (Integer 4) Decimal)
                                             (IntegerConstant 10 (Integer 4) Decimal))]
-                                            DescriptorArray
+                                            FixedSizeArray
                                         )
                                         ColMajor
                                     )
@@ -77,6 +83,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             j:
                                 (Variable
@@ -95,6 +106,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             s:
                                 (Function
@@ -130,20 +146,12 @@
                                                 (IntegerConstant 3 (Integer 4) Decimal)
                                                 ()
                                                 (Integer 4)
-                                                (ArrayConstant
-                                                    12
-                                                    [1, 2, 3]
-                                                    (Array
-                                                        (Integer 4)
-                                                        [((IntegerConstant 1 (Integer 4) Decimal)
-                                                        (IntegerConstant 3 (Integer 4) Decimal))]
-                                                        FixedSizeArray
-                                                    )
-                                                    ColMajor
-                                                )
+                                                ()
                                             )]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )]
@@ -161,6 +169,7 @@
                         ()
                         []
                         ()
+                        .false.
                     )
                     (Print
                         (StringFormat
@@ -180,20 +189,12 @@
                                 (IntegerConstant 10 (Integer 4) Decimal)
                                 ()
                                 (Integer 4)
-                                (ArrayConstant
-                                    40
-                                    [1, 2, 3, ...., 8, 9, 10]
-                                    (Array
-                                        (Integer 4)
-                                        [((IntegerConstant 1 (Integer 4) Decimal)
-                                        (IntegerConstant 10 (Integer 4) Decimal))]
-                                        FixedSizeArray
-                                    )
-                                    ColMajor
-                                )
+                                ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]

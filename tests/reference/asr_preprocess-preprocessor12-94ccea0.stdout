@@ -21,7 +21,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 -1 () PointerString)
+                                                    (String 1 () AssumedLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -29,6 +29,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             line:
                                                 (Variable
@@ -47,11 +52,16 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     f90_assert
                                     (FunctionType
-                                        [(String 1 -1 () PointerString)
+                                        [(String 1 () AssumedLength DescriptorString)
                                         (Integer 4)]
                                         ()
                                         Source
@@ -71,26 +81,32 @@
                                     [(Print
                                         (StringFormat
                                             ()
-                                            [(StringConcat
-                                                (StringConcat
-                                                    (StringConstant
+                                            [(IntrinsicElementalFunction
+                                                StringConcat
+                                                [(IntrinsicElementalFunction
+                                                    StringConcat
+                                                    [(StringConstant
                                                         "Assertion failed at "
-                                                        (String 1 20 () PointerString)
+                                                        (String 1 (IntegerConstant 20 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                     )
-                                                    (Var 4 file)
-                                                    (String 1 -1 () PointerString)
+                                                    (Var 4 file)]
+                                                    0
+                                                    (String 1 () DeferredLength DescriptorString)
                                                     ()
                                                 )
                                                 (StringConstant
                                                     ":"
-                                                    (String 1 1 () PointerString)
-                                                )
-                                                (String 1 -1 () PointerString)
+                                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
+                                                )]
+                                                0
+                                                (String 1 () DeferredLength DescriptorString)
                                                 ()
                                             )
                                             (Var 4 line)]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )
@@ -125,6 +141,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             b:
                                                 (Variable
@@ -143,6 +164,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             fn:
                                                 (Variable
@@ -161,6 +187,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     fn
@@ -192,17 +223,20 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 3 fn)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })
                     preprocessor12
                     []
                     [(If
+                        ()
                         (LogicalNot
                             (LogicalConstant
                                 .true.
@@ -219,14 +253,16 @@
                             ()
                             [((StringConstant
                                 "tests/preprocessor12.f90"
-                                (String 1 24 () PointerString)
+                                (String 1 (IntegerConstant 24 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             ))
                             ((IntegerConstant 7 (Integer 4) Decimal))]
                             ()
+                            .false.
                         )]
                         []
                     )
                     (If
+                        ()
                         (LogicalNot
                             (IntegerCompare
                                 (IntegerConstant 5 (Integer 4) Decimal)
@@ -249,14 +285,16 @@
                             ()
                             [((StringConstant
                                 "tests/preprocessor12.f90"
-                                (String 1 24 () PointerString)
+                                (String 1 (IntegerConstant 24 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             ))
                             ((IntegerConstant 8 (Integer 4) Decimal))]
                             ()
+                            .false.
                         )]
                         []
                     )
                     (If
+                        ()
                         (LogicalNot
                             (IntegerCompare
                                 (IntegerBinOp
@@ -291,14 +329,16 @@
                             ()
                             [((StringConstant
                                 "tests/preprocessor12.f90"
-                                (String 1 24 () PointerString)
+                                (String 1 (IntegerConstant 24 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             ))
                             ((IntegerConstant 9 (Integer 4) Decimal))]
                             ()
+                            .false.
                         )]
                         []
                     )
                     (If
+                        ()
                         (LogicalNot
                             (FunctionCall
                                 2 fn
@@ -317,14 +357,16 @@
                             ()
                             [((StringConstant
                                 "tests/preprocessor12.f90"
-                                (String 1 24 () PointerString)
+                                (String 1 (IntegerConstant 24 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             ))
                             ((IntegerConstant 11 (Integer 4) Decimal))]
                             ()
+                            .false.
                         )]
                         []
                     )
                     (If
+                        ()
                         (LogicalNot
                             (IntegerCompare
                                 (IntegerConstant 5 (Integer 4) Decimal)
@@ -347,10 +389,11 @@
                             ()
                             [((StringConstant
                                 "tests/preprocessor12.f90"
-                                (String 1 24 () PointerString)
+                                (String 1 (IntegerConstant 24 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             ))
                             ((IntegerConstant 13 (Integer 4) Decimal))]
                             ()
+                            .false.
                         )]
                         []
                     )]

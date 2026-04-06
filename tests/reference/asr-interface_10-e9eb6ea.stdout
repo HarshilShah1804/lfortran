@@ -46,7 +46,7 @@
                                     ()
                                     ()
                                     Default
-                                    (String 1 1 () PointerString)
+                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -54,6 +54,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             y:
                                 (Variable
@@ -64,7 +69,7 @@
                                     ()
                                     ()
                                     Default
-                                    (String 1 1 () PointerString)
+                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -72,6 +77,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     interface_10
@@ -80,9 +90,11 @@
                         (Var 4 x)
                         (StringConstant
                             "A"
-                            (String 1 1 () PointerString)
+                            (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (SubroutineCall
                         4 chars@identity
@@ -90,6 +102,7 @@
                         [((Var 4 x))
                         ((Var 4 y))]
                         ()
+                        .false.
                     )
                     (Print
                         (Var 4 x)
@@ -121,7 +134,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 1 () PointerString)
+                                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -129,6 +142,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             y:
                                                 (Variable
@@ -139,7 +157,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 -1 () PointerString)
+                                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -147,12 +165,17 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     identity
                                     (FunctionType
-                                        [(String 1 1 () PointerString)
-                                        (String 1 -1 () PointerString)]
+                                        [(String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
+                                        (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)]
                                         ()
                                         Source
                                         Implementation
@@ -172,16 +195,20 @@
                                         (Var 3 y)
                                         (Var 3 x)
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })
                     interface_10_m
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

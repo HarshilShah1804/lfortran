@@ -30,11 +30,17 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     intrinsics_09
                     []
                     [(If
+                        ()
                         (RealCompare
                             (Var 2 z)
                             Lt
@@ -59,7 +65,9 @@
                                 ()
                                 [(Var 2 z)]
                                 FormatFortran
-                                (String -1 0 () PointerString)
+                                (Allocatable
+                                    (String 1 () DeferredLength DescriptorString)
+                                )
                                 ()
                             )
                         )]

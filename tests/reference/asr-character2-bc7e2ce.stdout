@@ -15,14 +15,14 @@
                                     Local
                                     (StringConstant
                                         "Goat"
-                                        (String 1 4 () PointerString)
+                                        (String 1 (IntegerConstant 4 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     (StringConstant
                                         "Goat"
-                                        (String 1 4 () PointerString)
+                                        (String 1 (IntegerConstant 4 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Save
-                                    (String 1 4 () PointerString)
+                                    (String 1 (IntegerConstant 4 (Integer 8) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -30,6 +30,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             char2:
                                 (Variable
@@ -40,7 +45,7 @@
                                     ()
                                     ()
                                     Default
-                                    (String 1 4 () PointerString)
+                                    (String 1 (IntegerConstant 4 (Integer 8) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -48,6 +53,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             char_param:
                                 (Variable
@@ -57,14 +67,14 @@
                                     Local
                                     (StringConstant
                                         "App"
-                                        (String 1 3 () PointerString)
+                                        (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     (StringConstant
                                         "App"
-                                        (String 1 3 () PointerString)
+                                        (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Parameter
-                                    (String 1 3 () PointerString)
+                                    (String 1 (IntegerConstant 3 (Integer 8) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -72,6 +82,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     character2
@@ -80,9 +95,11 @@
                         (Var 2 char2)
                         (StringConstant
                             "Balle"
-                            (String 1 5 () PointerString)
+                            (String 1 (IntegerConstant 5 (Integer 4) Decimal) ExpressionLength DescriptorString)
                         )
                         ()
+                        .false.
+                        .false.
                     )]
                 )
         })

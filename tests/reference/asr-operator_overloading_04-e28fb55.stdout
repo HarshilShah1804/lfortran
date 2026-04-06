@@ -32,15 +32,25 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 string_type
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 string_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             rhs:
                                                 (Variable
@@ -51,7 +61,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 -1 () PointerString)
+                                                    (String 1 () AssumedLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -59,14 +69,24 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     assign_string_char
                                     (FunctionType
                                         [(StructType
-                                            2 string_type
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )
-                                        (String 1 -1 () PointerString)]
+                                        (String 1 () AssumedLength DescriptorString)]
                                         ()
                                         Source
                                         Implementation
@@ -87,25 +107,19 @@
                                             (Var 4 lhs)
                                             4 1_string_type_raw
                                             (Allocatable
-                                                (String 1 -2 () DescriptorString)
+                                                (String 1 () DeferredLength DescriptorString)
                                             )
                                             ()
                                         )
-                                        (StringPhysicalCast
-                                            (Var 4 rhs)
-                                            PointerString
-                                            DescriptorString
-                                            (Allocatable
-                                                (String 1 -1 () DescriptorString)
-                                            )
-                                            ()
-                                        )
+                                        (Var 4 rhs)
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             string_type:
@@ -123,7 +137,7 @@
                                                     ()
                                                     Default
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     Source
@@ -132,11 +146,25 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     string_type
+                                    (StructType
+                                        [(Allocatable
+                                            (String 1 () DeferredLength DescriptorString)
+                                        )]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [raw]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -144,6 +172,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             trim_string:
                                 (Function
@@ -160,6 +189,16 @@
                                                     raw
                                                     Public
                                                 ),
+                                            assign_string_char:
+                                                (ExternalSymbol
+                                                    5
+                                                    assign_string_char
+                                                    2 assign_string_char
+                                                    operator_overloading_04_stdlib_string_type
+                                                    []
+                                                    assign_string_char
+                                                    Public
+                                                ),
                                             string:
                                                 (Variable
                                                     5
@@ -170,15 +209,25 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 string_type
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 string_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             trimmed_string:
                                                 (Variable
@@ -190,24 +239,44 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 string_type
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 string_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     trim_string
                                     (FunctionType
                                         [(StructType
-                                            2 string_type
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )]
                                         (StructType
-                                            2 string_type
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         Source
                                         Implementation
@@ -220,7 +289,7 @@
                                         []
                                         .false.
                                     )
-                                    [assign_string_char]
+                                    []
                                     [(Var 5 string)]
                                     [(Assignment
                                         (Var 5 trimmed_string)
@@ -228,37 +297,32 @@
                                             (Var 5 string)
                                             5 1_string_type_raw
                                             (Allocatable
-                                                (String 1 -2 () DescriptorString)
+                                                (String 1 () DeferredLength DescriptorString)
                                             )
                                             ()
                                         )
                                         (SubroutineCall
-                                            2 assign_string_char
-                                            2 ~assign
+                                            5 assign_string_char
+                                            5 assign_string_char
                                             [((Var 5 trimmed_string))
-                                            ((StringPhysicalCast
-                                                (StructInstanceMember
-                                                    (Var 5 string)
-                                                    5 1_string_type_raw
-                                                    (Allocatable
-                                                        (String 1 -2 () DescriptorString)
-                                                    )
-                                                    ()
-                                                )
-                                                DescriptorString
-                                                PointerString
+                                            ((StructInstanceMember
+                                                (Var 5 string)
+                                                5 1_string_type_raw
                                                 (Allocatable
-                                                    (String 1 -2 () PointerString)
+                                                    (String 1 () DeferredLength DescriptorString)
                                                 )
                                                 ()
                                             ))]
                                             ()
+                                            .false.
                                         )
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 5 trimmed_string)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             ~assign:
@@ -270,7 +334,9 @@
                                 )
                         })
                     operator_overloading_04_stdlib_string_type
-                    []
+                    ()
+                    [operator_overloading_04_stdlib_string_type]
+                    .false.
                     .false.
                     .false.
                 ),
@@ -304,15 +370,25 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        6 string_type
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    6 string_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             last:
                                                 (Variable
@@ -331,6 +407,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             string:
                                                 (Variable
@@ -342,15 +423,25 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        6 string_type
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    6 string_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             ~assign:
                                                 (ExternalSymbol
@@ -366,10 +457,20 @@
                                     chomp_string
                                     (FunctionType
                                         [(StructType
-                                            6 string_type
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )]
                                         (StructType
-                                            6 string_type
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         Source
                                         Implementation
@@ -387,8 +488,8 @@
                                     []
                                     (Var 7 chomped_string)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             string_type:
@@ -403,7 +504,9 @@
                                 )
                         })
                     operator_overloading_stdlib_string_use
+                    ()
                     [operator_overloading_04_stdlib_string_type]
+                    .false.
                     .false.
                     .false.
                 ),

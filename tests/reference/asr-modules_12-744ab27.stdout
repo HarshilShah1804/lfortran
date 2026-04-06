@@ -29,10 +29,17 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     module_12
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -66,8 +73,11 @@
                         )
                         (IntegerConstant 5 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (ArrayItem
                                 (Var 3 a)

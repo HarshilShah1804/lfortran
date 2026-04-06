@@ -4,6 +4,7 @@
 #include <libasr/pass/pass_utils.h>
 #include <libasr/containers.h>
 #include <map>
+#include <set>
 
 #include <libasr/pass/intrinsic_function_registry.h>
 
@@ -13,29 +14,48 @@ class IsAllocatedCalled: public ASR::CallReplacerOnExpressionsVisitor<IsAllocate
     public:
 
         std::map<SymbolTable*, std::vector<ASR::symbol_t*>>& scope2var;
+        std::map<ASR::symbol_t*, int> alloc_count;
 
         IsAllocatedCalled(std::map<SymbolTable*, std::vector<ASR::symbol_t*>>& scope2var_):
             scope2var(scope2var_) {}
+
+        // Push symbol to all scopes from current_scope up to and including the
+        // scope where the symbol is defined. This handles cases where operations
+        // like reallocate happen inside nested scopes (e.g., associate blocks)
+        // but the variable is defined in an outer scope.
+        void push_to_scopes_until_symbol_scope(ASR::symbol_t* sym) {
+            SymbolTable* sym_scope = ASRUtils::symbol_parent_symtab(sym);
+            SymbolTable* scope = current_scope;
+            while (scope != nullptr) {
+                scope2var[scope].push_back(sym);
+                if (scope->get_counter() == sym_scope->get_counter()) {
+                    break;
+                }
+                scope = scope->parent;
+            }
+        }
 
         void visit_IntrinsicImpureFunction(const ASR::IntrinsicImpureFunction_t& x) {
             if( x.m_impure_intrinsic_id == static_cast<int64_t>(
                 ASRUtils::IntrinsicImpureFunctions::Allocated) ) {
                 LCOMPILERS_ASSERT(x.n_args == 1);
                 if( ASR::is_a<ASR::Var_t>(*x.m_args[0]) ) {
-                    scope2var[current_scope].push_back(
-                        ASR::down_cast<ASR::Var_t>(x.m_args[0])->m_v);
+                    ASR::symbol_t* sym = ASR::down_cast<ASR::Var_t>(x.m_args[0])->m_v;
+                    push_to_scopes_until_symbol_scope(sym);
                 }
             }
         }
 
         void visit_FunctionCall(const ASR::FunctionCall_t& x) {
             ASR::FunctionType_t* func_type = ASRUtils::get_FunctionType(x.m_name);
-            for( size_t i = 0; i < x.n_args; i++ ) {
-                if( ASR::is_a<ASR::Allocatable_t>(*func_type->m_arg_types[i]) ||
-                    ASR::is_a<ASR::Pointer_t>(*func_type->m_arg_types[i]) ) {
+            size_t n = std::min(x.n_args, func_type->n_arg_types);
+            for( size_t i = 0; i < n; i++ ) {
+                if( x.m_args[i].m_value &&
+                    (ASR::is_a<ASR::Allocatable_t>(*func_type->m_arg_types[i]) ||
+                    ASR::is_a<ASR::Pointer_t>(*func_type->m_arg_types[i])) ) {
                     if( ASR::is_a<ASR::Var_t>(*x.m_args[i].m_value) ) {
-                        scope2var[current_scope].push_back(
-                            ASR::down_cast<ASR::Var_t>(x.m_args[i].m_value)->m_v);
+                        ASR::symbol_t* sym = ASR::down_cast<ASR::Var_t>(x.m_args[i].m_value)->m_v;
+                        push_to_scopes_until_symbol_scope(sym);
                     }
                 }
             }
@@ -43,12 +63,14 @@ class IsAllocatedCalled: public ASR::CallReplacerOnExpressionsVisitor<IsAllocate
 
         void visit_SubroutineCall(const ASR::SubroutineCall_t& x) {
             ASR::FunctionType_t* func_type = ASRUtils::get_FunctionType(x.m_name);
-            for( size_t i = 0; i < x.n_args; i++ ) {
-                if( ASR::is_a<ASR::Allocatable_t>(*func_type->m_arg_types[i]) ||
-                    ASR::is_a<ASR::Pointer_t>(*func_type->m_arg_types[i]) ) {
+            size_t n = std::min(x.n_args, func_type->n_arg_types);
+            for( size_t i = 0; i < n; i++ ) {
+                if( x.m_args[i].m_value &&
+                    (ASR::is_a<ASR::Allocatable_t>(*func_type->m_arg_types[i]) ||
+                    ASR::is_a<ASR::Pointer_t>(*func_type->m_arg_types[i])) ) {
                     if( ASR::is_a<ASR::Var_t>(*x.m_args[i].m_value) ) {
-                        scope2var[current_scope].push_back(
-                            ASR::down_cast<ASR::Var_t>(x.m_args[i].m_value)->m_v);
+                        ASR::symbol_t* sym = ASR::down_cast<ASR::Var_t>(x.m_args[i].m_value)->m_v;
+                        push_to_scopes_until_symbol_scope(sym);
                     }
                 }
             }
@@ -59,8 +81,8 @@ class IsAllocatedCalled: public ASR::CallReplacerOnExpressionsVisitor<IsAllocate
                 if( ASR::is_a<ASR::Allocatable_t>(*ASRUtils::expr_type(x.m_args[i].m_a)) ||
                     ASR::is_a<ASR::Pointer_t>(*ASRUtils::expr_type(x.m_args[i].m_a)) ) {
                     if( ASR::is_a<ASR::Var_t>(*x.m_args[i].m_a) ) {
-                        scope2var[current_scope].push_back(
-                            ASR::down_cast<ASR::Var_t>(x.m_args[i].m_a)->m_v);
+                        ASR::symbol_t* sym = ASR::down_cast<ASR::Var_t>(x.m_args[i].m_a)->m_v;
+                        push_to_scopes_until_symbol_scope(sym);
                     }
                 }
             }
@@ -86,13 +108,52 @@ class IsAllocatedCalled: public ASR::CallReplacerOnExpressionsVisitor<IsAllocate
         void visit_Allocate(const ASR::Allocate_t& x) {
             for( size_t i = 0; i < x.n_args; i++ ) {
                 ASR::alloc_arg_t alloc_arg = x.m_args[i];
+                if( ASR::is_a<ASR::Var_t>(*alloc_arg.m_a) ) {
+                    ASR::symbol_t* sym = ASR::down_cast<ASR::Var_t>(alloc_arg.m_a)->m_v;
+                    alloc_count[sym] += 1;
+                    if( alloc_count[sym] > 1 ) {
+                        push_to_scopes_until_symbol_scope(sym);
+                    }
+                }
                 if( !ASRUtils::is_dimension_dependent_only_on_arguments(
-                        alloc_arg.m_dims, alloc_arg.n_dims) ||
+                        alloc_arg.m_dims, alloc_arg.n_dims, true) ||
                     is_array_size_called_on_pointer(alloc_arg.m_dims, alloc_arg.n_dims) ) {
                     if( ASR::is_a<ASR::Var_t>(*alloc_arg.m_a) ) {
-                        scope2var[current_scope].push_back(
-                                ASR::down_cast<ASR::Var_t>(alloc_arg.m_a)->m_v);
+                        ASR::symbol_t* sym = ASR::down_cast<ASR::Var_t>(alloc_arg.m_a)->m_v;
+                        push_to_scopes_until_symbol_scope(sym);
                     }
+                }
+            }
+        }
+
+        void visit_ExplicitDeallocate(const ASR::ExplicitDeallocate_t& x) {
+            for( size_t i = 0; i < x.n_vars; i++ ) {
+                if( ASR::is_a<ASR::Var_t>(*x.m_vars[i]) ) {
+                    ASR::symbol_t* sym = ASR::down_cast<ASR::Var_t>(x.m_vars[i])->m_v;
+                    push_to_scopes_until_symbol_scope(sym);
+                }
+            }
+        }
+
+        void visit_ImplicitDeallocate(const ASR::ImplicitDeallocate_t& x) {
+            for( size_t i = 0; i < x.n_vars; i++ ) {
+                if( ASR::is_a<ASR::Var_t>(*x.m_vars[i]) ) {
+                    ASR::symbol_t* sym = ASR::down_cast<ASR::Var_t>(x.m_vars[i])->m_v;
+                    push_to_scopes_until_symbol_scope(sym);
+                }
+            }
+        }
+
+        void visit_Assignment(const ASR::Assignment_t& x) {
+            ASR::CallReplacerOnExpressionsVisitor<IsAllocatedCalled>::visit_Assignment(x);
+            if (x.m_move_allocation) {
+                if( ASR::is_a<ASR::Var_t>(*x.m_target) ) {
+                    ASR::symbol_t* sym = ASR::down_cast<ASR::Var_t>(x.m_target)->m_v;
+                    push_to_scopes_until_symbol_scope(sym);
+                }
+                if( ASR::is_a<ASR::Var_t>(*x.m_value) ) {
+                    ASR::symbol_t* sym = ASR::down_cast<ASR::Var_t>(x.m_value)->m_v;
+                    push_to_scopes_until_symbol_scope(sym);
                 }
             }
         }
@@ -110,6 +171,7 @@ class PromoteAllocatableToNonAllocatable:
     public:
 
         std::map<SymbolTable*, std::vector<ASR::symbol_t*>>& scope2var;
+        std::set<ASR::symbol_t*> promoted_symbols;
 
         PromoteAllocatableToNonAllocatable(Allocator& al_,
             std::map<SymbolTable*, std::vector<ASR::symbol_t*>>& scope2var_):
@@ -121,11 +183,30 @@ class PromoteAllocatableToNonAllocatable:
             x_args.reserve(al, x.n_args);
             for( size_t i = 0; i < x.n_args; i++ ) {
                 ASR::alloc_arg_t alloc_arg = x.m_args[i];
+                bool is_allocatable_array = ASR::is_a<ASR::Allocatable_t>(
+                    *ASRUtils::expr_type(alloc_arg.m_a)) &&
+                    ASRUtils::is_array(ASRUtils::expr_type(alloc_arg.m_a));
+                bool is_deferred_len_character_array = false;
+                bool is_class_array = false;
+                if (is_allocatable_array) {
+                    ASR::ttype_t* element_type = ASRUtils::type_get_past_array(
+                        ASRUtils::type_get_past_allocatable(
+                            ASRUtils::expr_type(alloc_arg.m_a)));
+                    if (ASRUtils::is_character(*element_type)) {
+                        ASR::String_t* str = ASR::down_cast<ASR::String_t>(element_type);
+                        is_deferred_len_character_array =
+                            str->m_len_kind == ASR::string_length_kindType::DeferredLength;
+                    }
+                    is_class_array = ASRUtils::is_class_type(element_type);
+                }
                 if( ASR::is_a<ASR::Var_t>(*alloc_arg.m_a) &&
-                    ASR::is_a<ASR::Allocatable_t>(*ASRUtils::expr_type(alloc_arg.m_a)) &&
-                    ASRUtils::is_array(ASRUtils::expr_type(alloc_arg.m_a)) &&
+                    is_allocatable_array &&
+                    !is_deferred_len_character_array &&
+                    !is_class_array &&
                     ASR::is_a<ASR::Variable_t>(
                         *ASR::down_cast<ASR::Var_t>(alloc_arg.m_a)->m_v) &&
+                    !ASR::is_a<ASR::Module_t>(
+                        *ASRUtils::get_asr_owner(ASR::down_cast<ASR::Var_t>(alloc_arg.m_a)->m_v)) &&
                     ASRUtils::expr_intent(alloc_arg.m_a) == ASRUtils::intent_local &&
                     ASRUtils::is_dimension_dependent_only_on_arguments(
                         alloc_arg.m_dims, alloc_arg.n_dims) &&
@@ -135,10 +216,20 @@ class PromoteAllocatableToNonAllocatable:
                         scope2var[current_scope].end() ) {
                     ASR::Variable_t* alloc_variable = ASR::down_cast<ASR::Variable_t>(
                         ASR::down_cast<ASR::Var_t>(alloc_arg.m_a)->m_v);
-                    alloc_variable->m_type = ASRUtils::make_Array_t_util(al, x.base.base.loc,
+                    ASR::ttype_t* array_type /*Array's type*/  = ASRUtils::duplicate_type(al,
                         ASRUtils::type_get_past_array(
-                            ASRUtils::type_get_past_allocatable(alloc_variable->m_type)),
-                        alloc_arg.m_dims, alloc_arg.n_dims);
+                            ASRUtils::type_get_past_allocatable(alloc_variable->m_type)));
+                        // Set length of String type -> e.g. `character(:), allocatable :: arr(:)`
+                        if(ASRUtils::is_character(*array_type) && 
+                            ASR::down_cast<ASR::String_t>(array_type)->m_len_kind ==
+                            ASR::string_length_kindType::DeferredLength){
+                            ASR::String_t* str = ASR::down_cast<ASR::String_t>(array_type);
+                            str->m_len = alloc_arg.m_len_expr;
+                            str->m_len_kind = ASR::string_length_kindType::ExpressionLength;
+                        }
+                    alloc_variable->m_type = ASRUtils::make_Array_t_util(al, x.base.base.loc,
+                    array_type, alloc_arg.m_dims, alloc_arg.n_dims);
+                    promoted_symbols.insert(ASR::down_cast<ASR::Var_t>(alloc_arg.m_a)->m_v);
                 } else if( ASR::is_a<ASR::Allocatable_t>(*ASRUtils::expr_type(alloc_arg.m_a)) ||
                            ASR::is_a<ASR::Pointer_t>(*ASRUtils::expr_type(alloc_arg.m_a)) ) {
                     x_args.push_back(al, alloc_arg);
@@ -225,8 +316,7 @@ class FixArrayPhysicalCast: public ASR::BaseExprReplacer<FixArrayPhysicalCast> {
             ASR::BaseExprReplacer<FixArrayPhysicalCast>::replace_FunctionCall(x);
             ASR::expr_t* call = ASRUtils::EXPR(ASRUtils::make_FunctionCall_t_util(
                 al, x->base.base.loc, x->m_name, x->m_original_name, x->m_args,
-                x->n_args, x->m_type, x->m_value, x->m_dt,
-                ASRUtils::get_class_proc_nopass_val((*x).m_name)));
+                x->n_args, x->m_type, x->m_value, x->m_dt));
             ASR::FunctionCall_t* function_call = ASR::down_cast<ASR::FunctionCall_t>(call);
             x->m_args = function_call->m_args;
             x->n_args = function_call->n_args;
@@ -259,8 +349,13 @@ class FixArrayPhysicalCastVisitor: public ASR::CallReplacerOnExpressionsVisitor<
 
         Allocator& al;
         FixArrayPhysicalCast replacer;
+        bool remove_original_stmt;
+        const std::set<ASR::symbol_t*>& promoted_symbols;
 
-        FixArrayPhysicalCastVisitor(Allocator& al_): al(al_), replacer(al_) {}
+        FixArrayPhysicalCastVisitor(Allocator& al_,
+            const std::set<ASR::symbol_t*>& promoted_symbols_):
+            al(al_), replacer(al_), remove_original_stmt(false),
+            promoted_symbols(promoted_symbols_) {}
 
         void call_replacer() {
             replacer.current_expr = current_expr;
@@ -271,11 +366,90 @@ class FixArrayPhysicalCastVisitor: public ASR::CallReplacerOnExpressionsVisitor<
             ASR::CallReplacerOnExpressionsVisitor<FixArrayPhysicalCastVisitor>::visit_SubroutineCall(x);
             ASR::stmt_t* call = ASRUtils::STMT(ASRUtils::make_SubroutineCall_t_util(
                 al, x.base.base.loc, x.m_name, x.m_original_name, x.m_args,
-                x.n_args, x.m_dt, nullptr, false, ASRUtils::get_class_proc_nopass_val(x.m_name)));
+                x.n_args, x.m_dt, nullptr, false));
             ASR::SubroutineCall_t* subrout_call = ASR::down_cast<ASR::SubroutineCall_t>(call);
             ASR::SubroutineCall_t& xx = const_cast<ASR::SubroutineCall_t&>(x);
             xx.m_args = subrout_call->m_args;
             xx.n_args = subrout_call->n_args;
+        }
+
+        void visit_Associate(const ASR::Associate_t& x) {
+            if( ASRUtils::is_fixed_size_array(
+                    ASRUtils::expr_type(x.m_value)) &&
+                !ASR::is_a<ASR::ArraySection_t>(*x.m_value) ) {
+                ASR::Associate_t& xx = const_cast<ASR::Associate_t&>(x);
+                xx.m_value = ASRUtils::EXPR(ASRUtils::make_ArrayPhysicalCast_t_util(
+                    al, x.m_value->base.loc, xx.m_value,
+                    ASRUtils::extract_physical_type(ASRUtils::expr_type(xx.m_value)),
+                    ASR::array_physical_typeType::DescriptorArray,
+                    ASRUtils::duplicate_type(al, ASRUtils::expr_type(x.m_value),
+                    nullptr, ASR::array_physical_typeType::DescriptorArray, true), nullptr));
+            } else if (ASR::is_a<ASR::ArraySection_t>(*x.m_value)) {
+                ASR::ArraySection_t* as = ASR::down_cast<ASR::ArraySection_t>(
+                    const_cast<ASR::expr_t*>(x.m_value));
+                ASR::ttype_t* base_type = ASRUtils::expr_type(as->m_v);
+                ASR::ttype_t* section_type = ASRUtils::expr_type(x.m_value);
+                bool base_was_promoted = ASR::is_a<ASR::Var_t>(*as->m_v) &&
+                    promoted_symbols.count(ASR::down_cast<ASR::Var_t>(as->m_v)->m_v) > 0;
+                if (base_was_promoted &&
+                    ASRUtils::is_fixed_size_array(base_type) &&
+                    ASRUtils::extract_physical_type(section_type) ==
+                        ASR::array_physical_typeType::DescriptorArray) {
+                    as->m_v = ASRUtils::EXPR(ASRUtils::make_ArrayPhysicalCast_t_util(
+                        al, as->m_v->base.loc, as->m_v,
+                        ASRUtils::extract_physical_type(base_type),
+                        ASR::array_physical_typeType::DescriptorArray,
+                        ASRUtils::duplicate_type(al, base_type,
+                            nullptr, ASR::array_physical_typeType::DescriptorArray, true),
+                        nullptr));
+                }
+            } else if( ASRUtils::is_fixed_size_array(
+                        ASRUtils::expr_type(x.m_target)) ) {
+                remove_original_stmt = true;
+            }
+        }
+
+        void transform_stmts(ASR::stmt_t **&m_body, size_t &n_body) {
+            bool remove_original_stmt_copy = remove_original_stmt;
+            Vec<ASR::stmt_t*> body;
+            body.reserve(al, n_body);
+            for (size_t i = 0; i < n_body; i++) {
+                remove_original_stmt = false;
+                visit_stmt(*m_body[i]);
+                if( !remove_original_stmt ) {
+                    body.push_back(al, m_body[i]);
+                    remove_original_stmt = false;
+                }
+            }
+            m_body = body.p;
+            n_body = body.size();
+            remove_original_stmt = remove_original_stmt_copy;
+        }
+};
+
+class FixMoveAssignment: public ASR::CallReplacerOnExpressionsVisitor<FixMoveAssignment> {
+    public:
+
+        Allocator& al;
+
+        FixMoveAssignment(Allocator& al_):
+            al(al_) {}
+
+        void visit_Assignment(const ASR::Assignment_t& x) {
+            ASR::Assignment_t& xx = const_cast<ASR::Assignment_t&>(x);
+
+            ASR::ttype_t* target_type = ASRUtils::expr_type(x.m_target);
+            ASR::ttype_t* value_type = ASRUtils::expr_type(x.m_value);
+            bool is_target_allocatable_array = ASRUtils::is_array(target_type) &&
+                                            ASRUtils::is_allocatable(target_type) &&
+                                            ASRUtils::extract_physical_type(target_type) == ASR::array_physical_typeType::DescriptorArray;
+            bool is_value_allocatable_array = ASRUtils::is_array(value_type) &&
+                                            ASRUtils::is_allocatable(value_type) &&
+                                            ASRUtils::extract_physical_type(value_type) == ASR::array_physical_typeType::DescriptorArray;
+
+            if (x.m_move_allocation && (!is_target_allocatable_array || !is_value_allocatable_array)) {
+                xx.m_move_allocation = false;
+            }
         }
 };
 
@@ -288,8 +462,10 @@ void pass_promote_allocatable_to_nonallocatable(
     PromoteAllocatableToNonAllocatable promoter(al, scope2var);
     promoter.visit_TranslationUnit(unit);
     promoter.visit_TranslationUnit(unit);
-    FixArrayPhysicalCastVisitor fix_array_physical_cast(al);
+    FixArrayPhysicalCastVisitor fix_array_physical_cast(al, promoter.promoted_symbols);
     fix_array_physical_cast.visit_TranslationUnit(unit);
+    FixMoveAssignment fix_move_assignment(al);
+    fix_move_assignment.visit_TranslationUnit(unit);
     PassUtils::UpdateDependenciesVisitor u(al);
     u.visit_TranslationUnit(unit);
 }

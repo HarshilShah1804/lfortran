@@ -7,16 +7,6 @@
                     (SymbolTable
                         5
                         {
-                            1_t_1:
-                                (ExternalSymbol
-                                    5
-                                    1_t_1
-                                    2 t_1
-                                    derived_types_18_module_1
-                                    []
-                                    t_1
-                                    Public
-                                ),
                             1_t_1_i:
                                 (ExternalSymbol
                                     5
@@ -25,6 +15,16 @@
                                     t_1
                                     []
                                     i
+                                    Public
+                                ),
+                            1_t_1_t_1:
+                                (ExternalSymbol
+                                    5
+                                    1_t_1_t_1
+                                    2 t_1
+                                    derived_types_18_module_1
+                                    []
+                                    t_1
                                     Public
                                 ),
                             1_t_2_r:
@@ -67,15 +67,23 @@
                                     ()
                                     Default
                                     (StructType
-                                        5 t_1
+                                        [(Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    5 t_1
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             type_2:
                                 (Variable
@@ -87,15 +95,23 @@
                                     ()
                                     Default
                                     (StructType
-                                        5 t_2
+                                        [(Real 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    5 t_2
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     derived_types_10
@@ -109,18 +125,25 @@
                         )
                         (IntegerConstant 123 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (StructInstanceMember
                             (Var 5 type_2)
-                            5 1_t_1
+                            5 1_t_1_t_1
                             (StructType
-                                5 1_t_1
+                                [(Integer 4)]
+                                []
+                                .true.
+                                .false.
                             )
                             ()
                         )
                         (Var 5 type_1)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (StructInstanceMember
@@ -134,8 +157,11 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (StructInstanceMember
                                 (Var 5 type_2)
@@ -154,6 +180,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (StructInstanceMember
                                 (Var 5 type_2)
@@ -202,11 +229,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     t_1
+                                    (StructType
+                                        [(Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [i]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -214,6 +253,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             t_2:
                                 (Struct
@@ -237,11 +277,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     t_2
+                                    (StructType
+                                        [(Real 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [r]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -249,10 +301,13 @@
                                     []
                                     ()
                                     2 t_1
+                                    []
                                 )
                         })
                     derived_types_18_module_1
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

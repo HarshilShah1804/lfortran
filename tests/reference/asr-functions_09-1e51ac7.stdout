@@ -39,6 +39,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     stdlib_quadrature
@@ -52,12 +57,12 @@
                                 [((ArrayPhysicalCast
                                     (Var 5 x1)
                                     FixedSizeArray
-                                    PointerToDataArray
+                                    PointerArray
                                     (Array
                                         (Real 8)
                                         [((IntegerConstant 1 (Integer 4) Decimal)
                                         (IntegerConstant 4 (Integer 4) Decimal))]
-                                        PointerToDataArray
+                                        PointerArray
                                     )
                                     ()
                                 ))]
@@ -71,7 +76,9 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]
@@ -115,6 +122,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -129,7 +141,7 @@
                                                         (Real 8)
                                                         [((IntegerConstant 1 (Integer 4) Decimal)
                                                         (IntegerConstant 4 (Integer 4) Decimal))]
-                                                        PointerToDataArray
+                                                        PointerArray
                                                     )
                                                     ()
                                                     Source
@@ -138,6 +150,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     simps38_weights_dp
@@ -146,7 +163,7 @@
                                             (Real 8)
                                             [((IntegerConstant 1 (Integer 4) Decimal)
                                             (IntegerConstant 4 (Integer 4) Decimal))]
-                                            PointerToDataArray
+                                            PointerArray
                                         )]
                                         (Array
                                             (Real 8)
@@ -170,8 +187,8 @@
                                     []
                                     (Var 3 w)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             simps38_weights_dp_use:
@@ -192,7 +209,7 @@
                                                         (Real 8)
                                                         [((IntegerConstant 1 (Integer 4) Decimal)
                                                         (IntegerConstant 4 (Integer 4) Decimal))]
-                                                        PointerToDataArray
+                                                        PointerArray
                                                     )
                                                     ()
                                                     Source
@@ -201,6 +218,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     simps38_weights_dp_use
@@ -209,7 +231,7 @@
                                             (Real 8)
                                             [((IntegerConstant 1 (Integer 4) Decimal)
                                             (IntegerConstant 4 (Integer 4) Decimal))]
-                                            PointerToDataArray
+                                            PointerArray
                                         )]
                                         ()
                                         Source
@@ -242,7 +264,9 @@
                                                 ()
                                             )]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )]
@@ -254,7 +278,9 @@
                                 )
                         })
                     stdlib_quadrature_simps
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

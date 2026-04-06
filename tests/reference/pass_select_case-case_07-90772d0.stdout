@@ -21,7 +21,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 1 () PointerString)
+                                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -29,6 +29,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             res:
                                                 (Variable
@@ -39,7 +44,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 10 () PointerString)
+                                                    (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -47,12 +52,17 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     test_case
                                     (FunctionType
-                                        [(String 1 1 () PointerString)]
-                                        (String 1 10 () PointerString)
+                                        [(String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)]
+                                        (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         Source
                                         Implementation
                                         ()
@@ -67,11 +77,12 @@
                                     []
                                     [(Var 3 c)]
                                     [(If
+                                        ()
                                         (LogicalBinOp
                                             (StringCompare
                                                 (StringConstant
                                                     "a"
-                                                    (String 1 1 () PointerString)
+                                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                 )
                                                 LtE
                                                 (Var 3 c)
@@ -84,7 +95,7 @@
                                                 LtE
                                                 (StringConstant
                                                     "j"
-                                                    (String 1 1 () PointerString)
+                                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                 )
                                                 (Logical 4)
                                                 ()
@@ -96,22 +107,25 @@
                                             (Var 3 res)
                                             (StringConstant
                                                 "a:j"
-                                                (String 1 3 () PointerString)
+                                                (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Print
                                             (StringConstant
                                                 "one of the first ten letters"
-                                                (String 1 28 () PointerString)
+                                                (String 1 (IntegerConstant 28 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                             )
                                         )]
                                         [(If
+                                            ()
                                             (LogicalBinOp
                                                 (StringCompare
                                                     (StringConstant
                                                         "l"
-                                                        (String 1 1 () PointerString)
+                                                        (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                     )
                                                     LtE
                                                     (Var 3 c)
@@ -124,7 +138,7 @@
                                                     LtE
                                                     (StringConstant
                                                         "p"
-                                                        (String 1 1 () PointerString)
+                                                        (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                     )
                                                     (Logical 4)
                                                     ()
@@ -136,23 +150,26 @@
                                                 (Var 3 res)
                                                 (StringConstant
                                                     "l:p"
-                                                    (String 1 3 () PointerString)
+                                                    (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                 )
                                                 ()
+                                                .false.
+                                                .false.
                                             )
                                             (Print
                                                 (StringConstant
                                                     "one of l, m, n, o, p"
-                                                    (String 1 20 () PointerString)
+                                                    (String 1 (IntegerConstant 20 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                 )
                                             )]
                                             [(If
+                                                ()
                                                 (StringCompare
                                                     (Var 3 c)
                                                     Eq
                                                     (StringConstant
                                                         "z"
-                                                        (String 1 1 () PointerString)
+                                                        (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                     )
                                                     (Logical 4)
                                                     ()
@@ -161,28 +178,32 @@
                                                     (Var 3 res)
                                                     (StringConstant
                                                         "z"
-                                                        (String 1 1 () PointerString)
+                                                        (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                     )
                                                     ()
+                                                    .false.
+                                                    .false.
                                                 )
                                                 (Print
                                                     (StringConstant
                                                         "one of z"
-                                                        (String 1 8 () PointerString)
+                                                        (String 1 (IntegerConstant 8 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                     )
                                                 )]
                                                 [(Assignment
                                                     (Var 3 res)
                                                     (StringConstant
                                                         "not found"
-                                                        (String 1 9 () PointerString)
+                                                        (String 1 (IntegerConstant 9 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                     )
                                                     ()
+                                                    .false.
+                                                    .false.
                                                 )
                                                 (Print
                                                     (StringConstant
                                                         "other characters, which may not be letters"
-                                                        (String 1 42 () PointerString)
+                                                        (String 1 (IntegerConstant 42 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                     )
                                                 )]
                                             )]
@@ -198,22 +219,23 @@
                     case_07
                     []
                     [(If
+                        ()
                         (StringCompare
                             (FunctionCall
                                 2 test_case
                                 ()
                                 [((StringConstant
                                     "a"
-                                    (String 1 1 () PointerString)
+                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 ))]
-                                (String 1 10 () PointerString)
+                                (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 ()
                                 ()
                             )
                             NotEq
                             (StringConstant
                                 "a:j"
-                                (String 1 3 () PointerString)
+                                (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Logical 4)
                             ()
@@ -224,22 +246,23 @@
                         []
                     )
                     (If
+                        ()
                         (StringCompare
                             (FunctionCall
                                 2 test_case
                                 ()
                                 [((StringConstant
                                     "d"
-                                    (String 1 1 () PointerString)
+                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 ))]
-                                (String 1 10 () PointerString)
+                                (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 ()
                                 ()
                             )
                             NotEq
                             (StringConstant
                                 "a:j"
-                                (String 1 3 () PointerString)
+                                (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Logical 4)
                             ()
@@ -250,22 +273,23 @@
                         []
                     )
                     (If
+                        ()
                         (StringCompare
                             (FunctionCall
                                 2 test_case
                                 ()
                                 [((StringConstant
                                     "l"
-                                    (String 1 1 () PointerString)
+                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 ))]
-                                (String 1 10 () PointerString)
+                                (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 ()
                                 ()
                             )
                             NotEq
                             (StringConstant
                                 "l:p"
-                                (String 1 3 () PointerString)
+                                (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Logical 4)
                             ()
@@ -276,22 +300,23 @@
                         []
                     )
                     (If
+                        ()
                         (StringCompare
                             (FunctionCall
                                 2 test_case
                                 ()
                                 [((StringConstant
                                     "p"
-                                    (String 1 1 () PointerString)
+                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 ))]
-                                (String 1 10 () PointerString)
+                                (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 ()
                                 ()
                             )
                             NotEq
                             (StringConstant
                                 "l:p"
-                                (String 1 3 () PointerString)
+                                (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Logical 4)
                             ()
@@ -302,22 +327,23 @@
                         []
                     )
                     (If
+                        ()
                         (StringCompare
                             (FunctionCall
                                 2 test_case
                                 ()
                                 [((StringConstant
                                     "z"
-                                    (String 1 1 () PointerString)
+                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 ))]
-                                (String 1 10 () PointerString)
+                                (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 ()
                                 ()
                             )
                             NotEq
                             (StringConstant
                                 "z"
-                                (String 1 1 () PointerString)
+                                (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Logical 4)
                             ()
@@ -328,22 +354,23 @@
                         []
                     )
                     (If
+                        ()
                         (StringCompare
                             (FunctionCall
                                 2 test_case
                                 ()
                                 [((StringConstant
                                     "k"
-                                    (String 1 1 () PointerString)
+                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 ))]
-                                (String 1 10 () PointerString)
+                                (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 ()
                                 ()
                             )
                             NotEq
                             (StringConstant
                                 "not found"
-                                (String 1 9 () PointerString)
+                                (String 1 (IntegerConstant 9 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Logical 4)
                             ()
@@ -354,22 +381,23 @@
                         []
                     )
                     (If
+                        ()
                         (StringCompare
                             (FunctionCall
                                 2 test_case
                                 ()
                                 [((StringConstant
                                     "r"
-                                    (String 1 1 () PointerString)
+                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 ))]
-                                (String 1 10 () PointerString)
+                                (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                 ()
                                 ()
                             )
                             NotEq
                             (StringConstant
                                 "not found"
-                                (String 1 9 () PointerString)
+                                (String 1 (IntegerConstant 9 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Logical 4)
                             ()

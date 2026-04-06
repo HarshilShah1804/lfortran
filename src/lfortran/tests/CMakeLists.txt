@@ -8,11 +8,13 @@ endmacro(ADDTEST)
 
 macro(ADDTESTC name)
     add_executable(${name} ${name}.c)
-    target_link_libraries(${name} lfortran_lib  ${ARGN})
+    # Link only to specified libraries, not lfortran_lib which brings in C++
+    # flags from xeus-zmq that are invalid for C compilation (-Wreorder)
+    target_link_libraries(${name} ${ARGN})
     add_test(${name} ${PROJECT_BINARY_DIR}/${name})
 endmacro(ADDTESTC)
 
-ADDTESTC(test_cwrapper)
+ADDTESTC(test_cwrapper lfortran_c)
 ADDTEST(test_stacktrace)
 
 set(SRC
@@ -46,6 +48,7 @@ endif()
 # Add one main test suite for LFortran, composed of many individual cpp files:
 add_executable(test_lfortran ${SRC})
 target_link_libraries(test_lfortran lfortran_lib p::doctest)
+target_compile_definitions(test_lfortran PRIVATE LFORTRAN_PROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
 if (HAVE_BUILD_TO_WASM)
     set(WASM_COMPILE_FLAGS "-g0 -fexceptions")
     set(WASM_LINK_FLAGS

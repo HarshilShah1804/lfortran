@@ -29,6 +29,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             b:
                                                 (Variable
@@ -47,6 +52,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     f
@@ -78,11 +88,13 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             i:
@@ -102,6 +114,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             j:
                                 (Variable
@@ -120,6 +137,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     subroutines_01
@@ -128,13 +150,18 @@
                         (Var 2 i)
                         (IntegerConstant 1 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 j)
                         (IntegerConstant 1 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq
@@ -153,6 +180,7 @@
                         [((Var 2 i))
                         ((Var 2 j))]
                         ()
+                        .false.
                     )
                     (Print
                         (StringFormat
@@ -160,11 +188,14 @@
                             [(Var 2 i)
                             (Var 2 j)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 i)
                             NotEq
@@ -178,6 +209,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq
@@ -194,8 +226,11 @@
                         (Var 2 j)
                         (IntegerConstant 1 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq
@@ -214,17 +249,21 @@
                         [((IntegerConstant 3 (Integer 4) Decimal))
                         ((Var 2 j))]
                         ()
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 2 j)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq
@@ -241,8 +280,11 @@
                         (Var 2 j)
                         (IntegerConstant 1 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq
@@ -267,17 +309,21 @@
                         ))
                         ((Var 2 j))]
                         ()
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 2 j)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq
@@ -294,8 +340,11 @@
                         (Var 2 j)
                         (IntegerConstant 1 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq
@@ -320,17 +369,21 @@
                         ))
                         ((Var 2 j))]
                         ()
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 2 j)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq

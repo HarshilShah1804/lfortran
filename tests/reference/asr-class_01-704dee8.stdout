@@ -7,6 +7,16 @@
                     (SymbolTable
                         6
                         {
+                            1_circle_circle_print:
+                                (ExternalSymbol
+                                    6
+                                    1_circle_circle_print
+                                    3 print
+                                    circle
+                                    []
+                                    print
+                                    Public
+                                ),
                             1_circle_radius:
                                 (ExternalSymbol
                                     6
@@ -15,16 +25,6 @@
                                     circle
                                     []
                                     radius
-                                    Public
-                                ),
-                            1_print:
-                                (ExternalSymbol
-                                    6
-                                    1_print
-                                    3 print
-                                    circle
-                                    []
-                                    print
                                     Public
                                 ),
                             c:
@@ -37,15 +37,23 @@
                                     ()
                                     Default
                                     (StructType
-                                        6 circle
+                                        [(Real 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    6 circle
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             circle:
                                 (ExternalSymbol
@@ -69,17 +77,23 @@
                                 (Real 4)
                             ))]
                             (StructType
-                                6 circle
+                                [(Real 4)]
+                                []
+                                .true.
+                                .false.
                             )
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (SubroutineCall
-                        6 1_print
+                        6 1_circle_circle_print
                         ()
-                        []
+                        [((Var 6 c))]
                         (Var 6 c)
+                        .false.
                     )
                     (Assignment
                         (StructInstanceMember
@@ -93,12 +107,15 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (SubroutineCall
-                        6 1_print
+                        6 1_circle_circle_print
                         ()
-                        []
+                        [((Var 6 c))]
                         (Var 6 c)
+                        .false.
                     )]
                 ),
             class_circle1:
@@ -112,7 +129,7 @@
                                         3
                                         {
                                             area:
-                                                (ClassProcedure
+                                                (StructMethodDeclaration
                                                     3
                                                     area
                                                     ()
@@ -123,7 +140,7 @@
                                                     .false.
                                                 ),
                                             print:
-                                                (ClassProcedure
+                                                (StructMethodDeclaration
                                                     3
                                                     print
                                                     ()
@@ -150,11 +167,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     circle
+                                    (StructType
+                                        [(Real 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [radius]
+                                    []
                                     Source
                                     Private
                                     .false.
@@ -162,6 +191,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             circle_area:
                                 (Function
@@ -195,6 +225,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             this:
                                                 (Variable
@@ -205,22 +240,33 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (ClassType
-                                                        2 circle
+                                                    (StructType
+                                                        [(Real 4)]
+                                                        []
+                                                        .false.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 circle
                                                     Source
                                                     Private
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     circle_area
                                     (FunctionType
-                                        [(ClassType
-                                            2 circle
+                                        [(StructType
+                                            [(Real 4)]
+                                            []
+                                            .false.
+                                            .false.
                                         )]
                                         (Real 4)
                                         Source
@@ -257,11 +303,13 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 4 area)
                                     Private
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             circle_print:
@@ -269,10 +317,10 @@
                                     (SymbolTable
                                         5
                                         {
-                                            1_area:
+                                            1_circle_circle_area:
                                                 (ExternalSymbol
                                                     5
-                                                    1_area
+                                                    1_circle_circle_area
                                                     3 area
                                                     circle
                                                     []
@@ -306,6 +354,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             this:
                                                 (Variable
@@ -316,22 +369,33 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (ClassType
-                                                        2 circle
+                                                    (StructType
+                                                        [(Real 4)]
+                                                        []
+                                                        .false.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 circle
                                                     Source
                                                     Private
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     circle_print
                                     (FunctionType
-                                        [(ClassType
-                                            2 circle
+                                        [(StructType
+                                            [(Real 4)]
+                                            []
+                                            .false.
+                                            .false.
                                         )]
                                         ()
                                         Source
@@ -350,21 +414,23 @@
                                     [(Assignment
                                         (Var 5 area)
                                         (FunctionCall
-                                            5 1_area
+                                            5 1_circle_circle_area
                                             ()
-                                            []
+                                            [((Var 5 this))]
                                             (Real 4)
                                             ()
                                             (Var 5 this)
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Print
                                         (StringFormat
                                             ()
                                             [(StringConstant
                                                 "Circle: r = "
-                                                (String 1 12 () PointerString)
+                                                (String 1 (IntegerConstant 12 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                             )
                                             (StructInstanceMember
                                                 (Var 5 this)
@@ -374,11 +440,13 @@
                                             )
                                             (StringConstant
                                                 " area = "
-                                                (String 1 8 () PointerString)
+                                                (String 1 (IntegerConstant 8 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                             )
                                             (Var 5 area)]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )]
@@ -405,6 +473,7 @@
                                             3.141593
                                             (Real 4)
                                         )
+                                        ()
                                     )
                                     (RealConstant
                                         3.141593
@@ -419,10 +488,17 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     class_circle1
+                    ()
                     [class_circle1]
+                    .false.
                     .false.
                     .false.
                 )

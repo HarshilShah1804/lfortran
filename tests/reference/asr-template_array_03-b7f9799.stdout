@@ -99,12 +99,14 @@
                                 )
                         })
                     template_array_03
-                    [template_array_03_m]
+                    [template_array_03_m
+                    template_array_03_math]
                     [(SubroutineCall
                         21 test_template
                         ()
                         []
                         ()
+                        .false.
                     )]
                 ),
             template_array_03_m:
@@ -161,6 +163,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             r:
                                                                 (Variable
@@ -181,6 +188,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             result:
                                                                 (Variable
@@ -201,6 +213,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     mult_t
@@ -231,8 +248,8 @@
                                                     []
                                                     (Var 17 result)
                                                     Private
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             mymatmul_t:
@@ -258,7 +275,7 @@
                                                                         (Var 18 i))
                                                                         ((IntegerConstant 1 (Integer 4) Decimal)
                                                                         (Var 18 j))]
-                                                                        PointerToDataArray
+                                                                        PointerArray
                                                                     )
                                                                     ()
                                                                     Source
@@ -267,6 +284,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             b:
                                                                 (Variable
@@ -286,7 +308,7 @@
                                                                         (Var 18 j))
                                                                         ((IntegerConstant 1 (Integer 4) Decimal)
                                                                         (Var 18 k))]
-                                                                        PointerToDataArray
+                                                                        PointerArray
                                                                     )
                                                                     ()
                                                                     Source
@@ -295,6 +317,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             elem:
                                                                 (Variable
@@ -315,6 +342,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             i:
                                                                 (Variable
@@ -333,6 +365,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             j:
                                                                 (Variable
@@ -351,6 +388,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             k:
                                                                 (Variable
@@ -369,6 +411,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             r:
                                                                 (Variable
@@ -388,7 +435,7 @@
                                                                         (Var 18 i))
                                                                         ((IntegerConstant 1 (Integer 4) Decimal)
                                                                         (Var 18 k))]
-                                                                        PointerToDataArray
+                                                                        PointerArray
                                                                     )
                                                                     ()
                                                                     Source
@@ -397,6 +444,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             x:
                                                                 (Variable
@@ -415,6 +467,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             y:
                                                                 (Variable
@@ -433,6 +490,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             z:
                                                                 (Variable
@@ -451,6 +513,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     mymatmul_t
@@ -474,7 +541,7 @@
                                                                 (Integer 4)
                                                                 ()
                                                             ))]
-                                                            PointerToDataArray
+                                                            PointerArray
                                                         )
                                                         (Array
                                                             (TypeParameter
@@ -492,7 +559,7 @@
                                                                 (Integer 4)
                                                                 ()
                                                             ))]
-                                                            PointerToDataArray
+                                                            PointerArray
                                                         )
                                                         (Array
                                                             (TypeParameter
@@ -510,7 +577,7 @@
                                                                 (Integer 4)
                                                                 ()
                                                             ))]
-                                                            PointerToDataArray
+                                                            PointerArray
                                                         )]
                                                         ()
                                                         Source
@@ -571,6 +638,8 @@
                                                                     ()
                                                                 )
                                                                 ()
+                                                                .false.
+                                                                .false.
                                                             )
                                                             (DoLoop
                                                                 ()
@@ -628,6 +697,8 @@
                                                                         ()
                                                                     )
                                                                     ()
+                                                                    .false.
+                                                                    .false.
                                                                 )]
                                                                 []
                                                             )
@@ -648,6 +719,8 @@
                                                                 )
                                                                 (Var 18 elem)
                                                                 ()
+                                                                .false.
+                                                                .false.
                                                             )]
                                                             []
                                                         )]
@@ -655,8 +728,8 @@
                                                     )]
                                                     ()
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             plus_t:
@@ -683,6 +756,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             r:
                                                                 (Variable
@@ -703,6 +781,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             result:
                                                                 (Variable
@@ -723,6 +806,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     plus_t
@@ -753,8 +841,8 @@
                                                     []
                                                     (Var 15 result)
                                                     Private
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             t:
@@ -776,6 +864,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             zero_t:
                                                 (Function
@@ -801,6 +894,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             x:
                                                                 (Variable
@@ -821,6 +919,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     zero_t
@@ -847,8 +950,8 @@
                                                     []
                                                     (Var 16 result)
                                                     Private
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 )
                                         })
@@ -914,6 +1017,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             r:
                                                                 (Variable
@@ -934,6 +1042,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             result:
                                                                 (Variable
@@ -954,6 +1067,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     mult_t
@@ -984,8 +1102,8 @@
                                                     []
                                                     (Var 13 result)
                                                     Private
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             plus_t:
@@ -1012,6 +1130,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             r:
                                                                 (Variable
@@ -1032,6 +1155,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             result:
                                                                 (Variable
@@ -1052,6 +1180,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     plus_t
@@ -1082,8 +1215,8 @@
                                                     []
                                                     (Var 11 result)
                                                     Private
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             t:
@@ -1105,6 +1238,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             zero_t:
                                                 (Function
@@ -1130,6 +1268,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             x:
                                                                 (Variable
@@ -1150,6 +1293,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     zero_t
@@ -1176,8 +1324,8 @@
                                                     []
                                                     (Var 12 result)
                                                     Private
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 )
                                         })
@@ -1217,6 +1365,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             mymatmul_int:
                                                 (Function
@@ -1239,7 +1392,7 @@
                                                                         (Var 20 i))
                                                                         ((IntegerConstant 1 (Integer 4) Decimal)
                                                                         (Var 20 j))]
-                                                                        PointerToDataArray
+                                                                        PointerArray
                                                                     )
                                                                     ()
                                                                     Source
@@ -1248,6 +1401,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             b:
                                                                 (Variable
@@ -1265,7 +1423,7 @@
                                                                         (Var 20 j))
                                                                         ((IntegerConstant 1 (Integer 4) Decimal)
                                                                         (Var 20 k))]
-                                                                        PointerToDataArray
+                                                                        PointerArray
                                                                     )
                                                                     ()
                                                                     Source
@@ -1274,6 +1432,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             elem:
                                                                 (Variable
@@ -1292,6 +1455,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             i:
                                                                 (Variable
@@ -1310,6 +1478,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             j:
                                                                 (Variable
@@ -1328,6 +1501,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             k:
                                                                 (Variable
@@ -1346,6 +1524,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             r:
                                                                 (Variable
@@ -1363,7 +1546,7 @@
                                                                         (Var 20 i))
                                                                         ((IntegerConstant 1 (Integer 4) Decimal)
                                                                         (Var 20 k))]
-                                                                        PointerToDataArray
+                                                                        PointerArray
                                                                     )
                                                                     ()
                                                                     Source
@@ -1372,6 +1555,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             x:
                                                                 (Variable
@@ -1379,8 +1567,8 @@
                                                                     x
                                                                     []
                                                                     Local
-                                                                    ()
-                                                                    ()
+                                                                    (IntegerConstant 1 (Integer 4) Decimal)
+                                                                    (IntegerConstant 1 (Integer 4) Decimal)
                                                                     Save
                                                                     (Integer 4)
                                                                     ()
@@ -1390,6 +1578,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             y:
                                                                 (Variable
@@ -1397,8 +1590,8 @@
                                                                     y
                                                                     []
                                                                     Local
-                                                                    ()
-                                                                    ()
+                                                                    (IntegerConstant 1 (Integer 4) Decimal)
+                                                                    (IntegerConstant 1 (Integer 4) Decimal)
                                                                     Save
                                                                     (Integer 4)
                                                                     ()
@@ -1408,6 +1601,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             z:
                                                                 (Variable
@@ -1415,8 +1613,8 @@
                                                                     z
                                                                     []
                                                                     Local
-                                                                    ()
-                                                                    ()
+                                                                    (IntegerConstant 1 (Integer 4) Decimal)
+                                                                    (IntegerConstant 1 (Integer 4) Decimal)
                                                                     Save
                                                                     (Integer 4)
                                                                     ()
@@ -1426,6 +1624,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     mymatmul_int
@@ -1447,7 +1650,7 @@
                                                                 (Integer 4)
                                                                 ()
                                                             ))]
-                                                            PointerToDataArray
+                                                            PointerArray
                                                         )
                                                         (Array
                                                             (Integer 4)
@@ -1463,7 +1666,7 @@
                                                                 (Integer 4)
                                                                 ()
                                                             ))]
-                                                            PointerToDataArray
+                                                            PointerArray
                                                         )
                                                         (Array
                                                             (Integer 4)
@@ -1479,7 +1682,7 @@
                                                                 (Integer 4)
                                                                 ()
                                                             ))]
-                                                            PointerToDataArray
+                                                            PointerArray
                                                         )]
                                                         ()
                                                         Source
@@ -1534,6 +1737,8 @@
                                                                     ()
                                                                 )
                                                                 ()
+                                                                .false.
+                                                                .false.
                                                             )
                                                             (DoLoop
                                                                 ()
@@ -1583,6 +1788,8 @@
                                                                         ()
                                                                     )
                                                                     ()
+                                                                    .false.
+                                                                    .false.
                                                                 )]
                                                                 []
                                                             )
@@ -1601,6 +1808,8 @@
                                                                 )
                                                                 (Var 20 elem)
                                                                 ()
+                                                                .false.
+                                                                .false.
                                                             )]
                                                             []
                                                         )]
@@ -1608,8 +1817,8 @@
                                                     )]
                                                     ()
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             r:
@@ -1636,6 +1845,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     test_template
@@ -1670,6 +1884,8 @@
                                         )
                                         (IntegerConstant 1 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (ArrayItem
@@ -1686,6 +1902,8 @@
                                         )
                                         (IntegerConstant 1 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (ArrayItem
@@ -1702,6 +1920,8 @@
                                         )
                                         (IntegerConstant 0 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (ArrayItem
@@ -1718,6 +1938,8 @@
                                         )
                                         (IntegerConstant 1 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (SubroutineCall
                                         19 mymatmul_int
@@ -1728,46 +1950,47 @@
                                         ((ArrayPhysicalCast
                                             (Var 19 arr)
                                             FixedSizeArray
-                                            PointerToDataArray
+                                            PointerArray
                                             (Array
                                                 (Integer 4)
                                                 [((IntegerConstant 1 (Integer 4) Decimal)
                                                 (IntegerConstant 2 (Integer 4) Decimal))
                                                 ((IntegerConstant 1 (Integer 4) Decimal)
                                                 (IntegerConstant 2 (Integer 4) Decimal))]
-                                                PointerToDataArray
+                                                PointerArray
                                             )
                                             ()
                                         ))
                                         ((ArrayPhysicalCast
                                             (Var 19 arr)
                                             FixedSizeArray
-                                            PointerToDataArray
+                                            PointerArray
                                             (Array
                                                 (Integer 4)
                                                 [((IntegerConstant 1 (Integer 4) Decimal)
                                                 (IntegerConstant 2 (Integer 4) Decimal))
                                                 ((IntegerConstant 1 (Integer 4) Decimal)
                                                 (IntegerConstant 2 (Integer 4) Decimal))]
-                                                PointerToDataArray
+                                                PointerArray
                                             )
                                             ()
                                         ))
                                         ((ArrayPhysicalCast
                                             (Var 19 r)
                                             FixedSizeArray
-                                            PointerToDataArray
+                                            PointerArray
                                             (Array
                                                 (Integer 4)
                                                 [((IntegerConstant 1 (Integer 4) Decimal)
                                                 (IntegerConstant 2 (Integer 4) Decimal))
                                                 ((IntegerConstant 1 (Integer 4) Decimal)
                                                 (IntegerConstant 2 (Integer 4) Decimal))]
-                                                PointerToDataArray
+                                                PointerArray
                                             )
                                             ()
                                         ))]
                                         ()
+                                        .false.
                                     )
                                     (Print
                                         (StringFormat
@@ -1785,7 +2008,9 @@
                                                 ()
                                             )]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )
@@ -1805,7 +2030,9 @@
                                                 ()
                                             )]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )
@@ -1825,7 +2052,9 @@
                                                 ()
                                             )]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )
@@ -1845,7 +2074,9 @@
                                                 ()
                                             )]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )]
@@ -1877,8 +2108,10 @@
                                 )
                         })
                     template_array_03_m
+                    ()
                     [template_array_03_math
                     template_array_03_m]
+                    .false.
                     .false.
                     .false.
                 ),
@@ -1909,6 +2142,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -1927,6 +2165,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             y:
                                                 (Variable
@@ -1945,6 +2188,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     add_integer
@@ -1976,11 +2224,13 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 3 r)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             add_real:
@@ -2005,6 +2255,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -2023,6 +2278,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             y:
                                                 (Variable
@@ -2041,6 +2301,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     add_real
@@ -2072,11 +2337,13 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 6 r)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             mult_integer:
@@ -2101,6 +2368,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -2119,6 +2391,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             y:
                                                 (Variable
@@ -2137,6 +2414,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     mult_integer
@@ -2168,11 +2450,13 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 5 r)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             mult_real:
@@ -2197,6 +2481,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -2215,6 +2504,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             y:
                                                 (Variable
@@ -2233,6 +2527,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     mult_real
@@ -2264,11 +2563,13 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 8 r)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             zero_integer:
@@ -2293,6 +2594,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -2311,6 +2617,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     zero_integer
@@ -2334,11 +2645,13 @@
                                         (Var 4 r)
                                         (IntegerConstant 0 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 4 r)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             zero_real:
@@ -2363,6 +2676,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -2381,6 +2699,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     zero_real
@@ -2410,18 +2733,23 @@
                                                 0.000000
                                                 (Real 4)
                                             )
+                                            ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 7 r)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })
                     template_array_03_math
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

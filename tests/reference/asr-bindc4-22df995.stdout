@@ -74,6 +74,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             j:
                                 (Variable
@@ -92,6 +97,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             newshape:
                                 (Variable
@@ -115,6 +125,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             queries:
                                 (Variable
@@ -133,6 +148,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             queries2:
                                 (Variable
@@ -142,9 +162,11 @@
                                     Local
                                     (PointerNullConstant
                                         (CPtr)
+                                        ()
                                     )
                                     (PointerNullConstant
                                         (CPtr)
+                                        ()
                                     )
                                     Default
                                     (CPtr)
@@ -155,6 +177,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             x:
                                 (Variable
@@ -182,6 +209,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             xv:
                                 (Variable
@@ -207,6 +239,11 @@
                                     .false.
                                     .true.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             y:
                                 (Variable
@@ -234,6 +271,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             yv:
                                 (Variable
@@ -259,6 +301,11 @@
                                     .false.
                                     .true.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     bindc4
@@ -275,6 +322,8 @@
                         )
                         (IntegerConstant 2 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (ArrayItem
@@ -288,6 +337,8 @@
                         )
                         (IntegerConstant 3 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Associate
                         (Var 2 x)
@@ -387,7 +438,9 @@
                                         ()
                                     )]
                                     FormatFortran
-                                    (String -1 0 () PointerString)
+                                    (Allocatable
+                                        (String 1 () DeferredLength DescriptorString)
+                                    )
                                     ()
                                 )
                             )]
@@ -411,7 +464,9 @@
                             )
                             (Var 2 queries)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -479,7 +534,9 @@
                                         ()
                                     )]
                                     FormatFortran
-                                    (String -1 0 () PointerString)
+                                    (Allocatable
+                                        (String 1 () DeferredLength DescriptorString)
+                                    )
                                     ()
                                 )
                             )]
@@ -497,7 +554,7 @@
                                 (Integer 4)
                                 [((IntegerConstant 1 (Integer 4) Decimal)
                                 (IntegerConstant 2 (Integer 4) Decimal))]
-                                PointerToDataArray
+                                PointerArray
                             )
                             ColMajor
                         )
@@ -513,7 +570,9 @@
                             )
                             (Var 2 queries)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -581,7 +640,9 @@
                                         ()
                                     )]
                                     FormatFortran
-                                    (String -1 0 () PointerString)
+                                    (Allocatable
+                                        (String 1 () DeferredLength DescriptorString)
+                                    )
                                     ()
                                 )
                             )]
@@ -590,28 +651,33 @@
                         []
                     )
                     (If
-                        (PointerAssociated
-                            (Var 2 queries)
-                            (PointerToCPtr
-                                (GetPointer
-                                    (ArrayItem
-                                        (Var 2 x)
-                                        [(()
-                                        (IntegerConstant 0 (Integer 4) Decimal)
-                                        ())
-                                        (()
-                                        (IntegerConstant 0 (Integer 4) Decimal)
-                                        ())]
-                                        (Integer 2)
-                                        ColMajor
+                        ()
+                        (LogicalNot
+                            (PointerAssociated
+                                (Var 2 queries)
+                                (PointerToCPtr
+                                    (GetPointer
+                                        (ArrayItem
+                                            (Var 2 x)
+                                            [(()
+                                            (IntegerConstant 1 (Integer 4) Decimal)
+                                            ())
+                                            (()
+                                            (IntegerConstant 1 (Integer 4) Decimal)
+                                            ())]
+                                            (Integer 2)
+                                            ColMajor
+                                            ()
+                                        )
+                                        (Pointer
+                                            (Integer 2)
+                                        )
                                         ()
                                     )
-                                    (Pointer
-                                        (Integer 2)
-                                    )
+                                    (CPtr)
                                     ()
                                 )
-                                (CPtr)
+                                (Logical 4)
                                 ()
                             )
                             (Logical 4)
@@ -623,6 +689,7 @@
                         []
                     )
                     (If
+                        ()
                         (LogicalNot
                             (PointerAssociated
                                 (Var 2 queries)
@@ -643,6 +710,7 @@
                         []
                     )
                     (If
+                        ()
                         (PointerAssociated
                             (Var 2 queries)
                             (PointerToCPtr
@@ -659,6 +727,7 @@
                         []
                     )
                     (If
+                        ()
                         (PointerAssociated
                             (Var 2 queries2)
                             ()
@@ -674,8 +743,11 @@
                         (Var 2 queries)
                         (PointerNullConstant
                             (CPtr)
+                            ()
                         )
                         ()
+                        .false.
+                        .false.
                     )]
                 ),
             iso_c_binding:

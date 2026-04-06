@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             m:
                                 (Variable
@@ -42,6 +47,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             n:
                                 (Variable
@@ -60,6 +70,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             prinf:
                                 (Function
@@ -75,7 +90,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 6 () PointerString)
+                                                    (String 1 (IntegerConstant 6 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                     ()
                                                     BindC
                                                     Public
@@ -83,6 +98,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             prinf_arg_1:
                                                 (Variable
@@ -101,6 +121,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             prinf_arg_2:
                                                 (Variable
@@ -119,11 +144,16 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     prinf
                                     (FunctionType
-                                        [(String 1 6 () PointerString)
+                                        [(String 1 (IntegerConstant 6 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         (Integer 4)
                                         (Integer 4)]
                                         ()
@@ -166,6 +196,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             x:
                                 (Variable
@@ -184,6 +219,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             y:
                                 (Variable
@@ -202,6 +242,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     idd_frm
@@ -234,18 +279,19 @@
                         ()
                         [((StringConstant
                             "lw = *"
-                            (String 1 6 () PointerString)
+                            (String 1 (IntegerConstant 6 (Integer 4) Decimal) ExpressionLength DescriptorString)
                         ))
                         ((Var 2 lw))
                         ((IntegerConstant 1 (Integer 4) Decimal))]
                         ()
+                        .false.
                     )
                     (SubroutineCall
                         2 prinf
                         ()
                         [((StringConstant
                             "16m+70 = *"
-                            (String 1 10 () PointerString)
+                            (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString)
                         ))
                         ((IntegerBinOp
                             (IntegerBinOp
@@ -262,6 +308,7 @@
                         ))
                         ((IntegerConstant 1 (Integer 4) Decimal))]
                         ()
+                        .false.
                     )
                     (Return)]
                     ()

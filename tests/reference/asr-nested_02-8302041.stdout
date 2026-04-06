@@ -25,6 +25,7 @@
                         ()
                         []
                         ()
+                        .false.
                     )]
                 ),
             nested_02_a:
@@ -66,7 +67,9 @@
                                                             ()
                                                             [(IntegerConstant 5 (Integer 4) Decimal)]
                                                             FormatFortran
-                                                            (String -1 0 () PointerString)
+                                                            (Allocatable
+                                                                (String 1 () DeferredLength DescriptorString)
+                                                            )
                                                             ()
                                                         )
                                                     )]
@@ -97,7 +100,7 @@
                                     [(Print
                                         (StringConstant
                                             "b()"
-                                            (String 1 3 () PointerString)
+                                            (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (SubroutineCall
@@ -105,6 +108,7 @@
                                         ()
                                         []
                                         ()
+                                        .false.
                                     )]
                                     ()
                                     Public
@@ -114,7 +118,9 @@
                                 )
                         })
                     nested_02_a
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

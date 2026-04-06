@@ -411,12 +411,8 @@ class DefaultLookupNameVisitor(ASDLVisitor):
         self.emit("node_to_return = ( ASR::asr_t* ) ((Variable_t*)sym);", 4)
         self.emit("return;", 4)
         self.emit("}", 3)
-        self.emit("case ASR::symbolType::Class: {", 3)
-        self.emit("node_to_return = ( ASR::asr_t* ) ((Class_t*)sym);", 4)
-        self.emit("return;", 4)
-        self.emit("}", 3)
-        self.emit("case ASR::symbolType::ClassProcedure: {", 3)
-        self.emit("node_to_return = ( ASR::asr_t* ) ((ClassProcedure_t*)sym);", 4)
+        self.emit("case ASR::symbolType::StructMethodDeclaration: {", 3)
+        self.emit("node_to_return = ( ASR::asr_t* ) ((StructMethodDeclaration_t*)sym);", 4)
         self.emit("return;", 4)
         self.emit("}", 3)
         self.emit("case ASR::symbolType::AssociateBlock: {", 3)
@@ -433,6 +429,14 @@ class DefaultLookupNameVisitor(ASDLVisitor):
         self.emit("}", 3)
         self.emit("case ASR::symbolType::Template: {", 3)
         self.emit("node_to_return = ( ASR::asr_t* ) ((Template_t*)sym);", 4)
+        self.emit("return;", 4)
+        self.emit("}", 3)
+        self.emit("case ASR::symbolType::Namelist: {", 3)
+        self.emit("node_to_return = ( ASR::asr_t* ) ((Variable_t*)sym);", 4)
+        self.emit("return;", 4)
+        self.emit("}", 3)
+        self.emit("case ASR::symbolType::GpuKernelFunction: {", 3)
+        self.emit("node_to_return = ( ASR::asr_t* ) ((GpuKernelFunction_t*)sym);", 4)
         self.emit("return;", 4)
         self.emit("}", 3)
         self.emit("}", 2)
@@ -1123,10 +1127,12 @@ class ExprStmtDuplicatorVisitor(ASDLVisitor):
         self.duplicate_expr = []
         self.duplicate_ttype = []
         self.duplicate_case_stmt = []
+        self.duplicate_type_stmt = []
         self.is_stmt = False
         self.is_expr = False
         self.is_ttype = False
         self.is_case_stmt = False
+        self.is_type_stmt = False
         self.is_product = False
         super(ExprStmtDuplicatorVisitor, self).__init__(stream, data)
 
@@ -1174,6 +1180,13 @@ class ExprStmtDuplicatorVisitor(ASDLVisitor):
         self.duplicate_case_stmt.append(("", 0))
         self.duplicate_case_stmt.append(("    switch(x->type) {", 1))
 
+        self.duplicate_type_stmt.append(("    ASR::type_stmt_t* duplicate_type_stmt(ASR::type_stmt_t* x) {", 0))
+        self.duplicate_type_stmt.append(("    if( !x ) {", 1))
+        self.duplicate_type_stmt.append(("    return nullptr;", 2))
+        self.duplicate_type_stmt.append(("    }", 1))
+        self.duplicate_type_stmt.append(("", 0))
+        self.duplicate_type_stmt.append(("    switch(x->type) {", 1))
+
         super(ExprStmtDuplicatorVisitor, self).visitModule(mod)
         self.duplicate_stmt.append(("    default: {", 2))
         self.duplicate_stmt.append(('    LCOMPILERS_ASSERT_MSG(false, "Duplication of " + std::to_string(x->type) + " statement is not supported yet.");', 3))
@@ -1207,6 +1220,14 @@ class ExprStmtDuplicatorVisitor(ASDLVisitor):
         self.duplicate_case_stmt.append(("    return nullptr;", 1))
         self.duplicate_case_stmt.append(("    }", 0))
 
+        self.duplicate_type_stmt.append(("    default: {", 2))
+        self.duplicate_type_stmt.append(('    LCOMPILERS_ASSERT_MSG(false, "Duplication of " + std::to_string(x->type) + " case statement is not supported yet.");', 3))
+        self.duplicate_type_stmt.append(("    }", 2))
+        self.duplicate_type_stmt.append(("    }", 1))
+        self.duplicate_type_stmt.append(("", 0))
+        self.duplicate_type_stmt.append(("    return nullptr;", 1))
+        self.duplicate_type_stmt.append(("    }", 0))
+
         for line, level in self.duplicate_stmt:
             self.emit(line, level=level)
         self.emit("")
@@ -1217,6 +1238,8 @@ class ExprStmtDuplicatorVisitor(ASDLVisitor):
             self.emit(line, level=level)
         self.emit("")
         for line, level in self.duplicate_case_stmt:
+            self.emit(line, level=level)
+        for line, level in self.duplicate_type_stmt:
             self.emit(line, level=level)
         self.emit("")
         self.emit("};")
@@ -1231,7 +1254,8 @@ class ExprStmtDuplicatorVisitor(ASDLVisitor):
         self.is_expr = args[0] == 'expr'
         self.is_ttype = args[0] == "ttype"
         self.is_case_stmt = args[0] == 'case_stmt'
-        if self.is_stmt or self.is_expr or self.is_case_stmt or self.is_ttype:
+        self.is_type_stmt = args[0] == 'type_stmt'
+        if self.is_stmt or self.is_expr or self.is_case_stmt or self.is_type_stmt or self.is_ttype:
             for tp in sum.types:
                 self.visit(tp, *args)
 
@@ -1282,6 +1306,10 @@ class ExprStmtDuplicatorVisitor(ASDLVisitor):
             self.duplicate_case_stmt.append(("    case ASR::case_stmtType::%s: {" % name, 2))
             self.duplicate_case_stmt.append(("    return down_cast<ASR::case_stmt_t>(self().duplicate_%s(down_cast<ASR::%s_t>(x)));" % (name, name), 3))
             self.duplicate_case_stmt.append(("    }", 2))
+        elif self.is_type_stmt:
+            self.duplicate_type_stmt.append(("    case ASR::type_stmtType::%s: {" % name, 2))
+            self.duplicate_type_stmt.append(("    return down_cast<ASR::type_stmt_t>(self().duplicate_%s(down_cast<ASR::%s_t>(x)));" % (name, name), 3))
+            self.duplicate_type_stmt.append(("    }", 2))
         self.emit("}", 1)
         self.emit("")
 
@@ -1295,6 +1323,7 @@ class ExprStmtDuplicatorVisitor(ASDLVisitor):
             field.type == "array_index" or
             field.type == "alloc_arg" or
             field.type == "case_stmt" or
+            field.type == "type_stmt" or
             field.type == "ttype" or
             field.type == "dimension"):
             level = 2
@@ -1319,6 +1348,7 @@ class ExprStmtDuplicatorVisitor(ASDLVisitor):
                 elif field.type == "alloc_arg":
                     self.emit("    ASR::alloc_arg_t alloc_arg_copy;", level)
                     self.emit("    alloc_arg_copy.loc = x->m_%s[i].loc;"%(field.name), level)
+                    self.emit("    alloc_arg_copy.m_sym_subclass = nullptr;", level)
                     self.emit("    alloc_arg_copy.m_a = self().duplicate_expr(x->m_%s[i].m_a);"%(field.name), level)
                     self.emit("    alloc_arg_copy.m_len_expr = self().duplicate_expr(x->m_%s[i].m_len_expr);"%(field.name), level)
                     self.emit("    alloc_arg_copy.m_type = self().duplicate_ttype(x->m_%s[i].m_type);"%(field.name), level)
@@ -1670,9 +1700,10 @@ class PickleVisitorVisitor(ASDLVisitor):
         self.emit(  "std::string s, indented = \"\";", 1)
         self.emit(  "bool use_colors;", 1)
         self.emit(  "bool indent;", 1)
+        self.emit(  "bool clojure;", 1)
         self.emit(  "int indent_level = 0, indent_spaces = 4;", 1)
         self.emit("public:")
-        self.emit(  "PickleBaseVisitor() : use_colors(false), indent(false) { s.reserve(100000); }", 1)
+        self.emit(  "PickleBaseVisitor() : use_colors(false), indent(false), clojure(false) { s.reserve(100000); }", 1)
         self.emit(  "void inc_indent() {", 1)
         self.emit(      "indent_level++;", 2)
         self.emit(      "indented = std::string(indent_level*indent_spaces, ' ');",2)
@@ -1682,6 +1713,13 @@ class PickleVisitorVisitor(ASDLVisitor):
         self.emit(      "LCOMPILERS_ASSERT(indent_level >= 0);", 2)
         self.emit(      "indented = std::string(indent_level*indent_spaces, ' ');",2)
         self.emit(  "}",1)
+        # Helper to make symbols clojure compatible
+        self.emit(  "std::string make_sym_clojure_compatible(std::string name) {", 1)
+        self.emit(      "for (size_t i = 0; i < name.size(); i++) {", 2)
+        self.emit(      "    if (name[i] == '@') name[i] = '/';", 3)
+        self.emit(      "}", 2)
+        self.emit(      "return name;", 2)
+        self.emit(  "}", 1)
         self.mod = mod
         super(PickleVisitorVisitor, self).visitModule(mod)
         self.emit("};")
@@ -1819,7 +1857,11 @@ class PickleVisitorVisitor(ASDLVisitor):
                     level = 2
                     self.emit('s.append("[");', level)
                     self.emit("for (size_t i=0; i<x.n_%s; i++) {" % field.name, level)
-                    self.emit("    s.append(x.m_%s[i]);" % (field.name), level)
+                    self.emit("    if (clojure) {", level)
+                    self.emit("        s.append(self().make_sym_clojure_compatible(x.m_%s[i]));" % (field.name), level)
+                    self.emit("    } else {", level)
+                    self.emit("        s.append(x.m_%s[i]);" % (field.name), level)
+                    self.emit("    }", level)
                     self.emit('    if (i < x.n_%s-1) {' % (field.name), level)
                     self.emit('        if (indent) s.append("\\n" + indented);', level)
                     self.emit('        else s.append(" ");', level)
@@ -1829,12 +1871,20 @@ class PickleVisitorVisitor(ASDLVisitor):
                 else:
                     if field.opt:
                         self.emit("if (x.m_%s) {" % field.name, 2)
-                        self.emit(    's.append(x.m_%s);' % field.name, 3)
+                        self.emit(    "if (clojure) {", 3)
+                        self.emit(        's.append(self().make_sym_clojure_compatible(x.m_%s));' % field.name, 4)
+                        self.emit(    "} else {", 3)
+                        self.emit(        's.append(x.m_%s);' % field.name, 4)
+                        self.emit(    "}", 3)
                         self.emit("} else {", 2)
                         self.emit(    's.append("()");', 3)
                         self.emit("}", 2)
                     else:
-                        self.emit('s.append(x.m_%s);' % field.name, 2)
+                        self.emit('if (clojure) {', 2)
+                        self.emit(    's.append(self().make_sym_clojure_compatible(x.m_%s));' % field.name, 3)
+                        self.emit('} else {', 2)
+                        self.emit(    's.append(x.m_%s);' % field.name, 3)
+                        self.emit('}', 2)
             elif field.type == "node":
                 assert not field.opt
                 assert field.seq
@@ -1882,7 +1932,11 @@ class PickleVisitorVisitor(ASDLVisitor):
                     self.emit('{', level)
                     self.emit('    size_t i = 0;', level)
                     self.emit('    for (auto &a : x.m_%s->get_scope()) {' % field.name, level)
-                    self.emit('        s.append(a.first + ":");', level)
+                    self.emit('        if (clojure) {', level)
+                    self.emit('            s.append(":" + self().make_sym_clojure_compatible(a.first));', level)
+                    self.emit('        } else {', level)
+                    self.emit('            s.append(a.first + ":");', level)
+                    self.emit('        }', level)
                     self.emit('        if(indent) {', level)
                     self.emit('            inc_indent();', level)
                     self.emit('            s.append("\\n" + indented);', level)
@@ -2786,6 +2840,8 @@ static inline ASR::ttype_t* expr_type0(const ASR::expr_t *f)
                 return ASR::down_cast<ASR::Function_t>(s)->m_function_signature;
             } else if( s->type == ASR::symbolType::Variable ) {
                 return ASR::down_cast<ASR::Variable_t>(s)->m_type;
+            } else if( s->type == ASR::symbolType::Struct ) {
+                return ASR::down_cast<ASR::Struct_t>(s)->m_struct_signature;
             } else {
                 // ICE: only Function and Variable have types, this symbol
                 // does not have a type
@@ -2861,7 +2917,7 @@ static inline ASR::expr_t* expr_value0(ASR::expr_t *f)
                 LCOMPILERS_ASSERT(!ASR::is_a<ASR::ExternalSymbol_t>(*e->m_external));
                 s = e->m_external;
             }
-            if( ASR::is_a<ASR::Function_t>(*s) ||
+            if( ASR::is_a<ASR::Function_t>(*s) || ASR::is_a<ASR::Struct_t>(*s) ||
                 ASR::down_cast<ASR::Variable_t>(s)->m_storage !=
                 ASR::storage_typeType::Parameter ) {
                 return nullptr;
@@ -2869,7 +2925,7 @@ static inline ASR::expr_t* expr_value0(ASR::expr_t *f)
             return ASR::down_cast<ASR::Variable_t>(s)->m_value;
         }""" \
                     % (name, name), 2, new_line=False)
-        elif name.endswith("Constant"):
+        elif name.endswith("Constant") or name == "CompilerOptions":
             self.emit("case ASR::exprType::%s: { return f; }"\
                     % (name), 2, new_line=False)
         else:

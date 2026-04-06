@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             v:
                                 (Variable
@@ -42,6 +47,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             x:
                                 (Variable
@@ -60,6 +70,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             zero:
                                 (Variable
@@ -78,6 +93,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     const_real_dp
@@ -89,6 +109,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 u)
@@ -103,8 +125,11 @@
                                 1.050000
                                 (Real 8)
                             )
+                            ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 v)
@@ -113,6 +138,8 @@
                             (Real 8)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 x)
@@ -121,6 +148,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
@@ -130,7 +159,9 @@
                             (Var 2 x)
                             (Var 2 u)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]

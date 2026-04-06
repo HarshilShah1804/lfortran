@@ -31,6 +31,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             internal_sub:
                                 (Function
@@ -63,6 +68,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             bl:
                                                 (Block
@@ -93,13 +103,15 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     bl
-                                                    [(ImplicitDeallocate
-                                                        [(Var 7 arr_in_block)]
-                                                    )
-                                                    (Exit
+                                                    [(Exit
                                                         bl
                                                     )
                                                     (Return)]
@@ -114,7 +126,7 @@
                                                     ()
                                                     Default
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     Source
@@ -123,6 +135,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     internal_sub
@@ -152,21 +169,13 @@
                                             .true.
                                             (Logical 4)
                                         )
-                                        [(ImplicitDeallocate
-                                            [(Var 6 arr_real)
-                                            (Var 6 str)]
-                                        )
-                                        (Return)]
+                                        [(Return)]
                                         []
-                                    )
-                                    (ImplicitDeallocate
-                                        [(Var 6 arr_real)
-                                        (Var 6 str)]
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             ss:
@@ -189,7 +198,7 @@
                                     ()
                                     Default
                                     (Allocatable
-                                        (String 1 -2 () DescriptorString)
+                                        (String 1 () DeferredLength DescriptorString)
                                     )
                                     ()
                                     Source
@@ -198,6 +207,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             test_01:
                                 (ExternalSymbol
@@ -216,7 +230,8 @@
                         [((Var 5 str)
                         []
                         (IntegerConstant 10 (Integer 4) Decimal)
-                        ())]
+                        ()
+                        (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString))]
                         ()
                         ()
                         ()
@@ -226,16 +241,14 @@
                         ()
                         []
                         ()
+                        .false.
                     )
                     (SubroutineCall
                         5 internal_sub
                         ()
                         []
                         ()
-                    )
-                    (ImplicitDeallocate
-                        [(Var 5 arr)
-                        (Var 5 str)]
+                        .false.
                     )
                     (Return)]
                 ),
@@ -273,6 +286,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     ss
@@ -297,32 +315,25 @@
                                         [((IntegerConstant 1 (Integer 4) Decimal)
                                         (IntegerConstant 10 (Integer 4) Decimal))]
                                         ()
+                                        ()
                                         ())]
                                         ()
                                         ()
                                         ()
                                     )
                                     (If
+                                        ()
                                         (LogicalConstant
                                             .true.
                                             (Logical 4)
                                         )
-                                        [(ImplicitDeallocate
-                                            [(Var 4 arr)]
-                                        )
-                                        (Return)]
-                                        [(ImplicitDeallocate
-                                            [(Var 4 arr)]
-                                        )
-                                        (Return)]
-                                    )
-                                    (ImplicitDeallocate
-                                        [(Var 4 arr)]
+                                        [(Return)]
+                                        [(Return)]
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             test_01:
@@ -347,6 +358,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             str:
                                                 (Variable
@@ -358,7 +374,7 @@
                                                     ()
                                                     Default
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     Source
@@ -367,6 +383,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     test_01
@@ -390,13 +411,11 @@
                                         [((Var 3 str)
                                         []
                                         (IntegerConstant 10 (Integer 4) Decimal)
-                                        ())]
+                                        ()
+                                        (String 1 (IntegerConstant 10 (Integer 4) Decimal) ExpressionLength DescriptorString))]
                                         ()
                                         ()
                                         ()
-                                    )
-                                    (ImplicitDeallocate
-                                        [(Var 3 str)]
                                     )
                                     (Return)
                                     (DoLoop
@@ -410,13 +429,15 @@
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })
                     finalize_01_mod
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

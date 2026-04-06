@@ -43,6 +43,7 @@ enum class IntrinsicArrayFunctions : int64_t {
     Cshift,
     Eoshift,
     Spread,
+    Reduce,
     // ...
 };
 
@@ -77,6 +78,7 @@ inline std::string get_array_intrinsic_name(int64_t x) {
         ARRAY_INTRINSIC_NAME_CASE(Cshift)
         ARRAY_INTRINSIC_NAME_CASE(Eoshift)
         ARRAY_INTRINSIC_NAME_CASE(Spread)
+        ARRAY_INTRINSIC_NAME_CASE(Reduce)
         default : {
             throw LCompilersException("pickle: intrinsic_id not implemented");
         }
@@ -108,8 +110,9 @@ static inline void verify_array_int_real_cmplx(ASR::expr_t* array, ASR::ttype_t*
     int array_n_dims = ASRUtils::extract_n_dims_from_ttype(array_type);
     ASRUtils::require_impl(array_n_dims > 0, "Input to " + intrinsic_func_name + " intrinsic must always be an array",
         loc, diagnostics);
+    // `check_equal_type` will return `false` automatically for types that are not same, so pass `nullptr` for `expr`
     ASRUtils::require_impl(ASRUtils::check_equal_type(
-        return_type, array_type, false),
+        return_type, array_type, nullptr, nullptr, false),
         intrinsic_func_name + " intrinsic must return an output of the same type as input", loc, diagnostics);
     int return_n_dims = ASRUtils::extract_n_dims_from_ttype(return_type);
     ASRUtils::require_impl(return_n_dims == 0,
@@ -128,8 +131,9 @@ static inline void verify_array_int_real(ASR::expr_t* array, ASR::ttype_t* retur
     int array_n_dims = ASRUtils::extract_n_dims_from_ttype(array_type);
     ASRUtils::require_impl(array_n_dims > 0, "Input to " + intrinsic_func_name + " intrinsic must always be an array",
         loc, diagnostics);
+    // `check_equal_type` will return `false` automatically for types that are not same, so pass `nullptr` for `expr`
     ASRUtils::require_impl(ASRUtils::check_equal_type(
-        return_type, array_type, false),
+        return_type, array_type, nullptr, nullptr, false),
         intrinsic_func_name + " intrinsic must return an output of the same type as input", loc, diagnostics);
     int return_n_dims = ASRUtils::extract_n_dims_from_ttype(return_type);
     ASRUtils::require_impl(return_n_dims == 0,
@@ -152,8 +156,68 @@ static inline void verify_array_dim(ASR::expr_t* array, ASR::expr_t* dim,
     ASRUtils::require_impl(ASRUtils::is_integer(*ASRUtils::expr_type(dim)),
         "`dim` argument must be an integer", loc, diagnostics);
 
+    // `check_equal_type` will return `false` automatically for types that are not same, so pass `nullptr` for `expr`
     ASRUtils::require_impl(ASRUtils::check_equal_type(
-        return_type, array_type, false),
+        return_type, array_type, nullptr, nullptr, false),
+        intrinsic_func_name + " intrinsic must return an output of the same type as input", loc, diagnostics);
+    int return_n_dims = ASRUtils::extract_n_dims_from_ttype(return_type);
+    ASRUtils::require_impl(array_n_dims == return_n_dims + 1,
+        intrinsic_func_name + " intrinsic output must return an array with dimension "
+        "only 1 less than that of input array",
+        loc, diagnostics);
+}
+
+static inline ASR::ttype_t* reduce_array_element_base_type(ASR::ttype_t* array_type) {
+    ASR::ttype_t* elem = ASRUtils::type_get_past_allocatable_pointer(array_type);
+    while (ASRUtils::is_array(elem)) {
+        elem = ASRUtils::type_get_past_array(elem);
+    }
+    return elem;
+}
+
+static inline void verify_reduce_array(ASR::expr_t* array, ASR::ttype_t* return_type,
+    const Location& loc, diag::Diagnostics& diagnostics, ASRUtils::IntrinsicArrayFunctions intrinsic_func_id) {
+    std::string intrinsic_func_name = ASRUtils::get_array_intrinsic_name(static_cast<int64_t>(intrinsic_func_id));
+    ASR::ttype_t* array_type = ASRUtils::expr_type(array);
+    ASR::ttype_t* elem = reduce_array_element_base_type(array_type);
+    ASRUtils::require_impl(ASRUtils::is_integer(*elem) ||
+        ASRUtils::is_real(*elem) ||
+        ASRUtils::is_complex(*elem) ||
+        ASR::is_a<ASR::StructType_t>(*elem),
+        "Input to " + intrinsic_func_name + " intrinsic must be of integer, real, complex, or derived type, found: " +
+        ASRUtils::get_type_code(array_type), loc, diagnostics);
+    int array_n_dims = ASRUtils::extract_n_dims_from_ttype(array_type);
+    ASRUtils::require_impl(array_n_dims > 0, "Input to " + intrinsic_func_name + " intrinsic must always be an array",
+        loc, diagnostics);
+    ASRUtils::require_impl(ASRUtils::check_equal_type(
+        return_type, array_type, nullptr, nullptr, false),
+        intrinsic_func_name + " intrinsic must return an output of the same type as input", loc, diagnostics);
+    int return_n_dims = ASRUtils::extract_n_dims_from_ttype(return_type);
+    ASRUtils::require_impl(return_n_dims == 0,
+    intrinsic_func_name + " intrinsic output for array only input should be a scalar, found an array of " +
+    std::to_string(return_n_dims), loc, diagnostics);
+}
+
+static inline void verify_reduce_array_dim(ASR::expr_t* array, ASR::expr_t* dim,
+    ASR::ttype_t* return_type, const Location& loc, diag::Diagnostics& diagnostics, ASRUtils::IntrinsicArrayFunctions intrinsic_func_id) {
+    std::string intrinsic_func_name = ASRUtils::get_array_intrinsic_name(static_cast<int64_t>(intrinsic_func_id));
+    ASR::ttype_t* array_type = ASRUtils::expr_type(array);
+    ASR::ttype_t* elem = reduce_array_element_base_type(array_type);
+    ASRUtils::require_impl(ASRUtils::is_integer(*elem) ||
+        ASRUtils::is_real(*elem) ||
+        ASRUtils::is_complex(*elem) ||
+        ASR::is_a<ASR::StructType_t>(*elem),
+        "Input to `" + intrinsic_func_name + "` intrinsic must be of integer, real, complex, or derived type, found: " +
+    ASRUtils::get_type_code(array_type), loc, diagnostics);
+    int array_n_dims = ASRUtils::extract_n_dims_from_ttype(array_type);
+    ASRUtils::require_impl(array_n_dims > 0, "Input to `" + intrinsic_func_name + "` intrinsic must always be an array",
+        loc, diagnostics);
+
+    ASRUtils::require_impl(ASRUtils::is_integer(*ASRUtils::expr_type(dim)),
+        "`dim` argument must be an integer", loc, diagnostics);
+
+    ASRUtils::require_impl(ASRUtils::check_equal_type(
+        return_type, array_type, nullptr, nullptr, false),
         intrinsic_func_name + " intrinsic must return an output of the same type as input", loc, diagnostics);
     int return_n_dims = ASRUtils::extract_n_dims_from_ttype(return_type);
     ASRUtils::require_impl(array_n_dims == return_n_dims + 1,
@@ -310,6 +374,7 @@ static inline ASR::expr_t *eval_ArrIntrinsic(Allocator & al,
     const Location & loc, ASR::ttype_t *t, Vec<ASR::expr_t*>& args,
     diag::Diagnostics& /*diag*/, ASRUtils::IntrinsicArrayFunctions intrinsic_func_id) {
     ASRBuilder b(al, loc);
+    if (args.size() < 1) return nullptr;
     ASR::expr_t* array = args[0];
     if (!array) return nullptr;
     ASR::expr_t* value = nullptr, *args_value0 = nullptr;
@@ -326,7 +391,7 @@ static inline ASR::expr_t *eval_ArrIntrinsic(Allocator & al,
     }
     ASR::ArrayConstant_t *mask = nullptr;
     ASR::expr_t* dim = b.i32(1);
-    if (args[1] && is_logical(*ASRUtils::expr_type(args[1]))) {
+    if (args.size() > 1 && args[1] && is_logical(*ASRUtils::expr_type(args[1]))) {
         if (ASR::is_a<ASR::ArrayConstant_t>(*args[1])) {
             mask = ASR::down_cast<ASR::ArrayConstant_t>(args[1]);
         } else if (ASR::is_a<ASR::LogicalConstant_t>(*args[1])) {
@@ -336,7 +401,7 @@ static inline ASR::expr_t *eval_ArrIntrinsic(Allocator & al,
         } else {
             return nullptr;
         }
-    } else if(args[2]) {
+    } else if (args.size() > 2 && args[2]) {
         if (ASR::is_a<ASR::ArrayConstant_t>(*args[2])) {
             mask = ASR::down_cast<ASR::ArrayConstant_t>(args[2]);
         } else if (ASR::is_a<ASR::LogicalConstant_t>(*args[2])) {
@@ -636,7 +701,7 @@ static inline ASR::asr_t* create_ArrIntrinsic(
     ASR::expr_t *mask = nullptr;
     ASR::ttype_t* array_type = ASRUtils::expr_type(array);
     if (!is_array(array_type)){
-        append_error(diag, "Argument to intrinsic `" + intrinsic_func_name + "` is expected to be an array, found: " + type_to_str_fortran(array_type), loc);
+        append_error(diag, "Argument to intrinsic `" + intrinsic_func_name + "` is expected to be an array, found: " + type_to_str_fortran_expr(array_type, array), loc);
         return nullptr;
     }
     if (args[1]) {
@@ -666,32 +731,19 @@ static inline ASR::asr_t* create_ArrIntrinsic(
                 return nullptr;
             }
         } else if (is_logical(*ASRUtils::expr_type(args[1]))) {
+            if (args[2]) {
+                append_error(diag, "`dim` argument of `" + intrinsic_func_name + "` intrinsic must be INTEGER",
+                    args[1]->base.loc);
+                return nullptr;
+            }
             mask = args[1];
             if (!ASRUtils::is_value_constant(mask)) {
                 if (!is_same_shape(array, mask, intrinsic_func_name, diag, {args[0]->base.loc, args[1]->base.loc})) {
                     return nullptr;
                 }
             }
-            if (args[2] && is_integer(*ASRUtils::expr_type(args[2]))) {
-                dim = args[2];
-                if ( ASRUtils::is_value_constant(dim) ) {
-                    int dim_val = extract_dim_value_int(dim);
-                    int n_dims = ASRUtils::extract_n_dims_from_ttype(array_type);
-                    if (dim_val <= 0 || dim_val > n_dims) {
-                        diag.add(diag::Diagnostic("`dim` argument of the `" + intrinsic_func_name + "` intrinsic is out of bounds",
-                        diag::Level::Error,
-                        diag::Stage::Semantic,
-                        {diag::Label("Must have 0 < dim <= " + std::to_string(n_dims) + " for array of rank " + std::to_string(n_dims), { args[2]->base.loc })}));
-                        return nullptr;
-                    }
-                }
-            } else if (args[2]) {
-                append_error(diag, "`dim` argument to `" + intrinsic_func_name + "` must be a scalar and of integer type",
-                    args[2]->base.loc);
-                return nullptr;
-            }
         } else {
-            append_error(diag, "Invalid argument type for `dim` or `mask`",
+            append_error(diag, "`dim` argument of `" + intrinsic_func_name + "` intrinsic must be INTEGER",
                 args[1]->base.loc);
             return nullptr;
         }
@@ -718,7 +770,18 @@ static inline ASR::asr_t* create_ArrIntrinsic(
                 mask->base.loc);
             return nullptr;
         }
-        overload_id = id_array_mask;
+        if (!ASRUtils::is_array(ASRUtils::expr_type(mask))) {
+            ASR::expr_t* mask_val = ASRUtils::expr_value(mask);
+            if (mask_val && ASR::is_a<ASR::LogicalConstant_t>(*mask_val)) {
+                bool mask_bool = ASR::down_cast<ASR::LogicalConstant_t>(mask_val)->m_value;
+                if (mask_bool) {
+                    mask = nullptr;
+                }
+            }
+        }
+        if (mask) {
+            overload_id = id_array_mask;
+        }
     }
     if (dim && mask) {
         overload_id = id_array_dim_mask;
@@ -726,17 +789,27 @@ static inline ASR::asr_t* create_ArrIntrinsic(
 
     ASR::expr_t *value = nullptr;
     bool runtime_dim = false;
+    bool can_eval_compile_time = true;
     Vec<ASR::expr_t*> arg_values;
     arg_values.reserve(al, 3);
     ASR::expr_t *array_value = ASRUtils::expr_value(array);
+    if (!array_value) {
+        can_eval_compile_time = false;
+    }
     arg_values.push_back(al, array_value);
     if( dim ) {
         ASR::expr_t *dim_value = ASRUtils::expr_value(dim);
         runtime_dim = dim_value == nullptr;
+        if (!dim_value) {
+            can_eval_compile_time = false;
+        }
         arg_values.push_back(al, dim_value);
     }
     if( mask ) {
         ASR::expr_t *mask_value = ASRUtils::expr_value(mask);
+        if (!mask_value) {
+            can_eval_compile_time = false;
+        }
         arg_values.push_back(al, mask_value);
     }
 
@@ -750,9 +823,20 @@ static inline ASR::asr_t* create_ArrIntrinsic(
         size_t n_dims = ASRUtils::extract_n_dims_from_ttype(array_type);
         fill_dimensions_for_ArrIntrinsic(al, (int64_t) n_dims - 1,
             args[0], args[1], diag, runtime_dim, dims);
-        return_type = ASRUtils::duplicate_type(al, array_type, &dims, ASR::array_physical_typeType::DescriptorArray, true);
+        ASR::ttype_t* base_array_type = ASRUtils::type_get_past_allocatable_pointer(array_type);
+        return_type = ASRUtils::duplicate_type(al, base_array_type, &dims, ASR::array_physical_typeType::DescriptorArray, true);
+        if ( (int64_t) n_dims == 1 ) {
+            // For the arrays of rank 1, we return a scalar value
+            // instead of an array. Currently `return_type` in case of
+            // allocatable will be `Allocatable( integer 4 )` and hence
+            // we need to remove the allocatable part.
+            return_type = ASRUtils::type_get_past_pointer(
+                ASRUtils::type_get_past_allocatable(ASRUtils::type_get_past_array(return_type)));
+        }
     }
-    value = eval_ArrIntrinsic(al, loc, return_type, arg_values, diag, intrinsic_func_id);
+    if (can_eval_compile_time) {
+        value = eval_ArrIntrinsic(al, loc, return_type, arg_values, diag, intrinsic_func_id);
+    }
 
     Vec<ASR::expr_t*> arr_intrinsic_args;
     arr_intrinsic_args.reserve(al, 3);
@@ -770,7 +854,8 @@ static inline ASR::asr_t* create_ArrIntrinsic(
 
 static inline void generate_body_for_array_input(Allocator& al, const Location& loc,
     ASR::expr_t* array, ASR::expr_t* return_var, SymbolTable* fn_scope,
-    Vec<ASR::stmt_t*>& fn_body, get_initial_value_func get_initial_value, elemental_operation_func elemental_operation) {
+    Vec<ASR::stmt_t*>& fn_body, get_initial_value_func get_initial_value, elemental_operation_func elemental_operation,
+    int index_kind = 4) {
     ASRBuilder builder(al, loc);
     Vec<ASR::expr_t*> idx_vars;
     Vec<ASR::stmt_t*> doloop_body;
@@ -779,21 +864,51 @@ static inline void generate_body_for_array_input(Allocator& al, const Location& 
         [=, &al, &fn_body, &builder] {
             ASR::ttype_t* array_type = ASRUtils::expr_type(array);
             ASR::ttype_t* element_type = ASRUtils::duplicate_type_without_dims(al, array_type, loc);
-            ASR::expr_t* initial_val = get_initial_value(al, element_type);
-            ASR::stmt_t* return_var_init = builder.Assignment(return_var, initial_val);
-            fn_body.push_back(al, return_var_init);
+            if (ASR::is_a<ASR::String_t>(*element_type)) {
+                Vec<ASR::expr_t*> first_idx;
+                first_idx.reserve(al, 1);
+                ASR::expr_t* one = ASRUtils::EXPR(
+                    ASR::make_IntegerConstant_t(
+                        al, loc, 1, ASRUtils::TYPE(ASR::make_Integer_t(al, loc, index_kind))));
+                first_idx.push_back(al, one);
+                ASR::expr_t* first_elem = PassUtils::create_array_ref(array, first_idx, al);
+                ASR::expr_t* tmp =
+                    builder.Variable(fn_scope, "_lcompilers_string_tmp", element_type,
+                        ASR::intentType::Local, nullptr, ASR::abiType::Source, false);
+                fn_body.push_back(al, builder.Assignment(tmp, first_elem));
+                fn_body.push_back(al, builder.Assignment(return_var, tmp));
+            } else {
+                ASR::expr_t* initial_val = get_initial_value(al, element_type);
+                ASR::stmt_t* return_var_init = builder.Assignment(return_var, initial_val);
+                fn_body.push_back(al, return_var_init);
+            }
         },
         [=, &al, &idx_vars, &doloop_body, &builder] () {
             ASR::expr_t* array_ref = PassUtils::create_array_ref(array, idx_vars, al);
-            ASR::expr_t* elemental_operation_val = (builder.*elemental_operation)(return_var, array_ref);
-            ASR::stmt_t* loop_invariant = builder.Assignment(return_var, elemental_operation_val);
-            doloop_body.push_back(al, loop_invariant);
-    });
+            ASR::ttype_t* array_type = ASRUtils::expr_type(array);
+            ASR::ttype_t* element_type = ASRUtils::duplicate_type_without_dims(al, array_type, loc);
+            if (ASR::is_a<ASR::String_t>(*element_type)) {
+                ASR::expr_t* cond = nullptr;
+                if (elemental_operation == &ASRBuilder::Min) {
+                    cond = builder.Lt(array_ref, return_var);
+                } else {
+                    cond = builder.Gt(array_ref, return_var);
+                }
+                std::vector<ASR::stmt_t*> if_body;
+                if_body.push_back(builder.Assignment(return_var, array_ref));
+                doloop_body.push_back(al, builder.If(cond, if_body, {}));
+            } else {
+                ASR::expr_t* elemental_operation_val = (builder.*elemental_operation)(return_var, array_ref);
+                ASR::stmt_t* loop_invariant = builder.Assignment(return_var, elemental_operation_val);
+                doloop_body.push_back(al, loop_invariant);
+            }
+        }, index_kind);
 }
 
 static inline void generate_body_for_array_mask_input(Allocator& al, const Location& loc,
     ASR::expr_t* array, ASR::expr_t* mask, ASR::expr_t* return_var, SymbolTable* fn_scope,
-    Vec<ASR::stmt_t*>& fn_body, get_initial_value_func get_initial_value, elemental_operation_func elemental_operation) {
+    Vec<ASR::stmt_t*>& fn_body, get_initial_value_func get_initial_value, elemental_operation_func elemental_operation,
+    int index_kind = 4) {
     ASRBuilder builder(al, loc);
     Vec<ASR::expr_t*> idx_vars;
     Vec<ASR::stmt_t*> doloop_body;
@@ -815,17 +930,18 @@ static inline void generate_body_for_array_mask_input(Allocator& al, const Locat
             if_mask.reserve(al, 1);
             if_mask.push_back(al, loop_invariant);
             ASR::stmt_t* if_mask_ = ASRUtils::STMT(ASR::make_If_t(al, loc,
+                                        nullptr,
                                         mask_ref, if_mask.p, if_mask.size(),
                                         nullptr, 0));
             doloop_body.push_back(al, if_mask_);
-    });
+    }, index_kind);
 }
 
 static inline void generate_body_for_array_dim_input(
     Allocator& al, const Location& loc,
     ASR::expr_t* array, ASR::expr_t* dim, ASR::expr_t* result,
     SymbolTable* fn_scope, Vec<ASR::stmt_t*>& fn_body, get_initial_value_func get_initial_value,
-    elemental_operation_func elemental_operation) {
+    elemental_operation_func elemental_operation, int index_kind = 4) {
     ASRBuilder builder(al, loc);
     Vec<ASR::expr_t*> idx_vars, target_idx_vars;
     Vec<ASR::stmt_t*> doloop_body;
@@ -844,7 +960,7 @@ static inline void generate_body_for_array_dim_input(
             ASR::expr_t* elemental_operation_val = (builder.*elemental_operation)(result_ref, array_ref);
             ASR::stmt_t* loop_invariant = builder.Assignment(result_ref, elemental_operation_val);
             doloop_body.push_back(al, loop_invariant);
-        });
+        }, index_kind);
 }
 
 static inline void generate_body_for_array_dim_mask_input(
@@ -852,7 +968,8 @@ static inline void generate_body_for_array_dim_mask_input(
     ASR::expr_t* array, ASR::expr_t* dim,
     ASR::expr_t* mask, ASR::expr_t* result,
     SymbolTable* fn_scope, Vec<ASR::stmt_t*>& fn_body,
-    get_initial_value_func get_initial_value, elemental_operation_func elemental_operation) {
+    get_initial_value_func get_initial_value, elemental_operation_func elemental_operation,
+    int index_kind = 4) {
     ASRBuilder builder(al, loc);
     Vec<ASR::expr_t*> idx_vars, target_idx_vars;
     Vec<ASR::stmt_t*> doloop_body;
@@ -875,20 +992,205 @@ static inline void generate_body_for_array_dim_mask_input(
             if_mask.reserve(al, 1);
             if_mask.push_back(al, loop_invariant);
             ASR::stmt_t* if_mask_ = ASRUtils::STMT(ASR::make_If_t(al, loc,
+                                        nullptr,
                                         mask_ref, if_mask.p, if_mask.size(),
                                         nullptr, 0));
             doloop_body.push_back(al, if_mask_);
+        }, index_kind
+    );
+}
+
+static inline ASR::symbol_t* get_procedure_sym_from_expr(ASR::expr_t* op_expr) {
+    if (ASR::is_a<ASR::Var_t>(*op_expr)) {
+        return ASRUtils::symbol_get_past_external(
+            ASR::down_cast<ASR::Var_t>(op_expr)->m_v);
+    }
+    return nullptr;
+}
+
+static inline ASR::expr_t* make_reduce_op_call(Allocator& al, const Location& loc,
+        ASRBuilder& builder, ASR::expr_t* op_var,
+        ASR::expr_t* lhs, ASR::expr_t* rhs, ASR::ttype_t* result_elem_type) {
+    ASR::symbol_t* op_sym = get_procedure_sym_from_expr(op_var);
+    LCOMPILERS_ASSERT(op_sym);
+    Vec<ASR::call_arg_t> ca;
+    ca.reserve(al, 2);
+    ASR::call_arg_t a1, a2;
+    a1.loc = loc;
+    a1.m_value = lhs;
+    a2.loc = loc;
+    a2.m_value = rhs;
+    ca.push_back(al, a1);
+    ca.push_back(al, a2);
+    return builder.Call(op_sym, ca, result_elem_type, nullptr);
+}
+
+static inline ASR::expr_t* get_reduce_initial_value(Allocator& al, const Location& loc,
+        ASR::ttype_t* value_type, ASR::expr_t* array_expr,
+        ASR::symbol_t* caller_array_struct_sym) {
+    ASR::ttype_t* t = ASRUtils::type_get_past_allocatable(
+        ASRUtils::type_get_past_pointer(value_type));
+    while (ASRUtils::is_array(t)) {
+        t = ASRUtils::type_get_past_array(t);
+    }
+    if (ASR::is_a<ASR::StructType_t>(*t)) {
+        ASR::symbol_t* s = ASRUtils::get_struct_sym_from_struct_expr(array_expr);
+        if (s == nullptr) {
+            s = caller_array_struct_sym;
         }
+        if (s == nullptr) {
+            throw LCompilersException("reduce: cannot resolve derived type for array argument");
+        }
+        return ASRUtils::get_struct_type_constructor_zero(al, loc, s);
+    }
+    return ASRUtils::get_constant_zero_with_given_type(al, value_type);
+}
+
+static inline void generate_body_for_reduce_array_input(Allocator& al, const Location& loc,
+    ASR::expr_t* array, ASR::expr_t* operation, ASR::expr_t* return_var, SymbolTable* fn_scope,
+    Vec<ASR::stmt_t*>& fn_body,
+    ASR::symbol_t* caller_array_struct_sym,
+    int index_kind = 4) {
+    ASRBuilder builder(al, loc);
+    Vec<ASR::expr_t*> idx_vars;
+    Vec<ASR::stmt_t*> doloop_body;
+    builder.generate_reduction_intrinsic_stmts_for_scalar_output(loc,
+        array, fn_scope, fn_body, idx_vars, doloop_body,
+        [=, &al, &fn_body, &builder] {
+            ASR::ttype_t* array_type = ASRUtils::expr_type(array);
+            ASR::ttype_t* element_type = ASRUtils::duplicate_type_without_dims(al, array_type, loc);
+            ASR::expr_t* initial_val = ArrIntrinsic::get_reduce_initial_value(
+                al, loc, element_type, array, caller_array_struct_sym);
+            ASR::stmt_t* return_var_init = builder.Assignment(return_var, initial_val);
+            fn_body.push_back(al, return_var_init);
+        },
+        [=, &al, &idx_vars, &doloop_body, &builder, &operation] () {
+            ASR::expr_t* array_ref = PassUtils::create_array_ref(array, idx_vars, al);
+            ASR::ttype_t* array_type = ASRUtils::expr_type(array);
+            ASR::ttype_t* element_type = ASRUtils::duplicate_type_without_dims(al, array_type, loc);
+            ASR::expr_t* reduce_val = make_reduce_op_call(al, loc, builder, operation,
+                return_var, array_ref, element_type);
+            ASR::stmt_t* loop_invariant = builder.Assignment(return_var, reduce_val);
+            doloop_body.push_back(al, loop_invariant);
+        }, index_kind);
+}
+
+static inline void generate_body_for_reduce_array_mask_input(Allocator& al, const Location& loc,
+    ASR::expr_t* array, ASR::expr_t* mask, ASR::expr_t* operation, ASR::expr_t* return_var,
+    SymbolTable* fn_scope, Vec<ASR::stmt_t*>& fn_body,
+    ASR::symbol_t* caller_array_struct_sym,
+    int index_kind = 4) {
+    ASRBuilder builder(al, loc);
+    Vec<ASR::expr_t*> idx_vars;
+    Vec<ASR::stmt_t*> doloop_body;
+    builder.generate_reduction_intrinsic_stmts_for_scalar_output(loc,
+        array, fn_scope, fn_body, idx_vars, doloop_body,
+        [=, &al, &fn_body, &builder] {
+            ASR::ttype_t* array_type = ASRUtils::expr_type(array);
+            ASR::ttype_t* element_type = ASRUtils::duplicate_type_without_dims(al, array_type, loc);
+            ASR::expr_t* initial_val = ArrIntrinsic::get_reduce_initial_value(
+                al, loc, element_type, array, caller_array_struct_sym);
+            ASR::stmt_t* return_var_init = builder.Assignment(return_var, initial_val);
+            fn_body.push_back(al, return_var_init);
+        },
+        [=, &al, &idx_vars, &doloop_body, &builder, &operation] () {
+            ASR::expr_t* array_ref = PassUtils::create_array_ref(array, idx_vars, al);
+            ASR::expr_t* mask_ref = PassUtils::create_array_ref(mask, idx_vars, al);
+            ASR::ttype_t* array_type = ASRUtils::expr_type(array);
+            ASR::ttype_t* element_type = ASRUtils::duplicate_type_without_dims(al, array_type, loc);
+            ASR::expr_t* reduce_val = make_reduce_op_call(al, loc, builder, operation,
+                return_var, array_ref, element_type);
+            ASR::stmt_t* loop_invariant = builder.Assignment(return_var, reduce_val);
+            Vec<ASR::stmt_t*> if_mask;
+            if_mask.reserve(al, 1);
+            if_mask.push_back(al, loop_invariant);
+            ASR::stmt_t* if_mask_ = ASRUtils::STMT(ASR::make_If_t(al, loc,
+                                        nullptr,
+                                        mask_ref, if_mask.p, if_mask.size(),
+                                        nullptr, 0));
+            doloop_body.push_back(al, if_mask_);
+    }, index_kind);
+}
+
+static inline void generate_body_for_reduce_array_dim_input(
+    Allocator& al, const Location& loc,
+    ASR::expr_t* array, ASR::expr_t* dim, ASR::expr_t* operation, ASR::expr_t* result,
+    SymbolTable* fn_scope, Vec<ASR::stmt_t*>& fn_body,
+    ASR::symbol_t* caller_array_struct_sym,
+    int index_kind = 4) {
+    ASRBuilder builder(al, loc);
+    Vec<ASR::expr_t*> idx_vars, target_idx_vars;
+    Vec<ASR::stmt_t*> doloop_body;
+    builder.generate_reduction_intrinsic_stmts_for_array_output(
+        loc, array, dim, fn_scope, fn_body,
+        idx_vars, target_idx_vars, doloop_body,
+        [=, &al, &fn_body, &builder] () {
+            ASR::ttype_t* array_type = ASRUtils::expr_type(array);
+            ASR::expr_t* initial_val = ArrIntrinsic::get_reduce_initial_value(
+                al, loc, array_type, array, caller_array_struct_sym);
+            ASR::stmt_t* result_init = builder.Assignment(result, initial_val);
+            fn_body.push_back(al, result_init);
+        },
+        [=, &al, &idx_vars, &target_idx_vars, &doloop_body, &builder, &result, &operation] () {
+            ASR::expr_t* result_ref = PassUtils::create_array_ref(result, target_idx_vars, al);
+            ASR::expr_t* array_ref = PassUtils::create_array_ref(array, idx_vars, al);
+            ASR::ttype_t* array_type = ASRUtils::expr_type(array);
+            ASR::ttype_t* element_type = ASRUtils::duplicate_type_without_dims(al, array_type, loc);
+            ASR::expr_t* reduce_val = make_reduce_op_call(al, loc, builder, operation,
+                result_ref, array_ref, element_type);
+            ASR::stmt_t* loop_invariant = builder.Assignment(result_ref, reduce_val);
+            doloop_body.push_back(al, loop_invariant);
+        }, index_kind);
+}
+
+static inline void generate_body_for_reduce_array_dim_mask_input(
+    Allocator& al, const Location& loc,
+    ASR::expr_t* array, ASR::expr_t* dim,
+    ASR::expr_t* mask, ASR::expr_t* operation, ASR::expr_t* result,
+    SymbolTable* fn_scope, Vec<ASR::stmt_t*>& fn_body,
+    ASR::symbol_t* caller_array_struct_sym,
+    int index_kind = 4) {
+    ASRBuilder builder(al, loc);
+    Vec<ASR::expr_t*> idx_vars, target_idx_vars;
+    Vec<ASR::stmt_t*> doloop_body;
+    builder.generate_reduction_intrinsic_stmts_for_array_output(
+        loc, array, dim, fn_scope, fn_body,
+        idx_vars, target_idx_vars, doloop_body,
+        [=, &al, &fn_body, &builder] () {
+            ASR::ttype_t* array_type = ASRUtils::expr_type(array);
+            ASR::expr_t* initial_val = ArrIntrinsic::get_reduce_initial_value(
+                al, loc, array_type, array, caller_array_struct_sym);
+            ASR::stmt_t* result_init = builder.Assignment(result, initial_val);
+            fn_body.push_back(al, result_init);
+        },
+        [=, &al, &idx_vars, &target_idx_vars, &doloop_body, &builder, &result, &operation] () {
+            ASR::expr_t* result_ref = PassUtils::create_array_ref(result, target_idx_vars, al);
+            ASR::expr_t* array_ref = PassUtils::create_array_ref(array, idx_vars, al);
+            ASR::expr_t* mask_ref = PassUtils::create_array_ref(mask, idx_vars, al);
+            ASR::ttype_t* array_type = ASRUtils::expr_type(array);
+            ASR::ttype_t* element_type = ASRUtils::duplicate_type_without_dims(al, array_type, loc);
+            ASR::expr_t* reduce_val = make_reduce_op_call(al, loc, builder, operation,
+                result_ref, array_ref, element_type);
+            ASR::stmt_t* loop_invariant = builder.Assignment(result_ref, reduce_val);
+            Vec<ASR::stmt_t*> if_mask;
+            if_mask.reserve(al, 1);
+            if_mask.push_back(al, loop_invariant);
+            ASR::stmt_t* if_mask_ = ASRUtils::STMT(ASR::make_If_t(al, loc,
+                                        nullptr,
+                                        mask_ref, if_mask.p, if_mask.size(),
+                                        nullptr, 0));
+            doloop_body.push_back(al, if_mask_);
+        }, index_kind
     );
 }
 
 static inline ASR::expr_t* instantiate_ArrIntrinsic(Allocator &al,
         const Location &loc, SymbolTable *scope, Vec<ASR::ttype_t*>& arg_types,
         ASR::ttype_t *return_type, Vec<ASR::call_arg_t>& new_args,
-        int64_t overload_id, ASRUtils::IntrinsicArrayFunctions intrinsic_func_id,
+        int64_t overload_id, int index_kind, ASRUtils::IntrinsicArrayFunctions intrinsic_func_id,
         get_initial_value_func get_initial_value,
         elemental_operation_func elemental_operation) {
-    std::string intrinsic_func_name = ASRUtils::get_array_intrinsic_name(static_cast<int64_t>(intrinsic_func_id));
+    std::string intrinsic_func_name = "_lcompilers_" + ASRUtils::get_array_intrinsic_name(static_cast<int64_t>(intrinsic_func_id));
     ASRBuilder builder(al, loc);
     ASRBuilder& b = builder;
     int64_t id_array = 0, id_array_dim = 1, id_array_mask = 2, id_array_dim_mask = 3;
@@ -899,7 +1201,8 @@ static inline ASR::expr_t* instantiate_ArrIntrinsic(Allocator &al,
     int rank = ASRUtils::extract_n_dims_from_ttype(arg_type);
     std::string new_name = intrinsic_func_name + "_" + std::to_string(kind) +
                             "_" + std::to_string(rank) +
-                            "_" + std::to_string(overload_id);
+                            "_" + std::to_string(overload_id) +
+                            "_idx" + std::to_string(index_kind);
     // Check if Function is already defined.
     {
         std::string new_func_name = new_name;
@@ -912,7 +1215,7 @@ static inline ASR::expr_t* instantiate_ArrIntrinsic(Allocator &al,
             bool same_allocatable_type = (ASRUtils::is_allocatable(arg_type) ==
                                     ASRUtils::is_allocatable(ASRUtils::expr_type(f->m_args[0])));
             if (same_allocatable_type && ASRUtils::types_equal(ASRUtils::expr_type(f->m_args[0]),
-                    arg_type) && orig_array_rank == rank) {
+                    arg_type, f->m_args[0], new_args[0].m_value) && orig_array_rank == rank) {
                 return builder.Call(s, new_args, return_type, nullptr);
             } else {
                 new_func_name += std::to_string(i);
@@ -931,7 +1234,7 @@ static inline ASR::expr_t* instantiate_ArrIntrinsic(Allocator &al,
     fill_func_arg("array", array_type)
     if( overload_id == id_array_dim || overload_id == id_array_dim_mask ) {
         ASR::ttype_t* dim_type = ASRUtils::TYPE(ASR::make_Integer_t(
-            al, arg_type->base.loc, 4));
+            al, arg_type->base.loc, index_kind));
         fill_func_arg("dim", dim_type)
     }
     if( overload_id == id_array_mask || overload_id == id_array_dim_mask ) {
@@ -990,16 +1293,16 @@ static inline ASR::expr_t* instantiate_ArrIntrinsic(Allocator &al,
     }
     if( overload_id == id_array ) {
         generate_body_for_array_input(al, loc, args[0], output_var,
-                                      fn_symtab, body, get_initial_value, elemental_operation);
+                                      fn_symtab, body, get_initial_value, elemental_operation, index_kind);
     } else if( overload_id == id_array_dim ) {
         generate_body_for_array_dim_input(al, loc, args[0], args[1], output_var,
-                                          fn_symtab, body, get_initial_value, elemental_operation);
+                                          fn_symtab, body, get_initial_value, elemental_operation, index_kind);
     } else if( overload_id == id_array_dim_mask ) {
         generate_body_for_array_dim_mask_input(al, loc, args[0], args[1], args[2],
-                                               output_var, fn_symtab, body, get_initial_value, elemental_operation);
+                                               output_var, fn_symtab, body, get_initial_value, elemental_operation, index_kind);
     } else if( overload_id == id_array_mask ) {
         generate_body_for_array_mask_input(al, loc, args[0], args[1], output_var,
-                                           fn_symtab, body, get_initial_value, elemental_operation);
+                                           fn_symtab, body, get_initial_value, elemental_operation, index_kind);
     }
 
     Vec<char *> dep;
@@ -1068,6 +1371,13 @@ static inline ASR::expr_t *eval_MaxMinLoc(Allocator &al, const Location &loc,
                 flag = 1;
                 index = i;
                 break;
+            }
+        }
+        if (flag == 0) {
+            if (!is_array(type)) {
+                return b.i_t(0, type);
+            } else {
+                return b.ArrayConstant({b.i32(0)}, extract_type(type), false);
             }
         }
         if (static_cast<int64_t>(IntrinsicArrayFunctions::MaxLoc) == static_cast<int64_t>(intrinsic_func_id)) {
@@ -1159,8 +1469,8 @@ static inline ASR::expr_t *eval_MaxMinLoc(Allocator &al, const Location &loc,
                 }
             }
         }
-        if (flag == 0) return b.i_t(0, type);
-        else if (!is_array(type)) {
+        // At this point, flag == 1, so we have a valid index
+        if (!is_array(type)) {
             return b.i_t(index + 1, type);
         } else {
             return b.ArrayConstant({b.i32(index + 1)}, extract_type(type), false);
@@ -1173,16 +1483,19 @@ static inline ASR::expr_t *eval_MaxMinLoc(Allocator &al, const Location &loc,
 static inline ASR::asr_t* create_MaxMinLoc(Allocator& al, const Location& loc,
         Vec<ASR::expr_t*>& args, ASRUtils::IntrinsicArrayFunctions intrinsic_func_id,
         diag::Diagnostics& diag) {
-    int64_t array_id = 0, array_mask = 1, array_dim = 2, array_dim_mask = 3;
-    int64_t overload_id = array_id;
-    std::string intrinsic_name = get_array_intrinsic_name(static_cast<int64_t>(intrinsic_func_id));
+    const int64_t array_id       = 0;
+    const int64_t array_mask     = 1;
+    const int64_t array_dim      = 2;
+    const int64_t array_dim_mask = 3;
+    const std::string intrinsic_name = get_array_intrinsic_name(static_cast<int64_t>(intrinsic_func_id));
+    ASR::expr_t*  const array = args[0];
+    ASR::ttype_t* const array_type = expr_type(array);
     ASRUtils::ASRBuilder b(al, loc);
-    ASR::expr_t* array = args[0];
-    ASR::ttype_t *array_type = expr_type(array);
     if ( !is_array(array_type) ) {
         append_error(diag, "`array` argument of `"+ intrinsic_name +"` must be an array", loc);
         return nullptr;
-    } else if ( !is_integer(*array_type) && !is_real(*array_type) && !is_character(*array_type)) {
+    }
+    if ( !is_integer(*array_type) && !is_real(*array_type) && !is_character(*array_type)) {
         append_error(diag, "`array` argument of `"+ intrinsic_name +"` must be integer, "
             "real or character", loc);
         return nullptr;
@@ -1194,14 +1507,37 @@ static inline ASR::asr_t* create_MaxMinLoc(Allocator& al, const Location& loc,
     ASR::dimension_t *m_dims;
     int n_dims = extract_dimensions_from_ttype(array_type, m_dims);
     int dim = 0, kind = 4; // default kind
-    ASR::expr_t *dim_expr = nullptr;
-    ASR::expr_t *mask_expr = nullptr;
-    if (args[1]) {
-        dim_expr = args[1];
-        if ( !ASR::is_a<ASR::Integer_t>(*expr_type(args[1])) ) {
+    // Extract kind from args[3] early so we can use it for dimension bounds
+    if (args[3] && expr_value(args[3])) {
+        extract_value(expr_value(args[3]), kind);
+    }
+    ASR::ttype_t* kind_type = TYPE(ASR::make_Integer_t(al, loc, kind));
+    for (int i = 1; i <= 2; i++) {
+        if (args[i] && is_logical(*expr_type(args[i])) && is_array(expr_type(args[i]))) {
+            if (ASR::is_a<ASR::ArrayConstructor_t>(*args[i])) {
+                auto* ctor = ASR::down_cast<ASR::ArrayConstructor_t>(args[i]);
+                if (ctor->n_args == 1) {
+                    args.p[i] = ctor->m_args[0];
+                }
+            } else if (ASR::is_a<ASR::ArrayConstant_t>(*args[i])) {
+                auto* arr = ASR::down_cast<ASR::ArrayConstant_t>(args[i]);
+                if (get_fixed_size_of_array(arr->m_type) == 1) {
+                    args.p[i] = fetch_ArrayConstant_value(al, arr, 0);
+                }
+            }
+        }
+    }
+    ASR::expr_t* const mask_expr = [&args](){
+        if((args[1] && is_logical(*expr_type(args[1])))) return args[1];
+        else if(args[2]) return args[2];
+        else return (ASR::expr_t*)nullptr;
+    }();
+    ASR::expr_t* const dim_expr = mask_expr == args[1] ? nullptr : args[1];
+    if (dim_expr) {
+        if ( !ASR::is_a<ASR::Integer_t>(*expr_type(dim_expr)) ) {
             append_error(diag, "`dim` should be a scalar integer type", loc);
             return nullptr;
-        } else if (!extract_value(expr_value(args[1]), dim)) {
+        } else if (!extract_value(expr_value(dim_expr), dim)) {
             append_error(diag, "Runtime values for `dim` argument is not supported yet", loc);
             return nullptr;
         }
@@ -1224,35 +1560,38 @@ static inline ASR::asr_t* create_MaxMinLoc(Allocator& al, const Location& loc,
                 result_dims.push_back(al, tmp_dim);
             }
         }
-        m_args.push_back(al, args[1]);
+        m_args.push_back(al, dim_expr);
     } else {
         ASR::dimension_t tmp_dim;
         tmp_dim.loc = args[0]->base.loc;
-        tmp_dim.m_start = b.i32(1);
-        tmp_dim.m_length = b.i32(n_dims);
+        tmp_dim.m_start = b.i_t(1, kind_type);
+        tmp_dim.m_length = b.i_t(n_dims, kind_type);
         result_dims.push_back(al, tmp_dim);
-        m_args.push_back(al, b.i32(-1));
+        m_args.push_back(al, b.i_t(-1, kind_type));
     }
-    if (args[2]) {
-        mask_expr = args[2];
-        if (!is_logical(*expr_type(args[2]))) {
+    if (mask_expr) {
+        if (!is_logical(*expr_type(mask_expr))) {
             append_error(diag, "`mask` argument of `"+ intrinsic_name +"` must be logical", loc);
             return nullptr;
         }
-        m_args.push_back(al, args[2]);
+        if (is_array(expr_type(mask_expr))) {
+            ASR::expr_t* array_arg = args[0];
+            ASR::expr_t* mask_arg = mask_expr;
+            if (!is_same_shape(array_arg, mask_arg, intrinsic_name, diag,
+                    {array->base.loc, mask_expr->base.loc})) {
+                return nullptr;
+            }
+        }
+        m_args.push_back(al, mask_expr);
     } else {
         m_args.push_back(al, b.ArrayConstant({b.bool_t(1, logical)}, logical, true));
     }
     if (args[3]) {
-        if (!extract_value(expr_value(args[3]), kind)) {
-            append_error(diag, "Runtime value for `kind` argument is not supported yet", loc);
-            return nullptr;
-        }
-        int kind = ASR::down_cast<ASR::IntegerConstant_t>(ASRUtils::expr_value(args[3]))->m_n;
+        // kind was already extracted at the start of this function
         ASRUtils::set_kind_to_ttype_t(return_type, kind);
         m_args.push_back(al, args[3]);
     } else {
-        m_args.push_back(al, b.i32(4));
+        m_args.push_back(al, b.i_t(kind, kind_type));
     }
     if (args[4]) {
         if (!ASR::is_a<ASR::Logical_t>(*expr_type(args[4]))) {
@@ -1263,7 +1602,8 @@ static inline ASR::asr_t* create_MaxMinLoc(Allocator& al, const Location& loc,
     } else {
         m_args.push_back(al, b.bool_t(false, logical));
     }
-
+    
+    int64_t overload_id = array_id;
     if (dim_expr) {
         overload_id = array_dim;
     }
@@ -1323,43 +1663,79 @@ static inline ASR::expr_t *instantiate_MaxMinLoc(Allocator &al,
     }
     Vec<ASR::expr_t*> idx_vars, target_idx_vars;
     Vec<ASR::stmt_t*> doloop_body;
+    int result_kind = extract_kind_from_ttype_t(type);
+    // Determine index_kind from array dimension type (matches descriptor index type)
+    // When -fdefault-integer-8 is used, dimensions are i64, otherwise i32
+    ASR::dimension_t* m_dims = nullptr;
+    extract_dimensions_from_ttype(arg_types[0], m_dims);
+    int index_kind = 4; // default to i32
+    if (m_dims && m_dims[0].m_length) {
+        index_kind = extract_kind_from_ttype_t(expr_type(m_dims[0].m_length));
+    } else if (m_dims && m_dims[0].m_start) {
+        index_kind = extract_kind_from_ttype_t(expr_type(m_dims[0].m_start));
+    }
     if (overload_id < 2) {
         b.generate_reduction_intrinsic_stmts_for_scalar_output(
             loc, args[0], fn_symtab, body, idx_vars, doloop_body,
-            [=, &al, &body, &b] () {
-                ASR::expr_t *i = declare("i", type, Local);
-                ASR::expr_t *maskval = b.ArrayItem_01(args[2], {i});
-                body.push_back(al, b.DoLoop(i, LBound(args[2], 1), UBound(args[2], 1), {
-                    b.If(b.Eq(maskval, b.bool_t(1, logical)), {
-                        b.Assignment(result, i),
-                        b.Exit()
-                    }, {})
-                }, nullptr));
-            }, [=, &al, &b, &idx_vars, &doloop_body] () {
+            [=, &al, &body, &b, &index_kind, &result_kind] () {
+                body.push_back(al, b.Assignment(result, b.i_t(0, type)));
+                if (ASRUtils::is_array(arg_types[2])) {
+                    // Use index_kind for loop variable to match array bounds
+                    ASR::ttype_t *idx_type = (index_kind == 8) ? int64 : int32;
+                    ASR::expr_t *i = declare("i", idx_type, Local);
+                    ASR::expr_t *maskval = ASRUtils::is_array_t(args[2])? b.ArrayItem_01(args[2], {i}) : args[2];
+                    // Cast i to result type if needed when assigning to result
+                    ASR::expr_t *i_result = (result_kind != index_kind) ? b.i2i_t(i, type) : i;
+                    body.push_back(al, b.DoLoop(i, b.GetLBound(args[0], 1, index_kind), b.GetUBound(args[0], 1, index_kind), {
+                        b.If(b.Eq(maskval, b.bool_t(1, logical)), {
+                            b.Assignment(result, i_result),
+                            b.Exit()
+                        }, {})
+                    }, nullptr));
+                } else {
+                    // Cast LBound to result type if needed
+                    ASR::expr_t *lb = b.GetLBound(args[0], 1, index_kind);
+                    if (result_kind != index_kind) {
+                        lb = b.i2i_t(lb, type);
+                    }
+                    body.push_back(al, b.If(b.Eq(args[2], b.bool_t(1, logical)), {
+                        b.Assignment(result, lb)
+                    }, {}));
+                }
+            }, [=, &al, &b, &idx_vars, &doloop_body, &result_kind, &index_kind] () {
+                ASR::expr_t* result_check = !ASRUtils::is_array(return_type) ?
+                    result : b.ArrayItem_01(result, {b.i_t(1, type)});
                 std::vector<ASR::stmt_t *> if_body; if_body.reserve(n_dims);
                 Vec<ASR::expr_t *> result_idx; result_idx.reserve(al, n_dims);
+                ASR::ttype_t *idx_type = (index_kind == 8) ? int64 : int32;
                 for (int i = 0; i < n_dims; i++) {
-                    ASR::expr_t *idx = b.ArrayItem_01(result, {b.i32(i + 1)});
-                    if (extract_kind_from_ttype_t(type) != 4) {
+                    ASR::expr_t *idx = b.ArrayItem_01(result, {b.i_t(i + 1, type)});
+                    if (result_kind != index_kind) {
+                        // idx_vars have index_kind type, cast to result type for assignment
                         if_body.push_back(b.Assignment(idx, b.i2i_t(idx_vars[i], type)));
-                        result_idx.push_back(al, b.i2i_t(idx, int32));
+                        // idx is result type, cast back to index_kind for array indexing
+                        result_idx.push_back(al, b.i2i_t(idx, idx_type));
                     } else {
                         if_body.push_back(b.Assignment(idx, idx_vars[i]));
                         result_idx.push_back(al, idx);
                     }
                 }
+                // idx_vars have index_kind type, use directly for array indexing
                 ASR::expr_t *array_ref_01 = ArrayItem_02(args[0], idx_vars);
+                ASR::expr_t *mask_val = ASRUtils::is_array_t(arg_types[2]) ?
+                    ArrayItem_02(args[2], idx_vars) : args[2];
+                Vec<ASR::stmt_t*> comparison_body;
+                comparison_body.reserve(al, 1);
                 ASR::expr_t *array_ref_02 = ArrayItem_02(args[0], result_idx);
-                ASR::expr_t *mask_val = ArrayItem_02(args[2], idx_vars);
                 if (overload_id == 1) {
                     if (static_cast<int64_t>(IntrinsicArrayFunctions::MaxLoc) == static_cast<int64_t>(intrinsic_func_id)) {
-                        doloop_body.push_back(al, b.If(b.Eq(args[4], b.bool_t(1, logical)), {
+                        comparison_body.push_back(al, b.If(b.Eq(args[4], b.bool_t(1, logical)), {
                             b.If(b.And(b.GtE(array_ref_01, array_ref_02), b.Eq(mask_val, b.bool_t(1, logical))), if_body, {})}
                         , {
                             b.If(b.And(b.Gt(array_ref_01, array_ref_02), b.Eq(mask_val, b.bool_t(1, logical))), if_body, {})
                         }));
                     } else {
-                        doloop_body.push_back(al, b.If(b.Eq(args[4], b.bool_t(1, logical)), {
+                        comparison_body.push_back(al, b.If(b.Eq(args[4], b.bool_t(1, logical)), {
                             b.If(b.And(b.LtE(array_ref_01, array_ref_02), b.Eq(mask_val, b.bool_t(1, logical))), if_body, {})}
                         , {
                             b.If(b.And(b.Lt(array_ref_01, array_ref_02), b.Eq(mask_val, b.bool_t(1, logical))), if_body, {})
@@ -1367,65 +1743,75 @@ static inline ASR::expr_t *instantiate_MaxMinLoc(Allocator &al,
                     }
                 } else {
                     if (static_cast<int64_t>(IntrinsicArrayFunctions::MaxLoc) == static_cast<int64_t>(intrinsic_func_id)) {
-                        doloop_body.push_back(al, b.If(b.Eq(args[4], b.bool_t(1, logical)), {
+                        comparison_body.push_back(al, b.If(b.Eq(args[4], b.bool_t(1, logical)), {
                             b.If(b.GtE(array_ref_01, array_ref_02), if_body, {})
                         }, {
                             b.If(b.Gt(array_ref_01, array_ref_02), if_body, {})
                         }));
                     } else {
-                        doloop_body.push_back(al, b.If(b.Eq(args[4], b.bool_t(1, logical)), {
+                        comparison_body.push_back(al, b.If(b.Eq(args[4], b.bool_t(1, logical)), {
                             b.If(b.LtE(array_ref_01, array_ref_02), if_body, {})
                         }, {
                             b.If(b.Lt(array_ref_01, array_ref_02), if_body, {})
                         }));
                     }
                 }
-            });
+                std::vector<ASR::stmt_t*> guard_stmts(comparison_body.p, comparison_body.p + comparison_body.size());
+                doloop_body.push_back(al, b.If(b.NotEq(result_check, b.i_t(0, type)), guard_stmts, {}));
+            }, index_kind);
     } else {
         int dim = 0;
         extract_value(expr_value(m_args[1].m_value), dim);
         b.generate_reduction_intrinsic_stmts_for_array_output(
             loc, args[0], args[1], fn_symtab, body, idx_vars,
             target_idx_vars, doloop_body,
-            [=, &al, &body, &b] () {
-               ASR::expr_t *i = declare("i", type, Local);
-                ASR::expr_t *maskval = b.ArrayItem_01(args[2], {i});
-                body.push_back(al, b.DoLoop(i, LBound(args[2], 1), UBound(args[2], 1), {
-                    b.If(b.Eq(maskval, b.bool_t(1, logical)), {
-                        b.Assignment(result, i),
-                        b.Exit()
-                    }, {})
-                }, nullptr));
-            }, [=, &al, &b, &idx_vars, &target_idx_vars, &doloop_body] () {
+            [=, &al, &body, &b, &result_kind, &index_kind] () {
+                body.push_back(al, b.Assignment(result, b.i_t(0, type)));
+                if (overload_id != 3) {
+                    ASR::expr_t *lb = b.GetLBound(args[0], dim, index_kind);
+                    if (result_kind != index_kind) {
+                        lb = b.i2i_t(lb, type);
+                    }
+                    body.push_back(al, b.Assignment(result, lb));
+                }
+            }, [=, &al, &b, &idx_vars, &target_idx_vars, &doloop_body, &result_kind, &index_kind] () {
                 ASR::expr_t *result_ref, *array_ref_02;
+                ASR::ttype_t *idx_type = (index_kind == 8) ? int64 : int32;
                 bool condition = is_array(return_type);
                 condition = condition && n_dims > 1;
                 if (condition) {
                     result_ref = ArrayItem_02(result, target_idx_vars);
                     Vec<ASR::expr_t*> tmp_idx_vars;
                     tmp_idx_vars.from_pointer_n_copy(al, idx_vars.p, idx_vars.n);
-                    tmp_idx_vars.p[dim - 1] = b.i2i_t(result_ref, int32);
+                    tmp_idx_vars.p[dim - 1] = b.i2i_t(result_ref, idx_type);
                     array_ref_02 = ArrayItem_02(args[0], tmp_idx_vars);
                 } else {
-                    // 1D scalar output
+                    // 1D scalar output - cast result to index_kind for array indexing if needed
                     result_ref = result;
-                    array_ref_02 = b.ArrayItem_01(args[0], {result});
+                    ASR::expr_t *result_idx = (result_kind != index_kind) ? b.i2i_t(result, idx_type) : result;
+                    array_ref_02 = b.ArrayItem_01(args[0], {result_idx});
                 }
+                ASR::expr_t* result_check = result_ref;
+                // idx_vars have index_kind type, use directly for array indexing
                 ASR::expr_t *array_ref_01 = ArrayItem_02(args[0], idx_vars);
                 ASR::expr_t *res_idx = idx_vars.p[dim - 1];
-                if (extract_kind_from_ttype_t(type) != 4) {
+                // Cast to result type if needed when assigning to result
+                if (result_kind != index_kind) {
                     res_idx = b.i2i_t(res_idx, type);
                 }
-                ASR::expr_t *mask_val = ArrayItem_02(args[2], idx_vars);
+                ASR::expr_t *mask_val = ASRUtils::is_array_t(args[2]) ? ArrayItem_02(args[2], idx_vars) : args[2];
+                Vec<ASR::stmt_t*> comparison_body_dim;
+                comparison_body_dim.reserve(al, 1);
+                
                 if (overload_id == 3) {
                     if (static_cast<int64_t>(IntrinsicArrayFunctions::MaxLoc) == static_cast<int64_t>(intrinsic_func_id)) {
-                        doloop_body.push_back(al, b.If(b.Eq(args[4], b.bool_t(1, logical)), {
+                        comparison_body_dim.push_back(al, b.If(b.Eq(args[4], b.bool_t(1, logical)), {
                             b.If(b.And(b.GtE(array_ref_01, array_ref_02), b.Eq(mask_val, b.bool_t(1, logical))), {b.Assignment(result_ref, res_idx)}, {})}
                         , {
                             b.If(b.And(b.Gt(array_ref_01, array_ref_02), b.Eq(mask_val, b.bool_t(1, logical))), {b.Assignment(result_ref, res_idx)}, {})
                         }));
                     } else {
-                        doloop_body.push_back(al, b.If(b.Eq(args[4], b.bool_t(1, logical)), {
+                        comparison_body_dim.push_back(al, b.If(b.Eq(args[4], b.bool_t(1, logical)), {
                             b.If(b.And(b.LtE(array_ref_01, array_ref_02), b.Eq(mask_val, b.bool_t(1, logical))), {b.Assignment(result_ref, res_idx)}, {})}
                         , {
                             b.If(b.And(b.Lt(array_ref_01, array_ref_02), b.Eq(mask_val, b.bool_t(1, logical))), {b.Assignment(result_ref, res_idx)}, {})
@@ -1433,20 +1819,30 @@ static inline ASR::expr_t *instantiate_MaxMinLoc(Allocator &al,
                     }
                 } else {
                     if (static_cast<int64_t>(IntrinsicArrayFunctions::MaxLoc) == static_cast<int64_t>(intrinsic_func_id)) {
-                        doloop_body.push_back(al, b.If(b.Eq(args[4], b.bool_t(1, logical)), {
+                        comparison_body_dim.push_back(al, b.If(b.Eq(args[4], b.bool_t(1, logical)), {
                             b.If(b.GtE(array_ref_01, array_ref_02), {b.Assignment(result_ref, res_idx)}, {})
                         }, {
                             b.If(b.Gt(array_ref_01, array_ref_02), {b.Assignment(result_ref, res_idx)}, {})
                         }));
                     } else {
-                        doloop_body.push_back(al, b.If(b.Eq(args[4], b.bool_t(1, logical)), {
+                        comparison_body_dim.push_back(al, b.If(b.Eq(args[4], b.bool_t(1, logical)), {
                             b.If(b.LtE(array_ref_01, array_ref_02), {b.Assignment(result_ref, res_idx)}, {})
                         }, {
                             b.If(b.Lt(array_ref_01, array_ref_02), {b.Assignment(result_ref, res_idx)}, {})
                         }));
                     }
                 }
-            });
+                std::vector<ASR::stmt_t*> guard_stmts_dim(comparison_body_dim.p, comparison_body_dim.p + comparison_body_dim.size());
+                if (overload_id == 3) {
+                    doloop_body.push_back(al, b.If(b.NotEq(result_check, b.i_t(0, type)), guard_stmts_dim, {
+                        b.If(b.Eq(mask_val, b.bool_t(1, logical)), {
+                            b.Assignment(result_ref, res_idx)
+                        }, {})
+                    }));
+                } else {
+                    doloop_body.push_back(al, b.If(b.NotEq(result_check, b.i_t(0, type)), guard_stmts_dim, {}));
+                }
+            }, index_kind);
     }
     body.push_back(al, b.Return());
     ASR::symbol_t *fn_sym = nullptr;
@@ -1480,6 +1876,9 @@ namespace Shape {
         size_t n_dims = extract_dimensions_from_ttype(expr_type(arg_value ? arg_value : args[0]), m_dims);
         Vec<ASR::expr_t *> m_shapes; m_shapes.reserve(al, n_dims);
         if( n_dims == 0 ){
+            if (ASRUtils::is_assumed_rank_array(expr_type(args[0]))) {
+                return nullptr;
+            }
             return EXPR(ASRUtils::make_ArrayConstructor_t_util(al, loc, m_shapes.p, 0,
                 type, ASR::arraystorageType::ColMajor));
         } else {
@@ -1504,7 +1903,7 @@ namespace Shape {
                     type, ASR::arraystorageType::ColMajor));
             } else {
                 value = EXPR(ASR::make_ArrayConstructor_t(al, loc, m_shapes.p, m_shapes.n,
-                    type, nullptr, ASR::arraystorageType::ColMajor));
+                    type, nullptr, ASR::arraystorageType::ColMajor, nullptr));
             }
         }
         return value;
@@ -1528,8 +1927,23 @@ namespace Shape {
         }
         // TODO: throw error for assumed size array
         int n_dims = extract_n_dims_from_ttype(expr_type(args[0]));
-        ASR::ttype_t *return_type = b.Array({n_dims},
-            TYPE(ASR::make_Integer_t(al, loc, kind)));
+        bool is_assumed_rank = ASRUtils::is_assumed_rank_array(expr_type(args[0]));
+        ASR::ttype_t *return_type;
+        if (is_assumed_rank) {
+            Vec<ASR::dimension_t> deferred_dims;
+            deferred_dims.reserve(al, 1);
+            ASR::dimension_t d;
+            d.loc = loc;
+            d.m_start = nullptr;
+            d.m_length = nullptr;
+            deferred_dims.push_back(al, d);
+            return_type = ASRUtils::make_Array_t_util(al, loc,
+                TYPE(ASR::make_Integer_t(al, loc, kind)),
+                deferred_dims.p, 1);
+            return_type = ASRUtils::TYPE(ASRUtils::make_Allocatable_t_util(al, loc, return_type));
+        } else {
+            return_type = b.Array({n_dims}, TYPE(ASR::make_Integer_t(al, loc, kind)));
+        }
         ASR::expr_t *m_value = eval_Shape(al, loc, return_type, args, diag);
         return ASRUtils::make_IntrinsicArrayFunction_t_util(al, loc,
             static_cast<int64_t>(ASRUtils::IntrinsicArrayFunctions::Shape),
@@ -1538,26 +1952,75 @@ namespace Shape {
 
     static inline ASR::expr_t* instantiate_Shape(Allocator &al,
             const Location &loc, SymbolTable *scope, Vec<ASR::ttype_t*>& arg_types,
-            ASR::ttype_t *return_type, Vec<ASR::call_arg_t>& new_args, int64_t) {
+            ASR::ttype_t *return_type, Vec<ASR::call_arg_t>& new_args, int64_t,
+            int index_kind) {
         declare_basic_variables("_lcompilers_shape");
-        fill_func_arg("source", ASRUtils::duplicate_type_with_empty_dims(al,
-            arg_types[0]));
+        bool is_arg_assumed_rank = new_args[0].m_value &&
+            ASR::is_a<ASR::ArrayPhysicalCast_t>(*new_args[0].m_value) &&
+            ASR::down_cast<ASR::ArrayPhysicalCast_t>(new_args[0].m_value)->m_old ==
+                ASR::array_physical_typeType::AssumedRankArray;
+        bool is_struct_type_arg = !is_arg_assumed_rank &&
+            ASR::is_a<ASR::StructType_t>(*ASRUtils::extract_type(arg_types[0]));
+        if (is_arg_assumed_rank) {
+            ASR::expr_t* orig_var = ASR::down_cast<ASR::ArrayPhysicalCast_t>(
+                new_args[0].m_value)->m_arg;
+            // Strip Allocatable/Pointer wrappers: the formal parameter must be
+            // the bare AssumedRankArray so that LLVM sees the descriptor directly.
+            ASR::ttype_t* source_type = ASRUtils::type_get_past_allocatable(
+                ASRUtils::type_get_past_pointer(ASRUtils::expr_type(orig_var)));
+            if (ASR::is_a<ASR::StructType_t>(*ASRUtils::extract_type(source_type))) {
+                fill_func_arg_struct_type("source", source_type, orig_var);
+            } else {
+                fill_func_arg("source", source_type);
+            }
+        } else if (is_struct_type_arg) {
+            fill_func_arg_struct_type("source",
+                ASRUtils::duplicate_type_with_empty_dims(al, arg_types[0]),
+                new_args[0].m_value);
+        } else {
+            fill_func_arg("source", ASRUtils::duplicate_type_with_empty_dims(al,
+                arg_types[0]));
+        }
         ASR::expr_t* result = nullptr;
         result = declare(fn_name, return_type, Out);
         args.push_back(al, result);
-        int iter = extract_n_dims_from_ttype(arg_types[0]) + 1;
-        auto i = declare("i", int32, Local);
-        body.push_back(al, b.Assignment(i, b.i32(1)));
-        body.push_back(al, b.While(b.Lt(i, b.i32(iter)), {
-            b.Assignment(b.ArrayItem_01(result, {i}),
-                b.ArraySize(args[0], i, extract_type(return_type))),
-            b.Assignment(i, b.Add(i, b.i32(1)))
-        }));
+        auto i = declare("i", b.int_type(index_kind), Local);
+        body.push_back(al, b.Assignment(i, b.i_idx(1, index_kind)));
+        if (is_arg_assumed_rank) {
+            // For assumed-rank, loop from 1 to rank(source) inclusive.
+            ASR::expr_t* rank_expr = ASRUtils::EXPR(ASR::make_ArrayRank_t(al, loc,
+                args[0], b.int_type(index_kind), nullptr));
+            body.push_back(al, b.While(b.LtE(i, rank_expr), {
+                b.Assignment(b.ArrayItem_01(result, {i}),
+                    b.ArraySize(args[0], i, extract_type(return_type))),
+                b.Assignment(i, b.Add(i, b.i_idx(1, index_kind)))
+            }));
+        } else {
+            int iter = extract_n_dims_from_ttype(arg_types[0]) + 1;
+            body.push_back(al, b.While(b.Lt(i, b.i_idx(iter, index_kind)), {
+                b.Assignment(b.ArrayItem_01(result, {i}),
+                    b.ArraySize(args[0], i, extract_type(return_type))),
+                b.Assignment(i, b.Add(i, b.i_idx(1, index_kind)))
+            }));
+        }
         body.push_back(al, b.Return());
         ASR::symbol_t *f_sym = make_Function_Without_ReturnVar_t(
             fn_name, fn_symtab, dep, args,
             body, ASR::abiType::Source, ASR::deftypeType::Implementation, nullptr);
         scope->add_symbol(fn_name, f_sym);
+        if (is_arg_assumed_rank) {
+            Vec<ASR::call_arg_t> ar_new_args;
+            ar_new_args.reserve(al, new_args.n);
+            ASR::call_arg_t arg0;
+            arg0.loc = new_args[0].loc;
+            arg0.m_value = ASR::down_cast<ASR::ArrayPhysicalCast_t>(
+                new_args[0].m_value)->m_arg;
+            ar_new_args.push_back(al, arg0);
+            for (size_t j = 1; j < new_args.n; j++) {
+                ar_new_args.push_back(al, new_args[j]);
+            }
+            return b.Call(f_sym, ar_new_args, return_type, nullptr);
+        }
         return b.Call(f_sym, new_args, return_type, nullptr);
     }
 
@@ -1626,14 +2089,10 @@ namespace Cshift {
 
     static inline ASR::asr_t* create_Cshift(Allocator& al, const Location& loc,
             Vec<ASR::expr_t*>& args, diag::Diagnostics& diag) {
-        ASR::expr_t *array = args[0], *shift = args[1], *dim = args[2];
+        ASR::expr_t *array = args[0], *shift = args[1];
         bool is_type_allocatable = false;
-        bool is_dim_present = false;
         if (ASRUtils::is_allocatable(array)) {
             is_type_allocatable = true;
-        }
-        if (dim) {
-            is_dim_present = true;
         }
 
         ASR::ttype_t *type_array = ASRUtils::type_get_past_allocatable_pointer(expr_type(array));
@@ -1653,20 +2112,26 @@ namespace Cshift {
         extract_value(array_dims[0].m_length, array_dim);
         ASRUtils::require_impl(array_rank > 0, "The argument `array` in `cshift` must be of rank > 0", array->base.loc, diag);
         ASRBuilder b(al, loc);
-        Vec<ASR::dimension_t> result_dims; result_dims.reserve(al, 1);
+        Vec<ASR::dimension_t> result_dims; result_dims.reserve(al, array_rank);
         int overload_id = 2;
-        if (!is_dim_present) {
-            result_dims.push_back(al, b.set_dim(array_dims[0].m_start, array_dims[0].m_length));
-            ret_type = ASRUtils::duplicate_type(al, ret_type, &result_dims);
-        } else {
-            result_dims.push_back(al, b.set_dim(dim, dim));
-            ret_type = ASRUtils::duplicate_type(al, ret_type, &result_dims);
+        for(int i=0; i<array_rank; i++){
+            result_dims.push_back(al, b.set_dim(array_dims[i].m_start, array_dims[i].m_length));
         }
+        ret_type = ASRUtils::duplicate_type(al, ret_type, &result_dims);
         if (is_type_allocatable) {
             ret_type = TYPE(ASRUtils::make_Allocatable_t_util(al, loc, ret_type));
         }
-        Vec<ASR::expr_t*> m_args; m_args.reserve(al, 2);
+        Vec<ASR::expr_t*> m_args; m_args.reserve(al, 3);
         m_args.push_back(al, array); m_args.push_back(al, shift);
+        if (args.size() == 3 && args[2] != nullptr) {
+            ASR::expr_t *dim = args[2];
+            if( !is_integer(*ASRUtils::type_get_past_allocatable_pointer(expr_type(dim))) ) {
+                append_error(diag, "The argument `dim` in `cshift` must be of type Integer", dim->base.loc);
+                return nullptr;
+            }
+            m_args.push_back(al, dim);
+        }
+
         ASR::expr_t *value = nullptr;
         if (all_args_evaluated(m_args)) {
             value = eval_Cshift(al, loc, ret_type, m_args, diag);
@@ -1679,20 +2144,36 @@ namespace Cshift {
     static inline ASR::expr_t* instantiate_Cshift(Allocator &al,
             const Location &loc, SymbolTable *scope,
             Vec<ASR::ttype_t*> &arg_types, ASR::ttype_t *return_type,
-            Vec<ASR::call_arg_t> &m_args, int64_t /*overload_id*/) {
+            Vec<ASR::call_arg_t> &m_args, int64_t /*overload_id*/,
+            int index_kind) {
+        int shifting_dim = 1;
+        if (m_args.size() == 3) {
+            int64_t dim_val = -1;
+            if (ASRUtils::extract_value(m_args[2].m_value, dim_val)) {
+                shifting_dim = (int)dim_val;
+            }
+        }
         declare_basic_variables("_lcompilers_cshift");
+        if (shifting_dim != 1) {
+            fn_name += "_dim" + std::to_string(shifting_dim);
+        }
         fill_func_arg("array", duplicate_type_with_empty_dims(al, arg_types[0]));
         fill_func_arg("shift", arg_types[1]);
         ASR::ttype_t* return_type_ = return_type;
         /*
             cshift(array, shift, dim)
-            int i = 0
-            do j = shift, size(array)
-                result[i] = array[j]
+            for array of rank 2, the following code is generated:
+            i = 1
+            do j = shift + 1, ubound(array, 1)
+                do k = 1, ubound(array, 2)
+                    result(i, k) = array(j, k)
+                end do
                 i = i + 1
-            end for
+            end do
             do j = 1, shift
-                result[i] = array[j]
+                do k = 1, ubound(array, 2)
+                    result(i, k) = array(j, k)
+                end do
                 i = i + 1
             end do
         */
@@ -1716,32 +2197,38 @@ namespace Cshift {
         }
         ASR::expr_t *result = declare("result", return_type_, Out);
         args.push_back(al, result);
-        ASR::expr_t *i = declare("i", int32, Local);
-        ASR::expr_t *j = declare("j", int32, Local);
-        ASR::expr_t* shift_val = declare("shift_val", int32, Local);;
+        ASR::expr_t *i = declare("i", b.int_type(index_kind), Local);
+        ASR::expr_t *j = declare("j", b.int_type(index_kind), Local);
+        int n_dims = extract_n_dims_from_ttype(return_type);
+        ASR::expr_t* shift_val = declare("shift_val", b.int_type(index_kind), Local);
         body.push_back(al, b.Assignment(shift_val, args[1]));
-        body.push_back(al, b.If(b.Lt(args[1], b.i32(0)), {
-            b.Assignment(shift_val, b.Add(shift_val, UBound(args[0], 1)))
+        body.push_back(al, b.If(b.Lt(args[1], b.i_idx(0, index_kind)), {
+            b.Assignment(shift_val, b.Add(shift_val, b.GetUBound(args[0], shifting_dim, index_kind)))
         }, {
             b.Assignment(shift_val, shift_val)
         }
         ));
-        body.push_back(al, b.Assignment(i, b.i32(1)));
+        std::vector<ASR::expr_t*> do_loop_variables;
+        for(int i=0; i<n_dims-1; i++) {
+            ASR::expr_t* var = declare("i_" + std::to_string(i), b.int_type(index_kind), Local);
+            do_loop_variables.push_back(var);
+        }
+        body.push_back(al, b.Assignment(i, b.GetLBound(args[0], shifting_dim, index_kind)));
+        ASR::stmt_t *do_loop = PassUtils::create_do_loop_helper_cshift(al, loc, do_loop_variables, j, i, args[0], result, 0, shifting_dim);
         
-        body.push_back(al, b.DoLoop(j, b.Add(shift_val, b.i32(1)), UBound(args[0], 1), {
-            b.Assignment(b.ArrayItem_01(result, {i}), b.ArrayItem_01(args[0], {j})),
-            b.Assignment(i, b.Add(i, b.i32(1))),
-        }, nullptr));
-        body.push_back(al, b.DoLoop(j, LBound(args[0], 1), shift_val, {
-            b.Assignment(b.ArrayItem_01(result, {i}), b.ArrayItem_01(args[0], {j})),
-            b.Assignment(i, b.Add(i, b.i32(1))),
-        }, nullptr));
+        ASR::expr_t* lbound = b.GetLBound(args[0], shifting_dim, index_kind);
+        ASR::expr_t* shift_start = b.Add(lbound, shift_val);
 
+        body.push_back(al, b.DoLoop(j, shift_start, b.GetUBound(args[0], shifting_dim, index_kind), {do_loop, b.Assignment(i, b.Add(i, b.i_idx(1, index_kind)))}, nullptr));
+        body.push_back(al, b.DoLoop(j, lbound, b.Sub(shift_start, b.i_idx(1, index_kind)), {do_loop, b.Assignment(i, b.Add(i, b.i_idx(1, index_kind)))}, nullptr));
         body.push_back(al, b.Return());
         ASR::symbol_t *fn_sym = make_ASR_Function_t(fn_name, fn_symtab, dep, args,
                 body, nullptr, ASR::abiType::Source, ASR::deftypeType::Implementation, nullptr);
         scope->add_symbol(fn_name, fn_sym);
-        return b.Call(fn_sym, m_args, return_type, nullptr);
+        Vec<ASR::call_arg_t> new_args; new_args.reserve(al, 2);
+        new_args.push_back(al, m_args[0]);
+        new_args.push_back(al, m_args[1]);
+        return b.Call(fn_sym, new_args, return_type, nullptr);
     }
 
 } // namespace Cshift
@@ -1911,11 +2398,60 @@ namespace Spread {
                     }
                 }
             }
-        return b.ArrayConstant(m_eles, extract_type(type), false);
-    } else {
-        append_error(diag, "`dim` argument of `spread` intrinsic is not a valid dimension index", loc);
-        return nullptr;
+            return b.ArrayConstant(m_eles, extract_type(type), false, type);
+        } else {
+            append_error(diag, "`dim` argument of `spread` intrinsic is not a valid dimension index", loc);
+            return nullptr;
         }
+    }
+
+    static inline ASR::expr_t* get_result_dimension(Allocator& al, const Location& loc,
+        ASR::expr_t* array, ASR::expr_t* ncopies, int64_t i_, ASR::expr_t* dim,
+        bool is_dim_const, diag::Diagnostics& diag) {
+        int64_t i = i_ + 1;
+        ASRUtils::ASRBuilder b(al, loc);
+        if( is_dim_const ) {
+            int64_t dim_ = -1;
+            ASRUtils::is_value_constant(dim, dim_);
+            if( i == dim_ ) {
+                return ncopies;
+            }
+
+            bool is_fixed_size_array = ASRUtils::is_fixed_size_array(ASRUtils::expr_type(array));
+            ASR::dimension_t* array_dims = nullptr;
+            ASRUtils::extract_dimensions_from_ttype(ASRUtils::expr_type(array), array_dims);
+            if( i < dim_ ) {
+                if( is_fixed_size_array ) {
+                    return array_dims[i - 1].m_length;
+                }
+                return b.ArraySize(array, b.i32(i), int32);
+            } else {
+                if( is_fixed_size_array ) {
+                    return array_dims[i - 2].m_length;
+                }
+
+                return b.ArraySize(array, b.i32(i - 1), int32);
+            }
+        }
+        // merge(ncopies, merge(original_shape[i], original_shape[merge(1, i - 1, i == 1)], i < dim), i == dim)
+        Vec<ASR::expr_t*> args_merge1; args_merge1.reserve(al, 3);
+        Vec<ASR::expr_t*> args_merge2; args_merge2.reserve(al, 3);
+        Vec<ASR::expr_t*> args_merge3; args_merge3.reserve(al, 3);
+
+        args_merge1.push_back(al, b.i32(1));
+        args_merge1.push_back(al, b.i32(i - 1));
+        args_merge1.push_back(al, b.Eq(b.i32(i), b.i32(1)));
+        ASR::expr_t* merge_for_i = EXPR(Merge::create_Merge(al, loc, args_merge1, diag));
+
+        args_merge2.push_back(al, b.ArraySize(array, b.i32(i), int32));
+        args_merge2.push_back(al, b.ArraySize(array, merge_for_i, int32));
+        args_merge2.push_back(al, b.Lt(b.i32(i), dim));
+        ASR::expr_t* merge_for_i_ne_dim = EXPR(Merge::create_Merge(al, loc, args_merge2, diag));
+
+        args_merge3.push_back(al, ncopies);
+        args_merge3.push_back(al, merge_for_i_ne_dim);
+        args_merge3.push_back(al, b.Eq(b.i32(i), dim));
+        return EXPR(Merge::create_Merge(al, loc, args_merge3, diag));
     }
 
     static inline ASR::asr_t* create_Spread(Allocator& al, const Location& loc,
@@ -1962,31 +2498,20 @@ namespace Spread {
             result_dims.push_back(al, b.set_dim(source_dims[0].m_start, ncopies));
             ret_type = ASRUtils::duplicate_type(al, ret_type, &result_dims);
         } else {
+            bool is_dim_compile_time_constant = ASRUtils::is_value_constant(dim);
             Vec<ASR::dimension_t> result_dims;
             size_t n_dims = ASRUtils::extract_n_dims_from_ttype(type_source);
             result_dims.reserve(al, (int) n_dims + 1);
             Vec<ASR::expr_t*> args_merge; args_merge.reserve(al, 3);
             ASRUtils::ASRBuilder b(al, loc);
-            args_merge.push_back(al, ncopies);
-            args_merge.push_back(al, b.ArraySize(args[0], b.i32(1), int32));
-            args_merge.push_back(al, b.Eq(dim, b.i32(1)));
-            ASR::expr_t* merge = EXPR(Merge::create_Merge(al, loc, args_merge, diag));
-            ASR::dimension_t dim_;
-            dim_.loc = source->base.loc;
-            dim_.m_start = b.i32(1);
-            dim_.m_length = merge;
-            result_dims.push_back(al, dim_);
-            for( int it = 0; it < (int) n_dims; it++ ) {
-                Vec<ASR::expr_t*> args_merge; args_merge.reserve(al, 3);
-                args_merge.push_back(al, ncopies);
-                args_merge.push_back(al, b.ArraySize(args[0], b.i32(it+1), int32));
-                args_merge.push_back(al, b.Eq(dim, b.i32(it+2)));
-                ASR::expr_t* merge = EXPR(Merge::create_Merge(al, loc, args_merge, diag));
-                ASR::dimension_t dim;
-                dim.loc = source->base.loc;
-                dim.m_start = b.i32(1);
-                dim.m_length = merge;
-                result_dims.push_back(al, dim);
+            for( int it = 0; it < (int) n_dims + 1; it++ ) {
+                ASR::dimension_t rdim;
+                rdim.loc = source->base.loc;
+                rdim.m_start = b.i32(1);
+                rdim.m_length = Spread::get_result_dimension(
+                    al, loc, source, ncopies, it, dim,
+                    is_dim_compile_time_constant, diag);
+                result_dims.push_back(al, rdim);
             }
             ret_type = ASRUtils::duplicate_type(al, ret_type, &result_dims);
         }
@@ -2002,75 +2527,94 @@ namespace Spread {
             m_args.p, m_args.n, overload_id, ret_type, value);
     }
 
+    static inline ASR::stmt_t* generate_loop(Allocator& al, const Location& loc,
+        int64_t n_dims_return_type, int64_t d, ASR::expr_t* i, ASR::expr_t* result,
+        ASR::expr_t* source, ASR::expr_t* ncopies, ASR::ttype_t* return_type) {
+        ASRBuilder b(al, loc);
+        Vec<ASR::array_index_t> result_indices; result_indices.reserve(al, n_dims_return_type);
+        for( int64_t ri = 0; ri < n_dims_return_type; ri++ ) {
+            ASR::array_index_t rindex;
+            rindex.loc = loc;
+            if( ri + 1 == d ) {
+                rindex.m_left = nullptr;
+                rindex.m_right = i;
+                rindex.m_step = nullptr;
+                result_indices.push_back(al, rindex);
+                continue;
+            }
+            rindex.m_left = b.ArrayLBound(result, ri + 1);
+            rindex.m_right = b.ArrayUBound(result, ri + 1);
+            rindex.m_step = b.i32(1);
+            result_indices.push_back(al, rindex);
+        }
+
+        ASR::expr_t* result_section = nullptr;
+        if( n_dims_return_type == 1 ) {
+            result_section = EXPR(ASR::make_ArrayItem_t(al, loc, result,
+                    result_indices.p, result_indices.size(), ASRUtils::extract_type(return_type),
+                    ASR::arraystorageType::ColMajor, nullptr));
+            source = b.ArrayItem_01(source, {b.i32(1)});
+        } else {
+            ASR::ttype_t* result_section_type = ASRUtils::create_array_type_with_empty_dims(
+                al, n_dims_return_type - 1, ASRUtils::extract_type(return_type));
+            result_section = EXPR(ASR::make_ArraySection_t(al, loc, result,
+                    result_indices.p, result_indices.size(), result_section_type, nullptr));
+        }
+        return b.DoLoop(i, b.i32(1), ncopies, {
+            b.Assignment(result_section, source)
+        }, nullptr);
+    }
+
     static inline ASR::expr_t* instantiate_Spread(Allocator &al,
             const Location &loc, SymbolTable *scope,
             Vec<ASR::ttype_t*> &arg_types, ASR::ttype_t *return_type,
-            Vec<ASR::call_arg_t> &m_args, int64_t /*overload_id*/) {
+            Vec<ASR::call_arg_t> &m_args, int64_t /*overload_id*/,
+            int index_kind) {
         declare_basic_variables("_lcompilers_spread");
-        fill_func_arg("source", duplicate_type_with_empty_dims(al, arg_types[0]));
+        bool is_struct_type_arg = ASR::is_a<ASR::StructType_t>(*ASRUtils::extract_type(arg_types[0]));
+        if (is_struct_type_arg) {
+            fill_func_arg_struct_type("source", duplicate_type_with_empty_dims(al, arg_types[0]), m_args[0].m_value);
+        } else {
+            fill_func_arg("source", duplicate_type_with_empty_dims(al, arg_types[0]));
+        }
         fill_func_arg("dim", arg_types[1]);
         fill_func_arg("ncopies", arg_types[2]);
-        // TODO: this logic is incorrect, fix it.
-        /*
-            spread(source, dim, ncopies)
-            if (dim == 1) then
-                do j = 1, size(source)
-                    ele = source(j)
-                    do k = 1, ncopies
-                        result(i) = ele
-                        i = i + 1
-                    end do
-                end do
-            else if (dim == 2) then
-                do j = 1, ncopies
-                    do k = 1, size(source)
-                        ele = source(k)
-                        result(i) = ele
-                        i = i + 1
-                    end do
-                end do
-            end if
-        */
-        if( !ASRUtils::is_fixed_size_array(return_type) ) {
-            int64_t n_dims_return_type = ASRUtils::extract_n_dims_from_ttype(return_type);
-            bool is_allocatable = ASRUtils::is_allocatable(return_type);
-            Vec<ASR::dimension_t> empty_dims;
-            empty_dims.reserve(al, n_dims_return_type);
-            for( int idim = 0; idim < n_dims_return_type; idim++ ) {
-                ASR::dimension_t empty_dim;
-                empty_dim.loc = loc;
-                empty_dim.m_start = nullptr;
-                empty_dim.m_length = nullptr;
-                empty_dims.push_back(al, empty_dim);
-            }
-            return_type = ASRUtils::make_Array_t_util(al, loc,
-                ASRUtils::extract_type(return_type), empty_dims.p, empty_dims.size());
-            if( is_allocatable ) {
-                return_type = ASRUtils::TYPE(ASRUtils::make_Allocatable_t_util(al, loc, return_type));
-            }
+        int64_t n_dims_return_type = ASRUtils::extract_n_dims_from_ttype(return_type);
+        bool is_allocatable = ASRUtils::is_allocatable(return_type);
+        Vec<ASR::dimension_t> empty_dims;
+        empty_dims.reserve(al, n_dims_return_type);
+        for( int idim = 0; idim < n_dims_return_type; idim++ ) {
+            ASR::dimension_t empty_dim;
+            empty_dim.loc = loc;
+            empty_dim.m_start = nullptr;
+            empty_dim.m_length = nullptr;
+            empty_dims.push_back(al, empty_dim);
         }
-        ASR::expr_t *result = declare("result", return_type, Out);
-        args.push_back(al, result);
-        ASR::expr_t *i = declare("i", int32, Local);
-        ASR::expr_t *j = declare("j", int32, Local);
-        ASR::expr_t *k = declare("k", int32, Local);
-        body.push_back(al, b.Assignment(i, b.i32(1)));
-        body.push_back(al, b.If(b.Eq(args[1], b.i32(1)), {
-            b.DoLoop(j, b.i32(1), UBound(args[0], 1), {
-                b.DoLoop(k, b.i32(1), args[2], {
-                    b.Assignment(b.ArrayItem_01(result, {i}), b.ArrayItem_01(args[0], {j})),
-                    b.Assignment(i, b.Add(i, b.i32(1))),
-                }, nullptr),
-            }, nullptr),
-        }, {
-            b.DoLoop(j, b.i32(1), args[2], {
-                b.DoLoop(k, b.i32(1), UBound(args[0], 1), {
-                    b.Assignment(b.ArrayItem_01(result, {i}), b.ArrayItem_01(args[0], {k})),
-                    b.Assignment(i, b.Add(i, b.i32(1))),
-                }, nullptr),
-            }, nullptr),
-        }));
+        return_type = ASRUtils::make_Array_t_util(al, loc,
+            ASRUtils::extract_type(return_type), empty_dims.p, empty_dims.size());
+        if( is_allocatable ) {
+            return_type = ASRUtils::TYPE(ASRUtils::make_Allocatable_t_util(al, loc, return_type));
+        }
 
+        diag::Diagnostics diag;
+
+        ASR::expr_t *result;
+        if (is_struct_type_arg) {
+            result = declare_struct_type("result", return_type, Out, m_args[0].m_value);
+        } else {
+            result = declare("result", return_type, Out);
+        }
+        args.push_back(al, result);
+        ASR::expr_t *i = declare("i", b.int_type(index_kind), Local);
+        ASR::expr_t *source = args[0], *dim = args[1], *ncopies = args[2];
+        ASR::stmt_t* current_else = generate_loop(al, loc, n_dims_return_type,
+            n_dims_return_type, i, result, source, ncopies, return_type);
+        for( int64_t d = n_dims_return_type - 2; d >= 0; d-- ) {
+            ASR::stmt_t* if_stmt = generate_loop(al, loc, n_dims_return_type,
+                d + 1, i, result, source, ncopies, return_type);
+            current_else = b.If(b.Eq(dim, b.i32(d + 1)), {if_stmt}, {current_else});
+        }
+        body.push_back(al, current_else);
         body.push_back(al, b.Return());
         ASR::symbol_t *fn_sym = make_ASR_Function_t(fn_name, fn_symtab, dep, args,
                 body, nullptr, ASR::abiType::Source, ASR::deftypeType::Implementation, nullptr);
@@ -2175,13 +2719,13 @@ namespace Eoshift {
         if (dim) {
             is_dim_present = true;
         }
-        ASR::ttype_t *type_array = expr_type(array);
-        ASR::ttype_t *type_shift = expr_type(shift);
+        ASR::ttype_t *type_array = ASRUtils::type_get_past_allocatable_pointer(expr_type(array));
+        ASR::ttype_t *type_shift = ASRUtils::type_get_past_allocatable_pointer(expr_type(shift));
         ASR::ttype_t *type_boundary = nullptr;
         if(is_boundary_present){
             type_boundary = expr_type(boundary);
         }
-        ASR::ttype_t *ret_type = expr_type(array);
+        ASR::ttype_t *ret_type = type_array;
         if ( !is_array(type_array) ) {
             append_error(diag, "The argument `array` in `eoshift` must be of type Array", array->base.loc);
             return nullptr;
@@ -2190,7 +2734,7 @@ namespace Eoshift {
             append_error(diag, "The argument `shift` in `eoshift` must be of type Integer", shift->base.loc);
             return nullptr;
         }
-        if( is_boundary_present && (!ASRUtils::check_equal_type(type_boundary, type_array))) {
+        if( is_boundary_present && (!ASRUtils::check_equal_type(type_boundary, type_array, boundary, array))) {
             append_error(diag, "'boundary' argument of 'eoshift' intrinsic must be a scalar of same type as array type", boundary->base.loc);
             return nullptr;
         }
@@ -2242,7 +2786,8 @@ namespace Eoshift {
     static inline ASR::expr_t* instantiate_Eoshift(Allocator &al,
             const Location &loc, SymbolTable *scope,
             Vec<ASR::ttype_t*> &arg_types, ASR::ttype_t *return_type,
-            Vec<ASR::call_arg_t> &m_args, int64_t /*overload_id*/) {
+            Vec<ASR::call_arg_t> &m_args, int64_t /*overload_id*/,
+            int index_kind) {
         declare_basic_variables("_lcompilers_eoshift");
         fill_func_arg("array", duplicate_type_with_empty_dims(al, arg_types[0]));
         fill_func_arg("shift", arg_types[1]);
@@ -2273,9 +2818,11 @@ namespace Eoshift {
         */
         if( !ASRUtils::is_fixed_size_array(return_type) ) {
             bool is_allocatable = ASRUtils::is_allocatable(return_type);
+            int n_dims = ASRUtils::extract_n_dims_from_ttype(return_type_);
+            if (n_dims < 1) n_dims = 1;
             Vec<ASR::dimension_t> empty_dims;
-            empty_dims.reserve(al, 2);
-            for( int idim = 0; idim < 2; idim++ ) {
+            empty_dims.reserve(al, n_dims);
+            for( int idim = 0; idim < n_dims; idim++ ) {
                 ASR::dimension_t empty_dim;
                 empty_dim.loc = loc;
                 empty_dim.m_start = nullptr;
@@ -2290,11 +2837,11 @@ namespace Eoshift {
         }
         ASR::expr_t *result = declare("result", return_type_, Out);
         args.push_back(al, result);
-        ASR::expr_t *i = declare("i", int32, Local);
-        ASR::expr_t *j = declare("j", int32, Local);
-        ASR::expr_t* abs_shift = declare("z", int32, Local);
-        ASR::expr_t* abs_shift_val = declare("k", int32, Local);
-        ASR::expr_t* shift_val = declare("shift_val", int32, Local);;
+        ASR::expr_t *i = declare("i", b.int_type(index_kind), Local);
+        ASR::expr_t *j = declare("j", b.int_type(index_kind), Local);
+        ASR::expr_t* abs_shift = declare("z", b.int_type(index_kind), Local);
+        ASR::expr_t* abs_shift_val = declare("k", b.int_type(index_kind), Local);
+        ASR::expr_t* shift_val = declare("shift_val", b.int_type(index_kind), Local);;
         ASR::expr_t* final_boundary = declare("final_boundary", character(2), Local);   //TODO: It does not handle character type
         ASR::expr_t* boundary = args[2];
 
@@ -2302,44 +2849,44 @@ namespace Eoshift {
         body.push_back(al, b.Assignment(abs_shift, shift_val));
         body.push_back(al, b.Assignment(abs_shift_val, shift_val));
 
-        body.push_back(al, b.If(b.Lt(args[1], b.i32(0)), {
-            b.Assignment(shift_val, b.Add(shift_val, UBound(args[0], 1))),
-            b.Assignment(abs_shift, b.Mul(abs_shift, b.i32(-1)))
+        body.push_back(al, b.If(b.Lt(args[1], b.i_idx(0, index_kind)), {
+            b.Assignment(shift_val, b.Add(shift_val, b.GetUBound(args[0], 1, index_kind))),
+            b.Assignment(abs_shift, b.Mul(abs_shift, b.i_idx(-1, index_kind)))
         }, {
             b.Assignment(shift_val, shift_val)
         }
         ));
-        body.push_back(al, b.Assignment(i, b.i32(1)));
-        body.push_back(al, b.DoLoop(j, b.Add(shift_val, b.i32(1)), UBound(args[0], 1), {
+        body.push_back(al, b.Assignment(i, b.i_idx(1, index_kind)));
+        body.push_back(al, b.DoLoop(j, b.Add(shift_val, b.i_idx(1, index_kind)), b.GetUBound(args[0], 1, index_kind), {
             b.Assignment(b.ArrayItem_01(result, {i}), b.ArrayItem_01(args[0], {j})),
-            b.Assignment(i, b.Add(i, b.i32(1))),
+            b.Assignment(i, b.Add(i, b.i_idx(1, index_kind))),
         }, nullptr));
-        body.push_back(al, b.DoLoop(j, LBound(args[0], 1), b.Add(shift_val, b.i32(1)), {
+        body.push_back(al, b.DoLoop(j, b.GetLBound(args[0], 1, index_kind), shift_val, {
             b.Assignment(b.ArrayItem_01(result, {i}), b.ArrayItem_01(args[0], {j})),
-            b.Assignment(i, b.Add(i, b.i32(1))),
+            b.Assignment(i, b.Add(i, b.i_idx(1, index_kind))),
         }, nullptr));
 
-        body.push_back(al, b.If(b.GtE(abs_shift_val, b.i32(0)), {
-            b.Assignment(i, UBound(args[0], 1)),
+        body.push_back(al, b.If(b.GtE(abs_shift_val, b.i_idx(0, index_kind)), {
+            b.Assignment(i, b.GetUBound(args[0], 1, index_kind)),
             b.Assignment(i, b.Sub(i, abs_shift)),
-            b.Assignment(i, b.Add(i, b.i32(1)))
+            b.Assignment(i, b.Add(i, b.i_idx(1, index_kind)))
         }, {
-            b.Assignment(i, b.i32(1))
+            b.Assignment(i, b.i_idx(1, index_kind))
         }
         ));
 
-        if(is_character(*expr_type(b.ArrayItem_01(args[0], {b.i32(1)}))) && is_logical(*expr_type(args[2]))){
-            body.push_back(al, b.Assignment(final_boundary, b.StringConstant("  ", expr_type(b.ArrayItem_01(args[0], {b.i32(1)})))));
-            body.push_back(al, b.DoLoop(j, b.i32(1), abs_shift, {
+        if(is_character(*expr_type(b.ArrayItem_01(args[0], {b.i_idx(1, index_kind)}))) && is_logical(*expr_type(args[2]))){
+            body.push_back(al, b.Assignment(final_boundary, b.StringConstant("  ", expr_type(b.ArrayItem_01(args[0], {b.i_idx(1, index_kind)})))));
+            body.push_back(al, b.DoLoop(j, b.i_idx(1, index_kind), abs_shift, {
             b.Assignment(b.ArrayItem_01(result, {i}), final_boundary),
-            b.Assignment(i, b.Add(i, b.i32(1))),
+            b.Assignment(i, b.Add(i, b.i_idx(1, index_kind))),
         }, nullptr));
 
         }
         else{
-            body.push_back(al, b.DoLoop(j, b.i32(1), abs_shift, {
+            body.push_back(al, b.DoLoop(j, b.i_idx(1, index_kind), abs_shift, {
             b.Assignment(b.ArrayItem_01(result, {i}), boundary),
-            b.Assignment(i, b.Add(i, b.i32(1))),
+            b.Assignment(i, b.Add(i, b.i_idx(1, index_kind))),
         }, nullptr));
         }
 
@@ -2587,7 +3134,7 @@ namespace IanyIall {
                 bool same_allocatable_type = (ASRUtils::is_allocatable(arg_type) ==
                                         ASRUtils::is_allocatable(ASRUtils::expr_type(f->m_args[0])));
                 if (same_allocatable_type && ASRUtils::types_equal(ASRUtils::expr_type(f->m_args[0]),
-                        ASRUtils::expr_type(new_args[0].m_value), true) && orig_array_rank == rank) {
+                        ASRUtils::expr_type(new_args[0].m_value), f->m_args[0], new_args[0].m_value, true) && orig_array_rank == rank) {
                     return builder.Call(s, new_args, return_type, nullptr);
                 } else {
                     new_func_name += std::to_string(i);
@@ -2609,7 +3156,7 @@ namespace IanyIall {
                 ASR::ttype_t* dim_type = ASRUtils::expr_type(new_args[1].m_value);
                 LCOMPILERS_ASSERT(ASR::is_a<ASR::Integer_t>(*dim_type));
                 [[maybe_unused]] int kind = ASRUtils::extract_kind_from_ttype_t(dim_type);
-                LCOMPILERS_ASSERT(kind == 4);
+                LCOMPILERS_ASSERT(kind == 4 || kind == 8);
                 fill_func_arg("dim", dim_type);
 
                 Vec<ASR::dimension_t> dims;
@@ -2630,7 +3177,7 @@ namespace IanyIall {
                 ASR::ttype_t* dim_type = ASRUtils::expr_type(new_args[1].m_value);
                 LCOMPILERS_ASSERT(ASR::is_a<ASR::Integer_t>(*dim_type));
                 [[maybe_unused]] int kind = ASRUtils::extract_kind_from_ttype_t(dim_type);
-                LCOMPILERS_ASSERT(kind == 4);
+                LCOMPILERS_ASSERT(kind == 4 || kind == 8);
                 fill_func_arg("dim", dim_type);
 
                 Vec<ASR::dimension_t> dims;
@@ -2708,7 +3255,7 @@ namespace Iany {
     static inline ASR::expr_t* instantiate_Iany(Allocator &al,
             const Location &loc, SymbolTable *scope, Vec<ASR::ttype_t*>& arg_types,
             ASR::ttype_t *return_type, Vec<ASR::call_arg_t>& new_args,
-            int64_t overload_id) {
+            int64_t overload_id, int /*index_kind*/) {
         ASRBuilder b(al, loc);
         return IanyIall::instantiate_IanyIall(al, loc, scope, arg_types, return_type,
         new_args, overload_id, ASRUtils::IntrinsicArrayFunctions::Iany,
@@ -2737,7 +3284,7 @@ namespace Iall {
     static inline ASR::expr_t* instantiate_Iall(Allocator &al,
             const Location &loc, SymbolTable *scope, Vec<ASR::ttype_t*>& arg_types,
             ASR::ttype_t *return_type, Vec<ASR::call_arg_t>& new_args,
-            int64_t overload_id) {
+            int64_t overload_id, int /*index_kind*/) {
         ASRBuilder b(al, loc);
         return IanyIall::instantiate_IanyIall(al, loc, scope, arg_types, return_type,
         new_args, overload_id, ASRUtils::IntrinsicArrayFunctions::Iall,
@@ -2804,7 +3351,11 @@ namespace AnyAll {
         bool init_logical_val, std::function<bool(bool,bool)> logical_operation) {
         ASR::expr_t *mask = args[0];
         ASR::expr_t* value = nullptr;
-        ASR::ttype_t *type = ASRUtils::TYPE(ASR::make_Logical_t(al, loc, 4));
+        int mask_kind = 4;
+        if (mask) {
+            mask_kind = ASRUtils::extract_kind_from_ttype_t(ASRUtils::expr_type(mask));
+        }
+        ASR::ttype_t *type = ASRUtils::TYPE(ASR::make_Logical_t(al, loc, mask_kind));
         if (mask && ASR::is_a<ASR::ArrayConstant_t>(*mask)) {
             ASR::ArrayConstant_t *array = ASR::down_cast<ASR::ArrayConstant_t>(mask);
             bool result = init_logical_val;
@@ -2845,7 +3396,9 @@ namespace AnyAll {
         arg_values.push_back(al, ASRUtils::expr_value(mask));
         if( dim ) arg_values.push_back(al,  ASRUtils::expr_value(dim));
 
-        ASR::ttype_t* logical_return_type = logical;
+        int mask_kind = ASRUtils::extract_kind_from_ttype_t(ASRUtils::expr_type(mask));
+        ASR::ttype_t* mask_logical = ASRUtils::TYPE(ASR::make_Logical_t(al, loc, mask_kind));
+        ASR::ttype_t* logical_return_type = mask_logical;
         if( dim ) {
             overload_id = 1;
             size_t n_dims = ASRUtils::extract_n_dims_from_ttype(ASRUtils::expr_type(mask));
@@ -2859,7 +3412,7 @@ namespace AnyAll {
             }
             if( dims.size() > 0 ) {
                 logical_return_type = ASRUtils::make_Array_t_util(al, loc,
-                    logical, dims.p, dims.size());
+                    mask_logical, dims.p, dims.size());
             }
         }
 
@@ -2922,7 +3475,7 @@ namespace AnyAll {
         SymbolTable *scope, Vec<ASR::ttype_t*>& arg_types, ASR::ttype_t *logical_return_type,
         Vec<ASR::call_arg_t>& new_args, int64_t overload_id, ASRUtils::IntrinsicArrayFunctions intrinsic_func_id,
         ASR::expr_t* initial_value, elemental_operation_func elemental_operation) {
-        std::string intrinsic_func_name = ASRUtils::get_array_intrinsic_name(static_cast<int64_t>(intrinsic_func_id));
+        std::string intrinsic_func_name = "_lcompilers_" + ASRUtils::get_array_intrinsic_name(static_cast<int64_t>(intrinsic_func_id));
         ASRBuilder builder(al, loc);
         ASRBuilder& b = builder;
         ASR::ttype_t* arg_type = arg_types[0];
@@ -2943,7 +3496,7 @@ namespace AnyAll {
                 bool same_allocatable_type = (ASRUtils::is_allocatable(arg_type) ==
                                         ASRUtils::is_allocatable(ASRUtils::expr_type(f->m_args[0])));
                 if (same_allocatable_type && ASRUtils::types_equal(ASRUtils::expr_type(f->m_args[0]),
-                        ASRUtils::expr_type(new_args[0].m_value), true) && orig_array_rank == rank) {
+                        ASRUtils::expr_type(new_args[0].m_value), f->m_args[0], new_args[0].m_value, true) && orig_array_rank == rank) {
                     return builder.Call(s, new_args, logical_return_type, nullptr);
                 } else {
                     new_func_name += std::to_string(i);
@@ -2965,7 +3518,7 @@ namespace AnyAll {
                 ASR::ttype_t* dim_type = ASRUtils::expr_type(new_args[1].m_value);
                 LCOMPILERS_ASSERT(ASR::is_a<ASR::Integer_t>(*dim_type));
                 [[maybe_unused]] int kind = ASRUtils::extract_kind_from_ttype_t(dim_type);
-                LCOMPILERS_ASSERT(kind == 4);
+                LCOMPILERS_ASSERT(kind == 4 || kind == 8);
                 fill_func_arg("dim", dim_type);
 
                 Vec<ASR::dimension_t> dims;
@@ -2980,7 +3533,9 @@ namespace AnyAll {
                 }
                 result_dims = dims.size();
                 if( result_dims > 0 ) {
-                    fill_func_arg_sub("result", logical_return_type, Out);
+                    ASR::ttype_t* result_type = ASRUtils::make_Array_t_util(al, loc,
+                        ASRUtils::extract_type(logical_return_type), dims.p, dims.size());
+                    fill_func_arg_sub("result", result_type, Out);
                 }
             }
         }
@@ -3040,10 +3595,11 @@ namespace Any {
     static inline ASR::expr_t* instantiate_Any(Allocator &al,
             const Location &loc, SymbolTable *scope, Vec<ASR::ttype_t*>& arg_types,
             ASR::ttype_t *return_type, Vec<ASR::call_arg_t>& new_args,
-            int64_t overload_id) {
+            int64_t overload_id, int /*index_kind*/) {
+        int kind = ASRUtils::extract_kind_from_ttype_t(arg_types[0]);
         return AnyAll::instantiate_AnyAll(al, loc, scope, arg_types, return_type,
         new_args, overload_id, ASRUtils::IntrinsicArrayFunctions::Any,
-        make_ConstantWithKind(make_LogicalConstant_t, make_Logical_t, false, 4, loc), &ASRBuilder::Or);
+        make_ConstantWithKind(make_LogicalConstant_t, make_Logical_t, false, kind, loc), &ASRBuilder::Or);
     }
 
 } // namespace Any
@@ -3068,10 +3624,11 @@ namespace All {
     static inline ASR::expr_t* instantiate_All(Allocator &al,
             const Location &loc, SymbolTable *scope, Vec<ASR::ttype_t*>& arg_types,
             ASR::ttype_t *return_type, Vec<ASR::call_arg_t>& new_args,
-            int64_t overload_id) {
+            int64_t overload_id, int /*index_kind*/) {
+        int kind = ASRUtils::extract_kind_from_ttype_t(arg_types[0]);
         return AnyAll::instantiate_AnyAll(al, loc, scope, arg_types, return_type,
         new_args, overload_id, ASRUtils::IntrinsicArrayFunctions::All,
-        make_ConstantWithKind(make_LogicalConstant_t, make_Logical_t, true, 4, loc), &ASRBuilder::And);
+        make_ConstantWithKind(make_LogicalConstant_t, make_Logical_t, true, kind, loc), &ASRBuilder::And);
     }
 
 } // namespace All
@@ -3096,9 +3653,9 @@ namespace Sum {
         ASR::ttype_t* array_type = expr_type(args[0]);
         if (!is_integer(*array_type) && !is_real(*array_type) && !is_complex(*array_type)) {
             diag.add(diag::Diagnostic("Input to `Sum` is expected to be numeric, but got " +
-                type_to_str_fortran(array_type), 
-                diag::Level::Error, 
-                diag::Stage::Semantic, 
+                type_to_str_fortran_expr(array_type, args[0]),
+                diag::Level::Error,
+                diag::Stage::Semantic,
                 {diag::Label("must be integer, real or complex type", { args[0]->base.loc })}));
             return nullptr;
         }
@@ -3109,13 +3666,436 @@ namespace Sum {
     static inline ASR::expr_t* instantiate_Sum(Allocator &al,
             const Location &loc, SymbolTable *scope, Vec<ASR::ttype_t*>& arg_types,
             ASR::ttype_t *return_type, Vec<ASR::call_arg_t>& new_args,
-            int64_t overload_id) {
+            int64_t overload_id, int index_kind) {
         return ArrIntrinsic::instantiate_ArrIntrinsic(al, loc, scope, arg_types,
-            return_type, new_args, overload_id, IntrinsicArrayFunctions::Sum,
+            return_type, new_args, overload_id, index_kind, IntrinsicArrayFunctions::Sum,
             &get_constant_zero_with_given_type, &ASRBuilder::Add);
     }
 
 } // namespace Sum
+
+namespace Reduce {
+
+    static inline void verify_args(const ASR::IntrinsicArrayFunction_t& x,
+            diag::Diagnostics& diagnostics) {
+        std::string intrinsic_func_name = "reduce";
+        ASRUtils::require_impl(x.n_args >= 2,
+            "`" + intrinsic_func_name + "` intrinsic must accept at least two arguments",
+            x.base.base.loc, diagnostics);
+        ASRUtils::require_impl(x.m_args[0] != nullptr,
+            "`array` argument to `" + intrinsic_func_name + "` cannot be nullptr",
+            x.base.base.loc, diagnostics);
+        ASRUtils::require_impl(x.m_args[1] != nullptr,
+            "`operation` argument to `" + intrinsic_func_name + "` cannot be nullptr",
+            x.base.base.loc, diagnostics);
+        ASRUtils::require_impl(ASRUtils::is_array(ASRUtils::expr_type(x.m_args[0])),
+            "first argument of `" + intrinsic_func_name + "` must be an array",
+            x.base.base.loc, diagnostics);
+        const int64_t id_array = 0, id_array_dim = 1, id_array_mask = 2, id_array_dim_mask = 3;
+        switch( x.m_overload_id ) {
+            case id_array: {
+                ArrIntrinsic::verify_reduce_array(x.m_args[0], x.m_type, x.base.base.loc, diagnostics,
+                    IntrinsicArrayFunctions::Reduce);
+                break;
+            }
+            case id_array_mask: {
+                ASRUtils::require_impl(x.n_args == 3 && x.m_args[2] != nullptr,
+                    "`mask` argument cannot be nullptr", x.base.base.loc, diagnostics);
+                ArrIntrinsic::verify_reduce_array(x.m_args[0], x.m_type, x.base.base.loc, diagnostics,
+                    IntrinsicArrayFunctions::Reduce);
+                break;
+            }
+            case id_array_dim: {
+                ASRUtils::require_impl(x.n_args == 3 && x.m_args[2] != nullptr,
+                    "`dim` argument to `reduce` cannot be nullptr",
+                    x.base.base.loc, diagnostics);
+                ArrIntrinsic::verify_reduce_array_dim(x.m_args[0], x.m_args[2], x.m_type, x.base.base.loc, diagnostics,
+                    IntrinsicArrayFunctions::Reduce);
+                break;
+            }
+            case id_array_dim_mask: {
+                ASRUtils::require_impl(x.n_args == 4 && x.m_args[3] != nullptr,
+                    "`mask` argument cannot be nullptr", x.base.base.loc, diagnostics);
+                ASRUtils::require_impl(x.n_args >= 3 && x.m_args[2] != nullptr,
+                    "`dim` argument to `reduce` cannot be nullptr",
+                    x.base.base.loc, diagnostics);
+                ArrIntrinsic::verify_reduce_array_dim(x.m_args[0], x.m_args[2], x.m_type, x.base.base.loc, diagnostics,
+                    IntrinsicArrayFunctions::Reduce);
+                break;
+            }
+            default: {
+                require_impl(false, "Unrecognised overload id in " + intrinsic_func_name + " intrinsic",
+                             x.base.base.loc, diagnostics);
+            }
+        }
+        if( x.m_overload_id == id_array_mask || x.m_overload_id == id_array_dim_mask ) {
+            ASR::expr_t* mask = nullptr;
+            if( x.m_overload_id == id_array_mask ) {
+                mask = x.m_args[2];
+            } else if( x.m_overload_id == id_array_dim_mask ) {
+                mask = x.m_args[3];
+            }
+            ASR::dimension_t *array_dims, *mask_dims;
+            ASR::ttype_t* array_type = ASRUtils::expr_type(x.m_args[0]);
+            ASR::ttype_t* mask_type = ASRUtils::expr_type(mask);
+            size_t array_n_dims = ASRUtils::extract_dimensions_from_ttype(array_type, array_dims);
+            size_t mask_n_dims = ASRUtils::extract_dimensions_from_ttype(mask_type, mask_dims);
+            if (mask_n_dims != 0) {
+                ASRUtils::require_impl(ASRUtils::dimensions_compatible(array_dims, array_n_dims, mask_dims, mask_n_dims),
+                    "The dimensions of `array` and `mask` arguments of `" + intrinsic_func_name + "` intrinsic must be same",
+                    x.base.base.loc, diagnostics);
+            }
+        }
+    }
+
+    static inline ASR::expr_t *eval_Reduce(Allocator & al,
+        const Location & loc, ASR::ttype_t *, Vec<ASR::expr_t*>& args,
+        diag::Diagnostics& /*diag*/) {
+        (void)al; (void)loc; (void)args;
+        return nullptr;
+    }
+
+    static inline ASR::asr_t* create_Reduce(Allocator& al, const Location& loc,
+            Vec<ASR::expr_t*>& args, diag::Diagnostics& diag) {
+        std::string intrinsic_func_name = "reduce";
+        int64_t id_array = 0, id_array_dim = 1, id_array_mask = 2, id_array_dim_mask = 3;
+        int64_t overload_id = id_array;
+
+        if (args.size() < 2) {
+            append_error(diag, "`" + intrinsic_func_name + "` intrinsic must have at least two arguments", loc);
+            return nullptr;
+        }
+        ASR::expr_t* array = args[0];
+        ASR::expr_t* operation = args[1];
+        ASR::expr_t *dim = nullptr;
+        ASR::expr_t *mask = nullptr;
+        ASR::ttype_t* array_type = ASRUtils::expr_type(array);
+        if (!is_array(array_type)){
+            append_error(diag, "Argument to intrinsic `" + intrinsic_func_name + "` is expected to be an array, found: " + type_to_str_fortran_expr(array_type, array), loc);
+            return nullptr;
+        }
+        {
+            ASR::ttype_t* elem = ArrIntrinsic::reduce_array_element_base_type(array_type);
+            if (!is_integer(*elem) && !is_real(*elem) && !is_complex(*elem) &&
+                    !ASR::is_a<ASR::StructType_t>(*elem)) {
+                diag.add(diag::Diagnostic("Input to `reduce` is expected to be numeric or derived type, but got " +
+                    type_to_str_fortran_expr(array_type, array),
+                    diag::Level::Error,
+                    diag::Stage::Semantic,
+                    {diag::Label("must be integer, real, complex, or derived type", { array->base.loc })}));
+                return nullptr;
+            }
+        }
+        if (args.size() > 2 && args[2]) {
+            if (is_integer(*ASRUtils::expr_type(args[2]))) {
+                dim = args[2];
+                if ( ASRUtils::is_value_constant(dim) ) {
+                    int dim_val = extract_dim_value_int(dim);
+                    int n_dims = ASRUtils::extract_n_dims_from_ttype(array_type);
+                    if (dim_val <= 0 || dim_val > n_dims) {
+                        diag.add(diag::Diagnostic("`dim` argument of the `" + intrinsic_func_name + "` intrinsic is out of bounds",
+                        diag::Level::Error,
+                        diag::Stage::Semantic,
+                        {diag::Label("Must have 0 < dim <= " + std::to_string(n_dims) + " for array of rank " + std::to_string(n_dims), { args[2]->base.loc })}));
+                        return nullptr;
+                    }
+                }
+                if (args.size() > 3 && args[3] && is_logical(*ASRUtils::expr_type(args[3]))) {
+                    mask = args[3];
+                    if (!ASRUtils::is_value_constant(mask)) {
+                        if (!ArrIntrinsic::is_same_shape(array, mask, intrinsic_func_name, diag, {args[0]->base.loc, args[3]->base.loc})) {
+                            return nullptr;
+                        }
+                    }
+                } else if (args.size() > 3 && args[3]) {
+                    append_error(diag, "`mask` argument to `" + intrinsic_func_name + "` must be a scalar or array of logical type",
+                        args[3]->base.loc);
+                    return nullptr;
+                }
+            } else if (is_logical(*ASRUtils::expr_type(args[2]))) {
+                if (args.size() > 3 && args[3]) {
+                    append_error(diag, "unexpected extra argument after `mask` in `" + intrinsic_func_name + "`",
+                        args[3]->base.loc);
+                    return nullptr;
+                }
+                mask = args[2];
+                if (!ASRUtils::is_value_constant(mask)) {
+                    if (!ArrIntrinsic::is_same_shape(array, mask, intrinsic_func_name, diag, {args[0]->base.loc, args[2]->base.loc})) {
+                        return nullptr;
+                    }
+                }
+            } else {
+                append_error(diag, "Third argument of `" + intrinsic_func_name + "` must be INTEGER (`dim`) or LOGICAL (`mask`)",
+                    args[2]->base.loc);
+                return nullptr;
+            }
+        }
+        if (dim) {
+            size_t dim_rank = ASRUtils::extract_n_dims_from_ttype(ASRUtils::expr_type(dim));
+            if( dim_rank != 0 || !is_integer(*ASRUtils::expr_type(dim))) {
+                append_error(diag, "`dim` argument to `" + intrinsic_func_name + "` must be a scalar and of integer type",
+                    dim->base.loc);
+                return nullptr;
+            }
+            overload_id = id_array_dim;
+        }
+        if (mask) {
+            if(!is_logical(*ASRUtils::expr_type(mask))) {
+                append_error(diag, "`mask` argument to `" + intrinsic_func_name + "` must be a scalar or array of logical type",
+                    mask->base.loc);
+                return nullptr;
+            }
+            if (!ASRUtils::is_array(ASRUtils::expr_type(mask))) {
+                ASR::expr_t* mask_val = ASRUtils::expr_value(mask);
+                if (mask_val && ASR::is_a<ASR::LogicalConstant_t>(*mask_val)) {
+                    bool mask_bool = ASR::down_cast<ASR::LogicalConstant_t>(mask_val)->m_value;
+                    if (mask_bool) {
+                        mask = nullptr;
+                    }
+                }
+            }
+            if (mask) {
+                overload_id = id_array_mask;
+            }
+        }
+        if (dim && mask) {
+            overload_id = id_array_dim_mask;
+        }
+
+        bool runtime_dim = false;
+        if( dim ) {
+            ASR::expr_t *dim_value = ASRUtils::expr_value(dim);
+            runtime_dim = dim_value == nullptr;
+        }
+
+        ASR::ttype_t* return_type = nullptr;
+        if( overload_id == id_array || overload_id == id_array_mask ) {
+            ASR::ttype_t* type = ASRUtils::type_get_past_allocatable(
+            ASRUtils::type_get_past_pointer(array_type));
+            return_type = ASRUtils::duplicate_type_without_dims(al, type, loc);
+        } else if( overload_id == id_array_dim || overload_id == id_array_dim_mask ) {
+            Vec<ASR::dimension_t> dims;
+            size_t n_dims = ASRUtils::extract_n_dims_from_ttype(array_type);
+            ArrIntrinsic::fill_dimensions_for_ArrIntrinsic(al, (int64_t) n_dims - 1,
+                args[0], dim, diag, runtime_dim, dims);
+            ASR::ttype_t* base_array_type = ASRUtils::type_get_past_allocatable_pointer(array_type);
+            return_type = ASRUtils::duplicate_type(al, base_array_type, &dims, ASR::array_physical_typeType::DescriptorArray, true);
+            if ( (int64_t) n_dims == 1 ) {
+                return_type = ASRUtils::type_get_past_pointer(
+                    ASRUtils::type_get_past_allocatable(ASRUtils::type_get_past_array(return_type)));
+            }
+        }
+
+        Vec<ASR::expr_t*> arr_intrinsic_args;
+        arr_intrinsic_args.reserve(al, 4);
+        arr_intrinsic_args.push_back(al, array);
+        arr_intrinsic_args.push_back(al, operation);
+        if( dim ) {
+            arr_intrinsic_args.push_back(al, dim);
+        }
+        if( mask ) {
+            arr_intrinsic_args.push_back(al, mask);
+        }
+        return ASRUtils::make_IntrinsicArrayFunction_t_util(al, loc,
+            static_cast<int64_t>(IntrinsicArrayFunctions::Reduce),
+            arr_intrinsic_args.p, arr_intrinsic_args.n, overload_id, return_type, nullptr);
+    }
+
+    static inline ASR::expr_t* instantiate_Reduce(Allocator &al,
+            const Location &loc, SymbolTable *scope, Vec<ASR::ttype_t*>& arg_types,
+            ASR::ttype_t *return_type, Vec<ASR::call_arg_t>& new_args,
+            int64_t overload_id, int index_kind) {
+        std::string intrinsic_func_name = "_lcompilers_" + ASRUtils::get_array_intrinsic_name(
+            static_cast<int64_t>(IntrinsicArrayFunctions::Reduce));
+        ASRBuilder builder(al, loc);
+        ASRBuilder& b = builder;
+        int64_t id_array = 0, id_array_dim = 1, id_array_mask = 2, id_array_dim_mask = 3;
+
+        ASR::ttype_t* arg_type = ASRUtils::type_get_past_allocatable(
+            ASRUtils::type_get_past_pointer(arg_types[0]));
+        int kind = ASRUtils::extract_kind_from_ttype_t(arg_type);
+        int rank = ASRUtils::extract_n_dims_from_ttype(arg_type);
+        std::string new_name = intrinsic_func_name + "_" + std::to_string(kind) +
+                                "_" + std::to_string(rank) +
+                                "_" + std::to_string(overload_id) +
+                                "_idx" + std::to_string(index_kind) +
+                                "_op_" + type_to_str_python_expr(arg_types[1], new_args[1].m_value);
+        {
+            std::string new_func_name = new_name;
+            int i = 1;
+            while (scope->get_symbol(new_func_name) != nullptr) {
+                ASR::symbol_t *s = scope->get_symbol(new_func_name);
+                ASR::Function_t *f = ASR::down_cast<ASR::Function_t>(s);
+                int orig_array_rank = ASRUtils::extract_n_dims_from_ttype(
+                                        ASRUtils::expr_type(f->m_args[0]));
+                bool same_allocatable_type = (ASRUtils::is_allocatable(arg_type) ==
+                                        ASRUtils::is_allocatable(ASRUtils::expr_type(f->m_args[0])));
+                if (same_allocatable_type && ASRUtils::types_equal(ASRUtils::expr_type(f->m_args[0]),
+                        arg_type, f->m_args[0], new_args[0].m_value) && orig_array_rank == rank &&
+                    ASRUtils::types_equal(ASRUtils::expr_type(f->m_args[1]),
+                        arg_types[1], f->m_args[1], new_args[1].m_value, true)) {
+                    return builder.Call(s, new_args, return_type, nullptr);
+                } else {
+                    new_func_name += std::to_string(i);
+                    i++;
+                }
+            }
+        }
+
+        new_name = scope->get_unique_name(new_name, false);
+        SymbolTable *fn_symtab = al.make_new<SymbolTable>(scope);
+
+        Vec<ASR::expr_t*> args;
+        args.reserve(al, 1);
+
+        ASR::ttype_t* array_type = ASRUtils::duplicate_type_with_empty_dims(al, arg_type);
+        ASR::symbol_t* array_type_decl = nullptr;
+        ASR::symbol_t* caller_array_struct_sym = nullptr;
+        {
+            ASR::expr_t* array_arg = new_args[0].m_value;
+            while (array_arg != nullptr && ASR::is_a<ASR::ArrayPhysicalCast_t>(*array_arg)) {
+                array_arg = ASR::down_cast<ASR::ArrayPhysicalCast_t>(array_arg)->m_arg;
+            }
+            while (array_arg != nullptr && ASR::is_a<ASR::Cast_t>(*array_arg)) {
+                array_arg = ASR::down_cast<ASR::Cast_t>(array_arg)->m_arg;
+            }
+            if (array_arg != nullptr && ASR::is_a<ASR::Var_t>(*array_arg)) {
+                ASR::symbol_t* arr_sym = ASRUtils::symbol_get_past_external(
+                    ASR::down_cast<ASR::Var_t>(array_arg)->m_v);
+                if (ASR::is_a<ASR::Variable_t>(*arr_sym)) {
+                    ASR::Variable_t* av = ASR::down_cast<ASR::Variable_t>(arr_sym);
+                    if (av->m_type_declaration != nullptr) {
+                        array_type_decl = av->m_type_declaration;
+                        caller_array_struct_sym = ASRUtils::symbol_get_past_external(array_type_decl);
+                    }
+                }
+            }
+        }
+        {
+            ASR::expr_t* arr_arg = b.Variable(fn_symtab, "array", array_type, ASR::intentType::In, array_type_decl);
+            args.push_back(al, arr_arg);
+        }
+        ASR::ttype_t* operation_type = ASRUtils::duplicate_type_with_empty_dims(al, arg_types[1]);
+        // Procedure dummy must carry m_type_declaration so get_function() and Call_t_body
+        // can align arguments; otherwise func is null and Call_t_body segfaults.
+        ASR::symbol_t* operation_type_decl = nullptr;
+        if (new_args[1].m_value != nullptr && ASR::is_a<ASR::Var_t>(*new_args[1].m_value)) {
+            ASR::symbol_t* op_sym = ASRUtils::symbol_get_past_external(
+                ASR::down_cast<ASR::Var_t>(new_args[1].m_value)->m_v);
+            if (ASR::is_a<ASR::Function_t>(*op_sym)) {
+                operation_type_decl = op_sym;
+            }
+        }
+        {
+            ASR::expr_t* op_arg = b.Variable(fn_symtab, "operation", operation_type,
+                ASR::intentType::In, operation_type_decl);
+            args.push_back(al, op_arg);
+        }
+        int dim_index_kind = index_kind;
+        if( overload_id == id_array_dim || overload_id == id_array_dim_mask ) {
+            dim_index_kind = ASRUtils::extract_kind_from_ttype_t(arg_types[2]);
+            ASR::ttype_t* dim_type = ASRUtils::TYPE(ASR::make_Integer_t(
+                al, arg_type->base.loc, dim_index_kind));
+            fill_func_arg("dim", dim_type);
+        }
+        if( overload_id == id_array_mask || overload_id == id_array_dim_mask ) {
+            Vec<ASR::dimension_t> mask_dims;
+            mask_dims.reserve(al, rank);
+            for( int j = 0; j < rank; j++ ) {
+                ASR::dimension_t mask_dim;
+                mask_dim.loc = arg_type->base.loc;
+                mask_dim.m_start = nullptr;
+                mask_dim.m_length = nullptr;
+                mask_dims.push_back(al, mask_dim);
+            }
+            ASR::ttype_t* mask_type = ASRUtils::TYPE(ASR::make_Logical_t(
+                al, arg_type->base.loc, 4));
+            if( mask_dims.size() > 0 ) {
+                mask_type = ASRUtils::make_Array_t_util(al, arg_type->base.loc,
+                    mask_type, mask_dims.p, mask_dims.size());
+            }
+            fill_func_arg("mask", mask_type);
+        }
+
+        int result_dims = extract_n_dims_from_ttype(return_type);
+        ASR::expr_t* return_var = nullptr;
+        if( result_dims > 0 ) {
+            ASR::ttype_t* return_type_ = return_type;
+            if( !ASRUtils::is_fixed_size_array(return_type) ) {
+                bool is_allocatable = ASRUtils::is_allocatable(return_type);
+                Vec<ASR::dimension_t> empty_dims;
+                empty_dims.reserve(al, result_dims);
+                for( int idim = 0; idim < result_dims; idim++ ) {
+                    ASR::dimension_t empty_dim;
+                    empty_dim.loc = loc;
+                    empty_dim.m_start = nullptr;
+                    empty_dim.m_length = nullptr;
+                    empty_dims.push_back(al, empty_dim);
+                }
+                return_type_ = ASRUtils::make_Array_t_util(al, loc,
+                    ASRUtils::extract_type(return_type_), empty_dims.p, empty_dims.size());
+                if( is_allocatable ) {
+                    return_type_ = ASRUtils::TYPE(ASRUtils::make_Allocatable_t_util(al, loc, return_type_));
+                }
+            }
+            ASR::symbol_t* result_type_decl = nullptr;
+            if (caller_array_struct_sym != nullptr) {
+                ASR::ttype_t* el = ASRUtils::extract_type(
+                    ASRUtils::type_get_past_allocatable_pointer(return_type_));
+                if (ASR::is_a<ASR::StructType_t>(*el)) {
+                    result_type_decl = caller_array_struct_sym;
+                }
+            }
+            ASR::expr_t *result = b.Variable(fn_symtab, "result", return_type_, ASR::intentType::Out, result_type_decl);
+            args.push_back(al, result);
+        } else if( result_dims == 0 ) {
+            ASR::symbol_t* rv_type_decl = nullptr;
+            if (caller_array_struct_sym != nullptr &&
+                    ASR::is_a<ASR::StructType_t>(*ASRUtils::type_get_past_allocatable_pointer(return_type))) {
+                rv_type_decl = caller_array_struct_sym;
+            }
+            return_var = b.Variable(fn_symtab, "result", return_type, ASR::intentType::ReturnVar, rv_type_decl);
+        }
+
+        Vec<ASR::stmt_t*> body;
+        body.reserve(al, 1);
+        ASR::expr_t* output_var = nullptr;
+        if( return_var ) {
+            output_var = return_var;
+        } else {
+            output_var = args[(int) args.size() - 1];
+        }
+        if( overload_id == id_array ) {
+            ArrIntrinsic::generate_body_for_reduce_array_input(al, loc, args[0], args[1], output_var,
+                fn_symtab, body, caller_array_struct_sym, index_kind);
+        } else if( overload_id == id_array_dim ) {
+            ArrIntrinsic::generate_body_for_reduce_array_dim_input(al, loc, args[0], args[2], args[1], output_var,
+                fn_symtab, body, caller_array_struct_sym, dim_index_kind);
+        } else if( overload_id == id_array_dim_mask ) {
+            ArrIntrinsic::generate_body_for_reduce_array_dim_mask_input(al, loc, args[0], args[2], args[3], args[1],
+                output_var, fn_symtab, body, caller_array_struct_sym, dim_index_kind);
+        } else if( overload_id == id_array_mask ) {
+            ArrIntrinsic::generate_body_for_reduce_array_mask_input(al, loc, args[0], args[2], args[1], output_var,
+                fn_symtab, body, caller_array_struct_sym, index_kind);
+        }
+
+        Vec<char *> dep;
+        dep.reserve(al, 1);
+
+        ASR::symbol_t *new_symbol = nullptr;
+        if( return_var ) {
+            new_symbol = make_ASR_Function_t(new_name, fn_symtab, dep, args,
+                body, return_var, ASR::abiType::Source, ASR::deftypeType::Implementation, nullptr);
+        } else {
+            new_symbol = make_Function_Without_ReturnVar_t(
+                new_name, fn_symtab, dep, args,
+                body, ASR::abiType::Source, ASR::deftypeType::Implementation, nullptr);
+        }
+        scope->add_symbol(new_name, new_symbol);
+        return builder.Call(new_symbol, new_args, return_type, nullptr);
+    }
+
+} // namespace Reduce
 
 namespace Product {
 
@@ -3137,9 +4117,9 @@ namespace Product {
         ASR::ttype_t* array_type = expr_type(args[0]);
         if (!is_integer(*array_type) && !is_real(*array_type) && !is_complex(*array_type)) {
             diag.add(diag::Diagnostic("Input to `Product` is expected to be numeric, but got " +
-                type_to_str_fortran(array_type), 
-                diag::Level::Error, 
-                diag::Stage::Semantic, 
+                type_to_str_fortran_expr(array_type, args[0]),
+                diag::Level::Error,
+                diag::Stage::Semantic,
                 {diag::Label("must be integer, real or complex type", { args[0]->base.loc })}));
             return nullptr;
         }
@@ -3150,9 +4130,9 @@ namespace Product {
     static inline ASR::expr_t* instantiate_Product(Allocator &al,
             const Location &loc, SymbolTable *scope, Vec<ASR::ttype_t*>& arg_types,
             ASR::ttype_t *return_type, Vec<ASR::call_arg_t>& new_args,
-            int64_t overload_id) {
+            int64_t overload_id, int index_kind) {
         return ArrIntrinsic::instantiate_ArrIntrinsic(al, loc, scope, arg_types,
-            return_type, new_args, overload_id, IntrinsicArrayFunctions::Product,
+            return_type, new_args, overload_id, index_kind, IntrinsicArrayFunctions::Product,
             &get_constant_one_with_given_type, &ASRBuilder::Mul);
     }
 
@@ -3178,9 +4158,9 @@ namespace Iparity {
         ASR::ttype_t* array_type = expr_type(args[0]);
         if (!is_integer(*array_type)) {
             diag.add(diag::Diagnostic("Input to `Iparity` is expected to be an integer, but got " +
-                type_to_str_fortran(array_type), 
-                diag::Level::Error, 
-                diag::Stage::Semantic, 
+                type_to_str_fortran_expr(array_type, args[0]),
+                diag::Level::Error,
+                diag::Stage::Semantic,
                 {diag::Label("must be of integer type", { args[0]->base.loc })}));
         return nullptr;
     }
@@ -3191,9 +4171,9 @@ namespace Iparity {
     static inline ASR::expr_t* instantiate_Iparity(Allocator &al,
             const Location &loc, SymbolTable *scope, Vec<ASR::ttype_t*>& arg_types,
             ASR::ttype_t *return_type, Vec<ASR::call_arg_t>& new_args,
-            int64_t overload_id) {
+            int64_t overload_id, int index_kind) {
         return ArrIntrinsic::instantiate_ArrIntrinsic(al, loc, scope, arg_types,
-            return_type, new_args, overload_id, IntrinsicArrayFunctions::Iparity,
+            return_type, new_args, overload_id, index_kind, IntrinsicArrayFunctions::Iparity,
             &get_constant_zero_with_given_type, &ASRBuilder::Xor);
     }
 
@@ -3220,9 +4200,9 @@ namespace MaxVal {
         ASR::ttype_t* array_type = expr_type(args[0]);
         if (!is_integer(*array_type) && !is_real(*array_type) && !is_character(*array_type)) {
             diag.add(diag::Diagnostic("Input to `MaxVal` is expected to be of integer, real or character type, but got " +
-                type_to_str_fortran(array_type), 
-                diag::Level::Error, 
-                diag::Stage::Semantic, 
+                type_to_str_fortran_expr(array_type, args[0]),
+                diag::Level::Error,
+                diag::Stage::Semantic,
                 {diag::Label("must be integer, real or character type", { args[0]->base.loc })}));
             return nullptr;
         }
@@ -3233,9 +4213,9 @@ namespace MaxVal {
     static inline ASR::expr_t* instantiate_MaxVal(Allocator &al,
             const Location &loc, SymbolTable *scope, Vec<ASR::ttype_t*>& arg_types,
             ASR::ttype_t *return_type, Vec<ASR::call_arg_t>& new_args,
-            int64_t overload_id) {
+            int64_t overload_id, int index_kind) {
         return ArrIntrinsic::instantiate_ArrIntrinsic(al, loc, scope, arg_types,
-            return_type, new_args, overload_id, IntrinsicArrayFunctions::MaxVal,
+            return_type, new_args, overload_id, index_kind, IntrinsicArrayFunctions::MaxVal,
             &get_minimum_value_with_given_type, &ASRBuilder::Max);
     }
 
@@ -3257,7 +4237,8 @@ namespace MaxLoc {
     static inline ASR::expr_t *instantiate_MaxLoc(Allocator &al,
             const Location &loc, SymbolTable *scope,
             Vec<ASR::ttype_t*>& arg_types, ASR::ttype_t *return_type,
-            Vec<ASR::call_arg_t>& m_args, int64_t overload_id) {
+            Vec<ASR::call_arg_t>& m_args, int64_t overload_id,
+            int /*index_kind*/) {
         return ArrIntrinsic::instantiate_MaxMinLoc(al, loc, scope,
             IntrinsicArrayFunctions::MaxLoc, arg_types, return_type,
             m_args, overload_id);
@@ -3281,7 +4262,8 @@ namespace MinLoc {
     static inline ASR::expr_t *instantiate_MinLoc(Allocator &al,
             const Location &loc, SymbolTable *scope,
             Vec<ASR::ttype_t*>& arg_types, ASR::ttype_t *return_type,
-            Vec<ASR::call_arg_t>& m_args, int64_t overload_id) {
+            Vec<ASR::call_arg_t>& m_args, int64_t overload_id,
+            int /*index_kind*/) {
         return ArrIntrinsic::instantiate_MaxMinLoc(al, loc, scope,
             IntrinsicArrayFunctions::MinLoc, arg_types, return_type,
             m_args, overload_id);
@@ -3423,20 +4405,20 @@ namespace FindLoc {
         if (is_real(*array_type) && is_integer(*value_type)){
             if (ASR::is_a<ASR::IntegerConstant_t>(*value)){
                 ASR::IntegerConstant_t *value_int = ASR::down_cast<ASR::IntegerConstant_t>(value);
-                value = EXPR(ASR::make_RealConstant_t(al, loc, value_int->m_n, 
+                value = EXPR(ASR::make_RealConstant_t(al, loc, value_int->m_n,
                 ASRUtils::TYPE(ASR::make_Real_t(al, loc, extract_kind_from_ttype_t(value_type)))));
             } else{
-                value = EXPR(ASR::make_Cast_t(al, loc, value, ASR::cast_kindType::IntegerToReal, 
-                ASRUtils::TYPE(ASR::make_Real_t(al, loc, extract_kind_from_ttype_t(value_type))), nullptr ));
+                value = EXPR(ASR::make_Cast_t(al, loc, value, ASR::cast_kindType::IntegerToReal,
+                ASRUtils::TYPE(ASR::make_Real_t(al, loc, extract_kind_from_ttype_t(value_type))), nullptr, nullptr ));
             }
         } else if (is_integer(*array_type) && is_real(*value_type)){
             if (ASR::is_a<ASR::RealConstant_t>(*value)){
                 ASR::RealConstant_t *value_real = ASR::down_cast<ASR::RealConstant_t>(value);
-                value = EXPR(ASR::make_IntegerConstant_t(al, loc, value_real->m_r, 
+                value = EXPR(ASR::make_IntegerConstant_t(al, loc, value_real->m_r,
                 ASRUtils::TYPE(ASR::make_Integer_t(al, loc, extract_kind_from_ttype_t(value_type)))));
             } else{
-                value = EXPR(ASR::make_Cast_t(al, loc, value, ASR::cast_kindType::RealToInteger, 
-                ASRUtils::TYPE(ASR::make_Integer_t(al, loc, extract_kind_from_ttype_t(value_type))), nullptr ));
+                value = EXPR(ASR::make_Cast_t(al, loc, value, ASR::cast_kindType::RealToInteger,
+                ASRUtils::TYPE(ASR::make_Integer_t(al, loc, extract_kind_from_ttype_t(value_type))), nullptr, nullptr ));
             }
         }
         if (!is_array(array_type) && !is_integer(*array_type) && !is_real(*array_type) && !is_character(*array_type) && !is_logical(*array_type) && !is_complex(*array_type)) {
@@ -3459,6 +4441,22 @@ namespace FindLoc {
         int dim = 0, kind = 4; // default kind
         ASR::expr_t *dim_expr = nullptr;
         ASR::expr_t *mask_expr = nullptr;
+
+        for (int i = 2; i <= 3; i++) {
+            if (args[i] && is_logical(*expr_type(args[i])) && is_array(expr_type(args[i]))) {
+                if (ASR::is_a<ASR::ArrayConstructor_t>(*args[i])) {
+                    auto* ctor = ASR::down_cast<ASR::ArrayConstructor_t>(args[i]);
+                    if (ctor->n_args == 1) {
+                        args.p[i] = ctor->m_args[0];
+                    }
+                } else if (ASR::is_a<ASR::ArrayConstant_t>(*args[i])) {
+                    auto* arr = ASR::down_cast<ASR::ArrayConstant_t>(args[i]);
+                    if (get_fixed_size_of_array(arr->m_type) == 1) {
+                        args.p[i] = fetch_ArrayConstant_value(al, arr, 0);
+                    }
+                }
+            }
+        }
 
         // Checking for type findLoc(Array, value, mask)
         if( args[2] && !args[3] && is_logical(*expr_type(args[2])) ){
@@ -3512,6 +4510,12 @@ namespace FindLoc {
                 append_error(diag, "`mask` argument of `findloc` must be logical", mask_expr->base.loc);
                 return nullptr;
             }
+            if (is_array(expr_type(mask_expr))) {
+                if (!ArrIntrinsic::is_same_shape(array, mask_expr, std::string("findloc"), diag,
+                        {array->base.loc, mask_expr->base.loc})) {
+                    return nullptr;
+                }
+            }
             m_args.push_back(al, mask_expr);
         } else {
             m_args.push_back(al, b.ArrayConstant({b.bool_t(1, logical)}, logical, true));
@@ -3560,7 +4564,8 @@ namespace FindLoc {
     static inline ASR::expr_t *instantiate_FindLoc(Allocator &al,
             const Location &loc, SymbolTable *scope,
             Vec<ASR::ttype_t*>& arg_types, ASR::ttype_t *return_type,
-            Vec<ASR::call_arg_t>& m_args, int64_t overload_id) {
+            Vec<ASR::call_arg_t>& m_args, int64_t overload_id,
+            int /*index_kind*/) {
     declare_basic_variables("_lcompilers_findloc")
     /*
      *findloc(array, value, dim, mask, kind, back)
@@ -3580,9 +4585,13 @@ namespace FindLoc {
     fill_func_arg("kind", arg_types[4]);
     fill_func_arg("back", arg_types[5]);
     ASR::expr_t* result = nullptr;
-    result = declare("result", ASRUtils::duplicate_type_with_empty_dims(
+    if( !ASRUtils::is_array(return_type) ) {
+        result = declare("result", return_type, ReturnVar);
+    } else {
+        result = declare("result", ASRUtils::duplicate_type_with_empty_dims(
             al, return_type, ASR::array_physical_typeType::DescriptorArray, true), Out);
-    args.push_back(al, result);
+        args.push_back(al, result);
+    }
     ASR::ttype_t *type = ASRUtils::extract_type(return_type);
     ASR::expr_t *i = declare("i", type, Local);
     ASR::expr_t *j = declare("j", type, Local);
@@ -3601,7 +4610,7 @@ namespace FindLoc {
             mask_new = mask;
         }
         body.push_back(al, b.Assignment(result, b.i_t(0, ASRUtils::type_get_past_array(return_type))));
-        body.push_back(al, b.DoLoop(i, b.i_t(1, type), UBound(array, 1), {
+        body.push_back(al, b.DoLoop(i, b.i_t(1, type), b.GetUBound(array, 1), {
             b.If(b.And(b.Eq(ArrayItem_02(array, i), value), b.Eq(mask_new, b.bool_t(1, logical))), {
                 b.Assignment(result, i),
                 b.If(b.NotEq(back, b.bool_t(1, logical)), {
@@ -3611,10 +4620,9 @@ namespace FindLoc {
         }));
     } else {
         int array_rank = ASRUtils::extract_n_dims_from_ttype(array_type);
-        ASR::ttype_t* ret_type = ASRUtils::type_get_past_array(return_type);
         if (array_rank == 1) {
-            body.push_back(al, b.Assignment(result, b.i_t(0, ret_type)));
-            body.push_back(al, b.DoLoop(i, b.i_t(1, type), UBound(array, 1), {
+            body.push_back(al, b.Assignment(result, b.i_t(0, type)));
+            body.push_back(al, b.DoLoop(i, b.i_t(1, type), b.GetUBound(array, 1), {
                 b.If(b.Eq(ArrayItem_02(array, i), value), {
                     b.Assignment(result, i),
                     b.If(b.NotEq(back, b.bool_t(1, logical)), {
@@ -3627,31 +4635,49 @@ namespace FindLoc {
             Vec<ASR::expr_t*> idx_vars_ji; idx_vars_ji.reserve(al, 2);
             idx_vars_ij.push_back(al, i); idx_vars_ij.push_back(al, j);
             idx_vars_ji.push_back(al, j); idx_vars_ji.push_back(al, i);
-            body.push_back(al, b.Assignment(result, b.i_t(0, ret_type)));
-            body.push_back(al, b.If(b.Eq(dim, b.i_t(1, ret_type)), {
-                b.DoLoop(i, b.i_t(1, ret_type), UBound(array, 2), {
+            body.push_back(al,b.Assignment(result, b.i_t(0, type)));
+            body.push_back(al, b.If(b.Eq(dim, b.i_t(-1, expr_type(dim))), {
+                b.DoLoop(i, b.i_t(1, type), b.GetUBound(array, 2), {
                     b.Assignment(found_value, b.bool_t(0, logical)),
-                    b.DoLoop(j, b.i_t(1, ret_type), UBound(array, 1), {
-                        b.If(b.Eq(ArrayItem_02(array, idx_vars_ji), value), {
-                            b.Assignment(b.ArrayItem_01(result, {i}), j),
+                    b.DoLoop(j, b.i_t(1, type), b.GetUBound(array, 1), {
+                        b.If(b.And(b.Eq(ArrayItem_02(array, idx_vars_ji), value), b.Or(b.Not(found_value), back)), {
+                            b.Assignment(b.ArrayItem_01(result, {b.i_t(1, type)}), j),
+                            b.Assignment(b.ArrayItem_01(result, {b.i_t(2, type)}), i),
                             b.Assignment(found_value, b.bool_t(1, logical)),
                         }, {}),
-                        b.If(b.And(found_value, b.Not(back)), {
-                            b.Exit()
-                        }, {})
-                    })
+                    }),
+                    b.If(b.And(found_value, b.Not(back)), {
+                        b.Exit()
+                    }, {})
                 })
-            }, {
-                b.DoLoop(i, b.i_t(1, ret_type), UBound(array, 1), {
-                    b.Assignment(found_value, b.bool_t(0, logical)),
-                    b.DoLoop(j, b.i_t(1, ret_type), UBound(array, 2), {
-                        b.If(b.Eq(ArrayItem_02(array, idx_vars_ij), value), {
-                            b.Assignment(b.ArrayItem_01(result, {i}), j),
-                            b.Assignment(found_value, b.bool_t(1, logical)),
-                        }, {}),
-                        b.If(b.And(found_value, b.Not(back)), {
-                            b.Exit()
-                        }, {})
+            },
+            {
+                b.If(b.Eq(dim, b.i_t(1, expr_type(dim))), {
+                    b.DoLoop(i, b.i_t(1, type), b.GetUBound(array, 2), {
+                        b.Assignment(found_value, b.bool_t(0, logical)),
+                        b.DoLoop(j, b.i_t(1, type), b.GetUBound(array, 1), {
+                            b.If(b.And(b.Eq(ArrayItem_02(array, idx_vars_ji), value), b.Or(b.Not(found_value), back)), {
+                                b.Assignment(b.ArrayItem_01(result, {i}), j),
+                                b.Assignment(found_value, b.bool_t(1, logical)),
+                            }, {}),
+                            b.If(b.And(found_value, b.Not(back)), {
+                                b.Exit()
+                            }, {})
+                        }),
+                    })
+                }, {
+                    b.DoLoop(i, b.i_t(1, type), b.GetUBound(array, 1), {
+                        b.Assignment(found_value, b.bool_t(0, logical)),
+                        b.DoLoop(j, b.i_t(1, type), b.GetUBound(array, 2), {
+                            b.If(b.And(b.Eq(ArrayItem_02(array, idx_vars_ij), value), b.Or(b.Not(found_value), back)), {
+                                b.Assignment(b.ArrayItem_01(result, {i}), j),
+                                b.Assignment(found_value, b.bool_t(1, logical)),
+                            }, {}),
+                            b.If(b.And(found_value, b.Not(back)), {
+                                b.Exit()
+                            }, {})
+                        }),
+
                     })
                 })
             }));
@@ -3659,9 +4685,14 @@ namespace FindLoc {
     }
 
     body.push_back(al, b.Return());
-    ASR::expr_t* return_var = nullptr;
-    ASR::symbol_t *fn_sym = make_ASR_Function_t(fn_name, fn_symtab, dep, args,
-            body, return_var, ASR::abiType::Source, ASR::deftypeType::Implementation, nullptr);
+    ASR::symbol_t *fn_sym = nullptr;
+    if( ASRUtils::expr_intent(result) == ASR::intentType::ReturnVar ) {
+        fn_sym = make_ASR_Function_t(fn_name, fn_symtab, dep, args,
+            body, result, ASR::abiType::Source, ASR::deftypeType::Implementation, nullptr);
+    } else {
+        fn_sym = make_ASR_Function_t(fn_name, fn_symtab, dep, args,
+            body, nullptr, ASR::abiType::Source, ASR::deftypeType::Implementation, nullptr);
+    }
     scope->add_symbol(fn_name, fn_sym);
     return b.Call(fn_sym, m_args, return_type, nullptr);
 }
@@ -3689,9 +4720,9 @@ namespace MinVal {
         ASR::ttype_t* array_type = expr_type(args[0]);
         if (!is_integer(*array_type) && !is_real(*array_type) && !is_character(*array_type)) {
             diag.add(diag::Diagnostic("Input to `MinVal` is expected to be of integer, real or character type, but got " +
-                type_to_str_fortran(array_type), 
-                diag::Level::Error, 
-                diag::Stage::Semantic, 
+                type_to_str_fortran_expr(array_type, args[0]),
+                diag::Level::Error,
+                diag::Stage::Semantic,
                 {diag::Label("must be integer, real or character type", { args[0]->base.loc })}));
             return nullptr;
         }
@@ -3702,9 +4733,9 @@ namespace MinVal {
     static inline ASR::expr_t* instantiate_MinVal(Allocator &al,
             const Location &loc, SymbolTable *scope, Vec<ASR::ttype_t*>& arg_types,
             ASR::ttype_t *return_type, Vec<ASR::call_arg_t>& new_args,
-            int64_t overload_id) {
+            int64_t overload_id, int index_kind) {
         return ArrIntrinsic::instantiate_ArrIntrinsic(al, loc, scope, arg_types,
-            return_type, new_args, overload_id, IntrinsicArrayFunctions::MinVal,
+            return_type, new_args, overload_id, index_kind, IntrinsicArrayFunctions::MinVal,
             &get_maximum_value_with_given_type, &ASRBuilder::Min);
     }
 
@@ -3732,12 +4763,6 @@ namespace MatMul {
             Vec<ASR::expr_t*>& args,
             diag::Diagnostics& diag) {
         ASR::expr_t *matrix_a = args[0], *matrix_b = args[1];
-        bool is_type_allocatable = false;
-        if (ASRUtils::is_allocatable(matrix_a) || ASRUtils::is_allocatable(matrix_b)) {
-            // TODO: Use Array type as return type instead of allocatable
-            //  for both Array and Allocatable as input arguments.
-            is_type_allocatable = true;
-        }
         ASR::ttype_t *type_a = expr_type(matrix_a);
         ASR::ttype_t *type_b = expr_type(matrix_b);
         ASR::ttype_t *ret_type = nullptr;
@@ -3810,15 +4835,16 @@ namespace MatMul {
                 int matrix_a_dim_1 = -1, matrix_b_dim_1 = -1;
                 extract_value(matrix_a_dims[0].m_length, matrix_a_dim_1);
                 extract_value(matrix_b_dims[0].m_length, matrix_b_dim_1);
-                append_error(diag, "The argument `matrix_b` must be of dimension "
-                    + std::to_string(matrix_a_dim_1) + ", provided an array "
-                    "with dimension " + std::to_string(matrix_b_dim_1) +
-                    " in `matrix_b('n', m)`", matrix_b->base.loc);
-                return nullptr;
-            } else {
-                result_dims.push_back(al, b.set_dim(matrix_b_dims[1].m_start,
-                    matrix_b_dims[1].m_length));
+                if (matrix_a_dim_1 != -1 && matrix_b_dim_1 != -1) {
+                    append_error(diag, "The argument `matrix_b` must be of dimension "
+                        + std::to_string(matrix_a_dim_1) + ", provided an array "
+                        "with dimension " + std::to_string(matrix_b_dim_1) +
+                        " in `matrix_b('n', m)`", matrix_b->base.loc);
+                    return nullptr;
+                }
             }
+            result_dims.push_back(al, b.set_dim(matrix_b_dims[1].m_start,
+                matrix_b_dims[1].m_length));
         } else if (matrix_a_rank == 2) {
             overload_id = 2;
             if (!dimension_expr_equal(matrix_a_dims[1].m_length,
@@ -3826,13 +4852,15 @@ namespace MatMul {
                 int matrix_a_dim_2 = -1, matrix_b_dim_1 = -1;
                 extract_value(matrix_a_dims[1].m_length, matrix_a_dim_2);
                 extract_value(matrix_b_dims[0].m_length, matrix_b_dim_1);
-                std::string err_dims = "('n', m)";
-                if (matrix_b_rank == 1) err_dims = "('n')";
-                append_error(diag, "The argument `matrix_b` must be of dimension "
-                    + std::to_string(matrix_a_dim_2) + ", provided an array "
-                    "with dimension " + std::to_string(matrix_b_dim_1) +
-                    " in matrix_b" + err_dims, matrix_b->base.loc);
-                return nullptr;
+                if (matrix_a_dim_2 != -1 && matrix_b_dim_1 != -1) {
+                    std::string err_dims = "('n', m)";
+                    if (matrix_b_rank == 1) err_dims = "('n')";
+                    append_error(diag, "The argument `matrix_b` must be of dimension "
+                        + std::to_string(matrix_a_dim_2) + ", provided an array "
+                        "with dimension " + std::to_string(matrix_b_dim_1) +
+                        " in matrix_b" + err_dims, matrix_b->base.loc);
+                    return nullptr;
+                }
             }
             result_dims.push_back(al, b.set_dim(matrix_a_dims[0].m_start,
                 matrix_a_dims[0].m_length));
@@ -3848,9 +4876,6 @@ namespace MatMul {
             return nullptr;
         }
         ret_type = ASRUtils::duplicate_type(al, ret_type, &result_dims);
-        if (is_type_allocatable) {
-            ret_type = TYPE(ASRUtils::make_Allocatable_t_util(al, loc, ret_type));
-        }
         ASR::expr_t *value = eval_MatMul(al, loc, ret_type, args, diag);
         return make_IntrinsicArrayFunction_t_util(al, loc,
             static_cast<int64_t>(IntrinsicArrayFunctions::MatMul),
@@ -3860,7 +4885,8 @@ namespace MatMul {
     static inline ASR::expr_t *instantiate_MatMul(Allocator &al,
             const Location &loc, SymbolTable *scope,
             Vec<ASR::ttype_t*> &arg_types, ASR::ttype_t *return_type,
-            Vec<ASR::call_arg_t> &m_args, int64_t overload_id) {
+            Vec<ASR::call_arg_t> &m_args, int64_t overload_id,
+            int /*index_kind*/) {
         /*
          *    2 x 3          3 x 2          2 x 2
          *   ------▶
@@ -3904,9 +4930,9 @@ namespace MatMul {
         extract_dimensions_from_ttype(arg_types[1], matrix_b_dims);
         ASR::expr_t *res_ref, *a_ref, *b_ref, *a_lbound, *b_lbound;
         ASR::expr_t *dim_mismatch_check, *a_ubound, *b_ubound;
-        dim_mismatch_check = b.Eq(UBound(args[0], 2), UBound(args[1], 1));
-        a_lbound = LBound(args[0], 1); a_ubound = UBound(args[0], 1);
-        b_lbound = LBound(args[1], 2); b_ubound = UBound(args[1], 2);
+        dim_mismatch_check = b.Eq(b.GetUBound(args[0], 2), b.GetUBound(args[1], 1));
+        a_lbound = b.GetLBound(args[0], 1); a_ubound = b.GetUBound(args[0], 1);
+        b_lbound = b.GetLBound(args[1], 2); b_ubound = b.GetUBound(args[1], 2);
         std::string assert_msg = "'MatMul' intrinsic dimension mismatch: "
             "please make sure the dimensions are ";
         Vec<ASR::dimension_t> alloc_dims; alloc_dims.reserve(al, 1);
@@ -3916,29 +4942,28 @@ namespace MatMul {
             a_ref   = b.ArrayItem_01(args[0], {k});
             b_ref   = b.ArrayItem_01(args[1], {k, j});
             a_ubound = a_lbound;
-            alloc_dims.push_back(al, b.set_dim(LBound(args[1], 2), UBound(args[1], 2)));
-            dim_mismatch_check = b.Eq(UBound(args[0], 1), UBound(args[1], 1));
+            alloc_dims.push_back(al, b.set_dim(b.GetLBound(args[1], 2), b.GetUBound(args[1], 2)));
+            dim_mismatch_check = b.Eq(b.GetUBound(args[0], 1), b.GetUBound(args[1], 1));
             assert_msg += "`matrix_a(k)` and `matrix_b(k, j)`";
         } else if ( overload_id == 2 ) {
             // r(i) = r(i) + a(i, k) * b(k)
             res_ref = b.ArrayItem_01(result,  {i});
             a_ref   = b.ArrayItem_01(args[0], {i, k});
             b_ref   = b.ArrayItem_01(args[1], {k});
-            b_ubound = b_lbound = LBound(args[1], 1);
-            alloc_dims.push_back(al, b.set_dim(LBound(args[0], 1), UBound(args[0], 1)));
+            b_ubound = b_lbound = b.GetLBound(args[1], 1);
+            alloc_dims.push_back(al, b.set_dim(b.GetLBound(args[0], 1), b.GetUBound(args[0], 1)));
             assert_msg += "`matrix_a(i, k)` and `matrix_b(k)`";
         } else {
             // r(i, j) = r(i, j) + a(i, k) * b(k, j)
             res_ref = b.ArrayItem_01(result,  {i, j});
             a_ref   = b.ArrayItem_01(args[0], {i, k});
             b_ref   = b.ArrayItem_01(args[1], {k, j});
-            alloc_dims.push_back(al, b.set_dim(LBound(args[0], 1), UBound(args[0], 1)));
-            alloc_dims.push_back(al, b.set_dim(LBound(args[1], 2), UBound(args[1], 2)));
+            alloc_dims.push_back(al, b.set_dim(b.GetLBound(args[0], 1), b.GetUBound(args[0], 1)));
+            alloc_dims.push_back(al, b.set_dim(b.GetLBound(args[1], 2), b.GetUBound(args[1], 2)));
             assert_msg += "`matrix_a(i, k)` and `matrix_b(k, j)`";
         }
-        if (is_allocatable(result)) {
-            body.push_back(al, b.Allocate(result, alloc_dims));
-        }
+        // Note: allocation/reallocation for allocatable results is handled by
+        // the assignment pass based on the --realloc-lhs-arrays flag, not here.
         body.push_back(al, STMT(ASR::make_Assert_t(al, loc, dim_mismatch_check,
             EXPR(ASR::make_StringConstant_t(al, loc, s2c(al, assert_msg),
             character(assert_msg.size()))))));
@@ -3965,7 +4990,7 @@ namespace MatMul {
         body.push_back(al, b.DoLoop(i, a_lbound, a_ubound, {
             b.DoLoop(j, b_lbound, b_ubound, {
                 b.Assign_Constant(res_ref, 0),
-                b.DoLoop(k, LBound(args[1], 1), UBound(args[1], 1), {
+                b.DoLoop(k, b.GetLBound(args[1], 1), b.GetUBound(args[1], 1), {
                     b.Assignment(res_ref, b.Add(res_ref, mul_value))
                 }),
             })
@@ -4091,7 +5116,8 @@ namespace Count {
     static inline ASR::expr_t *instantiate_Count(Allocator &al,
             const Location &loc, SymbolTable *scope,
             Vec<ASR::ttype_t*> &arg_types, ASR::ttype_t *return_type,
-            Vec<ASR::call_arg_t> &m_args, int64_t overload_id) {
+            Vec<ASR::call_arg_t> &m_args, int64_t overload_id,
+            int /*index_kind*/) {
         declare_basic_variables("_lcompilers_count");
         fill_func_arg("mask", duplicate_type_with_empty_dims(al, arg_types[0]));
         if (overload_id == 0) {
@@ -4123,7 +5149,22 @@ namespace Count {
             return b.Call(fn_sym, m_args, return_type, nullptr);
         } else {
             fill_func_arg("dim", duplicate_type_with_empty_dims(al, arg_types[1]));
-            ASR::expr_t *result = declare("result", return_type, Out);
+            int result_dims = extract_n_dims_from_ttype(return_type);
+            ASR::ttype_t* result_type = return_type;
+            if( !ASRUtils::is_fixed_size_array(return_type) ) {
+                Vec<ASR::dimension_t> empty_dims;
+                empty_dims.reserve(al, result_dims);
+                for( int idim = 0; idim < result_dims; idim++ ) {
+                    ASR::dimension_t empty_dim;
+                    empty_dim.loc = loc;
+                    empty_dim.m_start = nullptr;
+                    empty_dim.m_length = nullptr;
+                    empty_dims.push_back(al, empty_dim);
+                }
+                result_type = ASRUtils::make_Array_t_util(al, loc,
+                    ASRUtils::extract_type(return_type), empty_dims.p, empty_dims.size());
+            }
+            ASR::expr_t *result = declare("result", result_type, Out);
             args.push_back(al, result);
             /*
                 for array of rank 3, the following code is generated:
@@ -4140,7 +5181,6 @@ namespace Count {
                     end do
                 end do
             */
-            int dim = ASR::down_cast<ASR::IntegerConstant_t>(m_args[1].m_value)->m_n;
             ASR::dimension_t* array_dims = nullptr;
             int array_rank = extract_dimensions_from_ttype(arg_types[0], array_dims);
             std::vector<ASR::expr_t*> res_idx;
@@ -4150,24 +5190,59 @@ namespace Count {
             ASR::expr_t* j = declare("j", int32, Local);
             ASR::expr_t* c = declare("c", int32, Local);
 
-            std::vector<ASR::expr_t*> idx; bool dim_found = false;
-            for (int i = 0; i < array_rank; i++) {
-                if (i == dim - 1) {
-                    idx.push_back(j);
-                    dim_found = true;
-                } else {
-                    dim_found ? idx.push_back(res_idx[i-1]):
-                                idx.push_back(res_idx[i]);
+            auto generate_count_dim_loop = [&](int dim_val) -> ASR::stmt_t* {
+                std::vector<ASR::expr_t*> idx; bool dim_found = false;
+                for (int i = 0; i < array_rank; i++) {
+                    if (i == dim_val - 1) {
+                        idx.push_back(j);
+                        dim_found = true;
+                    } else {
+                        dim_found ? idx.push_back(res_idx[i-1]):
+                                    idx.push_back(res_idx[i]);
+                    }
+                }
+                ASR::stmt_t* inner_most_do_loop = b.DoLoop(j, b.GetLBound(args[0], dim_val), b.GetUBound(args[0], dim_val), {
+                    b.If(b.ArrayItem_01(args[0], idx), {
+                        b.Assignment(c, b.Add(c, b.i32(1))),
+                    }, {})
+                });
+                return PassUtils::create_do_loop_helper_count_dim(al, loc,
+                                        idx, res_idx, inner_most_do_loop, c, args[0], result, 0, dim_val);
+            };
+
+            ASR::expr_t* dim_expr = m_args[1].m_value;
+            int const_dim = -1;
+            if (ASR::is_a<ASR::IntegerConstant_t>(*dim_expr)) {
+                const_dim = ASR::down_cast<ASR::IntegerConstant_t>(dim_expr)->m_n;
+            } else {
+                ASR::expr_t* dim_value = ASRUtils::expr_value(dim_expr);
+                if (dim_value && ASR::is_a<ASR::IntegerConstant_t>(*dim_value)) {
+                    const_dim = ASR::down_cast<ASR::IntegerConstant_t>(dim_value)->m_n;
                 }
             }
-            ASR::stmt_t* inner_most_do_loop = b.DoLoop(j, LBound(args[0], dim), UBound(args[0], dim), {
-                b.If(b.ArrayItem_01(args[0], idx), {
-                    b.Assignment(c, b.Add(c, b.i32(1))),
-                }, {})
-            });
-            ASR::stmt_t* do_loop = PassUtils::create_do_loop_helper_count_dim(al, loc,
-                                    idx, res_idx, inner_most_do_loop, c, args[0], result, 0, dim);
-            body.push_back(al, do_loop);
+
+            if (const_dim > 0) {
+                body.push_back(al, generate_count_dim_loop(const_dim));
+            } else {
+                // Runtime dim: generate if-else chain for each possible dim value
+                ASR::stmt_t** else_ = nullptr;
+                size_t else_n = 0;
+                for (int i = 1; i <= array_rank; i++) {
+                    ASR::expr_t* test_expr = b.Eq(args[1], b.i32(i));
+                    ASR::stmt_t* do_loop = generate_count_dim_loop(i);
+                    Vec<ASR::stmt_t*> if_body;
+                    if_body.reserve(al, 1);
+                    if_body.push_back(al, do_loop);
+                    ASR::stmt_t* if_ = ASRUtils::STMT(ASR::make_If_t(al, loc, nullptr, test_expr,
+                                                if_body.p, if_body.size(), else_, else_n));
+                    Vec<ASR::stmt_t*> if_else_if;
+                    if_else_if.reserve(al, 1);
+                    if_else_if.push_back(al, if_);
+                    else_ = if_else_if.p;
+                    else_n = if_else_if.size();
+                }
+                body.push_back(al, else_[0]);
+            }
             body.push_back(al, b.Return());
             ASR::symbol_t *fn_sym = make_ASR_Function_t(fn_name, fn_symtab, dep, args,
                     body, nullptr, ASR::abiType::Source, ASR::deftypeType::Implementation, nullptr);
@@ -4220,7 +5295,7 @@ namespace Parity {
 
         if (!ASRUtils::is_logical(*mask_type)) {
             diag.add(diag::Diagnostic("The `mask` argument to `parity` must be logical, but got " +
-                ASRUtils::type_to_str_fortran(mask_type),
+                ASRUtils::type_to_str_fortran_expr(mask_type, mask),
                 diag::Level::Error,
                 diag::Stage::Semantic,
                 {diag::Label("must be logical type", { mask->base.loc })}));
@@ -4280,7 +5355,8 @@ namespace Parity {
     static inline ASR::expr_t *instantiate_Parity(Allocator &al,
             const Location &loc, SymbolTable *scope,
             Vec<ASR::ttype_t*> &arg_types, ASR::ttype_t *return_type,
-            Vec<ASR::call_arg_t> &m_args, int64_t overload_id) {
+            Vec<ASR::call_arg_t> &m_args, int64_t overload_id,
+            int /*index_kind*/) {
         declare_basic_variables("_lcompilers_parity");
         fill_func_arg("mask", duplicate_type_with_empty_dims(al, arg_types[0]));
         if (overload_id == 0) {
@@ -4328,7 +5404,6 @@ namespace Parity {
                     end do
                 end do
             */
-            int dim = ASR::down_cast<ASR::IntegerConstant_t>(m_args[1].m_value)->m_n;
             ASR::dimension_t* array_dims = nullptr;
             int array_rank = extract_dimensions_from_ttype(arg_types[0], array_dims);
             std::vector<ASR::expr_t*> res_idx;
@@ -4338,23 +5413,57 @@ namespace Parity {
             ASR::expr_t* j = declare("j", int32, Local);
             ASR::expr_t* c = declare("c", logical, Local);
 
-            std::vector<ASR::expr_t*> idx; bool dim_found = false;
-            for (int i = 0; i < array_rank; i++) {
-                if (i == dim - 1) {
-                    idx.push_back(j);
-                    dim_found = true;
-                } else {
-                    dim_found ? idx.push_back(res_idx[i-1]):
-                                idx.push_back(res_idx[i]);
+            auto generate_parity_dim_loop = [&](int dim_val) -> ASR::stmt_t* {
+                std::vector<ASR::expr_t*> idx; bool dim_found = false;
+                for (int i = 0; i < array_rank; i++) {
+                    if (i == dim_val - 1) {
+                        idx.push_back(j);
+                        dim_found = true;
+                    } else {
+                        dim_found ? idx.push_back(res_idx[i-1]):
+                                    idx.push_back(res_idx[i]);
+                    }
+                }
+                ASR::stmt_t* inner_most_do_loop = b.DoLoop(j, b.GetLBound(args[0], dim_val), b.GetUBound(args[0], dim_val), {
+                    b.Assignment(c, b.Xor(c, b.ArrayItem_01(args[0], idx)))
+                });
+                return PassUtils::create_do_loop_helper_parity_dim(al, loc,
+                                        idx, res_idx, inner_most_do_loop, c, args[0], result, 0, dim_val);
+            };
+
+            ASR::expr_t* dim_expr = m_args[1].m_value;
+            int const_dim = -1;
+            if (ASR::is_a<ASR::IntegerConstant_t>(*dim_expr)) {
+                const_dim = ASR::down_cast<ASR::IntegerConstant_t>(dim_expr)->m_n;
+            } else {
+                ASR::expr_t* dim_value = ASRUtils::expr_value(dim_expr);
+                if (dim_value && ASR::is_a<ASR::IntegerConstant_t>(*dim_value)) {
+                    const_dim = ASR::down_cast<ASR::IntegerConstant_t>(dim_value)->m_n;
                 }
             }
-            ASR::stmt_t* inner_most_do_loop = b.DoLoop(j, LBound(args[0], dim), UBound(args[0], dim), {
-                b.Assignment(c, b.Xor(c, b.ArrayItem_01(args[0], idx)))
-            });
 
-            ASR::stmt_t* do_loop = PassUtils::create_do_loop_helper_parity_dim(al, loc,
-                                    idx, res_idx, inner_most_do_loop, c, args[0], result, 0, dim);
-            body.push_back(al, do_loop);
+            if (const_dim > 0) {
+                body.push_back(al, generate_parity_dim_loop(const_dim));
+            } else {
+                ASR::stmt_t** else_ = nullptr;
+                size_t else_n = 0;
+                for (int i = 1; i <= array_rank; i++) {
+                    ASR::expr_t* test_expr = b.Eq(args[1], b.i32(i));
+                    ASR::stmt_t* do_loop = generate_parity_dim_loop(i);
+                    Vec<ASR::stmt_t*> if_body;
+                    if_body.reserve(al, 1);
+                    if_body.push_back(al, do_loop);
+                    ASR::stmt_t* if_ = ASRUtils::STMT(ASR::make_If_t(al, loc, nullptr, test_expr,
+                                                if_body.p, if_body.size(), else_, else_n));
+                    Vec<ASR::stmt_t*> if_else_if;
+                    if_else_if.reserve(al, 1);
+                    if_else_if.push_back(al, if_);
+                    else_ = if_else_if.p;
+                    else_n = if_else_if.size();
+                }
+                body.push_back(al, else_[0]);
+            }
+
             body.push_back(al, b.Return());
             ASR::symbol_t *fn_sym = make_ASR_Function_t(fn_name, fn_symtab, dep, args,
                     body, nullptr, ASR::abiType::Source, ASR::deftypeType::Implementation, nullptr);
@@ -4469,7 +5578,8 @@ namespace Norm2 {
     static inline ASR::expr_t *instantiate_Norm2(Allocator &al,
             const Location &loc, SymbolTable *scope,
             Vec<ASR::ttype_t*> &arg_types, ASR::ttype_t *return_type,
-            Vec<ASR::call_arg_t> &m_args, int64_t overload_id) {
+            Vec<ASR::call_arg_t> &m_args, int64_t overload_id,
+            int /*index_kind*/) {
         declare_basic_variables("_lcompilers_norm2");
         fill_func_arg("array", duplicate_type_with_empty_dims(al, arg_types[0]));
         if (overload_id == 0) {
@@ -4518,7 +5628,6 @@ namespace Norm2 {
                     end do
                 end do
             */
-            int64_t dim = ASR::down_cast<ASR::IntegerConstant_t>(m_args[1].m_value)->m_n;
             ASR::dimension_t* array_dims = nullptr;
             int64_t array_rank = extract_dimensions_from_ttype(arg_types[0], array_dims);
             std::vector<ASR::expr_t*> res_idx;
@@ -4526,30 +5635,62 @@ namespace Norm2 {
                 res_idx.push_back(declare("i_" + std::to_string(i), int32, Local));
             }
             ASR::expr_t* j = declare("j", int32, Local);
-            ASR::expr_t* c = declare("c", return_type, Local);
+            ASR::ttype_t* scalar_type = extract_type(return_type);
+            ASR::expr_t* c = declare("c", scalar_type, Local);
 
-            std::vector<ASR::expr_t*> idx; bool dim_found = false;
-            for (int i = 0; i < array_rank; i++) {
-                if (i == dim - 1) {
-                    idx.push_back(j);
-                    dim_found = true;
-                } else {
-                    dim_found ? idx.push_back(res_idx[i-1]):
-                                idx.push_back(res_idx[i]);
+            auto generate_norm2_dim_loop = [&](int64_t dim_val) -> ASR::stmt_t* {
+                std::vector<ASR::expr_t*> idx; bool dim_found = false;
+                for (int i = 0; i < array_rank; i++) {
+                    if (i == dim_val - 1) {
+                        idx.push_back(j);
+                        dim_found = true;
+                    } else {
+                        dim_found ? idx.push_back(res_idx[i-1]):
+                                    idx.push_back(res_idx[i]);
+                    }
+                }
+                ASR::stmt_t* inner_most_do_loop = b.DoLoop(j, b.GetLBound(args[0], dim_val), b.GetUBound(args[0], dim_val), {
+                    b.Assignment(c, b.Add(c, b.Mul(b.ArrayItem_01(args[0], idx), b.ArrayItem_01(args[0], idx)))),
+                });
+                return PassUtils::create_do_loop_helper_norm2_dim(al, loc,
+                                        idx, res_idx, inner_most_do_loop, c, args[0], result, 0, dim_val, true);
+            };
+
+            ASR::expr_t* dim_expr = m_args[1].m_value;
+            int64_t const_dim = -1;
+            if (ASR::is_a<ASR::IntegerConstant_t>(*dim_expr)) {
+                const_dim = ASR::down_cast<ASR::IntegerConstant_t>(dim_expr)->m_n;
+            } else {
+                ASR::expr_t* dim_value = ASRUtils::expr_value(dim_expr);
+                if (dim_value && ASR::is_a<ASR::IntegerConstant_t>(*dim_value)) {
+                    const_dim = ASR::down_cast<ASR::IntegerConstant_t>(dim_value)->m_n;
                 }
             }
-            ASR::stmt_t* inner_most_do_loop = b.DoLoop(j, LBound(args[0], dim), UBound(args[0], dim), {
-                b.Assignment(c, b.Add(c, b.Mul(b.ArrayItem_01(args[0], idx), b.ArrayItem_01(args[0], idx)))),
-            });
-            ASR::stmt_t* do_loop = PassUtils::create_do_loop_helper_norm2_dim(al, loc,
-                                    idx, res_idx, inner_most_do_loop, c, args[0], result, 0, dim);
-            ASR::expr_t* res = EXPR(ASR::make_RealSqrt_t(al, loc,
-                result, return_type, nullptr));
-            body.push_back(al, do_loop);
-            body.push_back(al, b.Assignment(result, res));
+
+            if (const_dim > 0) {
+                body.push_back(al, generate_norm2_dim_loop(const_dim));
+            } else {
+                ASR::stmt_t** else_ = nullptr;
+                size_t else_n = 0;
+                for (int i = 1; i <= array_rank; i++) {
+                    ASR::expr_t* test_expr = b.Eq(args[1], b.i32(i));
+                    ASR::stmt_t* do_loop = generate_norm2_dim_loop(i);
+                    Vec<ASR::stmt_t*> if_body;
+                    if_body.reserve(al, 1);
+                    if_body.push_back(al, do_loop);
+                    ASR::stmt_t* if_ = ASRUtils::STMT(ASR::make_If_t(al, loc, nullptr, test_expr,
+                                                if_body.p, if_body.size(), else_, else_n));
+                    Vec<ASR::stmt_t*> if_else_if;
+                    if_else_if.reserve(al, 1);
+                    if_else_if.push_back(al, if_);
+                    else_ = if_else_if.p;
+                    else_n = if_else_if.size();
+                }
+                body.push_back(al, else_[0]);
+            }
             body.push_back(al, b.Return());
-            ASR::symbol_t *fn_sym = make_ASR_Function_t(fn_name, fn_symtab, dep, args,
-                    body, result, ASR::abiType::Source, ASR::deftypeType::Implementation, nullptr);
+            ASR::symbol_t *fn_sym = make_Function_Without_ReturnVar_t(fn_name, fn_symtab, dep, args,
+                    body, ASR::abiType::Source, ASR::deftypeType::Implementation, nullptr);
             scope->add_symbol(fn_name, fn_sym);
             return b.Call(fn_sym, m_args, return_type, nullptr);
         }
@@ -4635,7 +5776,10 @@ namespace Pack {
     static inline ASR::expr_t *eval_Pack(Allocator & al,
         const Location & loc, ASR::ttype_t *return_type, Vec<ASR::expr_t*>& args, diag::Diagnostics& diag) {
         ASRBuilder builder(al, loc);
-        ASR::expr_t *array = args[0], *mask = args[1], *vector = args[2];
+        ASR::expr_t *array = args[0], *mask = args[1], *vector = nullptr;
+        if (args.size() > 2) {
+            vector = args[2];
+        }
         ASR::ttype_t *type_array = ASRUtils::type_get_past_pointer(ASRUtils::type_get_past_allocatable(expr_type(array)));
         ASR::ttype_t* type_a = ASRUtils::type_get_past_array(type_array);
 
@@ -4817,7 +5961,7 @@ namespace Pack {
         fixed_size_array = ASRUtils::get_fixed_size_of_array(type_array);
         extract_value(array_dims[0].m_length, array_dim);
         if (mask_rank != 0) extract_value(mask_dims[0].m_length, mask_dim);
-        if (mask_rank == 0) {
+        if (mask_rank == 0 && fixed_size_array != -1) {
             Vec<ASR::expr_t*> mask_expr; mask_expr.reserve(al, fixed_size_array);
             for (int i = 0; i < fixed_size_array; i++) {
                 mask_expr.push_back(al, mask);
@@ -4831,7 +5975,7 @@ namespace Pack {
             } else {
                 mask = EXPR(ASR::make_ArrayConstructor_t(al, mask->base.loc, mask_expr.p, mask_expr.n,
                     TYPE(ASR::make_Array_t(al, mask->base.loc, logical, array_dims, array_rank, ASR::array_physical_typeType::FixedSizeArray)),
-                    nullptr, ASR::arraystorageType::ColMajor));
+                    nullptr, ASR::arraystorageType::ColMajor, nullptr));
             }
             type_mask = expr_type(mask);
             mask_rank = extract_dimensions_from_ttype(type_mask, mask_dims);
@@ -4840,9 +5984,9 @@ namespace Pack {
         if (is_vector_present) {
             vector_rank = extract_dimensions_from_ttype(type_vector, vector_dims);
         }
-        if (array_rank != mask_rank) {
+        if (array_rank != mask_rank && mask_rank != 0) {
             append_error(diag, "The argument `mask` must be of rank " + std::to_string(array_rank) +
-                ", provided an array with rank, " + std::to_string(mask_rank), mask->base.loc);
+                ", an array with rank " + std::to_string(mask_rank) + " was provided.", mask->base.loc);
             return nullptr;
         }
          if (array_dim != -1 && mask_dim != -1 && !dimension_expr_equal(array_dims[0].m_length,
@@ -4864,14 +6008,26 @@ namespace Pack {
             result_dims.push_back(al, b.set_dim(vector_dims[0].m_start, vector_dims[0].m_length));
             ret_type = ASRUtils::duplicate_type(al, ret_type, &result_dims);
         } else {
-            Vec<ASR::expr_t*> args_count; args_count.reserve(al, 1); args_count.push_back(al, mask);
-            ASR::expr_t* count = EXPR(Count::create_Count(al, loc, args_count, diag));
+            ASR::expr_t* count = nullptr;
+            if (mask_rank == 0) {
+                Vec<ASR::expr_t*> merge_args; merge_args.reserve(al, 3);
+                ASR::expr_t* tsource = PassUtils::create_array_size_pack(al, loc, args[0], extract_n_dims_from_ttype(expr_type(args[0])));
+                ASR::expr_t* fsource = ASRUtils::EXPR(ASR::make_IntegerConstant_t(al, loc, 0, int32));
+                merge_args.push_back(al, tsource);
+                merge_args.push_back(al, fsource);
+                merge_args.push_back(al, mask);
+                count = EXPR(Merge::create_Merge(al, loc, merge_args, diag));
+            } else {
+                Vec<ASR::expr_t*> args_count; args_count.reserve(al, 1); args_count.push_back(al, mask);
+                count = EXPR(Count::create_Count(al, loc, args_count, diag));
+            }
             result_dims.push_back(al, b.set_dim(array_dims[0].m_start, count));
             ret_type = ASRUtils::duplicate_type(al, ret_type, &result_dims, ASR::array_physical_typeType::DescriptorArray, true);
             is_type_allocatable = true;
         }
         if (is_type_allocatable) {
-            ret_type = TYPE(ASRUtils::make_Allocatable_t_util(al, loc, ret_type));
+            ret_type = TYPE(ASRUtils::make_Allocatable_t_util(al, loc,
+                ASRUtils::type_get_past_allocatable_pointer(ret_type)));
         }
         Vec<ASR::expr_t*> arg_values; arg_values.reserve(al, 3);
         arg_values.push_back(al, expr_value(array)); arg_values.push_back(al, expr_value(mask));
@@ -4885,6 +6041,7 @@ namespace Pack {
         ASR::expr_t *value = nullptr;
         if (all_args_evaluated(m_args)) {
             value = eval_Pack(al, loc, ret_type, arg_values, diag);
+            ret_type = ASRUtils::expr_type(value);
         }
         return make_IntrinsicArrayFunction_t_util(al, loc,
             static_cast<int64_t>(IntrinsicArrayFunctions::Pack),
@@ -4894,9 +6051,15 @@ namespace Pack {
     static inline ASR::expr_t *instantiate_Pack(Allocator &al,
             const Location &loc, SymbolTable *scope,
             Vec<ASR::ttype_t*> &arg_types, ASR::ttype_t *return_type,
-            Vec<ASR::call_arg_t> &m_args, int64_t overload_id) {
+            Vec<ASR::call_arg_t> &m_args, int64_t overload_id,
+            int /*index_kind*/) {
         declare_basic_variables("_lcompilers_pack");
-        fill_func_arg("array", duplicate_type_with_empty_dims(al, arg_types[0]));
+        bool is_struct_type_arg = ASR::is_a<ASR::StructType_t>(*ASRUtils::extract_type(arg_types[0]));
+        if (is_struct_type_arg) {
+            fill_func_arg_struct_type("array", duplicate_type_with_empty_dims(al, arg_types[0]), m_args[0].m_value);
+        } else {
+            fill_func_arg("array", duplicate_type_with_empty_dims(al, arg_types[0]));
+        }
         fill_func_arg("mask", duplicate_type_with_empty_dims(al, arg_types[1]));
         if (overload_id == 3) {
             fill_func_arg("vector", duplicate_type_with_empty_dims(al, arg_types[2]));
@@ -4908,7 +6071,12 @@ namespace Pack {
                         ASRUtils::type_get_past_allocatable(return_type)),
                 ASR::array_physical_typeType::DescriptorArray, true);
         }
-        ASR::expr_t *result = declare("result", ret_type, Out);
+        ASR::expr_t *result;
+        if (is_struct_type_arg) {
+            result = declare_struct_type("result", ret_type, Out, m_args[0].m_value);
+        } else {
+            result = declare("result", ret_type, Out);
+        }
         args.push_back(al, result);
         /*
             For array of rank 2, the following code is generated:
@@ -4943,7 +6111,7 @@ namespace Pack {
         body.push_back(al, do_loop);
 
         if (overload_id == 3) {
-            body.push_back(al, b.DoLoop(do_loop_variables[0], k, UBound(args[2], 1), {
+            body.push_back(al, b.DoLoop(do_loop_variables[0], k, b.GetUBound(args[2], 1), {
                 b.Assignment(b.ArrayItem_01(result, {k}), b.ArrayItem_01(args[2], {k})),
                 b.Assignment(k, b.Add(k, b.i32(1)))
             }));
@@ -5233,12 +6401,28 @@ namespace Unpack {
     static inline ASR::expr_t *instantiate_Unpack(Allocator &al,
             const Location &loc, SymbolTable *scope,
             Vec<ASR::ttype_t*> &arg_types, ASR::ttype_t *return_type,
-            Vec<ASR::call_arg_t> &m_args, int64_t /*overload_id*/) {
+            Vec<ASR::call_arg_t> &m_args, int64_t /*overload_id*/,
+            int /*index_kind*/) {
         declare_basic_variables("_lcompilers_unpack");
-        fill_func_arg("vector", duplicate_type_with_empty_dims(al, arg_types[0]));
+        bool is_struct_type_vec = ASR::is_a<ASR::StructType_t>(*ASRUtils::extract_type(arg_types[0]));
+        bool is_struct_type_field = ASR::is_a<ASR::StructType_t>(*ASRUtils::extract_type(arg_types[2]));
+        if (is_struct_type_vec) {
+            fill_func_arg_struct_type("vector", duplicate_type_with_empty_dims(al, arg_types[0]), m_args[0].m_value);
+        } else {
+            fill_func_arg("vector", duplicate_type_with_empty_dims(al, arg_types[0]));
+        }
         fill_func_arg("mask", duplicate_type_with_empty_dims(al, arg_types[1]));
-        fill_func_arg("field", duplicate_type_with_empty_dims(al, arg_types[2]));
-        ASR::expr_t *result = declare("result", return_type, Out);
+        if (is_struct_type_field) {
+            fill_func_arg_struct_type("field", duplicate_type_with_empty_dims(al, arg_types[2]), m_args[2].m_value);
+        } else {
+            fill_func_arg("field", duplicate_type_with_empty_dims(al, arg_types[2]));
+        }
+        ASR::expr_t *result;
+        if (is_struct_type_vec) {
+            result = declare_struct_type("result", return_type, Out, m_args[0].m_value);
+        } else {
+            result = declare("result", return_type, Out);
+        }
         args.push_back(al, result);
         /*
             For array of rank 2, the following code is generated:
@@ -5261,7 +6445,7 @@ namespace Unpack {
             do_loop_variables.push_back(declare("i_" + std::to_string(i), int32, Local));
         }
         ASR::expr_t *k = declare("k", int32, Local);
-        body.push_back(al, b.Assignment(k, LBound(args[0], 1)));
+        body.push_back(al, b.Assignment(k, b.GetLBound(args[0], 1)));
         body.push_back(al, b.Assignment(result, args[2]));
         ASR::stmt_t* do_loop = PassUtils::create_do_loop_helper_unpack(al, loc, do_loop_variables, args[0], args[1], result, k, mask_rank);
         body.push_back(al, do_loop);
@@ -5483,11 +6667,15 @@ namespace DotProduct {
         int overload_id = 1;
         int matrix_a_dim_1 = -1, matrix_b_dim_1 = -1;
         if ( !dimension_expr_equal(matrix_a_dims[0].m_length, matrix_b_dims[0].m_length) ) {
-            append_error(diag, "The argument `matrix_b` must be of dimension "
-                + std::to_string(matrix_a_dim_1) + ", provided an array "
-                "with dimension " + std::to_string(matrix_b_dim_1) +
-                " in `matrix_b('n')`", matrix_b->base.loc);
-            return nullptr;
+            extract_value(matrix_a_dims[0].m_length, matrix_a_dim_1);
+            extract_value(matrix_b_dims[0].m_length, matrix_b_dim_1);
+            if (matrix_a_dim_1 != -1 && matrix_b_dim_1 != -1) {
+                append_error(diag, "The argument `matrix_b` must be of dimension "
+                    + std::to_string(matrix_a_dim_1) + ", provided an array "
+                    "with dimension " + std::to_string(matrix_b_dim_1) +
+                    " in `matrix_b('n')`", matrix_b->base.loc);
+                return nullptr;
+            }
         }
 
         ASR::expr_t *value = nullptr;
@@ -5502,7 +6690,8 @@ namespace DotProduct {
     static inline ASR::expr_t *instantiate_DotProduct(Allocator &al,
             const Location &loc, SymbolTable *scope,
             Vec<ASR::ttype_t*> &arg_types, ASR::ttype_t *return_type,
-            Vec<ASR::call_arg_t> &m_args, int64_t /*overload_id*/) {
+            Vec<ASR::call_arg_t> &m_args, int64_t /*overload_id*/,
+            int index_kind) {
         declare_basic_variables("_lcompilers_dot_product");
         fill_func_arg("matrix_a", duplicate_type_with_empty_dims(al, arg_types[0]));
         fill_func_arg("matrix_b", duplicate_type_with_empty_dims(al, arg_types[1]));
@@ -5510,13 +6699,13 @@ namespace DotProduct {
         ASR::expr_t *i = declare("i", int32, Local);
         /*
             res = 0
-            do i = LBound(matrix_a, 1), UBound(matrix_a, 1)
+            do i = b.GetLBound(matrix_a, 1), b.GetUBound(matrix_a, 1)
                 res = res + matrix_a(i) * matrix_b(i)
             end do
         */
         if (is_logical(*return_type)) {
             body.push_back(al, b.Assignment(result, ASRUtils::EXPR(ASR::make_LogicalConstant_t(al, loc, false, return_type))));
-            body.push_back(al, b.DoLoop(i, LBound(args[0], 1), UBound(args[0], 1), {
+            body.push_back(al, b.DoLoop(i, b.GetLBound(args[0], 1), b.GetUBound(args[0], 1), {
                 b.Assignment(result, b.Or(result, b.And(b.ArrayItem_01(args[0], {i}), b.ArrayItem_01(args[1], {i}))))
             }));
         } else if (is_complex(*return_type)) {
@@ -5530,18 +6719,18 @@ namespace DotProduct {
             Vec<ASR::ttype_t*> arg_types_conjg; arg_types_conjg.reserve(al, 1);
             arg_types_conjg.push_back(al, return_type);
 
-            ASR::expr_t* func_call_conjg = Conjg::instantiate_Conjg(al, loc, scope, arg_types_conjg, return_type, new_args_conjg, 0);
-            body.push_back(al, b.DoLoop(i, LBound(args[0], 1), UBound(args[0], 1), {
+            ASR::expr_t* func_call_conjg = Conjg::instantiate_Conjg(al, loc, scope, arg_types_conjg, return_type, new_args_conjg, 0, index_kind);
+            body.push_back(al, b.DoLoop(i, b.GetLBound(args[0], 1), b.GetUBound(args[0], 1), {
                 b.Assignment(result, b.Add(result, EXPR(ASR::make_ComplexBinOp_t(al, loc, func_call_conjg, ASR::binopType::Mul, b.ArrayItem_01(args[1], {i}), return_type, nullptr))))
             }, nullptr));
         } else if (is_real(*return_type)) {
             body.push_back(al, b.Assignment(result, make_ConstantWithType(make_RealConstant_t, 0.0, return_type, loc)));
-            body.push_back(al, b.DoLoop(i, LBound(args[0], 1), UBound(args[0], 1), {
+            body.push_back(al, b.DoLoop(i, b.GetLBound(args[0], 1), b.GetUBound(args[0], 1), {
                 b.Assignment(result, b.Add(result, b.Mul(b.ArrayItem_01(args[0], {i}), b.r2r_t(b.ArrayItem_01(args[1], {i}), ASRUtils::type_get_past_array(arg_types[0])))))
             }, nullptr));
         } else {
             body.push_back(al, b.Assignment(result, make_ConstantWithType(make_IntegerConstant_t, 0, return_type, loc)));
-            body.push_back(al, b.DoLoop(i, LBound(args[0], 1), UBound(args[0], 1), {
+            body.push_back(al, b.DoLoop(i, b.GetLBound(args[0], 1), b.GetUBound(args[0], 1), {
                 b.Assignment(result, b.Add(result, b.Mul(b.ArrayItem_01(args[0], {i}), b.i2i_t(b.ArrayItem_01(args[1], {i}), ASRUtils::type_get_past_array(arg_types[0])))))
             }, nullptr));
         }
@@ -5564,10 +6753,42 @@ namespace Transpose {
             "cannot be nullptr", x.base.base.loc, diagnostics);
     }
 
-    static inline ASR::expr_t *eval_Transpose(Allocator &/*al*/,
-        const Location &/*loc*/, ASR::ttype_t */*return_type*/, Vec<ASR::expr_t*>& /*args*/, diag::Diagnostics& /*diag*/) {
-        // TODO
-        return nullptr;
+    static inline ASR::expr_t *eval_Transpose(Allocator &al,
+        const Location &loc, ASR::ttype_t *return_type, Vec<ASR::expr_t*>& args, diag::Diagnostics& /*diag*/) {
+        ASR::expr_t *matrix = args[0];
+        if (ASR::is_a<ASR::ArrayPhysicalCast_t>(*matrix)) {
+            matrix = ASR::down_cast<ASR::ArrayPhysicalCast_t>(matrix)->m_arg;
+        }
+        matrix = ASRUtils::expr_value(matrix);
+        if (!matrix || !ASR::is_a<ASR::ArrayConstant_t>(*matrix)) {
+            return nullptr;
+        }
+        ASR::ArrayConstant_t *a = ASR::down_cast<ASR::ArrayConstant_t>(matrix);
+        ASR::ttype_t *type_a = a->m_type;
+        ASR::dimension_t *dims = nullptr;
+        int rank = extract_dimensions_from_ttype(type_a, dims);
+        if (rank != 2) return nullptr;
+        int64_t nrows = -1, ncols = -1;
+        if (!dims[0].m_length || !ASRUtils::extract_value(
+                ASRUtils::expr_value(dims[0].m_length), nrows)) return nullptr;
+        if (!dims[1].m_length || !ASRUtils::extract_value(
+                ASRUtils::expr_value(dims[1].m_length), ncols)) return nullptr;
+        int64_t total = nrows * ncols;
+
+        ASR::ttype_t *elem_type = ASRUtils::type_get_past_array(type_a);
+        ASRBuilder builder(al, loc);
+
+        std::vector<ASR::expr_t*> values(total);
+        for (int64_t i = 0; i < nrows; i++) {
+            for (int64_t j = 0; j < ncols; j++) {
+                // Column-major: a(i,j) is at index i + j*nrows
+                // Transposed: result(j,i) is at index j + i*ncols
+                ASR::expr_t *elem = ASRUtils::fetch_ArrayConstant_value(
+                    al, a, i + j * nrows);
+                values[j + i * ncols] = elem;
+            }
+        }
+        return builder.ArrayConstant(values, elem_type, false, return_type);
     }
 
     static inline ASR::asr_t* create_Transpose(Allocator& al, const Location& loc,
@@ -5604,6 +6825,23 @@ namespace Transpose {
         ASR::expr_t *value = nullptr;
         if (all_args_evaluated(args)) {
             value = eval_Transpose(al, loc, ret_type, args, diag);
+        } else {
+            // Check if args can be evaluated after looking through casts
+            bool can_eval = true;
+            for (size_t i = 0; i < args.size(); i++) {
+                ASR::expr_t* arg = args[i];
+                if (ASR::is_a<ASR::ArrayPhysicalCast_t>(*arg)) {
+                    arg = ASR::down_cast<ASR::ArrayPhysicalCast_t>(arg)->m_arg;
+                }
+                ASR::expr_t* a_value = ASRUtils::expr_value(arg);
+                if (!ASRUtils::is_value_constant(a_value)) {
+                    can_eval = false;
+                    break;
+                }
+            }
+            if (can_eval) {
+                value = eval_Transpose(al, loc, ret_type, args, diag);
+            }
         }
         return make_IntrinsicArrayFunction_t_util(al, loc,
             static_cast<int64_t>(IntrinsicArrayFunctions::Transpose),
@@ -5613,7 +6851,8 @@ namespace Transpose {
     static inline ASR::expr_t *instantiate_Transpose(Allocator &al,
             const Location &loc, SymbolTable *scope,
             Vec<ASR::ttype_t*> &arg_types, ASR::ttype_t *return_type,
-            Vec<ASR::call_arg_t> &m_args, int64_t /*overload_id*/) {
+            Vec<ASR::call_arg_t> &m_args, int64_t /*overload_id*/,
+            int /*index_kind*/) {
         /*
             do i = lbound(m,1), ubound(m,1)
                 do j = lbound(m,2), ubound(m,2)
@@ -5645,8 +6884,8 @@ namespace Transpose {
         args.push_back(al, result);
         ASR::expr_t *i = declare("i", int32, Local);
         ASR::expr_t *j = declare("j", int32, Local);
-        body.push_back(al, b.DoLoop(i, LBound(args[0], 1), UBound(args[0], 1), {
-            b.DoLoop(j, LBound(args[0], 2), UBound(args[0], 2), {
+        body.push_back(al, b.DoLoop(i, b.GetLBound(args[0], 1), b.GetUBound(args[0], 1), {
+            b.DoLoop(j, b.GetLBound(args[0], 2), b.GetUBound(args[0], 2), {
                 b.Assignment(b.ArrayItem_01(result, {j, i}), b.ArrayItem_01(args[0], {i, j}))
             }, nullptr)
         }, nullptr));
@@ -5661,8 +6900,10 @@ namespace Transpose {
 
 namespace IntrinsicArrayFunctionRegistry {
 
-    static const std::map<int64_t, std::tuple<impl_function,
-            verify_array_function>>& intrinsic_function_by_id_db = {
+    inline const std::map<int64_t, std::tuple<impl_function,
+            verify_array_function>>& get_intrinsic_function_by_id_db() {
+        static const std::map<int64_t, std::tuple<impl_function,
+                verify_array_function>> intrinsic_function_by_id_db = {
         {static_cast<int64_t>(IntrinsicArrayFunctions::Any),
             {&Any::instantiate_Any, &Any::verify_args}},
         {static_cast<int64_t>(IntrinsicArrayFunctions::All),
@@ -5711,10 +6952,16 @@ namespace IntrinsicArrayFunctionRegistry {
             {&Eoshift::instantiate_Eoshift, &Eoshift::verify_args}},
         {static_cast<int64_t>(IntrinsicArrayFunctions::Spread),
             {&Spread::instantiate_Spread, &Spread::verify_args}},
-    };
+        {static_cast<int64_t>(IntrinsicArrayFunctions::Reduce),
+            {&Reduce::instantiate_Reduce, &Reduce::verify_args}},
+        };
+        return intrinsic_function_by_id_db;
+    }
 
-    static const std::map<std::string, std::tuple<create_intrinsic_function,
-            eval_intrinsic_function>>& function_by_name_db = {
+    inline const std::map<std::string, std::tuple<create_intrinsic_function,
+            eval_intrinsic_function>>& get_function_by_name_db() {
+        static const std::map<std::string, std::tuple<create_intrinsic_function,
+                eval_intrinsic_function>> function_by_name_db = {
         {"any", {&Any::create_Any, &Any::eval_Any}},
         {"all", {&All::create_All, &All::eval_All}},
         {"iany", {&Iany::create_Iany, &Iany::eval_Iany}},
@@ -5739,25 +6986,28 @@ namespace IntrinsicArrayFunctionRegistry {
         {"count", {&Count::create_Count, &Count::eval_Count}},
         {"parity", {&Parity::create_Parity, &Parity::eval_Parity}},
         {"dot_product", {&DotProduct::create_DotProduct, &DotProduct::eval_DotProduct}},
-    };
+        {"reduce", {&Reduce::create_Reduce, &Reduce::eval_Reduce}},
+        };
+        return function_by_name_db;
+    }
 
     static inline bool is_intrinsic_function(const std::string& name) {
-        return function_by_name_db.find(name) != function_by_name_db.end();
+        return get_function_by_name_db().find(name) != get_function_by_name_db().end();
     }
 
     static inline create_intrinsic_function get_create_function(const std::string& name) {
-        return  std::get<0>(function_by_name_db.at(name));
+        return  std::get<0>(get_function_by_name_db().at(name));
     }
 
     static inline impl_function get_instantiate_function(int64_t id) {
-        if( intrinsic_function_by_id_db.find(id) == intrinsic_function_by_id_db.end() ) {
+        if( get_intrinsic_function_by_id_db().find(id) == get_intrinsic_function_by_id_db().end() ) {
             return nullptr;
         }
-        return std::get<0>(intrinsic_function_by_id_db.at(id));
+        return std::get<0>(get_intrinsic_function_by_id_db().at(id));
     }
 
     static inline verify_array_function get_verify_function(int64_t id) {
-        return std::get<1>(intrinsic_function_by_id_db.at(id));
+        return std::get<1>(get_intrinsic_function_by_id_db().at(id));
     }
 
     /*
@@ -5788,6 +7038,21 @@ namespace IntrinsicArrayFunctionRegistry {
             id == IntrinsicArrayFunctions::Spread ||
             id == IntrinsicArrayFunctions::Unpack ) {
             return 2; // return variable index
+        }
+        return -1;
+    }
+
+    /*
+        Index of the `dim` argument in IntrinsicArrayFunction_t::m_args for
+        intrinsics that take an optional dim. For `reduce`, `dim` follows `operation`.
+    */
+    static inline int get_dim_arg_index(IntrinsicArrayFunctions id) {
+        if( id == IntrinsicArrayFunctions::Reduce ) {
+            return 2;
+        }
+        int d = get_dim_index(id);
+        if( d == 1 ) {
+            return 1;
         }
         return -1;
     }

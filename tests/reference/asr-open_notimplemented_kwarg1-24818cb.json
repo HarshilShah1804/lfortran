@@ -6,8 +6,8 @@
     "outfile": null,
     "outfile_hash": null,
     "stdout": "asr-open_notimplemented_kwarg1-24818cb.stdout",
-    "stdout_hash": "1fff3136160ad02334861912b83f45ad75a4fe9aebb8d86b1ca13569",
-    "stderr": "asr-open_notimplemented_kwarg1-24818cb.stderr",
-    "stderr_hash": "f49630a5e5c44814fc6e999dac6118f4eaf6647ba2c9493155fc7b49",
+    "stdout_hash": "3f3f6245f2efc64167c8423908e8b7cc066e8ff75655820b560ae063",
+    "stderr": null,
+    "stderr_hash": null,
     "returncode": 0
 }

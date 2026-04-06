@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             i:
                                 (Variable
@@ -42,6 +47,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             img_part:
                                 (Variable
@@ -66,6 +76,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             real_part:
                                 (Variable
@@ -84,6 +99,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             x:
                                 (Variable
@@ -91,20 +111,15 @@
                                     x
                                     [real_part]
                                     Local
-                                    (ComplexConstructor
-                                        (Cast
-                                            (Var 2 real_part)
-                                            IntegerToReal
-                                            (Real 4)
-                                            (RealConstant
-                                                42.000000
-                                                (Real 4)
-                                            )
-                                        )
+                                    (IntrinsicElementalFunction
+                                        Cmplx
+                                        [(Var 2 real_part)
                                         (RealConstant
                                             0.000000
                                             (Real 4)
                                         )
+                                        (IntegerConstant 4 (Integer 4) Decimal)]
+                                        0
                                         (Complex 4)
                                         (ComplexConstant
                                             42.000000
@@ -126,6 +141,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             x1:
                                 (Variable
@@ -150,6 +170,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             x2:
                                 (Variable
@@ -168,6 +193,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             y:
                                 (Variable
@@ -175,12 +205,15 @@
                                     y
                                     [img_part]
                                     Local
-                                    (ComplexConstructor
-                                        (Var 2 img_part)
+                                    (IntrinsicElementalFunction
+                                        Cmplx
+                                        [(Var 2 img_part)
                                         (RealConstant
                                             0.000000
                                             (Real 4)
                                         )
+                                        (IntegerConstant 4 (Integer 4) Decimal)]
+                                        0
                                         (Complex 4)
                                         (ComplexConstant
                                             3.140000
@@ -202,6 +235,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             y2:
                                 (Variable
@@ -220,6 +258,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             z:
                                 (Variable
@@ -228,17 +271,12 @@
                                     [real_part
                                     img_part]
                                     Local
-                                    (ComplexConstructor
-                                        (Cast
-                                            (Var 2 real_part)
-                                            IntegerToReal
-                                            (Real 4)
-                                            (RealConstant
-                                                42.000000
-                                                (Real 4)
-                                            )
-                                        )
+                                    (IntrinsicElementalFunction
+                                        Cmplx
+                                        [(Var 2 real_part)
                                         (Var 2 img_part)
+                                        (IntegerConstant 4 (Integer 4) Decimal)]
+                                        0
                                         (Complex 4)
                                         (ComplexConstant
                                             42.000000
@@ -260,6 +298,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             z1:
                                 (Variable
@@ -278,6 +321,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             z2:
                                 (Variable
@@ -296,24 +344,29 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     complex_07
                     []
                     [(Assignment
                         (Var 2 z1)
-                        (ComplexConstructor
-                            (Cast
-                                (Var 2 i)
-                                IntegerToReal
-                                (Real 4)
-                                ()
-                            )
+                        (IntrinsicElementalFunction
+                            Cmplx
+                            [(Var 2 i)
                             (Var 2 x1)
+                            (IntegerConstant 4 (Integer 4) Decimal)]
+                            0
                             (Complex 4)
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 c1)
@@ -335,43 +388,34 @@
                                 24.000000
                                 (Complex 8)
                             )
+                            ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 2 c1)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (Assignment
                         (Var 2 x2)
-                        (Cast
-                            (ComplexConstructor
-                                (Cast
-                                    (Var 2 real_part)
-                                    IntegerToReal
-                                    (Real 4)
-                                    (RealConstant
-                                        42.000000
-                                        (Real 4)
-                                    )
-                                )
-                                (RealConstant
-                                    0.000000
-                                    (Real 4)
-                                )
-                                (Complex 4)
-                                (ComplexConstant
-                                    42.000000
-                                    0.000000
-                                    (Complex 4)
-                                )
+                        (IntrinsicElementalFunction
+                            Cmplx
+                            [(Var 2 real_part)
+                            (RealConstant
+                                0.000000
+                                (Real 4)
                             )
-                            ComplexToComplex
+                            (IntegerConstant 8 (Integer 4) Decimal)]
+                            0
                             (Complex 8)
                             (ComplexConstant
                                 42.000000
@@ -380,24 +424,20 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 y2)
-                        (Cast
-                            (ComplexConstructor
-                                (Var 2 img_part)
-                                (RealConstant
-                                    0.000000
-                                    (Real 4)
-                                )
-                                (Complex 4)
-                                (ComplexConstant
-                                    3.140000
-                                    0.000000
-                                    (Complex 4)
-                                )
+                        (IntrinsicElementalFunction
+                            Cmplx
+                            [(Var 2 img_part)
+                            (RealConstant
+                                0.000000
+                                (Real 4)
                             )
-                            ComplexToComplex
+                            (IntegerConstant 8 (Integer 4) Decimal)]
+                            0
                             (Complex 8)
                             (ComplexConstant
                                 3.140000
@@ -406,29 +446,17 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 z2)
-                        (Cast
-                            (ComplexConstructor
-                                (Cast
-                                    (Var 2 real_part)
-                                    IntegerToReal
-                                    (Real 4)
-                                    (RealConstant
-                                        42.000000
-                                        (Real 4)
-                                    )
-                                )
-                                (Var 2 img_part)
-                                (Complex 4)
-                                (ComplexConstant
-                                    42.000000
-                                    3.140000
-                                    (Complex 4)
-                                )
-                            )
-                            ComplexToComplex
+                        (IntrinsicElementalFunction
+                            Cmplx
+                            [(Var 2 real_part)
+                            (Var 2 img_part)
+                            (IntegerConstant 8 (Integer 4) Decimal)]
+                            0
                             (Complex 8)
                             (ComplexConstant
                                 42.000000
@@ -437,8 +465,11 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -476,6 +507,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -513,6 +545,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -550,6 +583,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -574,6 +608,7 @@
                                             0.000000
                                             (Complex 8)
                                         )
+                                        ()
                                     )
                                     (Complex 8)
                                     ()
@@ -594,6 +629,7 @@
                                     0.000010
                                     (Real 8)
                                 )
+                                ()
                             )
                             (Logical 4)
                             ()
@@ -604,6 +640,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -628,6 +665,7 @@
                                             0.000000
                                             (Complex 8)
                                         )
+                                        ()
                                     )
                                     (Complex 8)
                                     ()
@@ -648,6 +686,7 @@
                                     0.000010
                                     (Real 8)
                                 )
+                                ()
                             )
                             (Logical 4)
                             ()
@@ -658,6 +697,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -682,6 +722,7 @@
                                             3.140000
                                             (Complex 8)
                                         )
+                                        ()
                                     )
                                     (Complex 8)
                                     ()
@@ -702,6 +743,7 @@
                                     0.000010
                                     (Real 8)
                                 )
+                                ()
                             )
                             (Logical 4)
                             ()
@@ -714,72 +756,90 @@
                     (Print
                         (StringFormat
                             ()
-                            [(ComplexConstructor
-                                (Cast
-                                    (Var 2 i)
-                                    IntegerToReal
-                                    (Real 4)
-                                    ()
-                                )
+                            [(IntrinsicElementalFunction
+                                Cmplx
+                                [(Var 2 i)
                                 (RealConstant
                                     0.000000
                                     (Real 4)
                                 )
-                                (Complex 4)
+                                (IntegerConstant 8 (Integer 4) Decimal)]
+                                0
+                                (Complex 8)
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
                                 [(ComplexBinOp
-                                    (ComplexConstructor
-                                        (Cast
-                                            (Var 2 i)
-                                            IntegerToReal
-                                            (Real 4)
-                                            ()
-                                        )
+                                    (IntrinsicElementalFunction
+                                        Cmplx
+                                        [(Var 2 i)
                                         (RealConstant
                                             0.000000
                                             (Real 4)
                                         )
-                                        (Complex 4)
+                                        (IntegerConstant 8 (Integer 4) Decimal)]
+                                        0
+                                        (Complex 8)
                                         ()
                                     )
                                     Sub
-                                    (ComplexConstructor
-                                        (RealConstant
-                                            42.000000
-                                            (Real 4)
+                                    (Cast
+                                        (ComplexConstructor
+                                            (RealConstant
+                                                42.000000
+                                                (Real 4)
+                                            )
+                                            (RealConstant
+                                                0.000000
+                                                (Real 4)
+                                            )
+                                            (Complex 4)
+                                            (ComplexConstant
+                                                42.000000
+                                                0.000000
+                                                (Complex 4)
+                                            )
                                         )
-                                        (RealConstant
-                                            0.000000
-                                            (Real 4)
-                                        )
-                                        (Complex 4)
+                                        ComplexToComplex
+                                        (Complex 8)
                                         (ComplexConstant
                                             42.000000
                                             0.000000
-                                            (Complex 4)
+                                            (Complex 8)
                                         )
+                                        ()
                                     )
-                                    (Complex 4)
+                                    (Complex 8)
                                     ()
                                 )]
                                 0
-                                (Real 4)
+                                (Real 8)
                                 ()
                             )
                             Gt
-                            (RealConstant
-                                0.000010
-                                (Real 4)
+                            (Cast
+                                (RealConstant
+                                    0.000010
+                                    (Real 4)
+                                )
+                                RealToReal
+                                (Real 8)
+                                (RealConstant
+                                    0.000010
+                                    (Real 8)
+                                )
+                                ()
                             )
                             (Logical 4)
                             ()
@@ -792,186 +852,276 @@
                     (Print
                         (StringFormat
                             ()
-                            [(ComplexConstructor
-                                (Var 2 x1)
+                            [(IntrinsicElementalFunction
+                                Cmplx
+                                [(Var 2 x1)
                                 (RealConstant
                                     0.000000
                                     (Real 4)
                                 )
-                                (Complex 4)
+                                (IntegerConstant 8 (Integer 4) Decimal)]
+                                0
+                                (Complex 8)
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
                                 [(ComplexBinOp
-                                    (ComplexConstructor
-                                        (Var 2 x1)
+                                    (IntrinsicElementalFunction
+                                        Cmplx
+                                        [(Var 2 x1)
                                         (RealConstant
                                             0.000000
                                             (Real 4)
                                         )
-                                        (Complex 4)
+                                        (IntegerConstant 8 (Integer 4) Decimal)]
+                                        0
+                                        (Complex 8)
                                         ()
                                     )
                                     Sub
-                                    (ComplexConstructor
-                                        (RealConstant
-                                            3.140000
-                                            (Real 4)
+                                    (Cast
+                                        (ComplexConstructor
+                                            (RealConstant
+                                                3.140000
+                                                (Real 4)
+                                            )
+                                            (RealConstant
+                                                0.000000
+                                                (Real 4)
+                                            )
+                                            (Complex 4)
+                                            (ComplexConstant
+                                                3.140000
+                                                0.000000
+                                                (Complex 4)
+                                            )
                                         )
-                                        (RealConstant
-                                            0.000000
-                                            (Real 4)
-                                        )
-                                        (Complex 4)
+                                        ComplexToComplex
+                                        (Complex 8)
                                         (ComplexConstant
                                             3.140000
                                             0.000000
-                                            (Complex 4)
+                                            (Complex 8)
                                         )
+                                        ()
                                     )
-                                    (Complex 4)
+                                    (Complex 8)
                                     ()
                                 )]
                                 0
-                                (Real 4)
+                                (Real 8)
                                 ()
                             )
                             Gt
-                            (RealConstant
-                                0.000010
-                                (Real 4)
-                            )
-                            (Logical 4)
-                            ()
-                        )
-                        [(ErrorStop
-                            ()
-                        )]
-                        []
-                    )
-                    (Print
-                        (StringFormat
-                            ()
-                            [(Var 2 z1)]
-                            FormatFortran
-                            (String -1 0 () PointerString)
-                            ()
-                        )
-                    )
-                    (If
-                        (RealCompare
-                            (IntrinsicElementalFunction
-                                Abs
-                                [(ComplexBinOp
-                                    (Var 2 z1)
-                                    Sub
-                                    (ComplexConstructor
-                                        (RealConstant
-                                            42.000000
-                                            (Real 4)
-                                        )
-                                        (RealConstant
-                                            3.140000
-                                            (Real 4)
-                                        )
-                                        (Complex 4)
-                                        (ComplexConstant
-                                            42.000000
-                                            3.140000
-                                            (Complex 4)
-                                        )
-                                    )
-                                    (Complex 4)
-                                    ()
-                                )]
-                                0
-                                (Real 4)
-                                ()
-                            )
-                            Gt
-                            (RealConstant
-                                0.000010
-                                (Real 4)
-                            )
-                            (Logical 4)
-                            ()
-                        )
-                        [(ErrorStop
-                            ()
-                        )]
-                        []
-                    )
-                    (Print
-                        (StringFormat
-                            ()
-                            [(ComplexConstructor
-                                (Var 2 x1)
-                                (Cast
-                                    (Var 2 i)
-                                    IntegerToReal
+                            (Cast
+                                (RealConstant
+                                    0.000010
                                     (Real 4)
-                                    ()
                                 )
-                                (Complex 4)
+                                RealToReal
+                                (Real 8)
+                                (RealConstant
+                                    0.000010
+                                    (Real 8)
+                                )
+                                ()
+                            )
+                            (Logical 4)
+                            ()
+                        )
+                        [(ErrorStop
+                            ()
+                        )]
+                        []
+                    )
+                    (Print
+                        (StringFormat
+                            ()
+                            [(IntrinsicElementalFunction
+                                Cmplx
+                                [(Var 2 z1)
+                                (RealConstant
+                                    0.000000
+                                    (Real 4)
+                                )
+                                (IntegerConstant 8 (Integer 4) Decimal)]
+                                0
+                                (Complex 8)
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
                                 [(ComplexBinOp
-                                    (ComplexConstructor
-                                        (Var 2 x1)
-                                        (Cast
-                                            (Var 2 i)
-                                            IntegerToReal
+                                    (IntrinsicElementalFunction
+                                        Cmplx
+                                        [(Var 2 z1)
+                                        (RealConstant
+                                            0.000000
                                             (Real 4)
-                                            ()
                                         )
-                                        (Complex 4)
+                                        (IntegerConstant 8 (Integer 4) Decimal)]
+                                        0
+                                        (Complex 8)
                                         ()
                                     )
                                     Sub
-                                    (ComplexConstructor
-                                        (RealConstant
-                                            3.140000
-                                            (Real 4)
-                                        )
-                                        (RealConstant
-                                            42.000000
-                                            (Real 4)
-                                        )
-                                        (Complex 4)
-                                        (ComplexConstant
-                                            3.140000
-                                            42.000000
+                                    (Cast
+                                        (ComplexConstructor
+                                            (RealConstant
+                                                42.000000
+                                                (Real 4)
+                                            )
+                                            (RealConstant
+                                                3.140000
+                                                (Real 4)
+                                            )
                                             (Complex 4)
+                                            (ComplexConstant
+                                                42.000000
+                                                3.140000
+                                                (Complex 4)
+                                            )
                                         )
+                                        ComplexToComplex
+                                        (Complex 8)
+                                        (ComplexConstant
+                                            42.000000
+                                            3.140000
+                                            (Complex 8)
+                                        )
+                                        ()
                                     )
-                                    (Complex 4)
+                                    (Complex 8)
                                     ()
                                 )]
                                 0
-                                (Real 4)
+                                (Real 8)
                                 ()
                             )
                             Gt
-                            (RealConstant
-                                0.000010
-                                (Real 4)
+                            (Cast
+                                (RealConstant
+                                    0.000010
+                                    (Real 4)
+                                )
+                                RealToReal
+                                (Real 8)
+                                (RealConstant
+                                    0.000010
+                                    (Real 8)
+                                )
+                                ()
+                            )
+                            (Logical 4)
+                            ()
+                        )
+                        [(ErrorStop
+                            ()
+                        )]
+                        []
+                    )
+                    (Print
+                        (StringFormat
+                            ()
+                            [(IntrinsicElementalFunction
+                                Cmplx
+                                [(Var 2 x1)
+                                (Var 2 i)
+                                (IntegerConstant 8 (Integer 4) Decimal)]
+                                0
+                                (Complex 8)
+                                ()
+                            )]
+                            FormatFortran
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
+                            ()
+                        )
+                    )
+                    (If
+                        ()
+                        (RealCompare
+                            (IntrinsicElementalFunction
+                                Abs
+                                [(ComplexBinOp
+                                    (IntrinsicElementalFunction
+                                        Cmplx
+                                        [(Var 2 x1)
+                                        (Var 2 i)
+                                        (IntegerConstant 8 (Integer 4) Decimal)]
+                                        0
+                                        (Complex 8)
+                                        ()
+                                    )
+                                    Sub
+                                    (Cast
+                                        (ComplexConstructor
+                                            (RealConstant
+                                                3.140000
+                                                (Real 4)
+                                            )
+                                            (RealConstant
+                                                42.000000
+                                                (Real 4)
+                                            )
+                                            (Complex 4)
+                                            (ComplexConstant
+                                                3.140000
+                                                42.000000
+                                                (Complex 4)
+                                            )
+                                        )
+                                        ComplexToComplex
+                                        (Complex 8)
+                                        (ComplexConstant
+                                            3.140000
+                                            42.000000
+                                            (Complex 8)
+                                        )
+                                        ()
+                                    )
+                                    (Complex 8)
+                                    ()
+                                )]
+                                0
+                                (Real 8)
+                                ()
+                            )
+                            Gt
+                            (Cast
+                                (RealConstant
+                                    0.000010
+                                    (Real 4)
+                                )
+                                RealToReal
+                                (Real 8)
+                                (RealConstant
+                                    0.000010
+                                    (Real 8)
+                                )
+                                ()
                             )
                             (Logical 4)
                             ()
@@ -988,7 +1138,9 @@
                             (Var 2 y)
                             (Var 2 z)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]

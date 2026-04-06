@@ -1,4 +1,4 @@
-module asciimod ! f95-compliant file asciiB.f90: [] only in character strings
+module intrinsics_346_asciimod ! f95-compliant file asciiB.f90: [] only in character strings
     implicit none
     public iascii,ascii
     interface ascii
@@ -15,7 +15,7 @@ module asciimod ! f95-compliant file asciiB.f90: [] only in character strings
   
     pure function asciiarray(      codes)
       integer,intent(in)::         codes(:)
-      character   asciiarray*(size(codes))
+      character(len = size(codes)) :: asciiarray
       integer i
       do i = 1, size(codes)
          asciiarray(i:i) = achar(codes(i))
@@ -28,9 +28,9 @@ module asciimod ! f95-compliant file asciiB.f90: [] only in character strings
       asciiscalar = asciiarray((/codes/))
     end function asciiscalar
   
-end module asciimod
+end module
 program intrinsics_346
-    use asciimod
+    use intrinsics_346_asciimod
     implicit none
 
     ! Variables

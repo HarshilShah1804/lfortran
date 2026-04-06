@@ -29,6 +29,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             p:
                                 (Variable
@@ -52,6 +57,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     array_02_pack
@@ -70,6 +80,8 @@
                             ColMajor
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 p)
@@ -142,17 +154,22 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 2 p)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (IntrinsicArrayFunction
                             Any
                             [(ArrayPhysicalCast

@@ -16,7 +16,7 @@
                                     ()
                                     ()
                                     Default
-                                    (String 1 29 () PointerString)
+                                    (String 1 (IntegerConstant 29 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             intro:
                                 (ExternalSymbol
@@ -44,7 +49,7 @@
                                     ()
                                     ()
                                     Default
-                                    (String 1 7 () PointerString)
+                                    (String 1 (IntegerConstant 7 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -52,6 +57,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             posit:
                                 (Variable
@@ -62,7 +72,7 @@
                                     ()
                                     ()
                                     Default
-                                    (String 1 5 () PointerString)
+                                    (String 1 (IntegerConstant 5 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -70,6 +80,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             title:
                                 (Variable
@@ -80,7 +95,7 @@
                                     ()
                                     ()
                                     Default
-                                    (String 1 4 () PointerString)
+                                    (String 1 (IntegerConstant 4 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -88,6 +103,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             verb:
                                 (Variable
@@ -98,7 +118,7 @@
                                     ()
                                     ()
                                     Default
-                                    (String 1 8 () PointerString)
+                                    (String 1 (IntegerConstant 8 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -106,6 +126,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     string_03
@@ -114,66 +139,86 @@
                         (Var 3 verb)
                         (StringConstant
                             "learned "
-                            (String 1 8 () PointerString)
+                            (String 1 (IntegerConstant 8 (Integer 4) Decimal) ExpressionLength DescriptorString)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 3 posit)
                         (StringConstant
                             "from "
-                            (String 1 5 () PointerString)
+                            (String 1 (IntegerConstant 5 (Integer 4) Decimal) ExpressionLength DescriptorString)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 3 title)
                         (StringConstant
                             "the "
-                            (String 1 4 () PointerString)
+                            (String 1 (IntegerConstant 4 (Integer 4) Decimal) ExpressionLength DescriptorString)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 3 last_name)
                         (StringConstant
                             "best"
-                            (String 1 4 () PointerString)
+                            (String 1 (IntegerConstant 4 (Integer 4) Decimal) ExpressionLength DescriptorString)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 3 combined)
-                        (StringConcat
-                            (StringConcat
-                                (StringConcat
-                                    (StringConcat
-                                        (StringConcat
-                                            (Var 3 intro)
-                                            (Var 3 verb)
-                                            (String 1 13 () PointerString)
+                        (IntrinsicElementalFunction
+                            StringConcat
+                            [(IntrinsicElementalFunction
+                                StringConcat
+                                [(IntrinsicElementalFunction
+                                    StringConcat
+                                    [(IntrinsicElementalFunction
+                                        StringConcat
+                                        [(IntrinsicElementalFunction
+                                            StringConcat
+                                            [(Var 3 intro)
+                                            (Var 3 verb)]
+                                            0
+                                            (String 1 (IntegerConstant 13 (Integer 8) Decimal) ExpressionLength DescriptorString)
                                             ()
                                         )
-                                        (Var 3 posit)
-                                        (String 1 18 () PointerString)
+                                        (Var 3 posit)]
+                                        0
+                                        (String 1 (IntegerConstant 18 (Integer 8) Decimal) ExpressionLength DescriptorString)
                                         ()
                                     )
-                                    (Var 3 title)
-                                    (String 1 22 () PointerString)
+                                    (Var 3 title)]
+                                    0
+                                    (String 1 (IntegerConstant 22 (Integer 8) Decimal) ExpressionLength DescriptorString)
                                     ()
                                 )
-                                (Var 3 last_name)
-                                (String 1 29 () PointerString)
+                                (Var 3 last_name)]
+                                0
+                                (String 1 (IntegerConstant 29 (Integer 8) Decimal) ExpressionLength DescriptorString)
                                 ()
                             )
                             (StringConstant
                                 "."
-                                (String 1 1 () PointerString)
-                            )
-                            (String 1 30 () PointerString)
+                                (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
+                            )]
+                            0
+                            (String 1 (IntegerConstant 30 (Integer 8) Decimal) ExpressionLength DescriptorString)
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (Var 3 combined)
@@ -192,14 +237,14 @@
                                     Local
                                     (StringConstant
                                         "I've "
-                                        (String 1 5 () PointerString)
+                                        (String 1 (IntegerConstant 5 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     (StringConstant
                                         "I've "
-                                        (String 1 5 () PointerString)
+                                        (String 1 (IntegerConstant 5 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Parameter
-                                    (String 1 5 () PointerString)
+                                    (String 1 (IntegerConstant 5 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -207,10 +252,17 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     string_03_mod
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

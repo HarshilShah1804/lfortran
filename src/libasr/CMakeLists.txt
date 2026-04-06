@@ -47,7 +47,6 @@ set(SRC
     pass/subroutine_from_function.cpp
     pass/transform_optional_argument_functions.cpp
     pass/class_constructor.cpp
-    pass/arr_slice.cpp
     pass/print_arr.cpp
     pass/print_struct_type.cpp
     pass/print_list_tuple.cpp
@@ -73,18 +72,17 @@ set(SRC
     pass/insert_deallocate.cpp
     pass/promote_allocatable_to_nonallocatable.cpp
     pass/replace_with_compile_time_values.cpp
+    pass/gpu_offload.cpp
+
+    codegen/asr_to_metal.cpp
 
     asr_verify.cpp
     asr_utils.cpp
     casting_utils.cpp
-    diagnostics.cpp
-    string_utils.cpp
     asr_scopes.cpp
     modfile.cpp
     pickle.cpp
     serialization.cpp
-    stacktrace.cpp
-    utils2.cpp
 )
 if (WITH_LLVM)
     set(SRC ${SRC}
@@ -110,9 +108,29 @@ if (WITH_LLVM)
             COMPILE_FLAGS -Wno-deprecated-declarations)
     endif()
 endif()
+
+set(LFORTRAN_UTILS
+  assert.h
+  colors.h
+  exception.h
+  location.h
+
+  diagnostics.h
+  diagnostics.cpp
+  stacktrace.h
+  stacktrace.cpp
+  string_utils.cpp
+  utils.h
+  utils2.cpp
+)
+add_library(lfortran_utils OBJECT ${LFORTRAN_UTILS})
+target_include_directories(lfortran_utils BEFORE PUBLIC ${libasr_SOURCE_DIR}/..)
+target_include_directories(lfortran_utils BEFORE PUBLIC ${libasr_BINARY_DIR}/..)
+
 add_library(asr STATIC ${SRC})
 target_include_directories(asr BEFORE PUBLIC ${libasr_SOURCE_DIR}/..)
 target_include_directories(asr BEFORE PUBLIC ${libasr_BINARY_DIR}/..)
+target_link_libraries(asr lfortran_utils)
 if (WITH_LIBUNWIND)
     target_link_libraries(asr p::libunwind)
 endif()
@@ -127,6 +145,7 @@ if (WITH_EXECINFO)
 endif()
 if (WITH_LLVM)
     target_link_libraries(asr p::llvm)
+    target_link_libraries(lfortran_utils p::llvm)
 endif()
 
 # Install the dwarf_convert.py and dat_convert.py
@@ -135,3 +154,10 @@ install(
     PERMISSIONS OWNER_EXECUTE OWNER_READ
     DESTINATION ${CMAKE_INSTALL_PREFIX}/share/lfortran
 )
+
+# Copy Metal GPU runtime source to build directory so the
+# lfortran binary can find it at its expected relative path
+file(COPY
+    ${CMAKE_CURRENT_SOURCE_DIR}/runtime/lfortran_gpu_metal.m
+    ${CMAKE_CURRENT_SOURCE_DIR}/runtime/lfortran_gpu_runtime.h
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/runtime)

@@ -14,7 +14,7 @@
                     [(Print
                         (StringConstant
                             "running functions_16 program"
-                            (String 1 28 () PointerString)
+                            (String 1 (IntegerConstant 28 (Integer 4) Decimal) ExpressionLength DescriptorString)
                         )
                     )]
                 ),
@@ -55,6 +55,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             lhs:
                                                 (Variable
@@ -66,15 +71,25 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 toml_key
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 toml_key
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             rhs:
                                                 (Variable
@@ -86,24 +101,44 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 toml_key
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 toml_key
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     compare_keys_less
                                     (FunctionType
                                         [(StructType
-                                            2 toml_key
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         (StructType
-                                            2 toml_key
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )]
                                         (Logical 4)
                                         Source
@@ -123,36 +158,20 @@
                                     [(Assignment
                                         (Var 8 less)
                                         (StringCompare
-                                            (StringPhysicalCast
-                                                (StructInstanceMember
-                                                    (Var 8 lhs)
-                                                    8 1_toml_key_key
-                                                    (Allocatable
-                                                        (String 1 -2 () DescriptorString)
-                                                    )
-                                                    ()
-                                                )
-                                                DescriptorString
-                                                PointerString
+                                            (StructInstanceMember
+                                                (Var 8 lhs)
+                                                8 1_toml_key_key
                                                 (Allocatable
-                                                    (String 1 -2 () PointerString)
+                                                    (String 1 () DeferredLength DescriptorString)
                                                 )
                                                 ()
                                             )
                                             Lt
-                                            (StringPhysicalCast
-                                                (StructInstanceMember
-                                                    (Var 8 rhs)
-                                                    8 1_toml_key_key
-                                                    (Allocatable
-                                                        (String 1 -2 () DescriptorString)
-                                                    )
-                                                    ()
-                                                )
-                                                DescriptorString
-                                                PointerString
+                                            (StructInstanceMember
+                                                (Var 8 rhs)
+                                                8 1_toml_key_key
                                                 (Allocatable
-                                                    (String 1 -2 () PointerString)
+                                                    (String 1 () DeferredLength DescriptorString)
                                                 )
                                                 ()
                                             )
@@ -160,11 +179,13 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 8 less)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             compare_less:
@@ -189,6 +210,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             lhs:
                                                 (Variable
@@ -200,15 +226,25 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 toml_key
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 toml_key
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             rhs:
                                                 (Variable
@@ -220,24 +256,44 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 toml_key
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 toml_key
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     compare_less
                                     (FunctionType
                                         [(StructType
-                                            2 toml_key
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         (StructType
-                                            2 toml_key
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )]
                                         (Logical 4)
                                         Source
@@ -258,7 +314,7 @@
                                     (Var 4 less)
                                     Public
                                     .false.
-                                    .false.
+                                    .true.
                                     ()
                                 ),
                             quicksort:
@@ -283,6 +339,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             i:
                                                 (Variable
@@ -301,6 +362,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             idx:
                                                 (Variable
@@ -324,6 +390,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             last:
                                                 (Variable
@@ -342,6 +413,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             less:
                                                 (Variable
@@ -354,10 +430,20 @@
                                                     Default
                                                     (FunctionType
                                                         [(StructType
-                                                            2 toml_key
+                                                            [(Allocatable
+                                                                (String 1 () DeferredLength DescriptorString)
+                                                            )]
+                                                            []
+                                                            .true.
+                                                            .false.
                                                         )
                                                         (StructType
-                                                            2 toml_key
+                                                            [(Allocatable
+                                                                (String 1 () DeferredLength DescriptorString)
+                                                            )]
+                                                            []
+                                                            .true.
+                                                            .false.
                                                         )]
                                                         (Logical 4)
                                                         Source
@@ -378,6 +464,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             list:
                                                 (Variable
@@ -390,19 +481,29 @@
                                                     Default
                                                     (Array
                                                         (StructType
-                                                            2 toml_key
+                                                            [(Allocatable
+                                                                (String 1 () DeferredLength DescriptorString)
+                                                            )]
+                                                            []
+                                                            .true.
+                                                            .false.
                                                         )
                                                         [(()
                                                         ())]
                                                         DescriptorArray
                                                     )
-                                                    ()
+                                                    2 toml_key
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             low:
                                                 (Variable
@@ -421,6 +522,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             pivot:
                                                 (Variable
@@ -439,13 +545,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     quicksort
                                     (FunctionType
                                         [(Array
                                             (StructType
-                                                2 toml_key
+                                                [(Allocatable
+                                                    (String 1 () DeferredLength DescriptorString)
+                                                )]
+                                                []
+                                                .true.
+                                                .false.
                                             )
                                             [(()
                                             ())]
@@ -461,10 +577,20 @@
                                         (Integer 4)
                                         (FunctionType
                                             [(StructType
-                                                2 toml_key
+                                                [(Allocatable
+                                                    (String 1 () DeferredLength DescriptorString)
+                                                )]
+                                                []
+                                                .true.
+                                                .false.
                                             )
                                             (StructType
-                                                2 toml_key
+                                                [(Allocatable
+                                                    (String 1 () DeferredLength DescriptorString)
+                                                )]
+                                                []
+                                                .true.
+                                                .false.
                                             )]
                                             (Logical 4)
                                             Source
@@ -498,6 +624,7 @@
                                     (Var 6 high)
                                     (Var 6 less)]
                                     [(If
+                                        ()
                                         (IntegerCompare
                                             (Var 6 low)
                                             Lt
@@ -539,11 +666,14 @@
                                                 ()
                                             ))]
                                             ()
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 6 last)
                                             (Var 6 low)
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (DoLoop
                                             ()
@@ -558,6 +688,7 @@
                                             (Var 6 high)
                                             ())
                                             [(If
+                                                ()
                                                 (FunctionCall
                                                     6 less
                                                     ()
@@ -575,7 +706,12 @@
                                                         )
                                                         ())]
                                                         (StructType
-                                                            2 toml_key
+                                                            [(Allocatable
+                                                                (String 1 () DeferredLength DescriptorString)
+                                                            )]
+                                                            []
+                                                            .true.
+                                                            .false.
                                                         )
                                                         ColMajor
                                                         ()
@@ -594,7 +730,12 @@
                                                         )
                                                         ())]
                                                         (StructType
-                                                            2 toml_key
+                                                            [(Allocatable
+                                                                (String 1 () DeferredLength DescriptorString)
+                                                            )]
+                                                            []
+                                                            .true.
+                                                            .false.
                                                         )
                                                         ColMajor
                                                         ()
@@ -613,6 +754,8 @@
                                                         ()
                                                     )
                                                     ()
+                                                    .false.
+                                                    .false.
                                                 )
                                                 (SubroutineCall
                                                     2 swap
@@ -636,6 +779,7 @@
                                                         ()
                                                     ))]
                                                     ()
+                                                    .false.
                                                 )]
                                                 []
                                             )]
@@ -663,11 +807,14 @@
                                                 ()
                                             ))]
                                             ()
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 6 pivot)
                                             (Var 6 last)
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (SubroutineCall
                                             2 quicksort
@@ -678,7 +825,12 @@
                                                 DescriptorArray
                                                 (Array
                                                     (StructType
-                                                        2 toml_key
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
                                                     [(()
                                                     ())]
@@ -708,6 +860,7 @@
                                             ))
                                             ((Var 6 less))]
                                             ()
+                                            .false.
                                         )
                                         (SubroutineCall
                                             2 quicksort
@@ -718,7 +871,12 @@
                                                 DescriptorArray
                                                 (Array
                                                     (StructType
-                                                        2 toml_key
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
                                                     [(()
                                                     ())]
@@ -748,13 +906,14 @@
                                             ((Var 6 high))
                                             ((Var 6 less))]
                                             ()
+                                            .false.
                                         )]
                                         []
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             sort:
@@ -780,10 +939,20 @@
                                                     Default
                                                     (FunctionType
                                                         [(StructType
-                                                            2 toml_key
+                                                            [(Allocatable
+                                                                (String 1 () DeferredLength DescriptorString)
+                                                            )]
+                                                            []
+                                                            .true.
+                                                            .false.
                                                         )
                                                         (StructType
-                                                            2 toml_key
+                                                            [(Allocatable
+                                                                (String 1 () DeferredLength DescriptorString)
+                                                            )]
+                                                            []
+                                                            .true.
+                                                            .false.
                                                         )]
                                                         (Logical 4)
                                                         Source
@@ -804,6 +973,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             high:
                                                 (Variable
@@ -822,6 +996,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             i:
                                                 (Variable
@@ -840,6 +1019,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             idx:
                                                 (Variable
@@ -863,6 +1047,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             indexarray:
                                                 (Variable
@@ -888,6 +1077,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             list:
                                                 (Variable
@@ -900,19 +1094,29 @@
                                                     Default
                                                     (Array
                                                         (StructType
-                                                            2 toml_key
+                                                            [(Allocatable
+                                                                (String 1 () DeferredLength DescriptorString)
+                                                            )]
+                                                            []
+                                                            .true.
+                                                            .false.
                                                         )
                                                         [(()
                                                         ())]
                                                         DescriptorArray
                                                     )
-                                                    ()
+                                                    2 toml_key
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             low:
                                                 (Variable
@@ -931,6 +1135,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             sorted:
                                                 (Variable
@@ -944,27 +1153,42 @@
                                                     (Allocatable
                                                         (Array
                                                             (StructType
-                                                                2 toml_key
+                                                                [(Allocatable
+                                                                    (String 1 () DeferredLength DescriptorString)
+                                                                )]
+                                                                []
+                                                                .true.
+                                                                .false.
                                                             )
                                                             [(()
                                                             ())]
                                                             DescriptorArray
                                                         )
                                                     )
-                                                    ()
+                                                    2 toml_key
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     sort_keys
                                     (FunctionType
                                         [(Array
                                             (StructType
-                                                2 toml_key
+                                                [(Allocatable
+                                                    (String 1 () DeferredLength DescriptorString)
+                                                )]
+                                                []
+                                                .true.
+                                                .false.
                                             )
                                             [(()
                                             ())]
@@ -978,10 +1202,20 @@
                                         )
                                         (FunctionType
                                             [(StructType
-                                                2 toml_key
+                                                [(Allocatable
+                                                    (String 1 () DeferredLength DescriptorString)
+                                                )]
+                                                []
+                                                .true.
+                                                .false.
                                             )
                                             (StructType
-                                                2 toml_key
+                                                [(Allocatable
+                                                    (String 1 () DeferredLength DescriptorString)
+                                                )]
+                                                []
+                                                .true.
+                                                .false.
                                             )]
                                             (Logical 4)
                                             Source
@@ -1015,6 +1249,8 @@
                                         (Var 5 low)
                                         (IntegerConstant 1 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 5 high)
@@ -1025,16 +1261,21 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 5 sorted)
                                         (Var 5 list)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Allocate
                                         [((Var 5 indexarray)
                                         [((IntegerConstant 1 (Integer 4) Decimal)
                                         (Var 5 high))]
+                                        ()
                                         ()
                                         ())]
                                         ()
@@ -1057,9 +1298,37 @@
                                             )
                                             ()
                                             ColMajor
+                                            ()
                                         )
                                     )
+                                    (Assignment
+                                        (Var 5 indexarray)
+                                        (ArrayConstructor
+                                            [(ImpliedDoLoop
+                                                [(Var 5 i)]
+                                                (Var 5 i)
+                                                (Var 5 low)
+                                                (Var 5 high)
+                                                ()
+                                                (Integer 4)
+                                                ()
+                                            )]
+                                            (Array
+                                                (Integer 4)
+                                                [((IntegerConstant 1 (Integer 4) Decimal)
+                                                ())]
+                                                DescriptorArray
+                                            )
+                                            ()
+                                            ColMajor
+                                            ()
+                                        )
+                                        ()
+                                        .false.
+                                        .false.
+                                    )
                                     (If
+                                        ()
                                         (IntrinsicElementalFunction
                                             Present
                                             [(Var 5 compare)]
@@ -1076,6 +1345,7 @@
                                             ((Var 5 high))
                                             ((Var 5 compare))]
                                             ()
+                                            .false.
                                         )]
                                         [(SubroutineCall
                                             2 quicksort
@@ -1086,6 +1356,7 @@
                                             ((Var 5 high))
                                             ((Var 2 compare_keys_less))]
                                             ()
+                                            .false.
                                         )]
                                     )
                                     (DoLoop
@@ -1101,7 +1372,12 @@
                                                 (Var 5 i)
                                                 ())]
                                                 (StructType
-                                                    2 toml_key
+                                                    [(Allocatable
+                                                        (String 1 () DeferredLength DescriptorString)
+                                                    )]
+                                                    []
+                                                    .true.
+                                                    .false.
                                                 )
                                                 ColMajor
                                                 ()
@@ -1120,16 +1396,24 @@
                                                 )
                                                 ())]
                                                 (StructType
-                                                    2 toml_key
+                                                    [(Allocatable
+                                                        (String 1 () DeferredLength DescriptorString)
+                                                    )]
+                                                    []
+                                                    .true.
+                                                    .false.
                                                 )
                                                 ColMajor
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )]
                                         []
                                     )
                                     (If
+                                        ()
                                         (IntrinsicElementalFunction
                                             Present
                                             [(Var 5 idx)]
@@ -1141,13 +1425,15 @@
                                             (Var 5 idx)
                                             (Var 5 indexarray)
                                             ()
+                                            .false.
+                                            .false.
                                         )]
                                         []
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             swap:
@@ -1172,6 +1458,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             rhs:
                                                 (Variable
@@ -1190,6 +1481,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             tmp:
                                                 (Variable
@@ -1208,6 +1504,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     swap
@@ -1233,21 +1534,27 @@
                                         (Var 7 tmp)
                                         (Var 7 lhs)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 7 lhs)
                                         (Var 7 rhs)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 7 rhs)
                                         (Var 7 tmp)
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             toml_key:
@@ -1265,7 +1572,7 @@
                                                     ()
                                                     Default
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     Source
@@ -1274,11 +1581,25 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     toml_key
+                                    (StructType
+                                        [(Allocatable
+                                            (String 1 () DeferredLength DescriptorString)
+                                        )]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [key]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -1286,10 +1607,13 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 )
                         })
                     tomlf_utils_sort
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

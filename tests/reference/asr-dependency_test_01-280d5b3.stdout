@@ -12,10 +12,10 @@
                                     (SymbolTable
                                         6
                                         {
-                                            1_find_dependency:
+                                            1_dependency_tree_t_find_dependency:
                                                 (ExternalSymbol
                                                     6
-                                                    1_find_dependency
+                                                    1_dependency_tree_t_find_dependency
                                                     5 find_dependency
                                                     dependency_tree_t
                                                     []
@@ -32,15 +32,28 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 dependency_config_t
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )
+                                                        (Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 dependency_config_t
                                                     Source
                                                     Private
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             id:
                                                 (Variable
@@ -59,6 +72,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             self:
                                                 (Variable
@@ -69,25 +87,100 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (ClassType
-                                                        2 dependency_tree_t
+                                                    (StructType
+                                                        [(Integer 4)
+                                                        (Integer 4)
+                                                        (Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )
+                                                        (Integer 4)
+                                                        (Allocatable
+                                                            (Array
+                                                                (StructType
+                                                                    [(Allocatable
+                                                                        (String 1 () DeferredLength DescriptorString)
+                                                                    )
+                                                                    (Allocatable
+                                                                        (String 1 () DeferredLength DescriptorString)
+                                                                    )
+                                                                    (Logical 4)
+                                                                    (Logical 4)]
+                                                                    []
+                                                                    .true.
+                                                                    .false.
+                                                                )
+                                                                [(()
+                                                                ())]
+                                                                DescriptorArray
+                                                            )
+                                                        )
+                                                        (Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .false.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 dependency_tree_t
                                                     Source
                                                     Private
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     add_dependency
                                     (FunctionType
-                                        [(ClassType
-                                            2 dependency_tree_t
+                                        [(StructType
+                                            [(Integer 4)
+                                            (Integer 4)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
+                                            (Integer 4)
+                                            (Allocatable
+                                                (Array
+                                                    (StructType
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )
+                                                        (Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )
+                                                        (Logical 4)
+                                                        (Logical 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
+                                                    )
+                                                    [(()
+                                                    ())]
+                                                    DescriptorArray
+                                                )
+                                            )
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .false.
+                                            .false.
                                         )
                                         (StructType
-                                            2 dependency_config_t
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )]
                                         ()
                                         Source
@@ -107,20 +200,22 @@
                                     [(Assignment
                                         (Var 6 id)
                                         (FunctionCall
-                                            6 1_find_dependency
-                                            5 find
+                                            6 1_dependency_tree_t_find_dependency
+                                            ()
                                             [((Var 6 self))
                                             ((Var 6 dependency))]
                                             (Integer 4)
                                             ()
-                                            ()
+                                            (Var 6 self)
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     ()
                                     Private
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             dependency_config_t:
@@ -138,7 +233,7 @@
                                                     ()
                                                     Default
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     Source
@@ -147,6 +242,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             path:
                                                 (Variable
@@ -158,7 +258,7 @@
                                                     ()
                                                     Default
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     Source
@@ -167,12 +267,29 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     dependency_config_t
+                                    (StructType
+                                        [(Allocatable
+                                            (String 1 () DeferredLength DescriptorString)
+                                        )
+                                        (Allocatable
+                                            (String 1 () DeferredLength DescriptorString)
+                                        )]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [name
                                     path]
+                                    []
                                     Source
                                     Private
                                     .false.
@@ -180,6 +297,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             dependency_node_t:
                                 (Struct
@@ -209,6 +327,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             proj_dir:
                                                 (Variable
@@ -220,7 +343,7 @@
                                                     ()
                                                     Default
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     Source
@@ -229,6 +352,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             revision:
                                                 (Variable
@@ -240,7 +368,7 @@
                                                     ()
                                                     Default
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     Source
@@ -249,6 +377,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             update:
                                                 (Variable
@@ -273,14 +406,33 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     dependency_node_t
+                                    (StructType
+                                        [(Allocatable
+                                            (String 1 () DeferredLength DescriptorString)
+                                        )
+                                        (Allocatable
+                                            (String 1 () DeferredLength DescriptorString)
+                                        )
+                                        (Logical 4)
+                                        (Logical 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [proj_dir
                                     revision
                                     done
                                     update]
+                                    []
                                     Source
                                     Private
                                     .false.
@@ -288,6 +440,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             dependency_tree_t:
                                 (Struct
@@ -302,7 +455,7 @@
                                                     Public
                                                 ),
                                             add_dependency:
-                                                (ClassProcedure
+                                                (StructMethodDeclaration
                                                     5
                                                     add_dependency
                                                     ()
@@ -322,7 +475,7 @@
                                                     ()
                                                     Default
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     Source
@@ -331,6 +484,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             dep:
                                                 (Variable
@@ -344,20 +502,35 @@
                                                     (Allocatable
                                                         (Array
                                                             (StructType
-                                                                2 dependency_node_t
+                                                                [(Allocatable
+                                                                    (String 1 () DeferredLength DescriptorString)
+                                                                )
+                                                                (Allocatable
+                                                                    (String 1 () DeferredLength DescriptorString)
+                                                                )
+                                                                (Logical 4)
+                                                                (Logical 4)]
+                                                                []
+                                                                .true.
+                                                                .false.
                                                             )
                                                             [(()
                                                             ())]
                                                             DescriptorArray
                                                         )
                                                     )
-                                                    ()
+                                                    2 dependency_node_t
                                                     Source
                                                     Private
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             dep_dir:
                                                 (Variable
@@ -369,7 +542,7 @@
                                                     ()
                                                     Default
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     Source
@@ -378,6 +551,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             find:
                                                 (GenericProcedure
@@ -387,7 +565,7 @@
                                                     Public
                                                 ),
                                             find_dependency:
-                                                (ClassProcedure
+                                                (StructMethodDeclaration
                                                     5
                                                     find_dependency
                                                     ()
@@ -414,6 +592,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             unit:
                                                 (Variable
@@ -432,6 +615,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             verbosity:
                                                 (Variable
@@ -450,9 +638,48 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     dependency_tree_t
+                                    (StructType
+                                        [(Integer 4)
+                                        (Integer 4)
+                                        (Allocatable
+                                            (String 1 () DeferredLength DescriptorString)
+                                        )
+                                        (Integer 4)
+                                        (Allocatable
+                                            (Array
+                                                (StructType
+                                                    [(Allocatable
+                                                        (String 1 () DeferredLength DescriptorString)
+                                                    )
+                                                    (Allocatable
+                                                        (String 1 () DeferredLength DescriptorString)
+                                                    )
+                                                    (Logical 4)
+                                                    (Logical 4)]
+                                                    []
+                                                    .true.
+                                                    .false.
+                                                )
+                                                [(()
+                                                ())]
+                                                DescriptorArray
+                                            )
+                                        )
+                                        (Allocatable
+                                            (String 1 () DeferredLength DescriptorString)
+                                        )]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [unit
                                     verbosity
@@ -460,6 +687,7 @@
                                     ndep
                                     dep
                                     cache]
+                                    []
                                     Source
                                     Private
                                     .false.
@@ -467,6 +695,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             find_dependency:
                                 (Function
@@ -482,16 +711,29 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (ClassType
-                                                        2 dependency_config_t
+                                                    (StructType
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )
+                                                        (Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .false.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 dependency_config_t
                                                     Source
                                                     Private
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             pos:
                                                 (Variable
@@ -510,6 +752,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             self:
                                                 (Variable
@@ -520,25 +767,100 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (ClassType
-                                                        2 dependency_tree_t
+                                                    (StructType
+                                                        [(Integer 4)
+                                                        (Integer 4)
+                                                        (Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )
+                                                        (Integer 4)
+                                                        (Allocatable
+                                                            (Array
+                                                                (StructType
+                                                                    [(Allocatable
+                                                                        (String 1 () DeferredLength DescriptorString)
+                                                                    )
+                                                                    (Allocatable
+                                                                        (String 1 () DeferredLength DescriptorString)
+                                                                    )
+                                                                    (Logical 4)
+                                                                    (Logical 4)]
+                                                                    []
+                                                                    .true.
+                                                                    .false.
+                                                                )
+                                                                [(()
+                                                                ())]
+                                                                DescriptorArray
+                                                            )
+                                                        )
+                                                        (Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .false.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 dependency_tree_t
                                                     Source
                                                     Private
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     find_dependency
                                     (FunctionType
-                                        [(ClassType
-                                            2 dependency_tree_t
+                                        [(StructType
+                                            [(Integer 4)
+                                            (Integer 4)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
+                                            (Integer 4)
+                                            (Allocatable
+                                                (Array
+                                                    (StructType
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )
+                                                        (Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )
+                                                        (Logical 4)
+                                                        (Logical 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
+                                                    )
+                                                    [(()
+                                                    ())]
+                                                    DescriptorArray
+                                                )
+                                            )
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .false.
+                                            .false.
                                         )
-                                        (ClassType
-                                            2 dependency_config_t
+                                        (StructType
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .false.
+                                            .false.
                                         )]
                                         (Integer 4)
                                         Source
@@ -558,13 +880,15 @@
                                     []
                                     (Var 7 pos)
                                     Private
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })
                     fpm_dependency
+                    ()
                     [fpm_dependency]
+                    .false.
                     .false.
                     .false.
                 )

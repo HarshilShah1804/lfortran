@@ -12,6 +12,7 @@ enum Platform {
     Linux,
     macOS_Intel,
     macOS_ARM,
+    macOS_PowerPC,
     Windows,
     FreeBSD,
     OpenBSD,
@@ -43,23 +44,35 @@ struct PassOptions {
     bool pass_cumulative = false; // Apply passes cumulatively
     bool disable_main = false;
     bool use_loop_variable_after_loop = false;
-    bool realloc_lhs = false;
+    bool realloc_lhs_arrays = false;
     std::vector<int64_t> skip_optimization_func_instantiation;
     bool module_name_mangling = false;
+    bool intrinsic_module_name_mangling = false;
     bool global_symbols_mangling = false;
     bool intrinsic_symbols_mangling = false;
     bool all_symbols_mangling = false;
     bool bindc_mangling = false;
     bool fortran_mangling = false;
     bool mangle_underscore = false;
+    bool mangle_underscore_external = false;
     bool json = false;
+    bool clojure = false;
     bool no_loc = false;
     bool visualize = false;
     bool tree = false;
     bool with_intrinsic_mods = false;
     bool c_mangling = false;
+    bool enable_cpython = false;
+    bool c_skip_bindpy_pass = false;
     bool openmp = false;
     bool enable_gpu_offloading = false;
+    bool gpu_offload_metal = false;
+    bool time_report = false;
+    bool skip_removal_of_unused_procedures_in_pass_array_by_data = false;
+    bool bounds_checking = true;
+    bool strict_bounds_checking = false;
+    bool descriptor_index_64 = false; // Use 64-bit indices in array descriptors
+    std::vector<std::string> vector_of_time_report;
 };
 
 struct CompilerOptions {
@@ -77,12 +90,16 @@ struct CompilerOptions {
     bool symtab_only = false;
     bool show_stacktrace = false;
     bool use_colors = true;
+    bool use_runtime_colors = false;
     bool indent = true;
     bool json = false;
     bool tree = false;
     bool visualize = false;
     bool fast = false;
     bool openmp = false;
+    bool target_offload_enabled = false;
+    std::string gpu_backend = "";
+    std::string gpu_metal_source = "";
     std::string openmp_lib_dir = "";
     bool lookup_name = false;
     bool rename_symbol = false;
@@ -90,24 +107,38 @@ struct CompilerOptions {
     std::string column = "";
     bool continue_compilation = false;
     bool semantics_only = false;
-    bool generate_object_code = false;
-    bool no_warnings = false;
-    bool disable_style = false;
+    bool new_classes = true;
+    /*
+        Generates object code for modules as well as global procedures ( subroutines / functions )
+        avialable in ASR. This needs to be explicity set to true.
+    */
+    bool separate_compilation = false;
+    /*
+        Generates object code *only* for global procedures ( subroutines / functions ) *if present* in ASR
+        by marking modules as external. We have a utility that identifies global procedures and hence this
+        option is not exposed to user. It gets set to true if there are any global procedures in ASR.
+        This is the default behaviour.
+
+        It is overridden by `generate_object_code` option.
+    */
+    bool generate_code_for_global_procedures = false;
+    bool show_warnings = true;
+    bool show_style_suggestions = true;
     bool logical_casting = false;
-    bool no_error_banner = false;
-    bool enable_bounds_checking = false;
+    bool show_error_banner = true;
+    bool bounds_checking = true;
     std::string error_format = "human";
     bool new_parser = false;
     bool implicit_typing = false;
     bool implicit_interface = false;
     bool implicit_argument_casting = false;
+    bool infer_mode = false;
     bool print_leading_space = false;
     bool rtlib = false;
     bool use_loop_variable_after_loop = false;
     std::string target = "";
     std::string arg_o = "";
     bool emit_debug_info = false;
-    bool emit_debug_line_column = false;
     bool enable_cpython = false;
     bool enable_symengine = false;
     bool link_numpy = false;
@@ -115,18 +146,30 @@ struct CompilerOptions {
     bool legacy_array_sections = false;
     bool ignore_pragma = false;
     bool stack_arrays = false;
+    bool internal_alloc_check = false;
+    bool descriptor_index_64 = false; // Use 64-bit indices in array descriptors (implied by -fdefault-integer-8)
     bool wasm_html = false;
+    bool time_report = false;
+    int32_t fpe_traps = 0; // Bitmask of LCOMPILERS_FE_* flags
     std::string emcc_embed;
     std::vector<std::string> import_paths;
     Platform platform;
+    bool detect_leaks = false;
 
     CompilerOptions () : platform{get_platform()} {};
 };
 
-bool read_file(const std::string &filename, std::string &text);
 bool present(Vec<char*> &v, const char* name);
 bool present(char** const v, size_t n, const std::string name);
 int initialize();
+
+// Floating point exception trap flags (bitmask)
+const int32_t LCOMPILERS_FE_INVALID   = 1;
+const int32_t LCOMPILERS_FE_ZERO      = 2;
+const int32_t LCOMPILERS_FE_OVERFLOW  = 4;
+const int32_t LCOMPILERS_FE_UNDERFLOW = 8;
+const int32_t LCOMPILERS_FE_INEXACT   = 16;
+const int32_t LCOMPILERS_FE_DENORMAL  = 32;
 
 } // namespace LCompilers
 

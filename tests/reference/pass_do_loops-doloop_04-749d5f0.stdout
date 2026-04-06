@@ -7,6 +7,75 @@
                     (SymbolTable
                         2
                         {
+                            __do_loop_inc:
+                                (Variable
+                                    2
+                                    __do_loop_inc
+                                    []
+                                    Local
+                                    ()
+                                    ()
+                                    Default
+                                    (Integer 4)
+                                    ()
+                                    Source
+                                    Public
+                                    Required
+                                    .false.
+                                    .false.
+                                    .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
+                                ),
+                            __do_loop_inc1:
+                                (Variable
+                                    2
+                                    __do_loop_inc1
+                                    []
+                                    Local
+                                    ()
+                                    ()
+                                    Default
+                                    (Integer 4)
+                                    ()
+                                    Source
+                                    Public
+                                    Required
+                                    .false.
+                                    .false.
+                                    .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
+                                ),
+                            __do_loop_inc2:
+                                (Variable
+                                    2
+                                    __do_loop_inc2
+                                    []
+                                    Local
+                                    ()
+                                    ()
+                                    Default
+                                    (Integer 4)
+                                    ()
+                                    Source
+                                    Public
+                                    Required
+                                    .false.
+                                    .false.
+                                    .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
+                                ),
                             i:
                                 (Variable
                                     2
@@ -24,6 +93,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             j:
                                 (Variable
@@ -42,6 +116,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             k:
                                 (Variable
@@ -60,6 +139,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     doloop_04
@@ -68,29 +152,42 @@
                         (Var 2 j)
                         (IntegerConstant 0 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 k)
                         (IntegerConstant 2 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
+                    )
+                    (Assignment
+                        (Var 2 __do_loop_inc)
+                        (Var 2 k)
+                        ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 i)
                         (IntegerBinOp
                             (IntegerConstant 1 (Integer 4) Decimal)
                             Sub
-                            (Var 2 k)
+                            (Var 2 __do_loop_inc)
                             (Integer 4)
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (WhileLoop
                         ()
                         (LogicalBinOp
                             (LogicalBinOp
                                 (IntegerCompare
-                                    (Var 2 k)
+                                    (Var 2 __do_loop_inc)
                                     Gt
                                     (IntegerConstant 0 (Integer 4) Decimal)
                                     (Logical 4)
@@ -101,7 +198,7 @@
                                     (IntegerBinOp
                                         (Var 2 i)
                                         Add
-                                        (Var 2 k)
+                                        (Var 2 __do_loop_inc)
                                         (Integer 4)
                                         ()
                                     )
@@ -116,7 +213,7 @@
                             Or
                             (LogicalBinOp
                                 (IntegerCompare
-                                    (Var 2 k)
+                                    (Var 2 __do_loop_inc)
                                     LtE
                                     (IntegerConstant 0 (Integer 4) Decimal)
                                     (Logical 4)
@@ -127,7 +224,7 @@
                                     (IntegerBinOp
                                         (Var 2 i)
                                         Add
-                                        (Var 2 k)
+                                        (Var 2 __do_loop_inc)
                                         (Integer 4)
                                         ()
                                     )
@@ -147,11 +244,13 @@
                             (IntegerBinOp
                                 (Var 2 i)
                                 Add
-                                (Var 2 k)
+                                (Var 2 __do_loop_inc)
                                 (Integer 4)
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )
                         (Assignment
                             (Var 2 j)
@@ -163,10 +262,13 @@
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )]
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq
@@ -184,7 +286,9 @@
                             ()
                             [(Var 2 j)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -192,6 +296,8 @@
                         (Var 2 j)
                         (IntegerConstant 0 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 k)
@@ -201,24 +307,35 @@
                             (IntegerConstant -2 (Integer 4) Decimal)
                         )
                         ()
+                        .false.
+                        .false.
+                    )
+                    (Assignment
+                        (Var 2 __do_loop_inc1)
+                        (Var 2 k)
+                        ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 i)
                         (IntegerBinOp
                             (IntegerConstant 10 (Integer 4) Decimal)
                             Sub
-                            (Var 2 k)
+                            (Var 2 __do_loop_inc1)
                             (Integer 4)
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (WhileLoop
                         ()
                         (LogicalBinOp
                             (LogicalBinOp
                                 (IntegerCompare
-                                    (Var 2 k)
+                                    (Var 2 __do_loop_inc1)
                                     Gt
                                     (IntegerConstant 0 (Integer 4) Decimal)
                                     (Logical 4)
@@ -229,7 +346,7 @@
                                     (IntegerBinOp
                                         (Var 2 i)
                                         Add
-                                        (Var 2 k)
+                                        (Var 2 __do_loop_inc1)
                                         (Integer 4)
                                         ()
                                     )
@@ -244,7 +361,7 @@
                             Or
                             (LogicalBinOp
                                 (IntegerCompare
-                                    (Var 2 k)
+                                    (Var 2 __do_loop_inc1)
                                     LtE
                                     (IntegerConstant 0 (Integer 4) Decimal)
                                     (Logical 4)
@@ -255,7 +372,7 @@
                                     (IntegerBinOp
                                         (Var 2 i)
                                         Add
-                                        (Var 2 k)
+                                        (Var 2 __do_loop_inc1)
                                         (Integer 4)
                                         ()
                                     )
@@ -275,11 +392,13 @@
                             (IntegerBinOp
                                 (Var 2 i)
                                 Add
-                                (Var 2 k)
+                                (Var 2 __do_loop_inc1)
                                 (Integer 4)
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )
                         (Assignment
                             (Var 2 j)
@@ -291,10 +410,13 @@
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )]
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq
@@ -312,7 +434,9 @@
                             ()
                             [(Var 2 j)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -320,6 +444,8 @@
                         (Var 2 j)
                         (IntegerConstant 0 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 i)
@@ -331,6 +457,8 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (WhileLoop
                         a
@@ -357,6 +485,8 @@
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )
                         (Assignment
                             (Var 2 j)
@@ -368,8 +498,11 @@
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )
                         (If
+                            ()
                             (IntegerCompare
                                 (Var 2 i)
                                 Eq
@@ -385,6 +518,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq
@@ -401,6 +535,8 @@
                         (Var 2 j)
                         (IntegerConstant 0 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 i)
@@ -412,6 +548,8 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (WhileLoop
                         b
@@ -438,6 +576,8 @@
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )
                         (Assignment
                             (Var 2 j)
@@ -449,8 +589,11 @@
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )
                         (If
+                            ()
                             (IntegerCompare
                                 (Var 2 i)
                                 Eq
@@ -466,6 +609,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq
@@ -482,11 +626,15 @@
                         (Var 2 j)
                         (IntegerConstant 0 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 i)
                         (IntegerConstant 1 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (WhileLoop
                         c
@@ -504,8 +652,11 @@
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )
                         (If
+                            ()
                             (IntegerCompare
                                 (Var 2 i)
                                 Eq
@@ -528,10 +679,13 @@
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )]
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq
@@ -548,24 +702,35 @@
                         (Var 2 k)
                         (IntegerConstant 2 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
+                    )
+                    (Assignment
+                        (Var 2 __do_loop_inc2)
+                        (Var 2 k)
+                        ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 i)
                         (IntegerBinOp
                             (IntegerConstant 1 (Integer 4) Decimal)
                             Sub
-                            (Var 2 k)
+                            (Var 2 __do_loop_inc2)
                             (Integer 4)
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (WhileLoop
                         ()
                         (LogicalBinOp
                             (LogicalBinOp
                                 (IntegerCompare
-                                    (Var 2 k)
+                                    (Var 2 __do_loop_inc2)
                                     Gt
                                     (IntegerConstant 0 (Integer 4) Decimal)
                                     (Logical 4)
@@ -576,7 +741,7 @@
                                     (IntegerBinOp
                                         (Var 2 i)
                                         Add
-                                        (Var 2 k)
+                                        (Var 2 __do_loop_inc2)
                                         (Integer 4)
                                         ()
                                     )
@@ -591,7 +756,7 @@
                             Or
                             (LogicalBinOp
                                 (IntegerCompare
-                                    (Var 2 k)
+                                    (Var 2 __do_loop_inc2)
                                     LtE
                                     (IntegerConstant 0 (Integer 4) Decimal)
                                     (Logical 4)
@@ -602,7 +767,7 @@
                                     (IntegerBinOp
                                         (Var 2 i)
                                         Add
-                                        (Var 2 k)
+                                        (Var 2 __do_loop_inc2)
                                         (Integer 4)
                                         ()
                                     )
@@ -622,11 +787,13 @@
                             (IntegerBinOp
                                 (Var 2 i)
                                 Add
-                                (Var 2 k)
+                                (Var 2 __do_loop_inc2)
                                 (Integer 4)
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )
                         (GoToTarget
                             100

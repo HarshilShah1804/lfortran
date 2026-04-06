@@ -17,21 +17,21 @@
                                         Adjustl
                                         [(StringConstant
                                             "    "
-                                            (String 1 4 () PointerString)
+                                            (String 1 (IntegerConstant 4 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )]
                                         0
-                                        (String 1 4 () PointerString)
+                                        (String 1 (IntegerConstant 4 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         (StringConstant
                                             "    "
-                                            (String 1 4 () PointerString)
+                                            (String 1 (IntegerConstant 4 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (StringConstant
                                         "    "
-                                        (String 1 4 () PointerString)
+                                        (String 1 (IntegerConstant 4 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Save
-                                    (String 1 25 () PointerString)
+                                    (String 1 (IntegerConstant 25 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -39,6 +39,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             empty:
                                 (Variable
@@ -50,21 +55,21 @@
                                         Adjustl
                                         [(StringConstant
                                             ""
-                                            (String 1 0 () PointerString)
+                                            (String 1 (IntegerConstant 0 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )]
                                         0
-                                        (String 1 0 () PointerString)
+                                        (String 1 (IntegerConstant 0 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         (StringConstant
                                             ""
-                                            (String 1 0 () PointerString)
+                                            (String 1 (IntegerConstant 0 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (StringConstant
                                         ""
-                                        (String 1 0 () PointerString)
+                                        (String 1 (IntegerConstant 0 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Save
-                                    (String 1 25 () PointerString)
+                                    (String 1 (IntegerConstant 25 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -72,6 +77,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             simple:
                                 (Variable
@@ -83,21 +93,21 @@
                                         Adjustl
                                         [(StringConstant
                                             "gfortran"
-                                            (String 1 8 () PointerString)
+                                            (String 1 (IntegerConstant 8 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )]
                                         0
-                                        (String 1 8 () PointerString)
+                                        (String 1 (IntegerConstant 8 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         (StringConstant
                                             "gfortran"
-                                            (String 1 8 () PointerString)
+                                            (String 1 (IntegerConstant 8 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (StringConstant
                                         "gfortran"
-                                        (String 1 8 () PointerString)
+                                        (String 1 (IntegerConstant 8 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Save
-                                    (String 1 25 () PointerString)
+                                    (String 1 (IntegerConstant 25 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -105,6 +115,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             space_at_end:
                                 (Variable
@@ -116,21 +131,21 @@
                                         Adjustl
                                         [(StringConstant
                                             "gfortran   "
-                                            (String 1 11 () PointerString)
+                                            (String 1 (IntegerConstant 11 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )]
                                         0
-                                        (String 1 11 () PointerString)
+                                        (String 1 (IntegerConstant 11 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         (StringConstant
                                             "gfortran   "
-                                            (String 1 11 () PointerString)
+                                            (String 1 (IntegerConstant 11 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (StringConstant
                                         "gfortran   "
-                                        (String 1 11 () PointerString)
+                                        (String 1 (IntegerConstant 11 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Save
-                                    (String 1 25 () PointerString)
+                                    (String 1 (IntegerConstant 25 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -138,6 +153,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             space_at_start:
                                 (Variable
@@ -149,21 +169,21 @@
                                         Adjustl
                                         [(StringConstant
                                             "   gfortran"
-                                            (String 1 11 () PointerString)
+                                            (String 1 (IntegerConstant 11 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )]
                                         0
-                                        (String 1 11 () PointerString)
+                                        (String 1 (IntegerConstant 11 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         (StringConstant
                                             "gfortran   "
-                                            (String 1 11 () PointerString)
+                                            (String 1 (IntegerConstant 11 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (StringConstant
                                         "gfortran   "
-                                        (String 1 11 () PointerString)
+                                        (String 1 (IntegerConstant 11 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Save
-                                    (String 1 25 () PointerString)
+                                    (String 1 (IntegerConstant 25 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -171,6 +191,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             space_in_between:
                                 (Variable
@@ -182,21 +207,21 @@
                                         Adjustl
                                         [(StringConstant
                                             "   g for tran   "
-                                            (String 1 16 () PointerString)
+                                            (String 1 (IntegerConstant 16 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )]
                                         0
-                                        (String 1 16 () PointerString)
+                                        (String 1 (IntegerConstant 16 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         (StringConstant
                                             "g for tran      "
-                                            (String 1 16 () PointerString)
+                                            (String 1 (IntegerConstant 16 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (StringConstant
                                         "g for tran      "
-                                        (String 1 16 () PointerString)
+                                        (String 1 (IntegerConstant 16 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Save
-                                    (String 1 25 () PointerString)
+                                    (String 1 (IntegerConstant 25 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -204,6 +229,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             spaces_with_symbols:
                                 (Variable
@@ -215,21 +245,21 @@
                                         Adjustl
                                         [(StringConstant
                                             "  # gfor* t $ ran &    "
-                                            (String 1 23 () PointerString)
+                                            (String 1 (IntegerConstant 23 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )]
                                         0
-                                        (String 1 23 () PointerString)
+                                        (String 1 (IntegerConstant 23 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         (StringConstant
                                             "# gfor* t $ ran &      "
-                                            (String 1 23 () PointerString)
+                                            (String 1 (IntegerConstant 23 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (StringConstant
                                         "# gfor* t $ ran &      "
-                                        (String 1 23 () PointerString)
+                                        (String 1 (IntegerConstant 23 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Save
-                                    (String 1 25 () PointerString)
+                                    (String 1 (IntegerConstant 25 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -237,6 +267,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     intrinsics_36
@@ -245,12 +280,13 @@
                         (Var 2 empty)
                     )
                     (If
+                        ()
                         (StringCompare
                             (Var 2 empty)
                             NotEq
                             (StringConstant
                                 ""
-                                (String 1 0 () PointerString)
+                                (String 1 (IntegerConstant 0 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Logical 4)
                             ()
@@ -264,12 +300,13 @@
                         (Var 2 all_spaces)
                     )
                     (If
+                        ()
                         (StringCompare
                             (Var 2 all_spaces)
                             NotEq
                             (StringConstant
                                 "    "
-                                (String 1 4 () PointerString)
+                                (String 1 (IntegerConstant 4 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Logical 4)
                             ()
@@ -283,12 +320,13 @@
                         (Var 2 simple)
                     )
                     (If
+                        ()
                         (StringCompare
                             (Var 2 simple)
                             NotEq
                             (StringConstant
                                 "gfortran"
-                                (String 1 8 () PointerString)
+                                (String 1 (IntegerConstant 8 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Logical 4)
                             ()
@@ -302,12 +340,13 @@
                         (Var 2 space_at_start)
                     )
                     (If
+                        ()
                         (StringCompare
                             (Var 2 space_at_start)
                             NotEq
                             (StringConstant
                                 "gfortran   "
-                                (String 1 11 () PointerString)
+                                (String 1 (IntegerConstant 11 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Logical 4)
                             ()
@@ -321,12 +360,13 @@
                         (Var 2 space_at_end)
                     )
                     (If
+                        ()
                         (StringCompare
                             (Var 2 space_at_end)
                             NotEq
                             (StringConstant
                                 "gfortran   "
-                                (String 1 11 () PointerString)
+                                (String 1 (IntegerConstant 11 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Logical 4)
                             ()
@@ -340,12 +380,13 @@
                         (Var 2 space_in_between)
                     )
                     (If
+                        ()
                         (StringCompare
                             (Var 2 space_in_between)
                             NotEq
                             (StringConstant
                                 "g for tran      "
-                                (String 1 16 () PointerString)
+                                (String 1 (IntegerConstant 16 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Logical 4)
                             ()
@@ -359,12 +400,13 @@
                         (Var 2 spaces_with_symbols)
                     )
                     (If
+                        ()
                         (StringCompare
                             (Var 2 spaces_with_symbols)
                             NotEq
                             (StringConstant
                                 "# gfor* t $ ran &      "
-                                (String 1 23 () PointerString)
+                                (String 1 (IntegerConstant 23 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Logical 4)
                             ()

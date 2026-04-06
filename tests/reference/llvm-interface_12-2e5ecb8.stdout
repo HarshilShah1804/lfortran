@@ -1,11 +1,15 @@
 ; ModuleID = 'LFortran'
 source_filename = "LFortran"
+target datalayout = "..."
 
 define void @find_fit(void ([1 x float]*)* %expr) {
 .entry:
   br label %return
 
 return:                                           ; preds = %.entry
+  br label %FINALIZE_SYMTABLE_find_fit
+
+FINALIZE_SYMTABLE_find_fit:                       ; preds = %return
   ret void
 }
 
@@ -15,10 +19,13 @@ define i32 @main(i32 %0, i8** %1) {
 .entry:
   call void @_lpython_call_initial_functions(i32 %0, i8** %1)
   call void @find_fit(void ([1 x float]*)* @expression)
-  call void @_lpython_free_argv()
   br label %return
 
 return:                                           ; preds = %.entry
+  br label %FINALIZE_SYMTABLE_main
+
+FINALIZE_SYMTABLE_main:                           ; preds = %return
+  call void @_lfortran_internal_alloc_finalize()
   ret i32 0
 }
 
@@ -27,9 +34,12 @@ define void @expression([1 x float]* %y) {
   br label %return
 
 return:                                           ; preds = %.entry
+  br label %FINALIZE_SYMTABLE_expression
+
+FINALIZE_SYMTABLE_expression:                     ; preds = %return
   ret void
 }
 
 declare void @_lpython_call_initial_functions(i32, i8**)
 
-declare void @_lpython_free_argv()
+declare void @_lfortran_internal_alloc_finalize()

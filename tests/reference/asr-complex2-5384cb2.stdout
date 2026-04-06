@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     complex2
@@ -47,6 +52,8 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 x)
@@ -65,18 +72,23 @@
                                     0.000000
                                     (Complex 4)
                                 )
+                                ()
                             )
                             (Complex 4)
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 2 x)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -95,6 +107,7 @@
                                     0.000000
                                     (Complex 4)
                                 )
+                                ()
                             )
                             Add
                             (Var 2 x)
@@ -102,13 +115,17 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 2 x)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -128,6 +145,7 @@
                                         0.000000
                                         (Complex 4)
                                     )
+                                    ()
                                 )
                                 Add
                                 (Var 2 x)
@@ -155,13 +173,17 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 2 x)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]

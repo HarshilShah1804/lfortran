@@ -62,18 +62,6 @@ intrinsic_funcs_args = {
             "ret_type_arg_idx": 1
         },
     ],
-    "Mvbits": [
-        {
-            "args": [("int", "int", "int", "int", "int")],
-            "ret_type_arg_idx": 3
-        },
-    ],
-    "MoveAlloc": [
-        {
-            "args": [("any", "any")],
-            "ret_type_arg_idx": 0
-        },
-    ],
     "Leadz": [
         {
             "args": [("int",)],
@@ -147,6 +135,12 @@ intrinsic_funcs_args = {
             "ret_type_arg_idx": 0
         }
     ],
+    "Atan2d": [
+        {
+            "args": [("real", "real")],
+            "ret_type_arg_idx": 0
+        }
+    ],
     "Fix": [
         {
             "args": [("real",)],
@@ -183,10 +177,16 @@ intrinsic_funcs_args = {
             "return": "int32"
         }
     ],
+    "SelectedLogicalKind": [
+        {
+            "args": [("int",)],
+            "return": "int32"
+        }
+    ],
     "Logical": [
         {
             "args": [("bool", )],
-            "ret_type_arg_idx": 0,
+            "return": "logical",
             "kind_arg": True
         }
     ],
@@ -195,12 +195,6 @@ intrinsic_funcs_args = {
             "args": [("int",), ("real",)],
             "return": "int32"
         },
-    ],
-    "Repeat": [
-        {
-            "args": [("char", "int")],
-            "ret_type_arg_idx": 0
-        }
     ],
     "StringContainsSet": [
         {
@@ -285,13 +279,15 @@ intrinsic_funcs_args = {
     "Adjustl": [
         {
             "args": [("char",)],
-            "ret_type_arg_idx": 0
+            "ret_type_arg_idx": 0,
+            "allow_polymorphic_arg": [0]
         }
     ],
     "Adjustr": [
         {
             "args": [("char",)],
-            "ret_type_arg_idx": 0
+            "ret_type_arg_idx": 0,
+            "allow_polymorphic_arg": [0]
         }
     ],
     "Aint": [
@@ -313,6 +309,12 @@ intrinsic_funcs_args = {
             "return": "logical"
         }
     ],
+    "ExtendsTypeOf": [
+        {
+            "args": [("any", "any")],
+            "return": "logical"
+        }
+    ],
     "Nint": [
         {
             "args": [("real",)],
@@ -323,7 +325,8 @@ intrinsic_funcs_args = {
     "Idnint": [
         {
             "args": [("real",)],
-            "return": "int32"
+            "return": "int32",
+            "kind_validation": [{"first":{0: 8}}]
         }
     ],
     "Anint": [
@@ -380,6 +383,48 @@ intrinsic_funcs_args = {
     "Tand": [
         {
             "args": [("real",)],
+            "ret_type_arg_idx": 0
+        }
+    ],
+    "Sinpi": [
+        {
+            "args": [("real",)],
+            "ret_type_arg_idx": 0
+        }
+    ],
+    "Cospi": [
+        {
+            "args": [("real",)],
+            "ret_type_arg_idx": 0
+        }
+    ],
+    "Tanpi": [
+        {
+            "args": [("real",)],
+            "ret_type_arg_idx": 0
+        }
+    ],
+    "Asinpi": [
+        {
+            "args": [("real",)],
+            "ret_type_arg_idx": 0
+        }
+    ],
+    "Acospi": [
+        {
+            "args": [("real",)],
+            "ret_type_arg_idx": 0
+        }
+    ],
+    "Atanpi": [
+        {
+            "args": [("real",)],
+            "ret_type_arg_idx": 0
+        }
+    ],
+    "Atan2pi": [
+        {
+            "args": [("real", "real")],
             "ret_type_arg_idx": 0
         }
     ],
@@ -506,12 +551,14 @@ intrinsic_funcs_args = {
     "Ifix": [
         {
             "args": [("real",)],
-            "return": "int32"
+            "return": "int32",
+            "kind_validation": [{"first":{0: 4}}]
         }
     ],
     "Idint": [
         {
             "args": [("real",)],
+            "kind_validation": [{"first":{0: 8}}],
             "return": "int32"
         }
     ],
@@ -669,12 +716,6 @@ intrinsic_funcs_args = {
             "return": "real64",
         },
     ],
-    "Rank": [
-        {
-            "args": [("any",)],
-            "return": "int32"
-        }
-    ],
     "BitSize": [
         {
             "args": [("int",)],
@@ -684,7 +725,7 @@ intrinsic_funcs_args = {
     "NewLine": [
         {
             "args": [("char",)],
-            "return": "character(-1)"
+            "return": "character(1)"
         }
     ],
     "Range": [
@@ -729,9 +770,16 @@ intrinsic_funcs_args = {
             "ret_type_arg_idx": 0
         }
     ],
+    "Loc": [
+        {
+            "args": [("any",)],
+            "return": "int32"
+        }
+    ],
     "Dprod": [
         {
             "args": [("real", "real")],
+            "kind_validation": [{"first":{0: 4}}, {"second":{1: 4}}],
             "return": "real64"
         }
     ],
@@ -778,7 +826,10 @@ intrinsic_funcs_args = {
         {
             "args": [("char",)],
             "return": "int32",
-            "kind_arg": True
+            "kind_arg": True,
+            "char_len_validation": [
+                {1: {0: {"min": 1, "max": 1}}}
+            ]
         },
     ],
     "Char": [
@@ -794,6 +845,16 @@ intrinsic_funcs_args = {
             "return": "character(1)",
             "kind_arg": True
         }
+    ],
+    "Iachar": [
+        {
+            "args": [("char",)],
+            "return": "int32",
+            "kind_arg": True,
+            "char_len_validation": [
+                {1: {0: {"min": 1, "max": 1}}}
+            ]
+        },
     ],
     "Exponent": [
         {
@@ -863,13 +924,15 @@ intrinsic_funcs_args = {
         {
             "args": [("char",)],
             "return": "int32",
-            "kind_arg": True
+            "kind_arg": True,
+            "allow_polymorphic_arg": [0]
         }
     ],
     "StringTrim": [
         {
             "args": [("char",)],
-            "ret_type_arg_idx": 0
+            "return" : "allocatable_deferred_string()",
+            "allow_polymorphic_arg": [0]
         }
     ],
 }
@@ -882,15 +945,16 @@ compile_time_only_fn = [
     "StorageSize",
     "Range",
     "Precision",
-    "Rank",
     "Tiny",
     "Huge",
+    "Loc",
     "BitSize",
     "NewLine",
     "Kind",
     "MaxExponent",
     "MinExponent",
     "SameTypeAs",
+    "ExtendsTypeOf",
     "Digits",
 ]
 
@@ -929,7 +993,7 @@ def compute_arg_kinds(indent, no_of_args):
     for i in range(no_of_args):
         src += indent + f"int kind{i} = ASRUtils::extract_kind_from_ttype_t(arg_type{i});\n"
 
-def compute_arg_condition(no_of_args, args_lists):
+def compute_arg_condition(no_of_args, args_lists, allow_polymorphic_arg, args_var):
     condition = []
     cond_in_msg = []
     for arg_list in args_lists:
@@ -937,7 +1001,11 @@ def compute_arg_condition(no_of_args, args_lists):
         subcond_in_msg = []
         for i in range(no_of_args):
             arg = arg_list[i]
-            subcond.append(f"{type_to_asr_type_check[arg]}(*arg_type{i})")
+            type_check = f"{type_to_asr_type_check[arg]}(*arg_type{i})"
+            # Add unlimited polymorphic check if specified
+            if allow_polymorphic_arg and i in allow_polymorphic_arg:
+                type_check = f"({type_check} || (is_unlimited_polymorphic_type({args_var}[{i}])))"
+            subcond.append(type_check)
             subcond_in_msg.append(arg)
         condition.append(" && ".join(subcond))
         cond_in_msg.append(", ".join(subcond_in_msg))
@@ -963,7 +1031,8 @@ def add_verify_arg_type_src(func_name):
         src += 2 * indent + f"{else_if} (x.n_args == {no_of_args}) " + " {\n"
         src += 3 * indent + f'ASRUtils::require_impl(x.m_overload_id == {i}, "Overload Id for {func_name} expected to be {i}, found " + std::to_string(x.m_overload_id), x.base.base.loc, diagnostics);\n'
         compute_arg_types(3 * indent, no_of_args, "x.m_args")
-        condition, cond_in_msg = compute_arg_condition(no_of_args, args_lists)
+        allow_polymorphic_arg = arg_info.get("allow_polymorphic_arg", None)
+        condition, cond_in_msg = compute_arg_condition(no_of_args, args_lists, allow_polymorphic_arg, "x.m_args")
         src += 3 * indent + f'ASRUtils::require_impl({condition}, "Unexpected args, {func_name} expects {cond_in_msg} as arguments", x.base.base.loc, diagnostics);\n'
         if same_kind_arg:
             compute_arg_kinds(3 * indent, same_kind_arg)
@@ -1005,7 +1074,8 @@ def add_create_func_arg_type_src(func_name):
         else_if = "else if" if i > 0 else "if"
         src += 2 * indent + f"{else_if} (args.size() == {no_of_args + int(kind_arg)}) " + " {\n"
         compute_arg_types(3 * indent, no_of_args, "args")
-        condition, cond_in_msg = compute_arg_condition(no_of_args, args_lists)
+        allow_polymorphic_arg = arg_info.get("allow_polymorphic_arg", None)
+        condition, cond_in_msg = compute_arg_condition(no_of_args, args_lists, allow_polymorphic_arg, "args")
         src += 3 * indent + f'if(!({condition}))' + ' {\n'
         src += 4 * indent + f'append_error(diag, "Unexpected args, {func_name} expects {cond_in_msg} as arguments", loc);\n'
         src += 4 * indent + f'return nullptr;\n'
@@ -1017,6 +1087,42 @@ def add_create_func_arg_type_src(func_name):
             src += 4 * indent + f'append_error(diag, "Kind of all the arguments of {func_name} must be the same", loc);\n'
             src += 4 * indent + f'return nullptr;\n'
             src += 3 * indent + '}\n'
+        kind_validation_info = arg_info.get("kind_validation", [])
+        if kind_validation_info != []:
+            src += 3 * indent + "int kind = 0;\n"
+        for validation_item in kind_validation_info:
+            for arg_name, arg_spec in validation_item.items():
+                arg_pos = list(arg_spec.keys())[0]
+                required_kind = list(arg_spec.values())[0]
+                src += 3 * indent + f"kind = ASRUtils::extract_kind_from_ttype_t(expr_type(args[{arg_pos}]));\n"
+                src += 3 * indent + f"if(kind != {required_kind}) " + "{\n"
+                src += 4 * indent + f'append_error(diag, "{arg_name} argument of `{func_name.lower()}` must have kind equal to {required_kind}", loc);\n'
+                src += 4 * indent + f'return nullptr;\n'
+                src += 3 * indent + '}\n'
+        char_len_validation_info = arg_info.get("char_len_validation", [])
+        for validation_item in char_len_validation_info:
+            for arg_name, arg_spec in validation_item.items():
+                arg_pos = list(arg_spec.keys())[0]
+                constraint = list(arg_spec.values())[0]
+                src += 3 * indent + f'if (ASR::is_a<ASR::String_t>(*arg_type{arg_pos})) {{\n'
+                src += 4 * indent + f'int64_t len = ASRUtils::get_fixed_string_len(arg_type{arg_pos});\n'
+                # If type-based length is unknown, try to get length from compile-time value
+                src += 4 * indent + f'if (len == -1) {{\n'
+                src += 5 * indent + f'ASR::expr_t* value = ASRUtils::expr_value(args[{arg_pos}]);\n'
+                src += 5 * indent + f'if (value && ASR::is_a<ASR::StringConstant_t>(*value)) {{\n'
+                src += 6 * indent + f'len = std::string(ASR::down_cast<ASR::StringConstant_t>(value)->m_s).size();\n'
+                src += 5 * indent + f'}}\n'
+                src += 4 * indent + f'}}\n'
+                if constraint["min"] == constraint["max"]:
+                    src += 4 * indent + f'if (len != -1 && len != {constraint["min"]}) {{\n'
+                    src += 5 * indent + f'append_error(diag, "Argument {arg_name} to {func_name} must have length {constraint["min"]}", loc);\n'
+                else:
+                    src += 4 * indent + f'if (len != -1 && (len < {constraint["min"]} || len > {constraint["max"]})) {{\n'
+                    src += 5 * indent + f'append_error(diag, "Argument {arg_name} to {func_name} must have length between {constraint["min"]} and {constraint["max"]}", loc);\n'
+                src += 5 * indent + 'return nullptr;\n'
+                src += 4 * indent + '}\n'
+                src += 3 * indent + '}\n'
+
         src += 2 * indent + "}\n"
     src += 2 * indent + "else {\n"
     src += 3 * indent + f'append_error(diag, "Unexpected number of args, {func_name} takes {no_of_args_msg} arguments, found " + std::to_string(args.size()), loc);\n'
@@ -1077,9 +1183,14 @@ def add_create_func_return_src(func_name):
         src += indent * 3 +     "if (diag.has_error()) {\n"
         src += indent * 4 +         f"return nullptr;\n"
         src += indent * 3 +     "}\n"
-        src += indent * 2 + "return ASR::make_TypeInquiry_t(al, loc, "\
+        src += indent * 2 + "if (m_value) {\n"
+        src += indent * 3 + "return ASR::make_TypeInquiry_t(al, loc, "\
             f"static_cast<int64_t>(IntrinsicElementalFunctions::{func_name}), "\
             "ASRUtils::expr_type(m_args[0]), m_args[0], return_type, m_value);\n"
+        src += indent * 2 + "}\n"
+        src += indent * 2 + f"return ASR::make_IntrinsicElementalFunction_t(al, loc, "\
+            f"static_cast<int64_t>(IntrinsicElementalFunctions::{func_name}), "\
+            "m_args.p, m_args.n, 0, return_type, m_value);\n"
 
     else:
         src += indent * 2 +     f"for( size_t i = 0; i < {no_of_args}; i++ ) " + "{\n"
@@ -1112,7 +1223,8 @@ def gen_verify_args(func_name):
     global src
     src += indent + R"static inline void verify_args(const ASR::IntrinsicElementalFunction_t& x, diag::Diagnostics& diagnostics) {" + "\n"
     add_verify_arg_type_src(func_name)
-    if func_name in compile_time_only_fn:
+    runtime_fallback_fns = ["SameTypeAs", "ExtendsTypeOf"]
+    if func_name in compile_time_only_fn and func_name not in runtime_fallback_fns:
         src += indent * 2 + 'ASRUtils::require_impl(x.m_value, '\
             f'"Missing compile time value, `{func_name}` intrinsic output must '\
             'be computed during compile time", x.base.base.loc, diagnostics);\n'
@@ -1139,7 +1251,12 @@ def get_registry_funcs_src():
     return src
 
 
-HEAD = """#ifndef LIBASR_PASS_INTRINSIC_FUNC_REG_UTIL_H
+HEAD = """// This file is AUTO-GENERATED by src/libasr/intrinsic_func_registry_util_gen.py
+// Do not edit this file directly. Instead, modify intrinsic_func_registry_util_gen.py
+// and regenerate this file by running:
+//     python src/libasr/intrinsic_func_registry_util_gen.py
+
+#ifndef LIBASR_PASS_INTRINSIC_FUNC_REG_UTIL_H
 #define LIBASR_PASS_INTRINSIC_FUNC_REG_UTIL_H
 
 #include <libasr/asr_utils.h>

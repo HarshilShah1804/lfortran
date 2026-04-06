@@ -29,6 +29,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             n:
                                                 (Variable
@@ -47,6 +52,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -70,6 +80,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     _lcompilers_doconcurrent_replacer_func
@@ -119,11 +134,14 @@
                                                     ()
                                                 )]
                                                 FormatFortran
-                                                (String -1 0 () PointerString)
+                                                (Allocatable
+                                                    (String 1 () DeferredLength DescriptorString)
+                                                )
                                                 ()
                                             )
                                         )
                                         (If
+                                            ()
                                             (RealCompare
                                                 (IntrinsicElementalFunction
                                                     Abs
@@ -171,7 +189,9 @@
                                 )
                         })
                     _lcompilers_mlir_gpu_offloading
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -202,6 +222,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             n:
                                                 (Variable
@@ -220,6 +245,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -243,6 +273,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     _lcompilers_doconcurrent_replacer_func
@@ -295,6 +330,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             n:
                                 (Variable
@@ -313,6 +353,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             x:
                                 (Variable
@@ -336,6 +381,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     do_concurrent_01
@@ -344,6 +394,8 @@
                         (Var 2 n)
                         (IntegerConstant 12 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 x)
@@ -382,6 +434,8 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (SubroutineCall
                         2 _lcompilers_doconcurrent_replacer_func
@@ -390,6 +444,7 @@
                         ((Var 2 n))
                         ((Var 2 x))]
                         ()
+                        .false.
                     )]
                 )
         })

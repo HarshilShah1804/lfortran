@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             b:
                                 (Variable
@@ -42,6 +47,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             i_:
                                 (Variable
@@ -60,6 +70,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             w:
                                 (Variable
@@ -78,6 +93,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             x:
                                 (Variable
@@ -96,6 +116,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             z:
                                 (Variable
@@ -114,6 +139,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     complex_02
@@ -144,6 +174,8 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 a)
@@ -152,6 +184,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 b)
@@ -160,6 +194,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 i_)
@@ -174,6 +210,8 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 z)
@@ -182,6 +220,7 @@
                                 (Var 2 a)
                                 RealToComplex
                                 (Complex 4)
+                                ()
                                 ()
                             )
                             Add
@@ -193,6 +232,7 @@
                                     RealToComplex
                                     (Complex 4)
                                     ()
+                                    ()
                                 )
                                 (Complex 4)
                                 ()
@@ -201,6 +241,8 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 w)
@@ -215,6 +257,7 @@
                                 )
                                 RealToComplex
                                 (Complex 4)
+                                ()
                                 ()
                             )
                             Add
@@ -232,6 +275,7 @@
                                     RealToComplex
                                     (Complex 4)
                                     ()
+                                    ()
                                 )
                                 (Complex 4)
                                 ()
@@ -240,6 +284,8 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
@@ -248,7 +294,9 @@
                             (Var 2 z)
                             (Var 2 w)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]

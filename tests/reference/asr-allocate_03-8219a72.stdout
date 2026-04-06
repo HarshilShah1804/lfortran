@@ -35,6 +35,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             f:
                                 (Function
@@ -69,6 +74,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     f
@@ -108,6 +118,7 @@
                                         ((IntegerConstant 1 (Integer 4) Decimal)
                                         (IntegerConstant 3 (Integer 4) Decimal))]
                                         ()
+                                        ()
                                         ())]
                                         ()
                                         ()
@@ -131,11 +142,13 @@
                                         )
                                         (IntegerConstant 99 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             g:
@@ -160,6 +173,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -189,6 +207,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     g
@@ -238,11 +261,14 @@
                                                 ()
                                             )]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )
                                     (If
+                                        ()
                                         (IntegerCompare
                                             (ArrayItem
                                                 (Var 4 x)
@@ -269,14 +295,12 @@
                                         )]
                                         []
                                     )
-                                    (ImplicitDeallocate
-                                        [(Var 4 x)]
-                                    )
                                     (SubroutineCall
                                         2 f
                                         ()
                                         [((Var 4 x))]
                                         ()
+                                        .false.
                                     )
                                     (Print
                                         (StringFormat
@@ -297,11 +321,14 @@
                                                 ()
                                             )]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )
                                     (If
+                                        ()
                                         (IntegerCompare
                                             (ArrayItem
                                                 (Var 4 x)
@@ -346,11 +373,15 @@
                                         )
                                         (IntegerConstant 8 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 4 r)
                                         (IntegerConstant 0 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 4 r)
                                     Public
@@ -391,6 +422,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     h
@@ -422,6 +458,7 @@
                                     [f]
                                     [(Var 5 c)]
                                     [(If
+                                        ()
                                         (IntrinsicImpureFunction
                                             Allocated
                                             [(Var 5 c)]
@@ -434,14 +471,12 @@
                                         )]
                                         []
                                     )
-                                    (ImplicitDeallocate
-                                        [(Var 5 c)]
-                                    )
                                     (SubroutineCall
                                         2 f
                                         ()
                                         [((Var 5 c))]
                                         ()
+                                        .false.
                                     )
                                     (Print
                                         (StringFormat
@@ -462,11 +497,14 @@
                                                 ()
                                             )]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )
                                     (If
+                                        ()
                                         (IntegerCompare
                                             (ArrayItem
                                                 (Var 5 c)
@@ -511,6 +549,8 @@
                                         )
                                         (IntegerConstant 8 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     ()
                                     Public
@@ -535,6 +575,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             stat:
                                 (Variable
@@ -553,6 +598,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     allocate_03
@@ -561,6 +611,8 @@
                         (Var 2 stat)
                         (IntegerConstant 1 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Allocate
                         [((Var 2 c)
@@ -571,12 +623,14 @@
                         ((IntegerConstant 1 (Integer 4) Decimal)
                         (IntegerConstant 3 (Integer 4) Decimal))]
                         ()
+                        ()
                         ())]
                         (Var 2 stat)
                         ()
                         ()
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 stat)
                             NotEq
@@ -607,15 +661,15 @@
                         )
                         (IntegerConstant 3 (Integer 4) Decimal)
                         ()
-                    )
-                    (ImplicitDeallocate
-                        [(Var 2 c)]
+                        .false.
+                        .false.
                     )
                     (SubroutineCall
                         2 h
                         ()
                         [((Var 2 c))]
                         ()
+                        .false.
                     )
                     (Assignment
                         (Var 2 r)
@@ -628,8 +682,11 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (ArrayItem
                                 (Var 2 c)
@@ -675,7 +732,9 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]

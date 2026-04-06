@@ -134,8 +134,12 @@ std::string save_pycfile(const ASR::TranslationUnit_t &m, LCompilers::LocationMa
     return asr_string;
 }
 
-inline void load_serialised_asr(const std::string &s, std::string& asr_binary,
-                                LCompilers::LocationManager &lm) {
+inline bool load_serialised_asr(const std::string &s, std::string& asr_binary,
+                                LCompilers::LocationManager &lm, std::string& error_message) {
+    if (s.empty()) {
+        error_message = "Modfile is empty";
+        return false;
+    }
 #ifdef WITH_LFORTRAN_BINARY_MODFILES
     BinaryReader b(s);
 #else
@@ -143,11 +147,14 @@ inline void load_serialised_asr(const std::string &s, std::string& asr_binary,
 #endif
     std::string file_type = b.read_string();
     if (file_type != lfortran_modfile_type_string) {
-        throw LCompilersException("LCompilers Modfile format not recognized");
+        error_message = "LCompilers Modfile format not recognized";
+        return false;
     }
     std::string version = b.read_string();
     if (version != LFORTRAN_VERSION) {
-        throw LCompilersException("Incompatible format: LFortran Modfile was generated using version '" + version + "', but current LFortran version is '" + LFORTRAN_VERSION + "'");
+        error_message = "Incompatible format: LFortran Modfile was generated using version '"
+                        + version + "', but current LFortran version is '" + LFORTRAN_VERSION + "'";
+        return false;  // Error code for incompatible version
     }
     LCompilers::LocationManager serialized_lm;
     int32_t n_files = b.read_int32();
@@ -207,16 +214,32 @@ inline void load_serialised_asr(const std::string &s, std::string& asr_binary,
         serialized_lm.file_ends.push_back(b.read_int32());
     }
 
-    lm.files.push_back(serialized_lm.files[0]);
-    lm.file_ends.push_back(serialized_lm.file_ends[0] + lm.file_ends.back());
+    // Append the module's location information into the current LocationManager.
+    // The serialized LocationManager was built with the module starting at 0,
+    // so we shift its output positions by the current global offset while
+    // keeping input positions unchanged.
+    const uint32_t offset = lm.file_ends.empty() ? 0 : lm.file_ends.back();
+    LCompilers::LocationManager::FileLocations adjusted_file = serialized_lm.files[0];
+    for (size_t i = 0; i < adjusted_file.out_start.size(); i++) {
+        adjusted_file.out_start[i] += offset;
+    }
+    // Note: we do NOT adjust out_start0 because the preprocessor remapping
+    // operates on positions that are already file-relative (after the first
+    // level of remapping via out_start/in_start).
+    lm.files.push_back(adjusted_file);
+    lm.file_ends.push_back(serialized_lm.file_ends[0] + offset);
 
     asr_binary = b.read_string();
+    return true;
 }
 
-ASR::TranslationUnit_t* load_modfile(Allocator &al, const std::string &s,
+Result<ASR::TranslationUnit_t*, ErrorMessage> load_modfile(Allocator &al, const std::string &s,
         bool load_symtab_id, SymbolTable &symtab, LCompilers::LocationManager &lm) {
     std::string asr_binary;
-    load_serialised_asr(s, asr_binary, lm);
+    std::string error_message;
+    if (!load_serialised_asr(s, asr_binary, lm, error_message)) {
+        return ErrorMessage(error_message);
+    }
     // take offset as last second element of file_ends
     uint32_t offset = lm.file_ends[lm.file_ends.size()-2];
     ASR::asr_t *asr = deserialize_asr(al, asr_binary, load_symtab_id, symtab, offset);
@@ -224,10 +247,13 @@ ASR::TranslationUnit_t* load_modfile(Allocator &al, const std::string &s,
     return tu;
 }
 
-ASR::TranslationUnit_t* load_pycfile(Allocator &al, const std::string &s,
+Result<ASR::TranslationUnit_t*, ErrorMessage> load_pycfile(Allocator &al, const std::string &s,
         bool load_symtab_id, LCompilers::LocationManager &lm) {
     std::string asr_binary;
-    load_serialised_asr(s, asr_binary, lm);
+    std::string error_message;
+    if (!load_serialised_asr(s, asr_binary, lm, error_message)) {
+        return ErrorMessage(error_message);
+    }
     uint32_t offset = 0;
     ASR::asr_t *asr = deserialize_asr(al, asr_binary, load_symtab_id, offset);
 

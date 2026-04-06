@@ -28,6 +28,7 @@
                             (Real 4)
                         ))]
                         ()
+                        .false.
                     )]
                 ),
             nested_06_a:
@@ -69,7 +70,9 @@
                                                             ()
                                                             [(IntegerConstant 5 (Integer 4) Decimal)]
                                                             FormatFortran
-                                                            (String -1 0 () PointerString)
+                                                            (Allocatable
+                                                                (String 1 () DeferredLength DescriptorString)
+                                                            )
                                                             ()
                                                         )
                                                     )
@@ -78,7 +81,9 @@
                                                             ()
                                                             [(Var 3 x)]
                                                             FormatFortran
-                                                            (String -1 0 () PointerString)
+                                                            (Allocatable
+                                                                (String 1 () DeferredLength DescriptorString)
+                                                            )
                                                             ()
                                                         )
                                                     )]
@@ -105,6 +110,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     b
@@ -127,7 +137,7 @@
                                     [(Print
                                         (StringConstant
                                             "b()"
-                                            (String 1 3 () PointerString)
+                                            (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (SubroutineCall
@@ -135,6 +145,7 @@
                                         ()
                                         []
                                         ()
+                                        .false.
                                     )]
                                     ()
                                     Public
@@ -144,7 +155,9 @@
                                 )
                         })
                     nested_06_a
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

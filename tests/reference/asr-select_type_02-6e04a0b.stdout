@@ -29,6 +29,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             y:
                                                 (Variable
@@ -47,12 +52,25 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     point
+                                    (StructType
+                                        [(Real 4)
+                                        (Real 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [x
                                     y]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -60,10 +78,13 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 )
                         })
                     derived_type_collection
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -134,11 +155,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     color_point
+                                    (StructType
+                                        [(Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [color]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -146,6 +179,7 @@
                                     []
                                     ()
                                     4 point
+                                    []
                                 ),
                             cp:
                                 (Variable
@@ -157,15 +191,23 @@
                                     ()
                                     Default
                                     (StructType
-                                        4 color_point
+                                        [(Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    4 color_point
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .true.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             p:
                                 (Variable
@@ -177,15 +219,24 @@
                                     ()
                                     Default
                                     (StructType
-                                        4 point
+                                        [(Real 4)
+                                        (Real 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    4 point
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .true.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             p3d:
                                 (Variable
@@ -197,15 +248,23 @@
                                     ()
                                     Default
                                     (StructType
-                                        4 point_3d
+                                        [(Real 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    4 point_3d
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .true.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             p_or_cp:
                                 (Variable
@@ -217,17 +276,26 @@
                                     ()
                                     Default
                                     (Pointer
-                                        (ClassType
-                                            4 point
+                                        (StructType
+                                            [(Real 4)
+                                            (Real 4)]
+                                            []
+                                            .false.
+                                            .false.
                                         )
                                     )
-                                    ()
+                                    4 point
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             point:
                                 (ExternalSymbol
@@ -261,11 +329,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     point_3d
+                                    (StructType
+                                        [(Real 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [z]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -273,6 +353,7 @@
                                     []
                                     ()
                                     4 point
+                                    []
                                 ),
                             ~select_type_block_:
                                 (Block
@@ -309,30 +390,53 @@
                                                     ()
                                                     Default
                                                     (Pointer
-                                                        (ClassType
-                                                            4 point
+                                                        (StructType
+                                                            [(Real 4)
+                                                            (Real 4)]
+                                                            []
+                                                            .false.
+                                                            .false.
                                                         )
                                                     )
-                                                    ()
+                                                    4 point
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     ~select_type_block_
                                     [(Associate
                                         (Var 7 an)
-                                        (Var 4 p_or_cp)
+                                        (Cast
+                                            (Var 4 p_or_cp)
+                                            ClassToClass
+                                            (Pointer
+                                                (StructType
+                                                    [(Real 4)
+                                                    (Real 4)]
+                                                    []
+                                                    .false.
+                                                    .false.
+                                                )
+                                            )
+                                            ()
+                                            (Var 7 an)
+                                        )
                                     )
                                     (Print
                                         (StringFormat
                                             ()
                                             [(StringConstant
                                                 "point: "
-                                                (String 1 7 () PointerString)
+                                                (String 1 (IntegerConstant 7 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                             )
                                             (StructInstanceMember
                                                 (Var 7 an)
@@ -347,7 +451,9 @@
                                                 ()
                                             )]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )]
@@ -397,30 +503,51 @@
                                                     ()
                                                     Default
                                                     (Pointer
-                                                        (ClassType
-                                                            4 point
+                                                        (StructType
+                                                            [(Integer 4)]
+                                                            []
+                                                            .true.
+                                                            .false.
                                                         )
                                                     )
-                                                    ()
+                                                    4 color_point
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     ~select_type_block_1
                                     [(Associate
                                         (Var 8 an)
-                                        (Var 4 p_or_cp)
+                                        (Cast
+                                            (Var 4 p_or_cp)
+                                            ClassToStruct
+                                            (Pointer
+                                                (StructType
+                                                    [(Integer 4)]
+                                                    []
+                                                    .true.
+                                                    .false.
+                                                )
+                                            )
+                                            ()
+                                            (Var 8 an)
+                                        )
                                     )
                                     (Print
                                         (StringFormat
                                             ()
                                             [(StringConstant
                                                 "color_point: "
-                                                (String 1 13 () PointerString)
+                                                (String 1 (IntegerConstant 13 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                             )
                                             (StructInstanceMember
                                                 (Var 8 an)
@@ -441,7 +568,9 @@
                                                 ()
                                             )]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )]
@@ -461,6 +590,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (StructInstanceMember
@@ -474,6 +605,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (StructInstanceMember
@@ -487,6 +620,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (StructInstanceMember
@@ -500,6 +635,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (StructInstanceMember
@@ -513,6 +650,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (StructInstanceMember
@@ -526,6 +665,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (StructInstanceMember
@@ -539,6 +680,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (StructInstanceMember
@@ -549,6 +692,8 @@
                         )
                         (IntegerConstant 8 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Associate
                         (Var 4 p_or_cp)
@@ -556,6 +701,7 @@
                     )
                     (SelectType
                         (Var 4 p_or_cp)
+                        an
                         [(ClassStmt
                             4 point
                             [(BlockCall

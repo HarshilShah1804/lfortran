@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             r:
                                 (Variable
@@ -42,6 +47,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     types_02
@@ -50,6 +60,8 @@
                         (Var 2 i)
                         (IntegerConstant 1 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 r)
@@ -61,8 +73,11 @@
                                 1.000000
                                 (Real 4)
                             )
+                            ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 r)
@@ -71,8 +86,11 @@
                             IntegerToReal
                             (Real 4)
                             ()
+                            ()
                         )
                         ()
+                        .false.
+                        .false.
                     )]
                 )
         })

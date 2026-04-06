@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             b:
                                 (Variable
@@ -46,6 +51,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             c:
                                 (Variable
@@ -64,6 +74,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             d:
                                 (Variable
@@ -86,6 +101,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             e:
                                 (Variable
@@ -104,6 +124,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             f:
                                 (Variable
@@ -122,11 +147,17 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     debug
                     []
                     [(If
+                        ()
                         (IntegerCompare
                             (IntrinsicElementalFunction
                                 Min
@@ -158,6 +189,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (IntrinsicElementalFunction
                                 Max
@@ -185,6 +217,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (IntrinsicElementalFunction
                                 Max
@@ -208,6 +241,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (IntrinsicElementalFunction
                                 Min
@@ -235,6 +269,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (IntrinsicElementalFunction
                                 Max

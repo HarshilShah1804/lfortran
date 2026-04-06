@@ -67,6 +67,53 @@
                                     t_2
                                     Public
                                 ),
+                            t_2_array:
+                                (Variable
+                                    7
+                                    t_2_array
+                                    []
+                                    Local
+                                    ()
+                                    ()
+                                    Default
+                                    (Allocatable
+                                        (Array
+                                            (StructType
+                                                [(Pointer
+                                                    (Array
+                                                        (StructType
+                                                            [(Integer 4)]
+                                                            []
+                                                            .true.
+                                                            .false.
+                                                        )
+                                                        [(()
+                                                        ())]
+                                                        DescriptorArray
+                                                    )
+                                                )]
+                                                []
+                                                .false.
+                                                .false.
+                                            )
+                                            [(()
+                                            ())]
+                                            DescriptorArray
+                                        )
+                                    )
+                                    7 t_2
+                                    Source
+                                    Public
+                                    Required
+                                    .false.
+                                    .false.
+                                    .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
+                                ),
                             type_1:
                                 (Variable
                                     7
@@ -77,15 +124,35 @@
                                     ()
                                     Default
                                     (StructType
-                                        7 t_2
+                                        [(Pointer
+                                            (Array
+                                                (StructType
+                                                    [(Integer 4)]
+                                                    []
+                                                    .true.
+                                                    .false.
+                                                )
+                                                [(()
+                                                ())]
+                                                DescriptorArray
+                                            )
+                                        )]
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    7 t_2
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     associate2
@@ -96,6 +163,56 @@
                         [((Var 7 type_1))
                         ((IntegerConstant 123 (Integer 4) Decimal))]
                         ()
+                        .false.
+                    )
+                    (If
+                        ()
+                        (IntegerCompare
+                            (StructInstanceMember
+                                (ArrayItem
+                                    (StructInstanceMember
+                                        (Var 7 type_1)
+                                        7 1_t_2_type_2
+                                        (Pointer
+                                            (Array
+                                                (StructType
+                                                    [(Integer 4)]
+                                                    []
+                                                    .true.
+                                                    .false.
+                                                )
+                                                [(()
+                                                ())]
+                                                DescriptorArray
+                                            )
+                                        )
+                                        ()
+                                    )
+                                    [(()
+                                    (IntegerConstant 1 (Integer 4) Decimal)
+                                    ())]
+                                    (StructType
+                                        [(Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
+                                    ColMajor
+                                    ()
+                                )
+                                7 1_t_1_i
+                                (Integer 4)
+                                ()
+                            )
+                            NotEq
+                            (IntegerConstant 123 (Integer 4) Decimal)
+                            (Logical 4)
+                            ()
+                        )
+                        [(ErrorStop
+                            ()
+                        )]
+                        []
                     )
                     (Print
                         (StringFormat
@@ -108,7 +225,10 @@
                                         (Pointer
                                             (Array
                                                 (StructType
-                                                    7 t_1
+                                                    [(Integer 4)]
+                                                    []
+                                                    .true.
+                                                    .false.
                                                 )
                                                 [(()
                                                 ())]
@@ -118,10 +238,13 @@
                                         ()
                                     )
                                     [(()
-                                    (IntegerConstant 0 (Integer 4) Decimal)
+                                    (IntegerConstant 1 (Integer 4) Decimal)
                                     ())]
                                     (StructType
-                                        7 t_1
+                                        [(Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
                                     ColMajor
                                     ()
@@ -131,7 +254,9 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]
@@ -180,7 +305,9 @@
                                                                     ()
                                                                     ()
                                                                     Default
-                                                                    (Integer 4)
+                                                                    (Pointer
+                                                                        (Integer 4)
+                                                                    )
                                                                     ()
                                                                     Source
                                                                     Private
@@ -188,10 +315,15 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     associate_block
-                                                    [(Assignment
+                                                    [(Associate
                                                         (Var 8 target)
                                                         (StructInstanceMember
                                                             (ArrayItem
@@ -201,7 +333,10 @@
                                                                     (Pointer
                                                                         (Array
                                                                             (StructType
-                                                                                2 t_1
+                                                                                [(Integer 4)]
+                                                                                []
+                                                                                .true.
+                                                                                .false.
                                                                             )
                                                                             [(()
                                                                             ())]
@@ -211,10 +346,13 @@
                                                                     ()
                                                                 )
                                                                 [(()
-                                                                (IntegerConstant 0 (Integer 4) Decimal)
+                                                                (IntegerConstant 1 (Integer 4) Decimal)
                                                                 ())]
                                                                 (StructType
-                                                                    2 t_1
+                                                                    [(Integer 4)]
+                                                                    []
+                                                                    .true.
+                                                                    .false.
                                                                 )
                                                                 ColMajor
                                                                 ()
@@ -223,12 +361,13 @@
                                                             (Integer 4)
                                                             ()
                                                         )
-                                                        ()
                                                     )
                                                     (Assignment
                                                         (Var 8 target)
                                                         (Var 5 i)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )]
                                                 ),
                                             i:
@@ -248,6 +387,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             type_1:
                                                 (Variable
@@ -258,22 +402,57 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (ClassType
-                                                        2 t_2
+                                                    (StructType
+                                                        [(Pointer
+                                                            (Array
+                                                                (StructType
+                                                                    [(Integer 4)]
+                                                                    []
+                                                                    .true.
+                                                                    .false.
+                                                                )
+                                                                [(()
+                                                                ())]
+                                                                DescriptorArray
+                                                            )
+                                                        )]
+                                                        []
+                                                        .false.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 t_2
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     sub_1
                                     (FunctionType
-                                        [(ClassType
-                                            2 t_2
+                                        [(StructType
+                                            [(Pointer
+                                                (Array
+                                                    (StructType
+                                                        [(Integer 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
+                                                    )
+                                                    [(()
+                                                    ())]
+                                                    DescriptorArray
+                                                )
+                                            )]
+                                            []
+                                            .false.
+                                            .false.
                                         )
                                         (Integer 4)]
                                         ()
@@ -298,7 +477,10 @@
                                             (Pointer
                                                 (Array
                                                     (StructType
-                                                        2 t_1
+                                                        [(Integer 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
                                                     [(()
                                                     ())]
@@ -308,7 +490,8 @@
                                             ()
                                         )
                                         [((IntegerConstant 1 (Integer 4) Decimal)
-                                        (IntegerConstant 0 (Integer 4) Decimal))]
+                                        (IntegerConstant 1 (Integer 4) Decimal))]
+                                        ()
                                         ()
                                         ())]
                                         ()
@@ -320,8 +503,8 @@
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             sub_2:
@@ -373,33 +556,69 @@
                                                                     ()
                                                                     ()
                                                                     Default
-                                                                    (ClassType
-                                                                        2 t_2
+                                                                    (Pointer
+                                                                        (StructType
+                                                                            [(Pointer
+                                                                                (Array
+                                                                                    (StructType
+                                                                                        [(Integer 4)]
+                                                                                        []
+                                                                                        .true.
+                                                                                        .false.
+                                                                                    )
+                                                                                    [(()
+                                                                                    ())]
+                                                                                    DescriptorArray
+                                                                                )
+                                                                            )]
+                                                                            []
+                                                                            .false.
+                                                                            .false.
+                                                                        )
                                                                     )
-                                                                    ()
+                                                                    2 t_2
                                                                     Source
                                                                     Private
                                                                     Required
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     associate_block
-                                                    [(Assignment
+                                                    [(Associate
                                                         (Var 9 target)
                                                         (ArrayItem
                                                             (Var 6 progress)
                                                             [(()
-                                                            (IntegerConstant 0 (Integer 4) Decimal)
+                                                            (IntegerConstant 1 (Integer 4) Decimal)
                                                             ())]
-                                                            (ClassType
-                                                                2 t_2
+                                                            (StructType
+                                                                [(Pointer
+                                                                    (Array
+                                                                        (StructType
+                                                                            [(Integer 4)]
+                                                                            []
+                                                                            .true.
+                                                                            .false.
+                                                                        )
+                                                                        [(()
+                                                                        ())]
+                                                                        DescriptorArray
+                                                                    )
+                                                                )]
+                                                                []
+                                                                .false.
+                                                                .false.
                                                             )
                                                             ColMajor
                                                             ()
                                                         )
-                                                        ()
                                                     )
                                                     (Assignment
                                                         (StructInstanceMember
@@ -410,7 +629,10 @@
                                                                     (Pointer
                                                                         (Array
                                                                             (StructType
-                                                                                2 t_1
+                                                                                [(Integer 4)]
+                                                                                []
+                                                                                .true.
+                                                                                .false.
                                                                             )
                                                                             [(()
                                                                             ())]
@@ -420,10 +642,13 @@
                                                                     ()
                                                                 )
                                                                 [(()
-                                                                (IntegerConstant 0 (Integer 4) Decimal)
+                                                                (IntegerConstant 1 (Integer 4) Decimal)
                                                                 ())]
                                                                 (StructType
-                                                                    2 t_1
+                                                                    [(Integer 4)]
+                                                                    []
+                                                                    .true.
+                                                                    .false.
                                                                 )
                                                                 ColMajor
                                                                 ()
@@ -434,6 +659,8 @@
                                                         )
                                                         (IntegerConstant 345 (Integer 4) Decimal)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )]
                                                 ),
                                             progress:
@@ -447,29 +674,64 @@
                                                     Default
                                                     (Allocatable
                                                         (Array
-                                                            (ClassType
-                                                                2 t_2
+                                                            (StructType
+                                                                [(Pointer
+                                                                    (Array
+                                                                        (StructType
+                                                                            [(Integer 4)]
+                                                                            []
+                                                                            .true.
+                                                                            .false.
+                                                                        )
+                                                                        [(()
+                                                                        ())]
+                                                                        DescriptorArray
+                                                                    )
+                                                                )]
+                                                                []
+                                                                .false.
+                                                                .false.
                                                             )
                                                             [(()
                                                             ())]
                                                             DescriptorArray
                                                         )
                                                     )
-                                                    ()
+                                                    2 t_2
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     sub_2
                                     (FunctionType
                                         [(Allocatable
                                             (Array
-                                                (ClassType
-                                                    2 t_2
+                                                (StructType
+                                                    [(Pointer
+                                                        (Array
+                                                            (StructType
+                                                                [(Integer 4)]
+                                                                []
+                                                                .true.
+                                                                .false.
+                                                            )
+                                                            [(()
+                                                            ())]
+                                                            DescriptorArray
+                                                        )
+                                                    )]
+                                                    []
+                                                    .false.
+                                                    .false.
                                                 )
                                                 [(()
                                                 ())]
@@ -491,14 +753,40 @@
                                     []
                                     [(Var 6 progress)]
                                     [(Allocate
+                                        [((Var 6 progress)
+                                        [((IntegerConstant 1 (Integer 4) Decimal)
+                                        (IntegerConstant 1 (Integer 4) Decimal))]
+                                        ()
+                                        ()
+                                        ())]
+                                        ()
+                                        ()
+                                        ()
+                                    )
+                                    (Allocate
                                         [((StructInstanceMember
                                             (ArrayItem
                                                 (Var 6 progress)
                                                 [(()
-                                                (IntegerConstant 0 (Integer 4) Decimal)
+                                                (IntegerConstant 1 (Integer 4) Decimal)
                                                 ())]
-                                                (ClassType
-                                                    2 t_2
+                                                (StructType
+                                                    [(Pointer
+                                                        (Array
+                                                            (StructType
+                                                                [(Integer 4)]
+                                                                []
+                                                                .true.
+                                                                .false.
+                                                            )
+                                                            [(()
+                                                            ())]
+                                                            DescriptorArray
+                                                        )
+                                                    )]
+                                                    []
+                                                    .false.
+                                                    .false.
                                                 )
                                                 ColMajor
                                                 ()
@@ -507,7 +795,10 @@
                                             (Pointer
                                                 (Array
                                                     (StructType
-                                                        2 t_1
+                                                        [(Integer 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
                                                     [(()
                                                     ())]
@@ -517,7 +808,8 @@
                                             ()
                                         )
                                         [((IntegerConstant 1 (Integer 4) Decimal)
-                                        (IntegerConstant 0 (Integer 4) Decimal))]
+                                        (IntegerConstant 1 (Integer 4) Decimal))]
+                                        ()
                                         ()
                                         ())]
                                         ()
@@ -529,8 +821,8 @@
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             t_1:
@@ -555,11 +847,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     t_1
+                                    (StructType
+                                        [(Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [i]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -567,6 +871,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             t_2:
                                 (Struct
@@ -585,25 +890,52 @@
                                                     (Pointer
                                                         (Array
                                                             (StructType
-                                                                2 t_1
+                                                                [(Integer 4)]
+                                                                []
+                                                                .true.
+                                                                .false.
                                                             )
                                                             [(()
                                                             ())]
                                                             DescriptorArray
                                                         )
                                                     )
-                                                    ()
+                                                    2 t_1
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     t_2
+                                    (StructType
+                                        [(Pointer
+                                            (Array
+                                                (StructType
+                                                    [(Integer 4)]
+                                                    []
+                                                    .true.
+                                                    .false.
+                                                )
+                                                [(()
+                                                ())]
+                                                DescriptorArray
+                                            )
+                                        )]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [type_2]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -611,10 +943,13 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 )
                         })
                     associate_08_module_1
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

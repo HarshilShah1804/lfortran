@@ -26,9 +26,11 @@ if.md
 ifarithmetic.md
 implicitdeallocate.md
 nullify.md
+ompregion.md
 print.md
 return.md
 select.md
+selectrank.md
 stop.md
 subroutinecall.md
 where.md

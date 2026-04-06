@@ -5,6 +5,7 @@
 #include <libasr/assert.h>
 #include <libasr/exception.h>
 #include <libasr/utils.h>
+#include <libasr/string_utils.h>
 
 namespace LCompilers::diag {
 
@@ -80,7 +81,7 @@ std::string Diagnostics::render(LocationManager &lm,
     std::string out;
     for (auto &d : this->diagnostics) {
         if (compiler_options.error_format == "human") {
-            if ((compiler_options.disable_style && d.level == Level::Style) || (compiler_options.no_warnings && d.level == Level::Warning)) {
+            if ((!compiler_options.show_style_suggestions && d.level == Level::Style) || (!compiler_options.show_warnings && d.level == Level::Warning)) {
                 out += "";
             } else {
                 out += render_diagnostic_human(d, lm, compiler_options.use_colors,
@@ -94,8 +95,8 @@ std::string Diagnostics::render(LocationManager &lm,
         }
     }
     if (compiler_options.error_format == "human") {
-        if (this->diagnostics.size() > 0 && !compiler_options.no_error_banner) {
-            if ((!compiler_options.disable_style && has_style()) || (!compiler_options.no_warnings && has_warning()) || has_error()) {
+        if (this->diagnostics.size() > 0 && compiler_options.show_error_banner) {
+            if ((compiler_options.show_style_suggestions && has_style()) || (compiler_options.show_warnings && has_warning()) || has_error()) {
                 std::string bold  = ColorsANSI::BOLD;
                 std::string reset = ColorsANSI::RESET;
                 if (!compiler_options.use_colors) {
@@ -138,9 +139,12 @@ void populate_span(diag::Span &s, const LocationManager &lm) {
     lm.pos_to_linecol(lm.output_to_input_pos(s.loc.last, true),
         s.last_line, s.last_column, s.filename);
     std::string input;
-    read_file(s.filename, input);
-    for (uint32_t i = s.first_line; i <= s.last_line; i++) {
-        s.source_code.push_back(get_line(input, i));
+    if (read_file(s.filename, input)) {
+        for (uint32_t i = s.first_line; i <= s.last_line; i++) {
+            s.source_code.push_back(get_line(input, i));
+        }
+    } else {
+        s.source_code.push_back("File not found.\n");
     }
     LCOMPILERS_ASSERT(s.source_code.size() > 0)
 }

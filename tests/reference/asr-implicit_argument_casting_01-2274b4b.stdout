@@ -20,7 +20,7 @@
                                         (Real 8)
                                         [((IntegerConstant 1 (Integer 4) Decimal)
                                         (Var 2 n))]
-                                        PointerToDataArray
+                                        PointerArray
                                     )
                                     ()
                                     Source
@@ -29,6 +29,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             dp:
                                 (Variable
@@ -56,6 +61,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             n:
                                 (Variable
@@ -74,6 +84,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     idz_realcomp
@@ -87,7 +102,7 @@
                                 (Integer 4)
                                 ()
                             ))]
-                            PointerToDataArray
+                            PointerArray
                         )]
                         ()
                         Source
@@ -127,16 +142,18 @@
                                 (Real 8)
                                 [((IntegerConstant 1 (Integer 4) Decimal)
                                 (Var 2 n))]
-                                PointerToDataArray
+                                PointerArray
                             )
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )]
                     ()
                     Public
-                    .false.
-                    .false.
+                    .true.
+                    .true.
                     ()
                 ),
             main:
@@ -170,6 +187,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             idzp_svd:
                                 (Function
@@ -193,6 +215,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             ls:
                                                 (Variable
@@ -211,6 +238,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             w:
                                                 (Variable
@@ -225,7 +257,7 @@
                                                         (Complex 8)
                                                         [(()
                                                         ())]
-                                                        DescriptorArray
+                                                        UnboundedPointerArray
                                                     )
                                                     ()
                                                     Source
@@ -234,6 +266,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             w_cast:
                                                 (Variable
@@ -259,6 +296,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     idzp_svd
@@ -268,7 +310,7 @@
                                             (Complex 8)
                                             [(()
                                             ())]
-                                            DescriptorArray
+                                            UnboundedPointerArray
                                         )]
                                         ()
                                         Source
@@ -289,6 +331,8 @@
                                         (Var 4 isi)
                                         (IntegerConstant 1 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (CPtrToPointer
                                         (PointerToCPtr
@@ -337,18 +381,19 @@
                                         ((ArrayPhysicalCast
                                             (Var 4 w_cast)
                                             DescriptorArray
-                                            PointerToDataArray
+                                            PointerArray
                                             (Pointer
                                                 (Array
                                                     (Real 8)
                                                     [(()
                                                     ())]
-                                                    PointerToDataArray
+                                                    PointerArray
                                                 )
                                             )
                                             ()
                                         ))]
                                         ()
+                                        .false.
                                     )
                                     (Print
                                         (StringFormat
@@ -363,11 +408,14 @@
                                                 ()
                                             )]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )
                                     (If
+                                        ()
                                         (RealCompare
                                             (IntrinsicElementalFunction
                                                 Abs
@@ -411,6 +459,7 @@
                                                     0.000000
                                                     (Real 8)
                                                 )
+                                                ()
                                             )
                                             (Logical 4)
                                             ()
@@ -448,6 +497,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     main
@@ -459,16 +513,17 @@
                         ((ArrayPhysicalCast
                             (Var 3 w)
                             FixedSizeArray
-                            DescriptorArray
+                            UnboundedPointerArray
                             (Array
                                 (Complex 8)
                                 [((IntegerConstant 1 (Integer 4) Decimal)
                                 (IntegerConstant 5 (Integer 4) Decimal))]
-                                DescriptorArray
+                                UnboundedPointerArray
                             )
                             ()
                         ))]
                         ()
+                        .false.
                     )]
                 )
         })

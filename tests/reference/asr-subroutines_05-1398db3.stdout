@@ -30,7 +30,7 @@
                                                             (Integer 4)
                                                             ()
                                                         ))]
-                                                        PointerToDataArray
+                                                        PointerArray
                                                     )
                                                     ()
                                                     Source
@@ -39,6 +39,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -62,6 +67,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     f
@@ -100,11 +110,14 @@
                                                     (Integer 4)
                                                     ()
                                                 ))]
-                                                PointerToDataArray
+                                                PointerArray
                                             )
+                                            ()
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 3 e)
@@ -115,18 +128,22 @@
                                                 (Real 4)
                                                 [((IntegerConstant 1 (Integer 4) Decimal)
                                                 (IntegerConstant 4 (Integer 4) Decimal))]
-                                                PointerToDataArray
+                                                PointerArray
                                             )
                                             ColMajor
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Print
                                         (StringFormat
                                             ()
                                             [(Var 3 e)]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )]
@@ -160,6 +177,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     bugsize
@@ -168,6 +190,7 @@
                         [((Var 2 x)
                         [((IntegerConstant 1 (Integer 4) Decimal)
                         (IntegerConstant 4 (Integer 4) Decimal))]
+                        ()
                         ()
                         ())]
                         ()
@@ -179,6 +202,7 @@
                         ()
                         [((Var 2 x))]
                         ()
+                        .false.
                     )]
                 )
         })

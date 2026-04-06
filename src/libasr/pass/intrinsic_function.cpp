@@ -31,12 +31,17 @@ class ReplaceIntrinsicFunctions: public ASR::BaseExprReplacer<ReplaceIntrinsicFu
     Allocator& al;
     SymbolTable* global_scope;
     std::map<ASR::symbol_t*, ASRUtils::IntrinsicArrayFunctions>& func2intrinsicid;
+    bool& in_debugcheck;
+    bool& in_ttype;
+    int index_kind;
 
     public:
 
     ReplaceIntrinsicFunctions(Allocator& al_, SymbolTable* global_scope_,
-    std::map<ASR::symbol_t*, ASRUtils::IntrinsicArrayFunctions>& func2intrinsicid_) :
-        al(al_), global_scope(global_scope_), func2intrinsicid(func2intrinsicid_) {}
+    std::map<ASR::symbol_t*, ASRUtils::IntrinsicArrayFunctions>& func2intrinsicid_, bool& in_debugcheck_, bool &in_ttype_,
+    int index_kind_) :
+        al(al_), global_scope(global_scope_), func2intrinsicid(func2intrinsicid_), in_debugcheck(in_debugcheck_), in_ttype(in_ttype_),
+        index_kind(index_kind_) {}
 
 
     void replace_IntrinsicElementalFunction(ASR::IntrinsicElementalFunction_t* x) {
@@ -44,6 +49,9 @@ class ReplaceIntrinsicFunctions: public ASR::BaseExprReplacer<ReplaceIntrinsicFu
             *current_expr = x->m_value;
             return;
         }
+        // If inside DebugCheckArrayBounds and not inside a type
+        // Then keep the IntrinsicElementalFunction because its arguments are used to find ArraySize
+        if (in_debugcheck && !in_ttype) return;
 
         Vec<ASR::call_arg_t> new_args; new_args.reserve(al, x->n_args);
         // Replace any IntrinsicElementalFunctions in the argument first:
@@ -72,8 +80,10 @@ class ReplaceIntrinsicFunctions: public ASR::BaseExprReplacer<ReplaceIntrinsicFu
         ASR::ttype_t* type = nullptr;
         type = ASRUtils::extract_type(x->m_type);
         ASR::expr_t* current_expr_ = instantiate_function(al, x->base.base.loc,
-            global_scope, arg_types, type, new_args, x->m_overload_id);
-        *current_expr = current_expr_;
+            global_scope, arg_types, type, new_args, x->m_overload_id, index_kind);
+        if (current_expr_) {
+            *current_expr = current_expr_;
+        }
     }
 
     void replace_IntrinsicArrayFunction(ASR::IntrinsicArrayFunction_t* x) {
@@ -109,7 +119,7 @@ class ReplaceIntrinsicFunctions: public ASR::BaseExprReplacer<ReplaceIntrinsicFu
             arg_types.push_back(al, ASRUtils::expr_type(x->m_args[i]));
         }
         ASR::expr_t* current_expr_ = instantiate_function(al, x->base.base.loc,
-            global_scope, arg_types, x->m_type, new_args, x->m_overload_id);
+            global_scope, arg_types, x->m_type, new_args, x->m_overload_id, index_kind);
         ASR::expr_t* func_call = current_expr_;
         *current_expr = current_expr_;
         bool condition = ASR::is_a<ASR::FunctionCall_t>(*func_call);
@@ -134,10 +144,28 @@ class ReplaceIntrinsicFunctionsVisitor : public ASR::CallReplacerOnExpressionsVi
         ReplaceIntrinsicFunctions replacer;
 
     public:
+        bool in_debugcheck = false;
+        bool in_ttype = false;
 
         ReplaceIntrinsicFunctionsVisitor(Allocator& al_, SymbolTable* global_scope_,
-            std::map<ASR::symbol_t*, ASRUtils::IntrinsicArrayFunctions>& func2intrinsicid_) :
-            replacer(al_, global_scope_, func2intrinsicid_) {}
+            std::map<ASR::symbol_t*, ASRUtils::IntrinsicArrayFunctions>& func2intrinsicid_,
+            int index_kind_) :
+            replacer(al_, global_scope_, func2intrinsicid_, in_debugcheck, in_ttype, index_kind_) {}
+
+        // Don't replace inside DebugCheckArrayBounds, the arguments for elemental functions might be arrays
+        void visit_DebugCheckArrayBounds(const ASR::DebugCheckArrayBounds_t& x) {
+            bool in_debugcheck_copy = in_debugcheck;
+            in_debugcheck = true;
+            ASR::CallReplacerOnExpressionsVisitor<ReplaceIntrinsicFunctionsVisitor>::visit_DebugCheckArrayBounds(x);
+            in_debugcheck = in_debugcheck_copy;
+        }
+
+        void visit_ttype(const ASR::ttype_t& x) {
+            bool in_ttype_copy = in_ttype;
+            in_ttype = true;
+            ASR::CallReplacerOnExpressionsVisitor<ReplaceIntrinsicFunctionsVisitor>::visit_ttype(x);
+            in_ttype = in_ttype_copy;
+        }
 
         void call_replacer() {
             replacer.current_expr = current_expr;
@@ -192,6 +220,7 @@ class ReplaceFunctionCallReturningArray: public ASR::BaseExprReplacer<ReplaceFun
             alloc_arg.m_type = nullptr;
             alloc_arg.loc = loc_;
             alloc_arg.m_a = result_var_;
+            alloc_arg.m_sym_subclass = nullptr;
             Vec<ASR::dimension_t> alloc_dims;
             alloc_dims.reserve(al, n_dims);
             for( int j = 1; j <= n_dims + 1; j++ ) {
@@ -223,7 +252,7 @@ class ReplaceFunctionCallReturningArray: public ASR::BaseExprReplacer<ReplaceFun
             if_body.push_back(al, ASRUtils::STMT(ASR::make_ExplicitDeallocate_t(
                 al, loc, to_be_deallocated.p, to_be_deallocated.size())));
             if_body.push_back(al, allocate_stmt);
-            ASR::stmt_t* if_ = ASRUtils::STMT(ASR::make_If_t(al, loc_, test_expr,
+            ASR::stmt_t* if_ = ASRUtils::STMT(ASR::make_If_t(al, loc_, nullptr, test_expr,
                                 if_body.p, if_body.size(), else_, else_n));
             Vec<ASR::stmt_t*> if_else_if;
             if_else_if.reserve(al, 1);
@@ -264,6 +293,12 @@ class ReplaceFunctionCallReturningArray: public ASR::BaseExprReplacer<ReplaceFun
             return;
         }
 
+        if( !this->result_var_ ) {
+            // No result variable (e.g., parameter initialization);
+            // the value is compile-time constant, skip replacement.
+            return;
+        }
+
         Vec<ASR::call_arg_t> new_args;
         new_args.reserve(al, x->n_args + 1);
         for( size_t i = 0; i < x->n_args; i++ ) {
@@ -277,9 +312,11 @@ class ReplaceFunctionCallReturningArray: public ASR::BaseExprReplacer<ReplaceFun
         new_arg.loc = this->result_var_->base.loc;
         new_arg.m_value = this->result_var_;
         new_args.push_back(al, new_arg);
+
+
         ASR::stmt_t* subrout_call = ASRUtils::STMT(ASRUtils::make_SubroutineCall_t_util(
             al, x->base.base.loc, x->m_name, x->m_original_name, new_args.p,
-            new_args.size(), x->m_dt, nullptr, false, false));
+            new_args.size(), x->m_dt, nullptr, false));
         pass_result.push_back(al, subrout_call);
     }
 };
@@ -339,6 +376,13 @@ class ReplaceFunctionCallReturningArrayVisitor : public ASR::CallReplacerOnExpre
             pass_result.n = 0;
         }
 
+        void visit_Variable(const ASR::Variable_t& x) {
+            if (x.m_storage == ASR::storage_typeType::Parameter) {
+                return;
+            }
+            ASR::CallReplacerOnExpressionsVisitor<ReplaceFunctionCallReturningArrayVisitor>::visit_Variable(x);
+        }
+
         void visit_Assignment(const ASR::Assignment_t& x) {
             replacer.result_var_ = x.m_target;
             ASR::CallReplacerOnExpressionsVisitor<ReplaceFunctionCallReturningArrayVisitor>::visit_Assignment(x);
@@ -348,9 +392,10 @@ class ReplaceFunctionCallReturningArrayVisitor : public ASR::CallReplacerOnExpre
 };
 
 void pass_replace_intrinsic_function(Allocator &al, ASR::TranslationUnit_t &unit,
-                            const LCompilers::PassOptions& /*pass_options*/) {
+                            const LCompilers::PassOptions& pass_options) {
+    int index_kind = pass_options.descriptor_index_64 ? 8 : 4;
     std::map<ASR::symbol_t*, ASRUtils::IntrinsicArrayFunctions> func2intrinsicid;
-    ReplaceIntrinsicFunctionsVisitor v(al, unit.m_symtab, func2intrinsicid);
+    ReplaceIntrinsicFunctionsVisitor v(al, unit.m_symtab, func2intrinsicid, index_kind);
     v.visit_TranslationUnit(unit);
     ReplaceFunctionCallReturningArrayVisitor u(al, func2intrinsicid);
     u.visit_TranslationUnit(unit);

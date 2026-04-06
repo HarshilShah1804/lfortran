@@ -17,15 +17,23 @@
                                     ()
                                     Default
                                     (StructType
-                                        2 x
+                                        [(Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    2 x
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             x:
                                 (Struct
@@ -49,11 +57,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     x
+                                    (StructType
+                                        [(Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [i]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -61,6 +81,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             y:
                                 (Function
@@ -89,11 +110,23 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     a
+                                                    (StructType
+                                                        [(Integer 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
+                                                    )
                                                     []
                                                     [i]
+                                                    []
                                                     Source
                                                     Public
                                                     .false.
@@ -101,6 +134,7 @@
                                                     []
                                                     ()
                                                     ()
+                                                    []
                                                 ),
                                             b:
                                                 (Variable
@@ -112,15 +146,23 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        4 a
+                                                        [(Integer 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    4 a
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     y
@@ -143,8 +185,8 @@
                                     []
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             z:
@@ -174,11 +216,23 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     a
+                                                    (StructType
+                                                        [(Integer 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
+                                                    )
                                                     []
                                                     [i]
+                                                    []
                                                     Source
                                                     Public
                                                     .false.
@@ -186,6 +240,7 @@
                                                     []
                                                     ()
                                                     ()
+                                                    []
                                                 ),
                                             b:
                                                 (Variable
@@ -197,15 +252,23 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        6 a
+                                                        [(Integer 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    6 a
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             z:
                                                 (Variable
@@ -224,6 +287,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     z
@@ -247,11 +315,13 @@
                                         (Var 6 z)
                                         (IntegerConstant 5 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 6 z)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })

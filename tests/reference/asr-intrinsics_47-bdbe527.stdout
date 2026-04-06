@@ -49,6 +49,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             l:
                                 (Variable
@@ -67,6 +72,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     intrinsics_47
@@ -105,6 +115,8 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 l)
@@ -140,6 +152,8 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 l)
@@ -175,6 +189,8 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 l)
@@ -210,6 +226,8 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 l)
@@ -232,6 +250,8 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 l)
@@ -277,6 +297,7 @@
                                         ColMajor
                                     )
                                     ColMajor
+                                    ()
                                 )
                                 FixedSizeArray
                                 DescriptorArray
@@ -296,6 +317,8 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 l)
@@ -312,6 +335,7 @@
                                     )
                                     ()
                                     ColMajor
+                                    ()
                                 )
                                 FixedSizeArray
                                 DescriptorArray
@@ -328,39 +352,31 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 l)
                         (IntrinsicArrayFunction
                             All
-                            [(ArrayPhysicalCast
-                                (ArrayConstructor
-                                    [(LogicalConstant
-                                        .false.
-                                        (Logical 4)
-                                    )
-                                    (Var 2 a)
-                                    (LogicalConstant
-                                        .true.
-                                        (Logical 4)
-                                    )]
-                                    (Array
-                                        (Logical 4)
-                                        [((IntegerConstant 1 (Integer 4) Decimal)
-                                        (IntegerConstant 5 (Integer 4) Decimal))]
-                                        FixedSizeArray
-                                    )
-                                    ()
-                                    ColMajor
+                            [(ArrayConstructor
+                                [(LogicalConstant
+                                    .false.
+                                    (Logical 4)
                                 )
-                                FixedSizeArray
-                                DescriptorArray
+                                (Var 2 a)
+                                (LogicalConstant
+                                    .true.
+                                    (Logical 4)
+                                )]
                                 (Array
                                     (Logical 4)
                                     [((IntegerConstant 1 (Integer 4) Decimal)
-                                    (IntegerConstant 5 (Integer 4) Decimal))]
+                                    ())]
                                     DescriptorArray
                                 )
+                                ()
+                                ColMajor
                                 ()
                             )]
                             0
@@ -368,8 +384,11 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (Var 2 l)
                         [(ErrorStop
                             ()

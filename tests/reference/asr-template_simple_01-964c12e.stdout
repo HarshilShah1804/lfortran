@@ -7,16 +7,6 @@
                     (SymbolTable
                         18
                         {
-                            cast_integer:
-                                (ExternalSymbol
-                                    18
-                                    cast_integer
-                                    2 cast_integer
-                                    template_simple_01_m
-                                    []
-                                    cast_integer
-                                    Public
-                                ),
                             cast_r:
                                 (ExternalSymbol
                                     18
@@ -25,16 +15,6 @@
                                     template_simple_01_m
                                     []
                                     cast_r
-                                    Public
-                                ),
-                            cast_real:
-                                (ExternalSymbol
-                                    18
-                                    cast_real
-                                    2 cast_real
-                                    template_simple_01_m
-                                    []
-                                    cast_real
                                     Public
                                 ),
                             generic_sum:
@@ -75,6 +55,7 @@
                         ()
                         []
                         ()
+                        .false.
                     )]
                 ),
             template_simple_01_m:
@@ -104,6 +85,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             res:
                                                 (Variable
@@ -122,6 +108,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     cast_integer
@@ -145,11 +136,13 @@
                                         (Var 7 res)
                                         (IntegerConstant 0 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 7 res)
                                     Private
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             cast_r:
@@ -179,6 +172,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             res:
                                                                 (Variable
@@ -199,6 +197,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     cast
@@ -223,8 +226,8 @@
                                                     []
                                                     (Var 6 res)
                                                     Private
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             t:
@@ -246,6 +249,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     cast_r
@@ -275,6 +283,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             res:
                                                 (Variable
@@ -293,6 +306,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     cast_real
@@ -319,11 +337,13 @@
                                             (Real 4)
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 8 res)
                                     Private
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             generic_sum:
@@ -355,6 +375,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             res:
                                                                 (Variable
@@ -375,6 +400,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             rhs:
                                                                 (Variable
@@ -395,6 +425,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     add
@@ -425,8 +460,8 @@
                                                     []
                                                     (Var 10 res)
                                                     Private
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             cast:
@@ -451,6 +486,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             res:
                                                                 (Variable
@@ -471,6 +511,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     cast
@@ -495,8 +540,8 @@
                                                     []
                                                     (Var 11 res)
                                                     Private
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             generic_sum:
@@ -528,6 +573,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             i:
                                                                 (Variable
@@ -546,6 +596,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             n:
                                                                 (Variable
@@ -564,6 +619,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             res:
                                                                 (Variable
@@ -584,6 +644,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     generic_sum
@@ -622,6 +687,8 @@
                                                             ()
                                                         )
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 12 res)
@@ -636,8 +703,11 @@
                                                             ()
                                                         )
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (If
+                                                        ()
                                                         (IntegerCompare
                                                             (Var 12 n)
                                                             Gt
@@ -659,6 +729,8 @@
                                                                 ()
                                                             )
                                                             ()
+                                                            .false.
+                                                            .false.
                                                         )
                                                         (DoLoop
                                                             ()
@@ -690,6 +762,8 @@
                                                                     ()
                                                                 )
                                                                 ()
+                                                                .false.
+                                                                .false.
                                                             )]
                                                             []
                                                         )]
@@ -697,8 +771,8 @@
                                                     )]
                                                     (Var 12 res)
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             t:
@@ -720,6 +794,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     generic_sum
@@ -766,6 +845,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             res:
                                                                 (Variable
@@ -786,6 +870,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             rhs:
                                                                 (Variable
@@ -806,6 +895,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     binary_func
@@ -836,8 +930,8 @@
                                                     []
                                                     (Var 4 res)
                                                     Private
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             t:
@@ -859,6 +953,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             u:
                                                 (Variable
@@ -879,6 +978,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             v:
                                                 (Variable
@@ -899,6 +1003,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     operator_r
@@ -935,6 +1044,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             a_r:
                                                 (Variable
@@ -958,6 +1072,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             generic_sum_integer:
                                                 (Function
@@ -986,6 +1105,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             i:
                                                                 (Variable
@@ -1004,6 +1128,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             n:
                                                                 (Variable
@@ -1022,6 +1151,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             res:
                                                                 (Variable
@@ -1040,6 +1174,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     generic_sum_integer
@@ -1074,6 +1213,8 @@
                                                             ()
                                                         )
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 15 res)
@@ -1086,8 +1227,11 @@
                                                             ()
                                                         )
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (If
+                                                        ()
                                                         (IntegerCompare
                                                             (Var 15 n)
                                                             Gt
@@ -1107,6 +1251,8 @@
                                                                 ()
                                                             )
                                                             ()
+                                                            .false.
+                                                            .false.
                                                         )
                                                         (DoLoop
                                                             ()
@@ -1134,6 +1280,8 @@
                                                                     ()
                                                                 )
                                                                 ()
+                                                                .false.
+                                                                .false.
                                                             )]
                                                             []
                                                         )]
@@ -1141,8 +1289,8 @@
                                                     )]
                                                     (Var 15 res)
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             generic_sum_real:
@@ -1172,6 +1320,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             i:
                                                                 (Variable
@@ -1190,6 +1343,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             n:
                                                                 (Variable
@@ -1208,6 +1366,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             res:
                                                                 (Variable
@@ -1226,6 +1389,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     generic_sum_real
@@ -1260,6 +1428,8 @@
                                                             ()
                                                         )
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 17 res)
@@ -1272,8 +1442,11 @@
                                                             ()
                                                         )
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (If
+                                                        ()
                                                         (IntegerCompare
                                                             (Var 17 n)
                                                             Gt
@@ -1293,6 +1466,8 @@
                                                                 ()
                                                             )
                                                             ()
+                                                            .false.
+                                                            .false.
                                                         )
                                                         (DoLoop
                                                             ()
@@ -1320,6 +1495,8 @@
                                                                     ()
                                                                 )
                                                                 ()
+                                                                .false.
+                                                                .false.
                                                             )]
                                                             []
                                                         )]
@@ -1327,8 +1504,8 @@
                                                     )]
                                                     (Var 17 res)
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             i:
@@ -1348,6 +1525,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             s_i:
                                                 (Variable
@@ -1366,6 +1548,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             s_r:
                                                 (Variable
@@ -1384,6 +1571,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             ~add:
                                                 (CustomOperator
@@ -1415,6 +1607,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             arg1:
                                                                 (Variable
@@ -1433,6 +1630,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             ret:
                                                                 (Variable
@@ -1451,6 +1653,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     ~add_intrinsic
@@ -1467,7 +1674,7 @@
                                                         .false.
                                                         .false.
                                                         []
-                                                        .false.
+                                                        .true.
                                                     )
                                                     []
                                                     [(Var 14 arg0)
@@ -1482,10 +1689,12 @@
                                                             ()
                                                         )
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )]
                                                     (Var 14 ret)
                                                     Public
-                                                    .false.
+                                                    .true.
                                                     .true.
                                                     ()
                                                 ),
@@ -1511,6 +1720,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             arg1:
                                                                 (Variable
@@ -1529,6 +1743,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             ret:
                                                                 (Variable
@@ -1547,6 +1766,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     ~add_intrinsic1
@@ -1563,7 +1787,7 @@
                                                         .false.
                                                         .false.
                                                         []
-                                                        .false.
+                                                        .true.
                                                     )
                                                     []
                                                     [(Var 16 arg0)
@@ -1578,10 +1802,12 @@
                                                             ()
                                                         )
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )]
                                                     (Var 16 ret)
                                                     Public
-                                                    .false.
+                                                    .true.
                                                     .true.
                                                     ()
                                                 )
@@ -1626,6 +1852,8 @@
                                             )
                                             (Var 13 i)
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (ArrayItem
@@ -1642,8 +1870,11 @@
                                                 IntegerToReal
                                                 (Real 4)
                                                 ()
+                                                ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )]
                                         []
                                     )
@@ -1669,6 +1900,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 13 s_r)
@@ -1692,13 +1925,17 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Print
                                         (StringFormat
                                             ()
                                             [(Var 13 s_i)]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )
@@ -1707,19 +1944,23 @@
                                             ()
                                             [(Var 13 s_r)]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )]
                                     ()
-                                    Private
+                                    Public
                                     .false.
                                     .false.
                                     ()
                                 )
                         })
                     template_simple_01_m
+                    ()
                     [template_simple_01_m]
+                    .false.
                     .false.
                     .false.
                 )

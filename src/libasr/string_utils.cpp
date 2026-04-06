@@ -127,21 +127,40 @@ std::string replace(const std::string &s,
     return std::regex_replace(s, std::regex(regex), replace);
 }
 
-std::string read_file(const std::string &filename)
+bool read_file(const std::string &filename, std::string &text)
 {
+    if (filename.empty()) return false;
     std::ifstream ifs(filename.c_str(), std::ios::in | std::ios::binary
             | std::ios::ate);
+    if (!ifs.is_open()) return false;
 
     std::ifstream::pos_type filesize = ifs.tellg();
-    if (filesize < 0) return std::string();
+    if (filesize < 0) return false;
+    const std::size_t size = static_cast<std::size_t>(filesize);
+    if (size == 0) {
+        text.clear();
+        return true;
+    }
 
     ifs.seekg(0, std::ios::beg);
 
-    std::vector<char> bytes(filesize);
-    ifs.read(&bytes[0], filesize);
+    std::vector<char> bytes(size);
+    ifs.read(bytes.data(), filesize);
 
-    return std::string(&bytes[0], filesize);
+    text.assign(bytes.data(), size);
+    return true;
 }
+
+std::string read_file_ok(const std::string &filename) {
+    std::string text;
+    if (read_file(filename, text)) {
+        return text;
+    } else {
+        std::cerr << "File '" + filename + "' cannot be opened." << std::endl;
+        abort();
+    }
+}
+
 
 std::string parent_path(const std::string &path) {
     int pos = path.size()-1;

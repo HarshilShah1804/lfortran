@@ -19,6 +19,8 @@
 // This is only used in parser.tab.cc, nowhere else, so we simply include
 // everything from LCompilers::LFortran::AST to save typing:
 using namespace LCompilers::LFortran::AST;
+using LCompilers::LFortran::StrPrefix;
+using LCompilers::LFortran::IntSuffix;
 using LCompilers::Location;
 using LCompilers::Vec;
 using LCompilers::LFortran::FnArg;
@@ -78,8 +80,9 @@ static inline char* name2char_with_check(const ast_t *n1, const ast_t *n2,
     if(n2) {
         char* n2c = name2char(n2);
         if (!streql(n1c, n2c)) {
-            diagnostics.add(LCompilers::LFortran::parser_local::ParserError(
-                "End " + unit + " name does not match " + unit + " name", {loc}).d);
+            diagnostics.add(LCompilers::diag::Diagnostic(
+                "End " + unit + " name does not match " + unit + " name",
+                LCompilers::diag::Level::Error, LCompilers::diag::Stage::Parser, {LCompilers::diag::Label("", {loc})}));
         }
     }
     return n1c;
@@ -242,13 +245,15 @@ static inline ast_t* VAR_DECL_PRAGMA2(Allocator &al, Location &loc,
                 LCompilers::LFortran::AST::LFortranPragma, LCompilers::s2c(al, t),
                 trivia);
         } else {
-            diagnostics.add(LCompilers::LFortran::parser_local::ParserError(
-                "The LFortran pragma !LF$ must be followed by a space", {loc}).d);
+            diagnostics.add(LCompilers::diag::Diagnostic(
+                "The LFortran pragma !LF$ must be followed by a space",
+                LCompilers::diag::Level::Error, LCompilers::diag::Stage::Parser, {LCompilers::diag::Label("", {loc})}));
             return nullptr;
         }
     } else {
-            diagnostics.add(LCompilers::LFortran::parser_local::ParserError(
-                "Unsupported compiler directive (pragma)", {loc}).d);
+            diagnostics.add(LCompilers::diag::Diagnostic(
+                "Unsupported compiler directive (pragma)",
+                LCompilers::diag::Level::Error, LCompilers::diag::Stage::Parser, {LCompilers::diag::Label("", {loc})}));
             return nullptr;
     }
 }
@@ -275,6 +280,12 @@ static inline ast_t* VAR_DECL_PRAGMA2(Allocator &al, Location &loc,
             a2kind_list(p.m_a, l, INTEGER(n, l)).p, 1, \
             nullptr, nullptr, None)
 
+#define ATTR_TYPE_EXPR(x, e, l) make_AttrType_t( \
+            p.m_a, l, \
+            decl_typeType::Type##x, \
+            a2kind_list(p.m_a, l, e).p, 1, \
+            nullptr, nullptr, None)
+
 #define ATTR_TYPE_KIND(x, kind, l) make_AttrType_t( \
             p.m_a, l, \
             decl_typeType::Type##x, \
@@ -285,6 +296,12 @@ static inline ast_t* VAR_DECL_PRAGMA2(Allocator &al, Location &loc,
             p.m_a, l, \
             decl_typeType::Type##x, \
             nullptr, 0, nullptr, \
+            name2char(name), None)
+
+#define ATTR_TYPE_NAME_KIND(x, name, kind, l) make_AttrType_t( \
+            p.m_a, l, \
+            decl_typeType::Type##x, \
+            kind.p, kind.size(), nullptr, \
             name2char(name), None)
 
 #define ATTR_TYPE_STAR(x, sym, l) make_AttrType_t( \
@@ -302,6 +319,12 @@ static inline ast_t* VAR_DECL_PRAGMA2(Allocator &al, Location &loc,
 
 #define ATTR_NAME(x, l) make_AttrNamelist_t \
             (p.m_a, l, name2char(x))
+
+#define ATTR_TYPE_LIST(x, attr_list, l) make_AttrTypeList_t( \
+            p.m_a, l, \
+            decl_typeType::Type##x, \
+            VEC_CAST(attr_list, decl_attribute), \
+            attr_list.n)
 
 #define IMPORT0(x, trivia, l) make_Import_t( \
             p.m_a, l, \
@@ -331,8 +354,9 @@ ast_t* fn_VAR_DECL1c(Allocator &al,
             Location l, LCompilers::diag::Diagnostics &diagnostics) {
     for (size_t i=0; i<varsym.size(); i++) {
         if (varsym[i].m_sym == symbolType::Equal) {
-            diagnostics.add(LCompilers::LFortran::parser_local::ParserError(
-                "Invalid syntax for variable initialization (try inserting '::' after the type)", {l}).d);
+            diagnostics.add(LCompilers::diag::Diagnostic(
+                "Invalid syntax for variable initialization (try inserting '::' after the type)",
+                LCompilers::diag::Level::Error, LCompilers::diag::Stage::Parser, {LCompilers::diag::Label("", {l})}));
         }
     }
     return make_Declaration_t(al, l,
@@ -466,7 +490,20 @@ static inline common_block_t *make_common_block(Allocator &al, Location const &l
     r->m_objects = varsym.p;
     r->n_objects = varsym.n;
     for (size_t i = 0; i < varsym.n; ++i) {
-	r->m_objects[i].m_initializer = dims2expr(al, r->m_objects[i]);
+        r->m_objects[i].m_initializer = dims2expr(al, r->m_objects[i]);
+    }
+    return r;
+}
+
+static inline common_block_t *make_common_block2(Allocator &al, Location const &loc,
+        char *name, Vec<var_sym_t> const & varsym) {
+    common_block_t * r = al.allocate<common_block_t>(1);
+    r->loc = loc;
+	r->m_name = name;
+    r->m_objects = varsym.p;
+    r->n_objects = varsym.n;
+    for (size_t i = 0; i < varsym.n; ++i) {
+        r->m_objects[i].m_initializer = dims2expr(al, r->m_objects[i]);
     }
     return r;
 }
@@ -474,19 +511,52 @@ static inline common_block_t *make_common_block(Allocator &al, Location const &l
 #define COMMON_BLOCK(name, varsym, l) \
     make_common_block(p.m_a, l, name, varsym)
 
+#define COMMON_BLOCK2(name, varsym, l) \
+    make_common_block2(p.m_a, l, name, varsym)
+
+#define COMMON_BLOCK_1(out, one, l) \
+        LIST_NEW(out); \
+        Vec<LCompilers::LFortran::AST::var_sym_t> v; \
+        LIST_NEW(v); PLIST_ADD(v, one); \
+        PLIST_ADD(out, COMMON_BLOCK(nullptr, v, l));
+
+#define COMMON_BLOCK_2(out, one, two, l) \
+        LIST_NEW(out); \
+        Vec<LCompilers::LFortran::AST::var_sym_t> v; \
+        LIST_NEW(v); PLIST_ADD(v, two); \
+        PLIST_ADD(out, COMMON_BLOCK2(one->m_name, v, l));
+
+#define COMMON_BLOCK_3(out, one, three, l) \
+        out = one; \
+        LCompilers::LFortran::AST::common_block_t last = out.back(); \
+        Vec<LCompilers::LFortran::AST::var_sym_t> v; \
+        v.from_pointer_n(last.m_objects, last.n_objects); \
+        PLIST_ADD(v, three); \
+        v.back().m_initializer = dims2expr(p.m_a, v.back()); \
+        out.back().m_objects = v.data(); \
+        out.back().n_objects = v.size();
+
+#define COMMON_BLOCK_5(out, one, three, four, l) \
+        out = one; \
+        Vec<LCompilers::LFortran::AST::var_sym_t> v; \
+        LIST_NEW(v); PLIST_ADD(v, four); \
+        PLIST_ADD(out, COMMON_BLOCK2(three->m_name, v, l)); \
+
 /* Add (name,varsym) to curr_list, then append other_list */
-static inline void  merge_common_block_lists(Allocator &al, Location const &loc,
-        Vec<common_block_t> &curr_list, ast_t const *name, Vec<var_sym_t> const & varsym,
-	Vec<common_block_t> const &other_list) {
+static inline void  merge_common_block_lists(Allocator &al,
+            Location const &loc,
+            Vec<common_block_t> &curr_list, ast_t const *name,
+            Vec<var_sym_t> const & varsym,
+            Vec<common_block_t> const &other_list) {
     curr_list.reserve(al, 1+other_list.size());
     curr_list.push_back(al, *make_common_block(al, loc, name, varsym));
     for(common_block_t const & o : other_list) {
-	curr_list.push_back(al, o);
+        curr_list.push_back(al, o);
     }
 }
 
-#define COMMON_BLOCK_MERGE(list, name, varsym, other_list, loc) \
-    merge_common_block_lists(p.m_a, loc, list, name, varsym, other_list)
+#define COMMON_BLOCK_MERGE(curr_list, name, varsym, other_list, loc) \
+    merge_common_block_lists(p.m_a, loc, curr_list, name, varsym, other_list)
 
 ast_t* data_implied_do(Allocator &al, Location &loc,
         Vec<ast_t*> obj_list,
@@ -563,8 +633,9 @@ Vec<ast_t*> vec_kind_item2ast(Allocator &al, const Vec<kind_item_t> &kind_items,
       if (ls_node) {
 	ast_nodes.push_back(al, ls_node);
       } else {
-        diagnostics.add(LCompilers::LFortran::parser_local::ParserError(
-            "Bad implicit letter specification", {loc}).d);
+        diagnostics.add(LCompilers::diag::Diagnostic(
+            "Bad implicit letter specification",
+            LCompilers::diag::Level::Error, LCompilers::diag::Stage::Parser, {LCompilers::diag::Label("", {loc})}));
       }
     }
 
@@ -595,8 +666,24 @@ static inline var_sym_t* VARSYM(Allocator &al, Location &l,
     return r;
 }
 
+static inline ast_t* slash_init_to_expr(Allocator &al, Location &l, const Vec<ast_t*> &values) {
+    if (values.size() == 1) {
+        return values[0];
+    } else {
+        expr_t** exprs = al.allocate<expr_t*>(values.size());
+        for (size_t i = 0; i < values.size(); i++) {
+            exprs[i] = down_cast<expr_t>(values[i]);
+        }
+        return make_ArrayInitializer_t(al, l,
+            nullptr, nullptr, exprs, values.size());
+    }
+}
+#define SLASH_INIT_EXPR(values, l) slash_init_to_expr(p.m_a, l, values)
+
 #define VAR_SYM_NAME(name, sym, loc) VARSYM(p.m_a, loc, \
         name2char(name), nullptr, 0, nullptr, 0, nullptr, nullptr, sym, nullptr)
+#define VAR_SYM_EMPTY(loc) VARSYM(p.m_a, loc, \
+        nullptr, nullptr, 0, nullptr, 0, nullptr, nullptr, None, nullptr)
 #define VAR_SYM_DIM_EXPR(exp, sym, loc) VARSYM(p.m_a, loc, nullptr, \
         nullptr, 0, nullptr, 0, nullptr, down_cast<expr_t>(exp), sym, nullptr)
 #define VAR_SYM_DIM_INIT(name, dim, n_dim, init, sym, loc) VARSYM(p.m_a, loc, \
@@ -834,7 +921,7 @@ static inline char** REDUCE_ARGS(Allocator &al, const Vec<ast_t*> args)
 }
 
 static inline reduce_opType convert_id_to_reduce_type(
-        const Location &loc, const ast_t *id)
+        const Location &loc, const ast_t *id, LCompilers::diag::Diagnostics &diagnostics)
 {
     std::string s_id = down_cast2<Name_t>(id)->m_id;
     if (s_id == "MIN" ) {
@@ -842,8 +929,10 @@ static inline reduce_opType convert_id_to_reduce_type(
     } else if (s_id == "MAX") {
         return reduce_opType::ReduceMAX;
     } else {
-        throw LCompilers::LFortran::parser_local::ParserError(
-            "Unsupported operation in reduction", loc);
+        diagnostics.add(LCompilers::diag::Diagnostic(
+            "Unsupported operation in reduction",
+            LCompilers::diag::Level::Error, LCompilers::diag::Stage::Parser, {LCompilers::diag::Label("", {loc})}));
+        throw LCompilers::LFortran::parser_local::ParserAbort();
     }
 }
 
@@ -859,8 +948,8 @@ static inline reduce_opType convert_id_to_reduce_type(
 #define POW(x, y, l) make_BinOp_t(p.m_a, l, EXPR(x), operatorType::Pow, EXPR(y))
 #define UNARY_MINUS(x, l) make_UnaryOp_t(p.m_a, l, unaryopType::USub, EXPR(x))
 #define UNARY_PLUS(x, l) make_UnaryOp_t(p.m_a, l, unaryopType::UAdd, EXPR(x))
-#define TRUE(l) make_Logical_t(p.m_a, l, true)
-#define FALSE(l) make_Logical_t(p.m_a, l, false)
+#define TRUE(x, l) make_Logical_t(p.m_a, l, true, str2str_null(p.m_a, x))
+#define FALSE(x, l) make_Logical_t(p.m_a, l, false, str2str_null(p.m_a, x))
 
 ast_t* parenthesis(Allocator &al, Location &loc, expr_t *op) {
     switch (op->type) {
@@ -981,6 +1070,14 @@ char *str2str_null(Allocator &al, const LCompilers::Str &s) {
     }
 }
 
+char *strptr2str_null(Allocator &al, const LCompilers::Str *s) {
+    if (s == nullptr) {
+        return nullptr;
+    } else {
+        return str2str_null(al, *s);
+    }
+}
+
 #define SYMBOL(x, l) make_Name_t(p.m_a, l, x.c_str(p.m_a), nullptr, 0)
 // `x.int_n` is of type BigInt but we store the int64_t directly in AST
 #define INTEGER(x, l) make_Num_t(p.m_a, l, x.int_n.n, str2str_null(p.m_a, x.int_kind))
@@ -988,10 +1085,11 @@ char *str2str_null(Allocator &al, const LCompilers::Str &s) {
 #define INTEGER3(x) (x.int_n.as_smallint())
 #define REAL(x, l) make_Real_t(p.m_a, l, x.c_str(p.m_a))
 #define COMPLEX(x, y, l) make_Complex_t(p.m_a, l, EXPR(x), EXPR(y))
-#define STRING(x, l) make_String_t(p.m_a, l, x.c_str(p.m_a))
+#define STRING(x, l) make_String_t(p.m_a, l, x.str_s.c_str(p.m_a), strptr2str_null(p.m_a, x.str_kind))
 #define BOZ(x, l) make_BOZ_t(p.m_a, l, x.c_str(p.m_a))
 #define ASSIGN(label, variable, l) make_Assign_t(p.m_a, l, 0, label, name2char(variable), nullptr)
 #define ASSIGNMENT(x, y, l) make_Assignment_t(p.m_a, l, 0, EXPR(x), EXPR(y), nullptr)
+#define INFER_ASSIGNMENT(x, y, l) make_InferAssignment_t(p.m_a, l, 0, EXPR(x), EXPR(y), nullptr)
 #define ASSOCIATE(x, y, l) make_Associate_t(p.m_a, l, 0, EXPR(x), EXPR(y), nullptr)
 #define GOTO(x, l) make_GoTo_t(p.m_a, l, 0, nullptr, \
         EXPR(INTEGER(x, l)), nullptr, 0, nullptr)
@@ -1235,6 +1333,8 @@ ast_t* builtin3(Allocator &al,
         nullptr, nullptr, 0, nullptr, 0, EXPRS(args), args.size(), nullptr)
 #define READ4(arg, l) make_Read_t(p.m_a, l, 0, \
         EXPR(INTEGER(arg, l)), nullptr, 0, nullptr, 0, nullptr, 0, nullptr)
+#define READ5(arg, args, l) make_Read_t(p.m_a, l, 0, \
+        EXPR(STRING(arg, l)), nullptr, 0, nullptr, 0, EXPRS(args), args.size(), nullptr)
 
 #define OPEN(args0, l) builtin1(p.m_a, args0, l, make_Open_t)
 #define CLOSE(args0, l) builtin1(p.m_a, args0, l, make_Close_t)
@@ -1244,7 +1344,7 @@ ast_t* builtin3(Allocator &al,
 #define FLUSH(args0, l) builtin1(p.m_a, args0, l, make_Flush_t)
 #define ENDFILE(args0, l) builtin1(p.m_a, args0, l, make_Endfile_t)
 
-#define INCLUDE(arg, l) make_Include_t(p.m_a, l, 0, arg.c_str(p.m_a), nullptr)
+#define INCLUDE(arg, l) make_Include_t(p.m_a, l, 0, arg.str_s.c_str(p.m_a), nullptr)
 #define INQUIRE0(args0, l) builtin2(p.m_a, args0, empty_vecast(), l, \
             make_Inquire_t)
 #define INQUIRE(args0, args, l) builtin2(p.m_a, args0, args, l, make_Inquire_t)
@@ -1252,8 +1352,8 @@ ast_t* builtin3(Allocator &al,
         EXPRS(A2LIST(p.m_a, arg)), 1, nullptr, 0, nullptr)
 #define BACKSPACE2(arg, l) make_Backspace_t(p.m_a, l, 0, \
         EXPRS(A2LIST(p.m_a, arg)), 1, nullptr, 0, nullptr)
-#define FLUSH1(arg, l) make_Flush_t(p.m_a, l, 0, \
-            EXPRS(A2LIST(p.m_a, INTEGER(arg, l))), 1, nullptr, 0, nullptr)
+#define FLUSH2(arg, l) make_Flush_t(p.m_a, l, 0, \
+        EXPRS(A2LIST(p.m_a, arg)), 1, nullptr, 0, nullptr)
 #define ENDFILE2(arg, l) make_Endfile_t(p.m_a, l, 0, \
         EXPRS(A2LIST(p.m_a, arg)), 1, nullptr, 0, nullptr)
 #define BIND2(args0, l) builtin3(p.m_a, args0, l, make_Bind_t)
@@ -1703,7 +1803,7 @@ return make_Program_t(al, a_loc,
         /*contains*/ CONTAINS(contains), \
         /*n_contains*/ contains.size(), \
         /*start_name*/ &(name->loc), \
-        /*end_name*/ &(name_opt->loc))
+        /*end_name*/ (name_opt) ? &((name_opt)->loc) : nullptr)
 #define RESULT(x) p.result.push_back(p.m_a, x)
 
 #define STMT_NAME(id_first, id_last, stmt) \
@@ -1800,10 +1900,21 @@ return make_Program_t(al, a_loc,
 #define PLIST_ADD(l, x) l.push_back(p.m_a, *x)
 static inline void repeat_list_add(Vec<ast_t*> &v, Allocator &al,
         ast_t *repeat, ast_t *e) {
-    int64_t n = LCompilers::LFortran::AST::down_cast2<LCompilers::LFortran::AST::Num_t>(repeat)->m_n;
-    for (int64_t i=0; i<n; i++) {
-        v.push_back(al, e);
+    if (LCompilers::LFortran::AST::is_a<LCompilers::LFortran::AST::expr_t>(*repeat)) {
+        LCompilers::LFortran::AST::expr_t* repeat_expr = 
+            LCompilers::LFortran::AST::down_cast<LCompilers::LFortran::AST::expr_t>(repeat);
+        if (LCompilers::LFortran::AST::is_a<LCompilers::LFortran::AST::Num_t>(*repeat_expr)) {
+            int64_t n = LCompilers::LFortran::AST::down_cast<LCompilers::LFortran::AST::Num_t>(repeat_expr)->m_n;
+            for (int64_t i=0; i<n; i++) {
+                v.push_back(al, e);
+            }
+            return;
+        }
     }
+    Location loc = repeat->loc;
+    ast_t* binop = LCompilers::LFortran::AST::make_BinOp_t(al, loc,
+        EXPR(repeat), LCompilers::LFortran::AST::operatorType::Mul, EXPR(e));
+    v.push_back(al, binop);
 }
 #define REPEAT_LIST_ADD(l, r, x) repeat_list_add(l, p.m_a, r, x)
 
@@ -1826,11 +1937,14 @@ static inline ast_t* OMP_PRAGMA2(Allocator &al,
     for (; i < omp_stmt.size(); i++) {
         if (omp_stmt[i] == "do" ||
             omp_stmt[i] == "sections" ||
-            omp_stmt[i] == "workshare" ) {
+            omp_stmt[i] == "workshare" ||
+            omp_stmt[i] == "section" ||
+                omp_stmt[i] == "parallel" ||
+                omp_stmt[i] == "distribute") {
             construct_name += " " + omp_stmt[i];
         } else {
             m_clauses.push_back(al, EXPR(make_String_t(al, loc,
-                LCompilers::s2c(al, omp_stmt[i]))));
+                LCompilers::s2c(al, omp_stmt[i]), nullptr)));
         }
     }
     return make_Pragma_t(al, loc, 0, LCompilers::LFortran::AST::OMPPragma, m_end,
@@ -1865,8 +1979,9 @@ void add_ws_warning(const Location &loc,
                         {loc},
                         "help: write this as 'real(8)'");
                 } else {
-                        diagnostics.add(LCompilers::LFortran::parser_local::ParserError(
-                        "kind " + std::to_string(a_kind) + " is not supported yet.", {loc}).d);
+                        diagnostics.add(LCompilers::diag::Diagnostic(
+                            "kind " + std::to_string(a_kind) + " is not supported yet.",
+                            LCompilers::diag::Level::Error, LCompilers::diag::Stage::Parser, {LCompilers::diag::Label("", {loc})}));
                 }
         } else if (end_token == yytokentype::KW_INTEGER) {
                 if (a_kind == 4){
@@ -1880,12 +1995,21 @@ void add_ws_warning(const Location &loc,
                         {loc},
                         "help: write this as 'integer(8)'");
                 } else {
-                        diagnostics.add(LCompilers::LFortran::parser_local::ParserError(
-                                "kind " + std::to_string(a_kind) + " is not supported yet.", {loc}).d);
+                        diagnostics.add(LCompilers::diag::Diagnostic(
+                            "kind " + std::to_string(a_kind) + " is not supported yet.",
+                            LCompilers::diag::Level::Error, LCompilers::diag::Stage::Parser, {LCompilers::diag::Label("", {loc})}));
                 }
         } else if (end_token == yytokentype::KW_CHARACTER) {
-                std::string msg1 = "Use character("+std::to_string(a_kind)+") instead of character*"+std::to_string(a_kind);
-                std::string msg2 = "help: write this as 'character("+std::to_string(a_kind)+")'";
+                std::string msg1;
+                std::string msg2;
+                if (a_kind == -1) {
+                        // Expression form: character*(<expr>)
+                        msg1 = "Use character(<len>) instead of character*(<len>)";
+                        msg2 = "help: write this as 'character(<len>)'";
+                } else {
+                        msg1 = "Use character("+std::to_string(a_kind)+") instead of character*"+std::to_string(a_kind);
+                        msg2 = "help: write this as 'character("+std::to_string(a_kind)+")'";
+                }
                 diagnostics.parser_style_label(
                 msg1,
                 {loc},
@@ -1925,6 +2049,7 @@ void add_ws_warning(const Location &loc,
 #define WARN_COMPLEXSTAR(x, l) add_ws_warning(l, p.diag, p.fixed_form, KW_COMPLEX, x.int_n.n)
 #define WARN_INTEGERSTAR(x, l) add_ws_warning(l, p.diag, p.fixed_form, KW_INTEGER, x.int_n.n)
 #define WARN_CHARACTERSTAR(x, l) add_ws_warning(l, p.diag, p.fixed_form, KW_CHARACTER, x.int_n.n)
+#define WARN_CHARACTERSTAR_EXPR(l) add_ws_warning(l, p.diag, p.fixed_form, KW_CHARACTER, -1)
 #define WARN_LOGICALSTAR(x, l) add_ws_warning(l, p.diag, p.fixed_form, KW_LOGICAL, x.int_n.n)
 
 #define DO1(trivia, body, l) make_DoLoop_t(p.m_a, l, 0, nullptr, 0, \
@@ -1935,28 +2060,32 @@ void add_ws_warning(const Location &loc,
 #define DO2(i, a, b, trivia, body, l) make_DoLoop_t(p.m_a, l, 0, nullptr, 0, \
         name2char(i), EXPR(a), EXPR(b), nullptr, \
         /*body*/ STMTS(body), \
-        /*n_body*/ body.size(), trivia_cast(trivia), nullptr)
+        /*n_body*/ body.size(), trivia_cast(trivia), nullptr, &((i)->loc))
 #define DO2_LABEL(label, i, a, b, trivia, body, l) make_DoLoop_t(p.m_a, l, 0, nullptr, \
         label, name2char(i), EXPR(a), EXPR(b), nullptr, \
         /*body*/ STMTS(body), \
-        /*n_body*/ body.size(), trivia_cast(trivia), nullptr); \
+        /*n_body*/ body.size(), trivia_cast(trivia), nullptr, &((i)->loc)); \
         if (label == 0) { \
-            throw LCompilers::LFortran::parser_local::ParserError( \
-                "Zero is not a valid statement label", l); \
+            p.diag.add(LCompilers::diag::Diagnostic(  \
+                "Zero is not a valid statement label",   \
+                LCompilers::diag::Level::Error, LCompilers::diag::Stage::Parser, {LCompilers::diag::Label("", {l})}));  \
+            throw LCompilers::LFortran::parser_local::ParserAbort();  \
         }
 
 #define DO3_LABEL(label, i, a, b, c, trivia, body, l) make_DoLoop_t(p.m_a, l, 0, nullptr, \
         label, name2char(i), EXPR(a), EXPR(b), EXPR(c), \
         /*body*/ STMTS(body), \
-        /*n_body*/ body.size(), trivia_cast(trivia), nullptr); \
+        /*n_body*/ body.size(), trivia_cast(trivia), nullptr, &((i)->loc)); \
         if (label == 0) { \
-            throw LCompilers::LFortran::parser_local::ParserError( \
-                "Zero is not a valid statement label", l); \
+            p.diag.add(LCompilers::diag::Diagnostic(  \
+                "Zero is not a valid statement label",   \
+                LCompilers::diag::Level::Error, LCompilers::diag::Stage::Parser, {LCompilers::diag::Label("", {l})}));  \
+            throw LCompilers::LFortran::parser_local::ParserAbort();  \
         }
 #define DO3(i, a, b, c, trivia, body, l) make_DoLoop_t(p.m_a, l, 0, nullptr, 0, \
         name2char(i), EXPR(a), EXPR(b), EXPR(c), \
         /*body*/ STMTS(body), \
-        /*n_body*/ body.size(), trivia_cast(trivia), nullptr)
+        /*n_body*/ body.size(), trivia_cast(trivia), nullptr, &((i)->loc))
 
 #define DO_CONCURRENT1(h, loc, trivia, body, l) make_DoConcurrentLoop_t(p.m_a, l, 0, nullptr, \
         CONCURRENT_CONTROLS(h), h.size(), \
@@ -2020,7 +2149,7 @@ void add_ws_warning(const Location &loc,
 
 #define REDUCE_OP_TYPE_ADD(l) reduce_opType::ReduceAdd
 #define REDUCE_OP_TYPE_MUL(l) reduce_opType::ReduceMul
-#define REDUCE_OP_TYPE_ID(id, l) convert_id_to_reduce_type(l, id)
+#define REDUCE_OP_TYPE_ID(id, l) convert_id_to_reduce_type(l, id, p.diag)
 #define REDUCE_OP_TYPE_INVALID (reduce_opType)-1
 
 #define VAR_SYM_DECL1(id, l)         DECL3(p.m_a, id, nullptr, nullptr)
@@ -2199,18 +2328,19 @@ ast_t* FUNCCALLORARRAY0(Allocator &al, const ast_t *id,
 #define FUNCCALLORARRAY5(id, args, temp_args, l) FUNCCALLORARRAY0(p.m_a, id, empty5(), \
         args, empty1(), temp_args, l)
 
-ast_t* SUBSTRING_(Allocator &al, const LCompilers::Str &str,
+ast_t* SUBSTRING_(Allocator &al, const StrPrefix &str,
         const Vec<FnArg> &args, Location &l, LCompilers::diag::Diagnostics &diagnostics) {
     Vec<fnarg_t> v;
     v.reserve(al, args.size());
     for (auto &item : args) {
         if(item.keyword) {
-            diagnostics.add(LCompilers::LFortran::parser_local::ParserError(
-                "Keyword Assignment is not allowed in Character Substring", {l}).d);
+            diagnostics.add(LCompilers::diag::Diagnostic(
+                "Keyword Assignment is not allowed in Character Substring",
+                LCompilers::diag::Level::Error, LCompilers::diag::Stage::Parser, {LCompilers::diag::Label("", {l})}));
         }
         v.push_back(al, item.arg);
     }
-    return make_Substring_t(al, l, str.c_str(al), v.p, v.size());
+    return make_Substring_t(al, l, str.str_s.c_str(al), v.p, v.size());
 }
 
 #define SUBSTRING(str, args, l) SUBSTRING_(p.m_a, str, args, l, p.diag)
@@ -2512,6 +2642,13 @@ return make_Submodule_t(al, a_loc,
         VEC_CAST(contains, procedure_decl), contains.size())
 #define DERIVED_TYPE2(name, attr, trivia, l) \
         TYPEPARAMETER0(p.m_a, attr, name, trivia, l)
+
+
+#define UNION_TYPE(attr, name, trivia, decl, l) make_Union_t(p.m_a, l, \
+        name2char(name), \
+        trivia_cast(trivia), \
+        VEC_CAST(attr, decl_attribute), attr.size(), \
+        DECLS(decl), decl.size())
 
 ast_t* TYPEPARAMETER0(Allocator &al,
         const ast_t *attr,

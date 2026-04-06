@@ -87,7 +87,7 @@ public:
             call_args.push_back(al, call_arg);
         }
         return ASRUtils::STMT(ASR::make_SubroutineCall_t(al, loc, sym,
-            sym, call_args.p, call_args.n, nullptr));
+            sym, call_args.p, call_args.n, nullptr, false));
     }
 
     ASR::expr_t *FunctionCall(const Location &loc, ASR::symbol_t *sym,
@@ -100,8 +100,42 @@ public:
             call_args.push_back(al, call_arg);
         }
         return ASRUtils::EXPR(ASRUtils::make_FunctionCall_t_util(al, loc,
-            sym, sym, call_args.p, call_args.n, return_type, nullptr, nullptr,
-            false));
+            sym, sym, call_args.p, call_args.n, return_type, nullptr, nullptr
+            ));
+    }
+
+    bool get_dt_iotype(const ASR::expr_t* fmt_expr, std::string &iotype) {
+        if (!fmt_expr) {
+            return false;
+        }
+        ASR::expr_t* fmt_value = ASRUtils::expr_value(const_cast<ASR::expr_t*>(fmt_expr));
+        if (!fmt_value || !ASR::is_a<ASR::StringConstant_t>(*fmt_value)) {
+            return false;
+        }
+
+        std::string fmt_str = ASR::down_cast<ASR::StringConstant_t>(fmt_value)->m_s;
+        if (fmt_str.size() >= 2 && fmt_str[0] == '(' && fmt_str.back() == ')') {
+            fmt_str = fmt_str.substr(1, fmt_str.size() - 2);
+        }
+        if (fmt_str.size() < 2) {
+            return false;
+        }
+        if (std::tolower(static_cast<unsigned char>(fmt_str[0])) != 'd' ||
+            std::tolower(static_cast<unsigned char>(fmt_str[1])) != 't') {
+            return false;
+        }
+
+        iotype = "DT";
+        if (fmt_str.size() > 2) {
+            std::string suffix = fmt_str.substr(2);
+            if (suffix.size() >= 2 &&
+                ((suffix[0] == '\'' && suffix.back() == '\'') ||
+                 (suffix[0] == '"' && suffix.back() == '"'))) {
+                suffix = suffix.substr(1, suffix.size() - 2);
+            }
+            iotype += suffix;
+        }
+        return true;
     }
 
     ASR::symbol_t *create_bindc_function(const Location &loc,
@@ -118,13 +152,13 @@ public:
             for (auto &type: args_type) {
                 std::string arg_name = "x_0" + std::to_string(i); i++;
                 args.push_back(al, b.Variable(fn_symtab, arg_name, type,
-                    ASR::intentType::In, ASR::abiType::BindC, true));
+                    ASR::intentType::In, nullptr, ASR::abiType::BindC, true));
             }
             ASR::expr_t *return_var = nullptr;
             if ( return_type ) {
                 char *return_var_name = s2c(al, "_lpython_return_variable");
                 return_var = b.Variable(fn_symtab, return_var_name, return_type,
-                    ASR::intentType::ReturnVar, ASR::abiType::BindC, false);
+                    ASR::intentType::ReturnVar, nullptr, ASR::abiType::BindC, false);
             }
 
             Vec<ASR::stmt_t *> body; body.reserve(al, 1);
@@ -200,9 +234,17 @@ public:
     ASR::expr_t* basic_str(const Location& loc, ASR::expr_t *x) {
         ASR::symbol_t* basic_str_sym = create_bindc_function(loc,
             "basic_str", {ASRUtils::TYPE(ASR::make_CPtr_t(al, loc))},
-            ASRUtils::TYPE(ASR::make_String_t(al, loc, 1, -2, nullptr, ASR::string_physical_typeType::PointerString)));
+            ASRUtils::TYPE(ASR::make_String_t(al, loc, 1, 
+             ASRUtils::EXPR(ASR::make_IntegerConstant_t(al, loc, 1, 
+                    ASRUtils::TYPE(ASR::make_Integer_t(al, loc, 4)))),
+                ASR::string_length_kindType::ExpressionLength,
+                ASR::string_physical_typeType::CChar)));
         return FunctionCall(loc, basic_str_sym, {x},
-            ASRUtils::TYPE(ASR::make_String_t(al, loc, 1, -2, nullptr, ASR::string_physical_typeType::PointerString)));
+            ASRUtils::TYPE(ASR::make_String_t(al, loc, 1, 
+             ASRUtils::EXPR(ASR::make_IntegerConstant_t(al, loc, 1, 
+                    ASRUtils::TYPE(ASR::make_Integer_t(al, loc, 4)))),
+                ASR::string_length_kindType::ExpressionLength,
+                ASR::string_physical_typeType::CChar)));
     }
 
     ASR::expr_t* basic_get_type(const Location& loc, ASR::expr_t* value) {
@@ -233,7 +275,11 @@ public:
     ASR::stmt_t *symbol_set(const Location &loc, ASR::expr_t *target, ASR::expr_t *value) {
         ASR::symbol_t* symbol_set_sym = create_bindc_function(loc, "symbol_set",
             {ASRUtils::TYPE(ASR::make_CPtr_t(al, loc)), ASRUtils::TYPE(
-            ASR::make_String_t(al, loc, 1, -2, nullptr, ASR::string_physical_typeType::PointerString))});
+            ASR::make_String_t(al, loc, 1, 
+                ASRUtils::EXPR(ASR::make_IntegerConstant_t(al, loc, 1, 
+                    ASRUtils::TYPE(ASR::make_Integer_t(al, loc, 4)))),
+                ASR::string_length_kindType::ExpressionLength,
+                ASR::string_physical_typeType::CChar))});
         return SubroutineCall(loc, symbol_set_sym, {target, value});
     }
 
@@ -384,10 +430,10 @@ public:
                     ASRUtils::EXPR(ASR::make_IntegerConstant_t(al, xx.base.base.loc, 0,
                     ASRUtils::TYPE(ASR::make_Integer_t(al, xx.base.base.loc, 4)))),
                     (ASR::cast_kindType)ASR::cast_kindType::IntegerToInteger, type2,
-                    ASRUtils::EXPR(ASR::make_IntegerConstant_t(al, xx.base.base.loc, 0, type2))));
+                    ASRUtils::EXPR(ASR::make_IntegerConstant_t(al, xx.base.base.loc, 0, type2)), nullptr));
 
                 // statement 2
-                ASR::expr_t* value2 = ASRUtils::EXPR(ASR::make_PointerNullConstant_t(al, xx.base.base.loc, CPtr_type));
+                ASR::expr_t* value2 = ASRUtils::EXPR(ASR::make_PointerNullConstant_t(al, xx.base.base.loc, CPtr_type, nullptr));
 
                 // statement 3
                 ASR::expr_t* get_pointer_node = ASRUtils::EXPR(ASR::make_GetPointer_t(al, xx.base.base.loc,
@@ -396,9 +442,9 @@ public:
                     CPtr_type, nullptr));
 
                 // defining the assignment statement
-                ASR::stmt_t* stmt1 = ASRUtils::STMT(ASR::make_Assignment_t(al, xx.base.base.loc, target1, value1, nullptr));
-                ASR::stmt_t* stmt2 = ASRUtils::STMT(ASR::make_Assignment_t(al, xx.base.base.loc, target2, value2, nullptr));
-                ASR::stmt_t* stmt3 = ASRUtils::STMT(ASR::make_Assignment_t(al, xx.base.base.loc, target2, value3, nullptr));
+                ASR::stmt_t* stmt1 = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(al, xx.base.base.loc, target1, value1, nullptr, false, false));
+                ASR::stmt_t* stmt2 = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(al, xx.base.base.loc, target2, value2, nullptr, false, false));
+                ASR::stmt_t* stmt3 = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(al, xx.base.base.loc, target2, value3, nullptr, false, false));
                 // statement 4
                 ASR::stmt_t* stmt4 = basic_new_stack(x.base.base.loc, target2);
 
@@ -469,7 +515,7 @@ public:
                 // Statement 1
                 ASR::expr_t* args = ASRUtils::EXPR(ASR::make_Var_t(al, loc, args_sym));
                 ASR::expr_t* function_call1 = vecbasic_new(loc);
-                ASR::stmt_t* stmt1 = ASRUtils::STMT(ASR::make_Assignment_t(al, loc, args, function_call1, nullptr));
+                ASR::stmt_t* stmt1 = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(al, loc, args, function_call1, nullptr, false, false));
                 pass_result.push_back(al, stmt1);
 
                 // Statement 2
@@ -481,7 +527,10 @@ public:
                         x->m_args[1], ASRUtils::TYPE(ASR::make_Logical_t(al, loc, 4)), nullptr));
                 std::string error_str = "tuple index out of range";
                 ASR::ttype_t *str_type = ASRUtils::TYPE(ASR::make_String_t(al, loc,
-                        1, error_str.size(), nullptr, ASR::string_physical_typeType::PointerString));
+                    1, ASRUtils::EXPR(ASR::make_IntegerConstant_t(al, loc, error_str.size(),
+                        ASRUtils::TYPE(ASR::make_Integer_t(al, loc, 8)))),
+                    ASR::string_length_kindType::ExpressionLength,
+                    ASR::string_physical_typeType::DescriptorString));
                 ASR::expr_t* error = ASRUtils::EXPR(ASR::make_StringConstant_t(al, loc, s2c(al, error_str), str_type));
                 ASR::stmt_t *stmt3 = ASRUtils::STMT(ASR::make_Assert_t(al, loc, test, error));
                 pass_result.push_back(al, stmt3);
@@ -540,7 +589,7 @@ public:
             } else if (intrinsic_func->m_type->type == ASR::ttypeType::Logical) {
                 if (is_logical_intrinsic_symbolic(x.m_value)) {
                     ASR::expr_t* function_call = process_attributes(x.base.base.loc, x.m_value);
-                    ASR::stmt_t* stmt = ASRUtils::STMT(ASR::make_Assignment_t(al, x.base.base.loc, x.m_target, function_call, nullptr));
+                    ASR::stmt_t* stmt = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(al, x.base.base.loc, x.m_target, function_call, nullptr, false, false));
                     pass_result.push_back(al, stmt);
                 }
             }
@@ -552,7 +601,7 @@ public:
                 if (ASR::is_a<ASR::Var_t>(*cast_arg)) {
                     ASR::ttype_t* cast_type = ASRUtils::TYPE(ASR::make_Integer_t(al, x.base.base.loc, 8));
                     ASR::expr_t* value = ASRUtils::EXPR(ASR::make_Cast_t(al, x.base.base.loc, cast_arg,
-                        (ASR::cast_kindType)ASR::cast_kindType::IntegerToInteger, cast_type, nullptr));
+                        (ASR::cast_kindType)ASR::cast_kindType::IntegerToInteger, cast_type, nullptr, nullptr));
                     pass_result.push_back(al, integer_set_si(x.base.base.loc, x.m_target, value));
                 } else if (ASR::is_a<ASR::IntrinsicElementalFunction_t>(*cast_value)) {
                     ASR::IntrinsicElementalFunction_t* intrinsic_func = ASR::down_cast<ASR::IntrinsicElementalFunction_t>(cast_value);
@@ -573,7 +622,7 @@ public:
                         ASR::ttype_t* cast_type = ASRUtils::TYPE(ASR::make_Integer_t(al, x.base.base.loc, 8));
                         ASR::expr_t* value = ASRUtils::EXPR(ASR::make_Cast_t(al, x.base.base.loc, cast_arg,
                             (ASR::cast_kindType)ASR::cast_kindType::IntegerToInteger, cast_type,
-                            ASRUtils::EXPR(ASR::make_IntegerConstant_t(al, x.base.base.loc, const_value, cast_type))));
+                            ASRUtils::EXPR(ASR::make_IntegerConstant_t(al, x.base.base.loc, const_value, cast_type)), nullptr));
                         pass_result.push_back(al, integer_set_si(x.base.base.loc, x.m_target, value));
                     }
                 }
@@ -618,13 +667,13 @@ public:
 
                             ASR::expr_t* temp_list_const1 = ASRUtils::EXPR(ASR::make_ListConstant_t(al, x.base.base.loc, temp_list1.p,
                                             temp_list1.size(), list_type));
-                            ASR::stmt_t* stmt1 = ASRUtils::STMT(ASR::make_Assignment_t(al, x.base.base.loc, placeholder_target, temp_list_const1, nullptr));
+                            ASR::stmt_t* stmt1 = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(al, x.base.base.loc, placeholder_target, temp_list_const1, nullptr, false, false));
                             pass_result.push_back(al, stmt1);
 
                             // Step2: Add the empty list variable
                             ASR::expr_t* temp_list_const2 = ASRUtils::EXPR(ASR::make_ListConstant_t(al, x.base.base.loc, temp_list2.p,
                                             temp_list2.size(), list_type));
-                            ASR::stmt_t* stmt2 = ASRUtils::STMT(ASR::make_Assignment_t(al, x.base.base.loc, x.m_target, temp_list_const2, nullptr));
+                            ASR::stmt_t* stmt2 = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(al, x.base.base.loc, x.m_target, temp_list_const2, nullptr, false, false));
                             pass_result.push_back(al, stmt2);
 
                             // Step3: Add the list index to the function scope
@@ -636,8 +685,8 @@ public:
                                 int32_type, nullptr, ASR::abiType::Source, ASR::Public, ASR::presenceType::Required, false));
                             current_scope->add_symbol(symbolic_list_index, index_sym);
                             ASR::expr_t* index = ASRUtils::EXPR(ASR::make_Var_t(al, x.base.base.loc, index_sym));
-                            ASR::stmt_t* stmt3 = ASRUtils::STMT(ASR::make_Assignment_t(al, x.base.base.loc, index,
-                                ASRUtils::EXPR(ASR::make_IntegerConstant_t(al, x.base.base.loc, 0, int32_type)), nullptr));
+                            ASR::stmt_t* stmt3 = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(al, x.base.base.loc, index,
+                                ASRUtils::EXPR(ASR::make_IntegerConstant_t(al, x.base.base.loc, 0, int32_type)), nullptr, false, false));
                             pass_result.push_back(al, stmt3);
 
                             // Step4: Add the DoLoop for appending elements into the list
@@ -645,10 +694,10 @@ public:
                             SymbolTable* block_symtab = al.make_new<SymbolTable>(current_scope);
                             char *tmp_var_name = s2c(al, "tmp");
                             ASR::expr_t* tmp_var = b.Variable(block_symtab, tmp_var_name, CPtr_type,
-                                ASR::intentType::Local, ASR::abiType::Source, false);
+                                ASR::intentType::Local, nullptr, ASR::abiType::Source, false);
                             Vec<ASR::stmt_t*> block_body; block_body.reserve(al, 1);
-                            ASR::stmt_t* block_stmt1 = ASRUtils::STMT(ASR::make_Assignment_t(al, x.base.base.loc, tmp_var,
-                                basic_new_heap(x.base.base.loc), nullptr));
+                            ASR::stmt_t* block_stmt1 = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(al, x.base.base.loc, tmp_var,
+                                basic_new_heap(x.base.base.loc), nullptr, false, false));
                             block_body.push_back(al, block_stmt1);
                             ASR::stmt_t* block_stmt2 = ASRUtils::STMT(ASR::make_ListAppend_t(al, x.base.base.loc, x.m_target, tmp_var));
                             block_body.push_back(al, block_stmt2);
@@ -689,7 +738,7 @@ public:
                 } else {
                     function_call = basic_compare(x.base.base.loc, "basic_neq", s->m_left, s->m_right);
                 }
-                ASR::stmt_t* stmt = ASRUtils::STMT(ASR::make_Assignment_t(al, x.base.base.loc, x.m_target, function_call, nullptr));
+                ASR::stmt_t* stmt = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(al, x.base.base.loc, x.m_target, function_call, nullptr, false, false));
                 pass_result.push_back(al, stmt);
             }
         }
@@ -728,7 +777,7 @@ public:
             } else {
                 function_call = basic_compare(xx.base.base.loc, "basic_neq", s->m_left, s->m_right);
             }
-            ASR::stmt_t* stmt = ASRUtils::STMT(ASR::make_If_t(al, xx.base.base.loc, function_call,
+            ASR::stmt_t* stmt = ASRUtils::STMT(ASR::make_If_t(al, xx.base.base.loc, nullptr, function_call,
                 xx.m_body, xx.n_body, xx.m_orelse, xx.n_orelse));
             pass_result.push_back(al, stmt);
         }
@@ -779,8 +828,120 @@ public:
             }
         }
         ASR::stmt_t* stmt = ASRUtils::STMT(ASR::make_SubroutineCall_t(al, x.base.base.loc, x.m_name,
-            x.m_name, call_args.p, call_args.n, x.m_dt));
+            x.m_name, call_args.p, call_args.n, x.m_dt, x.m_strict_bounds_checking));
         pass_result.push_back(al, stmt);
+    }
+
+    void visit_Print(const ASR::Print_t &x) {
+        if (!ASR::is_a<ASR::StringFormat_t>(*x.m_text)) {
+            return;
+        }
+
+        ASR::StringFormat_t* sf = ASR::down_cast<ASR::StringFormat_t>(x.m_text);
+        if (sf->m_kind != ASR::string_format_kindType::FormatFortran || sf->n_args != 1) {
+            return;
+        }
+
+        ASR::ttype_t* dt_type = ASRUtils::type_get_past_allocatable_pointer(
+            ASRUtils::expr_type(sf->m_args[0]));
+        if (!ASR::is_a<ASR::StructType_t>(*dt_type)) {
+            return;
+        }
+
+        std::string iotype_str;
+        if (!get_dt_iotype(sf->m_fmt, iotype_str)) {
+            return;
+        }
+
+        const Location &loc = x.base.base.loc;
+        Vec<ASR::expr_t*> overload_args;
+        overload_args.reserve(al, 6);
+        overload_args.push_back(al, sf->m_args[0]);
+
+        // Add the unit argument (6 for standard output)
+        ASR::ttype_t* int_type = ASRUtils::TYPE(ASR::make_Integer_t(al, loc, 4));
+        overload_args.push_back(al,
+            ASRUtils::EXPR(ASR::make_IntegerConstant_t(al, loc, 6, int_type)));
+        {
+            ASR::ttype_t* iotype_type = ASRUtils::TYPE(
+                ASR::make_String_t(
+                    al, loc, 1,
+                    ASRUtils::EXPR(ASR::make_IntegerConstant_t(
+                        al, loc, static_cast<int64_t>(iotype_str.size()), int_type)),
+                    ASR::string_length_kindType::ExpressionLength,
+                    ASR::string_physical_typeType::DescriptorString));
+            overload_args.push_back(al,
+                ASRUtils::EXPR(ASR::make_StringConstant_t(al, loc,
+                    s2c(al, iotype_str), iotype_type)));
+        }
+
+        // Create an empty array for v_list argument
+        ASR::expr_t* empty_v_list = nullptr;
+        {
+            Vec<ASR::dimension_t> dims;
+            dims.reserve(al, 1);
+            ASR::dimension_t dim;
+            dim.loc = loc;
+            dim.m_start = ASRUtils::EXPR(
+                ASR::make_IntegerConstant_t(al, loc, 1, int_type));
+            dim.m_length = ASRUtils::EXPR(
+                ASR::make_IntegerConstant_t(al, loc, 0, int_type));
+            dims.push_back(al, dim);
+
+            ASR::ttype_t* arr_type = ASRUtils::TYPE(
+                ASR::make_Array_t(al, loc, int_type, dims.p, dims.n,
+                    ASR::array_physical_typeType::FixedSizeArray));
+            Vec<ASR::expr_t*> arr_args;
+            arr_args.reserve(al, 0);
+            empty_v_list = ASRUtils::EXPR(ASRUtils::make_ArrayConstructor_t_util(
+                al, loc, arr_args.p, arr_args.n, arr_type,
+                ASR::arraystorageType::ColMajor));
+        }
+        
+        std::string v_list_tmp_name =
+            current_scope->get_unique_name("__libasr__created__var__array_constructor_");
+        ASR::expr_t* v_list_tmp = PassUtils::create_auxiliary_variable(
+            loc, v_list_tmp_name, al, current_scope,
+            ASRUtils::duplicate_type(al, ASRUtils::expr_type(empty_v_list)));
+        pass_result.push_back(al,
+            ASRUtils::STMT(ASRUtils::make_Assignment_t_util(
+                al, loc, v_list_tmp, empty_v_list, nullptr, false, false)));
+        overload_args.push_back(al, v_list_tmp);
+
+        // Create temporary variables for iostat and iomsg
+        std::string tmp_iostat_name =
+            current_scope->get_unique_name("lfortran_tmp_iostat");
+        ASR::expr_t* tmp_iostat = PassUtils::create_auxiliary_variable(
+            loc, tmp_iostat_name, al, current_scope, int_type);
+        overload_args.push_back(al, tmp_iostat);
+
+        ASR::ttype_t* iomsg_type = ASRUtils::TYPE(
+            ASR::make_String_t(
+                al, loc, 1,
+                ASRUtils::EXPR(ASR::make_IntegerConstant_t(al, loc, 0, int_type)),
+                ASR::string_length_kindType::ExpressionLength,
+                ASR::string_physical_typeType::DescriptorString));
+        std::string tmp_iomsg_name =
+            current_scope->get_unique_name("lfortran_iomsg");
+        ASR::expr_t* tmp_iomsg = PassUtils::create_auxiliary_variable(
+            loc, tmp_iomsg_name, al, current_scope, iomsg_type);
+        overload_args.push_back(al, tmp_iomsg);
+
+        std::string read_write = "~write_formatted";
+        ASR::asr_t* overloaded_asr = nullptr;
+        SetChar current_function_dependencies;
+        SetChar current_module_dependencies;
+        current_function_dependencies.reserve(al, 1);
+        current_module_dependencies.reserve(al, 1);
+        if (ASRUtils::use_overloaded_file_read_write(
+                read_write, overload_args, current_scope, overloaded_asr, al, loc,
+                current_function_dependencies, current_module_dependencies,
+                [&](const std::string &msg, const Location &err_loc) {
+                    (void)err_loc;
+                    throw LCompilersException(msg);
+                })) {
+            pass_result.push_back(al, ASRUtils::STMT(overloaded_asr));
+        }
     }
 
     //TODO :: Use the below implementation for stringFormat visitor.
@@ -933,7 +1094,7 @@ public:
                 ASR::ttype_t* cast_type = ASRUtils::TYPE(ASR::make_Integer_t(al, x.base.base.loc, 8));
                 ASR::expr_t* value = ASRUtils::EXPR(ASR::make_Cast_t(al, x.base.base.loc, cast_arg,
                     (ASR::cast_kindType)ASR::cast_kindType::IntegerToInteger, cast_type,
-                    ASRUtils::EXPR(ASR::make_IntegerConstant_t(al, x.base.base.loc, const_value, cast_type))));
+                    ASRUtils::EXPR(ASR::make_IntegerConstant_t(al, x.base.base.loc, const_value, cast_type)), nullptr));
                 pass_result.push_back(al, integer_set_si(x.base.base.loc, target, value));
             }
         }

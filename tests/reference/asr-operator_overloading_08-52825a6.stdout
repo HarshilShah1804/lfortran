@@ -27,15 +27,23 @@
                                     ()
                                     Default
                                     (StructType
-                                        5 custom_int
+                                        [(Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    5 custom_int
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             custom_div:
                                 (ExternalSymbol
@@ -79,6 +87,8 @@
                         )
                         (IntegerConstant 1 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
@@ -95,14 +105,19 @@
                                     [((Var 5 a))
                                     ((IntegerConstant 0 (Integer 4) Decimal))]
                                     (StructType
-                                        5 custom_int
+                                        [(Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
                                     ()
                                     ()
                                 )
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]
@@ -137,15 +152,23 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 custom_int
+                                                        [(Integer 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 custom_int
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             b:
                                                 (Variable
@@ -164,6 +187,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             res:
                                                 (Variable
@@ -175,25 +203,39 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 custom_int
+                                                        [(Integer 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 custom_int
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     custom_div
                                     (FunctionType
                                         [(StructType
-                                            2 custom_int
+                                            [(Integer 4)]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         (Integer 4)]
                                         (StructType
-                                            2 custom_int
+                                            [(Integer 4)]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         Source
                                         Implementation
@@ -235,11 +277,13 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 4 res)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             custom_int:
@@ -264,11 +308,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     custom_int
+                                    (StructType
+                                        [(Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [value]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -276,6 +332,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             ~div:
                                 (CustomOperator
@@ -286,7 +343,9 @@
                                 )
                         })
                     operator_overloading_08_mod1
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

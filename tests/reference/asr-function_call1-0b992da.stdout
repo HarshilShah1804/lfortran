@@ -30,7 +30,7 @@
                                                             (Integer 4)
                                                             ()
                                                         ))]
-                                                        PointerToDataArray
+                                                        PointerArray
                                                     )
                                                     ()
                                                     Source
@@ -39,6 +39,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             self:
                                                 (Variable
@@ -49,16 +54,24 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (ClassType
-                                                        2 softmax
+                                                    (StructType
+                                                        []
+                                                        []
+                                                        .false.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 softmax
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -82,12 +95,20 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     eval_1d
                                     (FunctionType
-                                        [(ClassType
-                                            2 softmax
+                                        [(StructType
+                                            []
+                                            []
+                                            .false.
+                                            .false.
                                         )
                                         (Array
                                             (Real 4)
@@ -113,7 +134,7 @@
                                                 (Integer 4)
                                                 ()
                                             ))]
-                                            PointerToDataArray
+                                            PointerArray
                                         )
                                         Source
                                         Implementation
@@ -132,8 +153,8 @@
                                     []
                                     (Var 4 res)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             eval_1d_prime:
@@ -141,10 +162,10 @@
                                     (SymbolTable
                                         5
                                         {
-                                            1_eval_1d:
+                                            1_softmax_eval_1d:
                                                 (ExternalSymbol
                                                     5
-                                                    1_eval_1d
+                                                    1_softmax_eval_1d
                                                     3 eval_1d
                                                     softmax
                                                     []
@@ -169,7 +190,7 @@
                                                             (Integer 4)
                                                             ()
                                                         ))]
-                                                        PointerToDataArray
+                                                        PointerArray
                                                     )
                                                     ()
                                                     Source
@@ -178,6 +199,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             self:
                                                 (Variable
@@ -188,16 +214,24 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (ClassType
-                                                        2 softmax
+                                                    (StructType
+                                                        []
+                                                        []
+                                                        .false.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 softmax
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -221,12 +255,20 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     eval_1d_prime
                                     (FunctionType
-                                        [(ClassType
-                                            2 softmax
+                                        [(StructType
+                                            []
+                                            []
+                                            .false.
+                                            .false.
                                         )
                                         (Array
                                             (Real 4)
@@ -252,7 +294,7 @@
                                                 (Integer 4)
                                                 ()
                                             ))]
-                                            PointerToDataArray
+                                            PointerArray
                                         )
                                         Source
                                         Implementation
@@ -271,9 +313,10 @@
                                     [(Assignment
                                         (Var 5 res)
                                         (FunctionCall
-                                            5 1_eval_1d
+                                            5 1_softmax_eval_1d
                                             ()
-                                            [((ArrayPhysicalCast
+                                            [((Var 5 self))
+                                            ((ArrayPhysicalCast
                                                 (Var 5 x)
                                                 DescriptorArray
                                                 DescriptorArray
@@ -294,17 +337,19 @@
                                                     (Integer 4)
                                                     ()
                                                 ))]
-                                                PointerToDataArray
+                                                PointerArray
                                             )
                                             ()
                                             (Var 5 self)
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 5 res)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             softmax:
@@ -313,7 +358,7 @@
                                         3
                                         {
                                             eval_1d:
-                                                (ClassProcedure
+                                                (StructMethodDeclaration
                                                     3
                                                     eval_1d
                                                     ()
@@ -325,6 +370,13 @@
                                                 )
                                         })
                                     softmax
+                                    (StructType
+                                        []
+                                        []
+                                        .true.
+                                        .false.
+                                    )
+                                    []
                                     []
                                     []
                                     Source
@@ -334,10 +386,13 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 )
                         })
                     module_function_call1
+                    ()
                     [module_function_call1]
+                    .false.
                     .false.
                     .false.
                 )

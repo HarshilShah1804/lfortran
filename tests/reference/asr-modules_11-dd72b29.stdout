@@ -45,11 +45,13 @@
                             ()
                             [(StringConstant
                                 "j = "
-                                (String 1 4 () PointerString)
+                                (String 1 (IntegerConstant 4 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 4 j)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -58,6 +60,7 @@
                         ()
                         []
                         ()
+                        .false.
                     )]
                 ),
             modules_11_module11:
@@ -94,11 +97,13 @@
                                             ()
                                             [(StringConstant
                                                 "i = "
-                                                (String 1 4 () PointerString)
+                                                (String 1 (IntegerConstant 4 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                             )
                                             (Var 2 i)]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )]
@@ -125,6 +130,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             j:
                                 (Variable
@@ -143,10 +153,17 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     modules_11_module11
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

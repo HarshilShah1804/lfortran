@@ -70,11 +70,11 @@
                             get_temp_filename:
                                 (Function
                                     (SymbolTable
-                                        19
+                                        21
                                         {
                                             c_tempfile:
                                                 (Variable
-                                                    19
+                                                    21
                                                     c_tempfile
                                                     []
                                                     Local
@@ -83,7 +83,7 @@
                                                     Default
                                                     (Pointer
                                                         (Array
-                                                            (String 1 1 () PointerString)
+                                                            (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                             [(()
                                                             ())]
                                                             DescriptorArray
@@ -96,10 +96,15 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             f_string@f_string~genericprocedure:
                                                 (ExternalSymbol
-                                                    19
+                                                    21
                                                     f_string@f_string~genericprocedure
                                                     4 f_string~genericprocedure
                                                     fpm_strings
@@ -109,7 +114,7 @@
                                                 ),
                                             tempfile:
                                                 (Variable
-                                                    19
+                                                    21
                                                     tempfile
                                                     []
                                                     ReturnVar
@@ -117,7 +122,7 @@
                                                     ()
                                                     Default
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     Source
@@ -126,13 +131,18 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     get_temp_filename
                                     (FunctionType
                                         []
                                         (Allocatable
-                                            (String 1 -2 () DescriptorString)
+                                            (String 1 () DeferredLength DescriptorString)
                                         )
                                         Source
                                         Implementation
@@ -148,33 +158,35 @@
                                     []
                                     []
                                     [(Assignment
-                                        (Var 19 tempfile)
+                                        (Var 21 tempfile)
                                         (FunctionCall
-                                            19 f_string@f_string~genericprocedure
+                                            21 f_string@f_string~genericprocedure
                                             2 f_string
-                                            [((Var 19 c_tempfile))]
+                                            [((Var 21 c_tempfile))]
                                             (Allocatable
-                                                (String 1 -2 () DescriptorString)
+                                                (String 1 () DeferredLength DescriptorString)
                                             )
                                             ()
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
-                                    (Var 19 tempfile)
+                                    (Var 21 tempfile)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             list_files:
                                 (Function
                                     (SymbolTable
-                                        18
+                                        20
                                         {
                                             dir_entry_c:
                                                 (Variable
-                                                    18
+                                                    20
                                                     dir_entry_c
                                                     []
                                                     Local
@@ -189,10 +201,15 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             dir_handle:
                                                 (Variable
-                                                    18
+                                                    20
                                                     dir_handle
                                                     []
                                                     Local
@@ -207,10 +224,15 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             f_string@f_string_cptr:
                                                 (ExternalSymbol
-                                                    18
+                                                    20
                                                     f_string@f_string_cptr
                                                     4 f_string_cptr
                                                     fpm_strings
@@ -220,7 +242,7 @@
                                                 ),
                                             string_fortran:
                                                 (Variable
-                                                    18
+                                                    20
                                                     string_fortran
                                                     []
                                                     Local
@@ -228,7 +250,7 @@
                                                     ()
                                                     Default
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     Source
@@ -237,6 +259,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     list_files
@@ -263,9 +290,10 @@
                                             (Logical 4)
                                         )
                                         [(If
+                                            ()
                                             (LogicalNot
                                                 (PointerAssociated
-                                                    (Var 18 dir_entry_c)
+                                                    (Var 20 dir_entry_c)
                                                     ()
                                                     (Logical 4)
                                                     ()
@@ -277,26 +305,28 @@
                                                 ()
                                             )]
                                             [(Assignment
-                                                (Var 18 string_fortran)
+                                                (Var 20 string_fortran)
                                                 (FunctionCall
-                                                    18 f_string@f_string_cptr
+                                                    20 f_string@f_string_cptr
                                                     2 f_string
-                                                    [((Var 18 dir_entry_c))]
+                                                    [((Var 20 dir_entry_c))]
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     ()
                                                 )
                                                 ()
+                                                .false.
+                                                .false.
                                             )]
                                         )]
                                         []
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             string_t:
@@ -311,8 +341,10 @@
                                 )
                         })
                     fpm_filesystem
+                    ()
                     [fpm_strings
                     iso_c_binding]
+                    .false.
                     .false.
                     .false.
                 ),
@@ -387,6 +419,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             s:
                                                                 (Variable
@@ -405,6 +442,11 @@
                                                                     .true.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     c_strlen
@@ -448,6 +490,34 @@
                                                     .true.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
+                                                ),
+                                            lfortran_tmp:
+                                                (Variable
+                                                    6
+                                                    lfortran_tmp
+                                                    []
+                                                    Local
+                                                    ()
+                                                    ()
+                                                    Default
+                                                    (Integer 8)
+                                                    ()
+                                                    Source
+                                                    Private
+                                                    Required
+                                                    .false.
+                                                    .false.
+                                                    .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             s:
                                                 (Variable
@@ -459,7 +529,7 @@
                                                     ()
                                                     Default
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     Source
@@ -468,13 +538,18 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     f_string_cptr
                                     (FunctionType
                                         [(CPtr)]
                                         (Allocatable
-                                            (String 1 -2 () DescriptorString)
+                                            (String 1 () DeferredLength DescriptorString)
                                         )
                                         Source
                                         Implementation
@@ -490,46 +565,33 @@
                                     [f_string_cptr_n]
                                     [(Var 6 cptr)]
                                     [(Assignment
-                                        (Var 6 s)
-                                        (StringPhysicalCast
-                                            (FunctionCall
-                                                4 f_string_cptr_n
-                                                ()
-                                                [((Var 6 cptr))
-                                                ((FunctionCall
-                                                    6 c_strlen
-                                                    ()
-                                                    [((Var 6 cptr))]
-                                                    (Integer 8)
-                                                    ()
-                                                    ()
-                                                ))]
-                                                (String 1 -3 (FunctionCall
-                                                    6 c_strlen
-                                                    ()
-                                                    [((Var 6 cptr))]
-                                                    (Integer 8)
-                                                    ()
-                                                    ()
-                                                ) PointerString)
-                                                ()
-                                                ()
-                                            )
-                                            PointerString
-                                            DescriptorString
-                                            (Allocatable
-                                                (String 1 -3 (FunctionCall
-                                                    6 c_strlen
-                                                    ()
-                                                    [((Var 6 cptr))]
-                                                    (Integer 8)
-                                                    ()
-                                                    ()
-                                                ) DescriptorString)
-                                            )
+                                        (Var 6 lfortran_tmp)
+                                        (FunctionCall
+                                            6 c_strlen
+                                            ()
+                                            [((Var 6 cptr))]
+                                            (Integer 8)
+                                            ()
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
+                                    )
+                                    (Assignment
+                                        (Var 6 s)
+                                        (FunctionCall
+                                            4 f_string_cptr_n
+                                            ()
+                                            [((Var 6 cptr))
+                                            ((Var 6 lfortran_tmp))]
+                                            (String 1 (Var 6 lfortran_tmp) ExpressionLength DescriptorString)
+                                            ()
+                                            ()
+                                        )
+                                        ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 6 s)
                                     Public
@@ -559,6 +621,11 @@
                                                     .true.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             n:
                                                 (Variable
@@ -577,6 +644,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             s:
                                                 (Variable
@@ -587,7 +659,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 -3 (Var 8 n) PointerString)
+                                                    (String 1 (Var 8 n) ExpressionLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -595,17 +667,22 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     f_string_cptr_n
                                     (FunctionType
                                         [(CPtr)
                                         (Integer 8)]
-                                        (String 1 -3 (FunctionParam
+                                        (String 1 (FunctionParam
                                             1
                                             (Integer 8)
                                             ()
-                                        ) PointerString)
+                                        ) ExpressionLength DescriptorString)
                                         Source
                                         Implementation
                                         ()
@@ -623,8 +700,8 @@
                                     []
                                     (Var 8 s)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             f_string~genericprocedure:
@@ -642,7 +719,7 @@
                                                     ()
                                                     Default
                                                     (Array
-                                                        (String 1 1 () PointerString)
+                                                        (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                         [(()
                                                         ())]
                                                         DescriptorArray
@@ -654,6 +731,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             f_string:
                                                 (Variable
@@ -665,7 +747,7 @@
                                                     ()
                                                     Default
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     Source
@@ -674,18 +756,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     f_string~genericprocedure
                                     (FunctionType
                                         [(Array
-                                            (String 1 1 () PointerString)
+                                            (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                             [(()
                                             ())]
                                             DescriptorArray
                                         )]
                                         (Allocatable
-                                            (String 1 -2 () DescriptorString)
+                                            (String 1 () DeferredLength DescriptorString)
                                         )
                                         Source
                                         Implementation
@@ -703,8 +790,8 @@
                                     []
                                     (Var 9 f_string)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             string_t:
@@ -722,7 +809,7 @@
                                                     ()
                                                     Default
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     Source
@@ -731,11 +818,25 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     string_t
+                                    (StructType
+                                        [(Allocatable
+                                            (String 1 () DeferredLength DescriptorString)
+                                        )]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [s]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -743,12 +844,15 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 )
                         })
                     fpm_strings
+                    ()
                     [iso_c_binding
                     fpm_strings]
                     .true.
+                    .false.
                     .false.
                 ),
             iso_c_binding:

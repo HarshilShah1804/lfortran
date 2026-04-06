@@ -9,7 +9,7 @@
 #include<unordered_set>
 
 
-extern std::string lcompilers_unique_ID;
+extern std::string lcompilers_unique_ID_separate_compilation;
 
 /*
 ASR pass for replacing symbol names with some new name, mostly because
@@ -40,6 +40,7 @@ uint64_t static inline get_hash(ASR::asr_t *node)
 class SymbolRenameVisitor: public ASR::BaseWalkVisitor<SymbolRenameVisitor> {
     public:
     std::unordered_map<ASR::symbol_t*, std::string> sym_to_renamed;
+    bool intrinsic_module_name_mangling;
     bool module_name_mangling;
     bool global_symbols_mangling;
     bool intrinsic_symbols_mangling;
@@ -47,14 +48,15 @@ class SymbolRenameVisitor: public ASR::BaseWalkVisitor<SymbolRenameVisitor> {
     bool bindc_mangling = false;
     bool fortran_mangling;
     bool c_mangling;
+    bool mangle_underscore_external;
     bool should_mangle = false;
     std::vector<std::string> parent_function_name;
     std::string module_name = "";
     SymbolTable* current_scope = nullptr;
 
-    SymbolRenameVisitor(bool mm, bool gm, bool im, bool am, bool bcm, bool fm, bool cm) :
-    module_name_mangling(mm), global_symbols_mangling(gm), intrinsic_symbols_mangling(im),
-    all_symbols_mangling(am), bindc_mangling(bcm), fortran_mangling(fm), c_mangling(cm) {}
+    SymbolRenameVisitor(bool imm, bool mm, bool gm, bool im, bool am, bool bcm, bool fm, bool cm, bool mue) :
+    intrinsic_module_name_mangling(imm), module_name_mangling(mm), global_symbols_mangling(gm), intrinsic_symbols_mangling(im),
+    all_symbols_mangling(am), bindc_mangling(bcm), fortran_mangling(fm), c_mangling(cm), mangle_underscore_external(mue) {}
 
 
     const std::unordered_set<std::string> reserved_keywords_c = {
@@ -80,16 +82,16 @@ class SymbolRenameVisitor: public ASR::BaseWalkVisitor<SymbolRenameVisitor> {
         } else if (startswith(curr_name, "_lcompilers_") && current_scope) {
             // mangle intrinsic functions
             uint64_t hash = get_hash(current_scope->asr_owner);
-            return module_name + curr_name + "_" + std::to_string(hash) + "_" + lcompilers_unique_ID;
+            return module_name + curr_name + "_" + std::to_string(hash) + "_" + lcompilers_unique_ID_separate_compilation;
         } else if (parent_function_name.size() > 0) {
             // add parent function name to suffix
             std::string name = module_name + curr_name + "_";
             for (auto &a: parent_function_name) {
                 name += a + "_";
             }
-            return name + lcompilers_unique_ID;
+            return name + lcompilers_unique_ID_separate_compilation;
         }
-        return module_name + curr_name + "_" + lcompilers_unique_ID;
+        return module_name + curr_name + "_" + lcompilers_unique_ID_separate_compilation;
     }
 
     void visit_TranslationUnit(const ASR::TranslationUnit_t &x) {
@@ -119,11 +121,20 @@ class SymbolRenameVisitor: public ASR::BaseWalkVisitor<SymbolRenameVisitor> {
         module_name = std::string(x.m_name) + "_";
         if (all_symbols_mangling || module_name_mangling || should_mangle) {
             sym_to_renamed[sym] = update_name(x.m_name);
+        } else if ( intrinsic_module_name_mangling && x.m_intrinsic ) {
+            sym_to_renamed[sym] = update_name(x.m_name);
         }
         if ((global_symbols_mangling && startswith(x.m_name, "_global_symbols"))) {
             should_mangle = true;
         }
         for (auto &a : x.m_symtab->get_scope()) {
+            if ( intrinsic_module_name_mangling && startswith(x.m_name, "lfortran_intrinsic") ) {
+                // mangle functions / variables declared inside intrinsic modules
+                ASR::symbol_t *sym = a.second;
+                if (sym_to_renamed.find(sym) == sym_to_renamed.end()) {
+                    sym_to_renamed[sym] = update_name(ASRUtils::symbol_name(sym));
+                }
+            }
             visit_symbol(*a.second);
         }
         should_mangle = should_mangle_copy;
@@ -170,9 +181,24 @@ class SymbolRenameVisitor: public ASR::BaseWalkVisitor<SymbolRenameVisitor> {
                 mangle_c(sym , std::string(x.m_name));
             }
         }
-        if (intrinsic_symbols_mangling && startswith(x.m_name, "_lcompilers_")) {
+        if (intrinsic_symbols_mangling && (startswith(x.m_name, "_lcompilers_") || startswith(x.m_name, "__lcompilers"))) {
             ASR::symbol_t *sym = ASR::down_cast<ASR::symbol_t>((ASR::asr_t*)&x);
             sym_to_renamed[sym] = update_name(x.m_name);
+        }
+        if (mangle_underscore_external) {
+            bool is_external_interface = (f_type->m_deftype == ASR::deftypeType::Interface &&
+                                          f_type->m_abi != ASR::abiType::Intrinsic &&
+                                          !f_type->m_module);
+            if (is_external_interface) {
+                std::string name = x.m_name;
+                bool has_reserved_prefix = (startswith(name, "_lfortran") ||
+                                            startswith(name, "_lpython") ||
+                                            startswith(name, "_lcompilers"));
+                if (!has_reserved_prefix && !name.empty() && name.back() != '_') {
+                    ASR::symbol_t *sym = ASR::down_cast<ASR::symbol_t>((ASR::asr_t*)&x);
+                    sym_to_renamed[sym] = name + "_";
+                }
+            }
         }
         for (auto &a : x.m_symtab->get_scope()) {
             bool nested_function = is_nested_function(a.second);
@@ -253,11 +279,7 @@ class SymbolRenameVisitor: public ASR::BaseWalkVisitor<SymbolRenameVisitor> {
         visit_symbols_2(x);
     }
 
-    void visit_Class(const ASR::Class_t &x) {
-        visit_symbols_2(x);
-    }
-
-    void visit_ClassProcedure(const ASR::ClassProcedure_t &x) {
+    void visit_StructMethodDeclaration(const ASR::StructMethodDeclaration_t &x) {
         if (bindc_mangling || x.m_abi != ASR::abiType::BindC) {
             if (all_symbols_mangling || should_mangle) {
                 ASR::symbol_t *sym = ASR::down_cast<ASR::symbol_t>((ASR::asr_t*)&x);
@@ -327,7 +349,10 @@ class UniqueSymbolVisitor: public ASR::BaseWalkVisitor<UniqueSymbolVisitor> {
         for (auto &a: current_scope) {
             if (sym_to_new_name.find(a.second) != sym_to_new_name.end()) {
                 xx.m_symtab->erase_symbol(a.first);
-                xx.m_symtab->add_symbol(sym_to_new_name[a.second], a.second);
+                std::string new_name = sym_to_new_name[a.second];
+                if (xx.m_symtab->get_symbol(new_name) == nullptr) {
+                    xx.m_symtab->add_symbol(new_name, a.second);
+                }
             }
         }
         current_scope = current_scope_copy;
@@ -356,7 +381,10 @@ class UniqueSymbolVisitor: public ASR::BaseWalkVisitor<UniqueSymbolVisitor> {
         for (auto &a: current_scope) {
             if (sym_to_new_name.find(a.second) != sym_to_new_name.end()) {
                 xx.m_symtab->erase_symbol(a.first);
-                xx.m_symtab->add_symbol(sym_to_new_name[a.second], a.second);
+                std::string new_name = sym_to_new_name[a.second];
+                if (xx.m_symtab->get_symbol(new_name) == nullptr) {
+                    xx.m_symtab->add_symbol(new_name, a.second);
+                }
             }
         }
         current_scope = current_scope_copy;
@@ -437,7 +465,10 @@ class UniqueSymbolVisitor: public ASR::BaseWalkVisitor<UniqueSymbolVisitor> {
         for (auto &a: current_scope) {
             if (sym_to_new_name.find(a.second) != sym_to_new_name.end()) {
                 xx.m_symtab->erase_symbol(a.first);
-                xx.m_symtab->add_symbol(sym_to_new_name[a.second], a.second);
+                std::string new_name = sym_to_new_name[a.second];
+                if (xx.m_symtab->get_symbol(new_name) == nullptr) {
+                    xx.m_symtab->add_symbol(new_name, a.second);
+                }
             }
         }
         current_scope = current_scope_copy;
@@ -471,28 +502,8 @@ class UniqueSymbolVisitor: public ASR::BaseWalkVisitor<UniqueSymbolVisitor> {
         }
     }
 
-    void visit_Class(const ASR::Class_t &x) {
-        ASR::Class_t& xx = const_cast<ASR::Class_t&>(x);
-        ASR::symbol_t *sym = ASR::down_cast<ASR::symbol_t>((ASR::asr_t*)&x);
-        if (sym_to_new_name.find(sym) != sym_to_new_name.end()) {
-            xx.m_name = s2c(al, sym_to_new_name[sym]);
-        }
-        std::map<std::string, ASR::symbol_t*> current_scope_copy = current_scope;
-        current_scope = x.m_symtab->get_scope();
-        for (auto &a : x.m_symtab->get_scope()) {
-            visit_symbol(*a.second);
-        }
-        for (auto &a: current_scope) {
-            if (sym_to_new_name.find(a.second) != sym_to_new_name.end()) {
-                xx.m_symtab->erase_symbol(a.first);
-                xx.m_symtab->add_symbol(sym_to_new_name[a.second], a.second);
-            }
-        }
-        current_scope = current_scope_copy;
-    }
-
-    void visit_ClassProcedure(const ASR::ClassProcedure_t &x) {
-        ASR::ClassProcedure_t& xx = const_cast<ASR::ClassProcedure_t&>(x);
+    void visit_StructMethodDeclaration(const ASR::StructMethodDeclaration_t &x) {
+        ASR::StructMethodDeclaration_t& xx = const_cast<ASR::StructMethodDeclaration_t&>(x);
         ASR::symbol_t *sym = ASR::down_cast<ASR::symbol_t>((ASR::asr_t*)&x);
         if (sym_to_new_name.find(sym) != sym_to_new_name.end()) {
             xx.m_name = s2c(al, sym_to_new_name[sym]);
@@ -514,7 +525,10 @@ class UniqueSymbolVisitor: public ASR::BaseWalkVisitor<UniqueSymbolVisitor> {
         for (auto &a: current_scope) {
             if (sym_to_new_name.find(a.second) != sym_to_new_name.end()) {
                 xx.m_symtab->erase_symbol(a.first);
-                xx.m_symtab->add_symbol(sym_to_new_name[a.second], a.second);
+                std::string new_name = sym_to_new_name[a.second];
+                if (xx.m_symtab->get_symbol(new_name) == nullptr) {
+                    xx.m_symtab->add_symbol(new_name, a.second);
+                }
             }
         }
         current_scope = current_scope_copy;
@@ -547,7 +561,7 @@ void pass_unique_symbols(Allocator &al, ASR::TranslationUnit_t &unit,
      * MANGLING_OPTION="--module-mangling"
      * MANGLING_OPTION="--global-mangling"
      * MANGLING_OPTION="--intrinsic-mangling"
-     * COMPILER_SPECIFIC_OPTION="--generate-object-code" // LFortran
+     * COMPILER_SPECIFIC_OPTION="--separate-compilation" // LFortran
      * COMPILER_SPECIFIC_OPTION="--separate-compilation" // LPython
      * Usage:
      *    `$MANGLING_OPTION $COMPILER_SPECIFIC_OPTION`
@@ -555,26 +569,30 @@ void pass_unique_symbols(Allocator &al, ASR::TranslationUnit_t &unit,
      *    `$MANGLING_OPTIONS --mangle-underscore [$COMPILER_SPECIFIC_OPTION]`
      *    * `--apply-fortran-mangling [$MANGLING_OPTION] [$COMPILER_SPECIFIC_OPTION]`
      */
-    bool any_present = (pass_options.module_name_mangling || pass_options.global_symbols_mangling ||
+    bool any_present = (pass_options.intrinsic_module_name_mangling || pass_options.module_name_mangling || pass_options.global_symbols_mangling ||
                     pass_options.intrinsic_symbols_mangling || pass_options.all_symbols_mangling ||
-                    pass_options.bindc_mangling || pass_options.fortran_mangling);
+                    pass_options.bindc_mangling || pass_options.fortran_mangling ||
+                    pass_options.mangle_underscore_external);
     if (pass_options.mangle_underscore) {
-        lcompilers_unique_ID = "";
+        lcompilers_unique_ID_separate_compilation = "";
     }
     if ((!any_present || (!(pass_options.mangle_underscore ||
-            pass_options.fortran_mangling) && lcompilers_unique_ID.empty())) &&
+            pass_options.fortran_mangling || pass_options.mangle_underscore_external) &&
+            lcompilers_unique_ID_separate_compilation.empty())) &&
                 !pass_options.c_mangling) {
-        // `--mangle-underscore` doesn't require `lcompilers_unique_ID`
-        // `lcompilers_unique_ID` is not mandatory for `--apply-fortran-mangling`
+        // `--mangle-underscore` doesn't require `lcompilers_unique_ID_separate_compilation`
+        // `lcompilers_unique_ID_separate_compilation` is not mandatory for `--apply-fortran-mangling`
         return;
     }
-    SymbolRenameVisitor v(pass_options.module_name_mangling,
+    SymbolRenameVisitor v(pass_options.intrinsic_module_name_mangling,
+                pass_options.module_name_mangling,
                 pass_options.global_symbols_mangling,
                 pass_options.intrinsic_symbols_mangling,
                 pass_options.all_symbols_mangling,
                 pass_options.bindc_mangling,
                 pass_options.fortran_mangling,
-                pass_options.c_mangling);
+                pass_options.c_mangling,
+                pass_options.mangle_underscore_external);
     v.visit_TranslationUnit(unit);
     UniqueSymbolVisitor u(al, v.sym_to_renamed);
     u.visit_TranslationUnit(unit);

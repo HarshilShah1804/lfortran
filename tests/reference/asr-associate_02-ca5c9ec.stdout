@@ -26,6 +26,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             p2:
                                 (Variable
@@ -46,6 +51,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             p3:
                                 (Variable
@@ -66,6 +76,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             t1:
                                 (Variable
@@ -84,6 +99,11 @@
                                     .false.
                                     .true.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             t2:
                                 (Variable
@@ -108,6 +128,11 @@
                                     .false.
                                     .true.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             t3:
                                 (Variable
@@ -145,6 +170,11 @@
                                     .false.
                                     .true.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     associate_02
@@ -165,6 +195,8 @@
                         (Var 2 p1)
                         (IntegerConstant 1 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 p2)
@@ -179,15 +211,20 @@
                                 4.000000
                                 (Real 8)
                             )
+                            ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 2 p1)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -196,7 +233,9 @@
                             ()
                             [(Var 2 t1)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -211,6 +250,7 @@
                                     IntegerToReal
                                     (Real 8)
                                     ()
+                                    ()
                                 )
                                 (Pointer
                                     (Real 8)
@@ -220,15 +260,20 @@
                             RealToInteger
                             (Integer 4)
                             ()
+                            ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 2 p1)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -237,7 +282,9 @@
                             ()
                             [(Var 2 t1)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -245,13 +292,17 @@
                         (Var 2 t1)
                         (IntegerConstant 8 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 2 p1)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -260,7 +311,9 @@
                             ()
                             [(Var 2 t1)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -276,6 +329,7 @@
                                     0.000000
                                     (Complex 4)
                                 )
+                                ()
                             )
                             Mul
                             (Var 2 p3)
@@ -285,13 +339,17 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 2 p3)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -300,7 +358,9 @@
                             ()
                             [(Var 2 t3)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]

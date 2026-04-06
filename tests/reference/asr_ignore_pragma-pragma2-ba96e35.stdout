@@ -29,6 +29,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     pragma2
@@ -44,6 +49,7 @@
                                     1.000000
                                     (Real 4)
                                 )
+                                ()
                             )
                             (ArrayConstant
                                 4
@@ -75,6 +81,8 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )]
                 )
         })

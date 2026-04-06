@@ -50,11 +50,11 @@
                             get_current_directory:
                                 (Function
                                     (SymbolTable
-                                        12
+                                        14
                                         {
                                             buffersize:
                                                 (Variable
-                                                    12
+                                                    14
                                                     buffersize
                                                     []
                                                     Local
@@ -69,10 +69,15 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             cpath:
                                                 (Variable
-                                                    12
+                                                    14
                                                     cpath
                                                     []
                                                     Local
@@ -81,7 +86,7 @@
                                                     Default
                                                     (Allocatable
                                                         (Array
-                                                            (String 1 1 () PointerString)
+                                                            (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                             [(()
                                                             ())]
                                                             DescriptorArray
@@ -94,10 +99,15 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             path:
                                                 (Variable
-                                                    12
+                                                    14
                                                     path
                                                     []
                                                     Out
@@ -105,7 +115,7 @@
                                                     ()
                                                     Default
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     Source
@@ -114,10 +124,15 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             tmp:
                                                 (Variable
-                                                    12
+                                                    14
                                                     tmp
                                                     []
                                                     Local
@@ -132,12 +147,17 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     get_current_directory
                                     (FunctionType
                                         [(Allocatable
-                                            (String 1 -2 () DescriptorString)
+                                            (String 1 () DeferredLength DescriptorString)
                                         )]
                                         ()
                                         Source
@@ -152,11 +172,12 @@
                                         .false.
                                     )
                                     [getcwd]
-                                    [(Var 12 path)]
+                                    [(Var 14 path)]
                                     [(Allocate
-                                        [((Var 12 cpath)
+                                        [((Var 14 cpath)
                                         [((IntegerConstant 1 (Integer 4) Decimal)
                                         (IntegerConstant 1000 (Integer 4) Decimal))]
+                                        ()
                                         ()
                                         ())]
                                         ()
@@ -164,21 +185,35 @@
                                         ()
                                     )
                                     (Assignment
-                                        (Var 12 tmp)
+                                        (Var 14 tmp)
                                         (FunctionCall
                                             2 getcwd
                                             ()
-                                            [((Var 12 cpath))
-                                            ((Var 12 buffersize))]
+                                            [((ArrayPhysicalCast
+                                                (Var 14 cpath)
+                                                DescriptorArray
+                                                StringArraySinglePointer
+                                                (Array
+                                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
+                                                    [(()
+                                                    ())]
+                                                    StringArraySinglePointer
+                                                )
+                                                ()
+                                            ))
+                                            ((Var 14 buffersize))]
                                             (CPtr)
                                             ()
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (If
+                                        ()
                                         (PointerAssociated
-                                            (Var 12 tmp)
+                                            (Var 14 tmp)
                                             ()
                                             (Logical 4)
                                             ()
@@ -188,11 +223,13 @@
                                                 ()
                                                 [(StringConstant
                                                     "PWD: "
-                                                    (String 1 5 () PointerString)
+                                                    (String 1 (IntegerConstant 5 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                 )
-                                                (Var 12 tmp)]
+                                                (Var 14 tmp)]
                                                 FormatFortran
-                                                (String -1 0 () PointerString)
+                                                (Allocatable
+                                                    (String 1 () DeferredLength DescriptorString)
+                                                )
                                                 ()
                                             )
                                         )]
@@ -207,18 +244,23 @@
                             getcwd:
                                 (Function
                                     (SymbolTable
-                                        11
+                                        13
                                         {
                                             buf:
                                                 (Variable
-                                                    11
+                                                    13
                                                     buf
                                                     []
                                                     In
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 1 () PointerString)
+                                                    (Array
+                                                        (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength CChar)
+                                                        [(()
+                                                        ())]
+                                                        StringArraySinglePointer
+                                                    )
                                                     ()
                                                     BindC
                                                     Public
@@ -226,10 +268,15 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             bufsize:
                                                 (Variable
-                                                    11
+                                                    13
                                                     bufsize
                                                     []
                                                     In
@@ -244,10 +291,15 @@
                                                     .true.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             path:
                                                 (Variable
-                                                    11
+                                                    13
                                                     path
                                                     []
                                                     ReturnVar
@@ -262,11 +314,21 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     getcwd
                                     (FunctionType
-                                        [(String 1 1 () PointerString)
+                                        [(Array
+                                            (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength CChar)
+                                            [(()
+                                            ())]
+                                            StringArraySinglePointer
+                                        )
                                         (Integer 4)]
                                         (CPtr)
                                         BindC
@@ -281,10 +343,10 @@
                                         .false.
                                     )
                                     []
-                                    [(Var 11 buf)
-                                    (Var 11 bufsize)]
+                                    [(Var 13 buf)
+                                    (Var 13 bufsize)]
                                     []
-                                    (Var 11 path)
+                                    (Var 13 path)
                                     Public
                                     .false.
                                     .false.
@@ -292,8 +354,10 @@
                                 )
                         })
                     array12
+                    ()
                     [iso_c_binding
                     array12]
+                    .false.
                     .false.
                     .false.
                 ),

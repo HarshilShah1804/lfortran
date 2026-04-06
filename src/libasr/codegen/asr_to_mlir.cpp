@@ -9,6 +9,8 @@
 
 #include <libasr/codegen/asr_to_mlir.h>
 #include <libasr/containers.h>
+#include <libasr/pass/intrinsic_functions.h>
+#include <libasr/pass/intrinsic_function_registry.h>
 
 using LCompilers::ASR::is_a;
 using LCompilers::ASR::down_cast;
@@ -93,7 +95,7 @@ public:
                     ASRUtils::get_fixed_size_of_array(asr_type));
             } default: {
                 throw LCompilersException("Variable type '"+
-                    ASRUtils::type_to_str_python(asr_type) +
+                    ASRUtils::type_to_str_python_expr(asr_type, nullptr) +
                     "' is not supported yet");
             }
         }
@@ -259,9 +261,19 @@ public:
             loc, builder->getI32Type(), builder->getI32IntegerAttr(0));
         builder->create<mlir::LLVM::ReturnOp>(loc, zero.getResult());
     }
-
+    void handle_string_variable(uint32_t h) { // Use i8* for now 
+        auto i8ptr = mlir::LLVM::LLVMPointerType::get(builder->getContext());
+        auto one = builder->create<mlir::LLVM::ConstantOp>(loc, builder->getI32Type(),
+            builder->getI64IntegerAttr(1));// Allocate pointer-sized slot 
+        mlir::Value ptr = builder->create<mlir::LLVM::AllocaOp>(loc, voidPtr, i8ptr, one);
+        mlir_symtab[h] = ptr;
+    }
     void visit_Variable(const ASR::Variable_t &x) {
         uint32_t h = get_hash((ASR::asr_t*) &x);
+        if (ASRUtils::is_character(*x.m_type)) {
+            handle_string_variable(h);
+            return;
+        }
         mlir::Value size = builder->create<mlir::LLVM::ConstantOp>(loc,
             builder->getI32Type(), builder->getI64IntegerAttr(1));
         mlir_symtab[h] = builder->create<mlir::LLVM::AllocaOp>(loc,
@@ -337,6 +349,80 @@ public:
 
     void visit_FunctionCall(const ASR::FunctionCall_t &x) {
         visit_Call(x);
+    }
+
+    void visit_IntrinsicElementalFunction(const ASR::IntrinsicElementalFunction_t &x) {
+        if (x.m_value) {
+            this->visit_expr(*x.m_value);
+            return;
+        }
+
+        switch (static_cast<ASRUtils::IntrinsicElementalFunctions>(x.m_intrinsic_id)) {
+            case ASRUtils::IntrinsicElementalFunctions::Abs: {
+                ASR::ttype_t *t = ASRUtils::expr_type(x.m_args[0]);
+                this->visit_expr2(*x.m_args[0]);
+                if (ASRUtils::is_real(*t)) {
+                    tmp = builder->create<mlir::LLVM::FAbsOp>(loc, tmp);
+                } else if (ASRUtils::is_integer(*t)) {
+                    mlir::Type type = tmp.getType();
+                    mlir::Value zero;
+                    if (type == builder->getI32Type()) {
+                        zero = builder->create<mlir::LLVM::ConstantOp>(loc, type,
+                            builder->getI32IntegerAttr(0));
+                    } else {
+                        zero = builder->create<mlir::LLVM::ConstantOp>(loc, type,
+                            builder->getI64IntegerAttr(0));
+                    }
+                    mlir::Value neg = builder->create<mlir::LLVM::SubOp>(loc, zero, tmp);
+                    mlir::Value cmp = builder->create<mlir::LLVM::ICmpOp>(loc,
+                        mlir::LLVM::ICmpPredicate::slt, tmp, zero);
+                    tmp = builder->create<mlir::LLVM::SelectOp>(loc, cmp, neg, tmp);
+                } else {
+                    throw CodeGenError("Abs: unsupported type", x.base.base.loc);
+                }
+                break;
+            }
+            case ASRUtils::IntrinsicElementalFunctions::Max: {
+                ASR::ttype_t *t = ASRUtils::expr_type(x.m_args[0]);
+                this->visit_expr2(*x.m_args[0]);
+                mlir::Value result = tmp;
+                for (size_t i = 1; i < x.n_args; i++) {
+                    this->visit_expr2(*x.m_args[i]);
+                    if (ASRUtils::is_real(*t)) {
+                        result = builder->create<mlir::LLVM::MaxNumOp>(loc, result, tmp);
+                    } else if (ASRUtils::is_integer(*t)) {
+                        result = builder->create<mlir::LLVM::SMaxOp>(loc, result, tmp);
+                    } else {
+                        throw CodeGenError("Max: unsupported type", x.base.base.loc);
+                    }
+                }
+                tmp = result;
+                break;
+            }
+            case ASRUtils::IntrinsicElementalFunctions::Min: {
+                ASR::ttype_t *t = ASRUtils::expr_type(x.m_args[0]);
+                this->visit_expr2(*x.m_args[0]);
+                mlir::Value result = tmp;
+                for (size_t i = 1; i < x.n_args; i++) {
+                    this->visit_expr2(*x.m_args[i]);
+                    if (ASRUtils::is_real(*t)) {
+                        result = builder->create<mlir::LLVM::MinNumOp>(loc, result, tmp);
+                    } else if (ASRUtils::is_integer(*t)) {
+                        result = builder->create<mlir::LLVM::SMinOp>(loc, result, tmp);
+                    } else {
+                        throw CodeGenError("Min: unsupported type", x.base.base.loc);
+                    }
+                }
+                tmp = result;
+                break;
+            }
+            default: {
+                throw CodeGenError("Either the '" + ASRUtils::IntrinsicElementalFunctionRegistry::
+                        get_intrinsic_function_name(x.m_intrinsic_id) +
+                        "' intrinsic is not implemented by MLIR backend or "
+                        "the compile-time value is not available", x.base.base.loc);
+            }
+        }
     }
 
     void visit_Assignment(const ASR::Assignment_t &x) {
@@ -458,7 +544,7 @@ public:
         this->visit_expr(*x.m_arg);
         switch (x.m_old) {
             case (ASR::array_physical_typeType::FixedSizeArray): {
-                if (x.m_new == ASR::array_physical_typeType::PointerToDataArray) {
+                if (x.m_new == ASR::array_physical_typeType::PointerArray) {
                     mlir::Value zero = builder->create<mlir::LLVM::ConstantOp>(loc,
                         builder->getI64Type(), builder->getIndexAttr(0));
                     mlir::Type type = getType(x.m_type);
@@ -498,7 +584,7 @@ public:
             }
         } else {
             throw CodeGenError("The type `"+
-                ASRUtils::type_to_str_python(arr_type)
+                ASRUtils::type_to_str_python_expr(arr_type, x.m_v)
                 +"` is not supported yet", x.base.base.loc);
         }
         tmp = builder->create<mlir::LLVM::ConstantOp>(loc,
@@ -631,7 +717,7 @@ public:
         mlir::Type baseType;
         mlir::ValueRange gepIdx;
         if (ASRUtils::extract_physical_type(ASRUtils::expr_type(x.m_v))
-                == ASR::array_physical_typeType::PointerToDataArray) {
+                == ASR::array_physical_typeType::PointerArray) {
             gepIdx = {idx};
             baseType = getType(x.m_type);
         } else {
@@ -862,14 +948,27 @@ public:
     }
 
     void visit_FileWrite(const ASR::FileWrite_t &x) {
-        if (!x.m_unit) {
-            LCOMPILERS_ASSERT(x.n_values == 1);
-            handle_Print(x.base.base.loc, x.m_values[0]);
-        } else {
-            throw CodeGenError("Only write(*, *) [...] is implemented for now",
-                    x.base.base.loc);
+        bool is_default_unit = false;
+        if (x.m_unit) {
+            int unit_value = -1;
+            if (ASRUtils::extract_value(x.m_unit, unit_value)) {
+                // In Fortran, default output unit is 6
+                if (unit_value == 6) {
+                    is_default_unit = true;
+                }
+            }
         }
+        if (!is_default_unit) {
+            throw CodeGenError(
+                "MLIR backend currently supports only write(*,*) "
+                "(default output unit)",
+                x.base.base.loc
+            );
+        }
+        LCOMPILERS_ASSERT(x.n_values == 1);
+        handle_Print(x.base.base.loc, x.m_values[0]);
     }
+
 
 };
 

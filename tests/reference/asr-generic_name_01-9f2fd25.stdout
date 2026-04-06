@@ -37,9 +37,14 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             integer_add_subrout:
-                                                (ClassProcedure
+                                                (StructMethodDeclaration
                                                     3
                                                     integer_add_subrout
                                                     ()
@@ -66,9 +71,14 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             real_add_subrout:
-                                                (ClassProcedure
+                                                (StructMethodDeclaration
                                                     3
                                                     real_add_subrout
                                                     ()
@@ -80,9 +90,17 @@
                                                 )
                                         })
                                     complextype
+                                    (StructType
+                                        [(Real 4)
+                                        (Real 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [r
                                     i]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -90,6 +108,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             integer_add_subrout:
                                 (Function
@@ -133,6 +152,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             r:
                                                 (Variable
@@ -151,6 +175,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             sum:
                                                 (Variable
@@ -162,15 +191,24 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 complextype
+                                                        [(Real 4)
+                                                        (Real 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 complextype
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             this:
                                                 (Variable
@@ -181,27 +219,44 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (ClassType
-                                                        2 complextype
+                                                    (StructType
+                                                        [(Real 4)
+                                                        (Real 4)]
+                                                        []
+                                                        .false.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 complextype
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     integer_add_subrout
                                     (FunctionType
-                                        [(ClassType
-                                            2 complextype
+                                        [(StructType
+                                            [(Real 4)
+                                            (Real 4)]
+                                            []
+                                            .false.
+                                            .false.
                                         )
                                         (Integer 4)
                                         (Integer 4)
                                         (StructType
-                                            2 complextype
+                                            [(Real 4)
+                                            (Real 4)]
+                                            []
+                                            .true.
+                                            .false.
                                         )]
                                         ()
                                         Source
@@ -223,7 +278,7 @@
                                     [(Print
                                         (StringConstant
                                             "Calling integer_add_subrout"
-                                            (String 1 27 () PointerString)
+                                            (String 1 (IntegerConstant 27 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (Assignment
@@ -246,11 +301,14 @@
                                                 IntegerToReal
                                                 (Real 4)
                                                 ()
+                                                ()
                                             )
                                             (Real 4)
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (StructInstanceMember
@@ -272,11 +330,14 @@
                                                 IntegerToReal
                                                 (Real 4)
                                                 ()
+                                                ()
                                             )
                                             (Real 4)
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     ()
                                     Public
@@ -326,6 +387,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             r:
                                                 (Variable
@@ -344,6 +410,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             sum:
                                                 (Variable
@@ -355,15 +426,24 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 complextype
+                                                        [(Real 4)
+                                                        (Real 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 complextype
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             this:
                                                 (Variable
@@ -374,27 +454,44 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (ClassType
-                                                        2 complextype
+                                                    (StructType
+                                                        [(Real 4)
+                                                        (Real 4)]
+                                                        []
+                                                        .false.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 complextype
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     real_add_subrout
                                     (FunctionType
-                                        [(ClassType
-                                            2 complextype
+                                        [(StructType
+                                            [(Real 4)
+                                            (Real 4)]
+                                            []
+                                            .false.
+                                            .false.
                                         )
                                         (Real 4)
                                         (Real 4)
                                         (StructType
-                                            2 complextype
+                                            [(Real 4)
+                                            (Real 4)]
+                                            []
+                                            .true.
+                                            .false.
                                         )]
                                         ()
                                         Source
@@ -416,7 +513,7 @@
                                     [(Print
                                         (StringConstant
                                             "Calling real_add_subrout"
-                                            (String 1 24 () PointerString)
+                                            (String 1 (IntegerConstant 24 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (Assignment
@@ -439,6 +536,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (StructInstanceMember
@@ -460,6 +559,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     ()
                                     Public
@@ -469,7 +570,9 @@
                                 )
                         })
                     complex_module
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -498,6 +601,16 @@
                                     i
                                     Public
                                 ),
+                            1_complextype_integer_add_subrout:
+                                (ExternalSymbol
+                                    6
+                                    1_complextype_integer_add_subrout
+                                    3 integer_add_subrout
+                                    complextype
+                                    []
+                                    integer_add_subrout
+                                    Public
+                                ),
                             1_complextype_r:
                                 (ExternalSymbol
                                     6
@@ -508,20 +621,10 @@
                                     r
                                     Public
                                 ),
-                            1_integer_add_subrout:
+                            1_complextype_real_add_subrout:
                                 (ExternalSymbol
                                     6
-                                    1_integer_add_subrout
-                                    3 integer_add_subrout
-                                    complextype
-                                    []
-                                    integer_add_subrout
-                                    Public
-                                ),
-                            1_real_add_subrout:
-                                (ExternalSymbol
-                                    6
-                                    1_real_add_subrout
+                                    1_complextype_real_add_subrout
                                     3 real_add_subrout
                                     complextype
                                     []
@@ -538,15 +641,24 @@
                                     ()
                                     Default
                                     (StructType
-                                        6 complextype
+                                        [(Real 4)
+                                        (Real 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    6 complextype
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             c:
                                 (Variable
@@ -558,15 +670,24 @@
                                     ()
                                     Default
                                     (StructType
-                                        6 complextype
+                                        [(Real 4)
+                                        (Real 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    6 complextype
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             complextype:
                                 (ExternalSymbol
@@ -595,6 +716,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             fptwo:
                                 (Variable
@@ -613,6 +739,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             fpzero:
                                 (Variable
@@ -631,6 +762,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             ione:
                                 (Variable
@@ -649,6 +785,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             izero:
                                 (Variable
@@ -667,6 +808,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             negfpone:
                                 (Variable
@@ -685,6 +831,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     generic_name_01
@@ -696,6 +847,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 fptwo)
@@ -704,6 +857,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 fpzero)
@@ -712,16 +867,22 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 ione)
                         (IntegerConstant 1 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 izero)
                         (IntegerConstant 0 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 negfpone)
@@ -737,6 +898,8 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 c)
@@ -745,19 +908,27 @@
                             [((Var 6 fpone))
                             ((Var 6 fptwo))]
                             (StructType
-                                6 complextype
+                                [(Real 4)
+                                (Real 4)]
+                                []
+                                .true.
+                                .false.
                             )
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (SubroutineCall
-                        6 1_integer_add_subrout
+                        6 1_complextype_integer_add_subrout
                         6 1_add
-                        [((Var 6 ione))
+                        [((Var 6 c))
+                        ((Var 6 ione))
                         ((Var 6 izero))
                         ((Var 6 a))]
                         (Var 6 c)
+                        .false.
                     )
                     (Print
                         (StringFormat
@@ -775,11 +946,14 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (RealCompare
                             (StructInstanceMember
                                 (Var 6 a)
@@ -801,6 +975,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (StructInstanceMember
                                 (Var 6 a)
@@ -822,12 +997,14 @@
                         []
                     )
                     (SubroutineCall
-                        6 1_real_add_subrout
+                        6 1_complextype_real_add_subrout
                         6 1_add
-                        [((Var 6 fpzero))
+                        [((Var 6 c))
+                        ((Var 6 fpzero))
                         ((Var 6 negfpone))
                         ((Var 6 a))]
                         (Var 6 c)
+                        .false.
                     )
                     (Print
                         (StringFormat
@@ -845,11 +1022,14 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (RealCompare
                             (StructInstanceMember
                                 (Var 6 a)
@@ -871,6 +1051,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (StructInstanceMember
                                 (Var 6 a)

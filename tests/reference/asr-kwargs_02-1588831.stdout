@@ -23,10 +23,10 @@
                                     (SymbolTable
                                         4
                                         {
-                                            1_log_io_error:
+                                            1_logger_type_log_io_error:
                                                 (ExternalSymbol
                                                     4
-                                                    1_log_io_error
+                                                    1_logger_type_log_io_error
                                                     3 log_io_error
                                                     logger_type
                                                     []
@@ -42,7 +42,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 -1 () PointerString)
+                                                    (String 1 () AssumedLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -50,6 +50,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             self:
                                                 (Variable
@@ -60,16 +65,24 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (ClassType
-                                                        2 logger_type
+                                                    (StructType
+                                                        []
+                                                        []
+                                                        .false.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 logger_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             unit:
                                                 (Variable
@@ -88,14 +101,22 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     add_log_file
                                     (FunctionType
-                                        [(ClassType
-                                            2 logger_type
+                                        [(StructType
+                                            []
+                                            []
+                                            .false.
+                                            .false.
                                         )
-                                        (String 1 -1 () PointerString)
+                                        (String 1 () AssumedLength DescriptorString)
                                         (Integer 4)]
                                         ()
                                         Source
@@ -114,17 +135,19 @@
                                     (Var 4 filename)
                                     (Var 4 unit)]
                                     [(SubroutineCall
-                                        4 1_log_io_error
+                                        4 1_logger_type_log_io_error
                                         ()
-                                        [((IntegerConstant 1 (Integer 4) Decimal))
+                                        [((Var 4 self))
+                                        ((IntegerConstant 1 (Integer 4) Decimal))
                                         ((Var 4 filename))
                                         ((Var 4 unit))]
                                         (Var 4 self)
+                                        .false.
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             log_io_error:
@@ -149,6 +172,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             filename:
                                                 (Variable
@@ -159,7 +187,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 -1 () PointerString)
+                                                    (String 1 () AssumedLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -167,6 +195,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             self:
                                                 (Variable
@@ -177,16 +210,24 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (ClassType
-                                                        2 logger_type
+                                                    (StructType
+                                                        []
+                                                        []
+                                                        .false.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 logger_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             unit:
                                                 (Variable
@@ -205,15 +246,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     log_io_error
                                     (FunctionType
-                                        [(ClassType
-                                            2 logger_type
+                                        [(StructType
+                                            []
+                                            []
+                                            .false.
+                                            .false.
                                         )
                                         (Integer 4)
-                                        (String 1 -1 () PointerString)
+                                        (String 1 () AssumedLength DescriptorString)
                                         (Integer 4)]
                                         ()
                                         Source
@@ -235,8 +284,8 @@
                                     []
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             logger_type:
@@ -245,7 +294,7 @@
                                         3
                                         {
                                             add_log_file:
-                                                (ClassProcedure
+                                                (StructMethodDeclaration
                                                     3
                                                     add_log_file
                                                     self
@@ -256,7 +305,7 @@
                                                     .false.
                                                 ),
                                             log_io_error:
-                                                (ClassProcedure
+                                                (StructMethodDeclaration
                                                     3
                                                     log_io_error
                                                     self
@@ -268,6 +317,13 @@
                                                 )
                                         })
                                     logger_type
+                                    (StructType
+                                        []
+                                        []
+                                        .true.
+                                        .false.
+                                    )
+                                    []
                                     []
                                     []
                                     Source
@@ -277,10 +333,13 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 )
                         })
                     kwargs_02_stdlib_logger
+                    ()
                     [kwargs_02_stdlib_logger]
+                    .false.
                     .false.
                     .false.
                 )

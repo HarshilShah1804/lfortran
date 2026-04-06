@@ -29,8 +29,8 @@
                     []
                     ()
                     Public
-                    .false.
-                    .false.
+                    .true.
+                    .true.
                     ()
                 ),
             file_common_block_block_1:
@@ -60,6 +60,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             b:
                                                 (Variable
@@ -78,6 +83,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             h:
                                                 (Variable
@@ -96,13 +106,25 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     block_1
+                                    (StructType
+                                        []
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [a
                                     b
                                     h]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -110,6 +132,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             struct_instance_block_1:
                                 (Variable
@@ -121,19 +144,29 @@
                                     ()
                                     Default
                                     (StructType
-                                        3 block_1
+                                        []
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    3 block_1
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     file_common_block_block_1
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -164,6 +197,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             d:
                                                 (Variable
@@ -182,12 +220,24 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     block_2
+                                    (StructType
+                                        []
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [c
                                     d]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -195,6 +245,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             struct_instance_block_2:
                                 (Variable
@@ -206,19 +257,29 @@
                                     ()
                                     Default
                                     (StructType
-                                        5 block_2
+                                        []
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    5 block_2
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     file_common_block_block_2
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -249,6 +310,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             g:
                                                 (Variable
@@ -267,12 +333,24 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     block_3
+                                    (StructType
+                                        []
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [e
                                     g]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -280,6 +358,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             struct_instance_block_3:
                                 (Variable
@@ -291,19 +370,29 @@
                                     ()
                                     Default
                                     (StructType
-                                        7 block_3
+                                        []
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    7 block_3
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     file_common_block_block_3
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -334,11 +423,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     block_4
+                                    (StructType
+                                        []
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [i]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -346,6 +447,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             struct_instance_block_4:
                                 (Variable
@@ -357,19 +459,29 @@
                                     ()
                                     Default
                                     (StructType
-                                        9 block_4
+                                        []
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    9 block_4
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     file_common_block_block_4
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -400,6 +512,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             k:
                                                 (Variable
@@ -418,12 +535,24 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     block_5
+                                    (StructType
+                                        []
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [j
                                     k]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -431,6 +560,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             struct_instance_block_5:
                                 (Variable
@@ -442,19 +572,29 @@
                                     ()
                                     Default
                                     (StructType
-                                        11 block_5
+                                        []
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    11 block_5
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     file_common_block_block_5
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

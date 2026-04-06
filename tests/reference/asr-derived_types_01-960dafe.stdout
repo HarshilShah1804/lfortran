@@ -77,15 +77,24 @@
                                     ()
                                     Default
                                     (StructType
-                                        8 x
+                                        [(Real 4)
+                                        (Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    8 x
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             c:
                                 (Variable
@@ -97,85 +106,36 @@
                                     ()
                                     Default
                                     (StructType
-                                        8 z
+                                        [(Complex 4)
+                                        (StructType
+                                            [(Complex 4)
+                                            (StructType
+                                                [(Real 4)
+                                                (Integer 4)]
+                                                []
+                                                .true.
+                                                .false.
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
+                                        )]
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    8 z
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
-                                ),
-                            derived_types_01_m_01_y:
-                                (ExternalSymbol
-                                    8
-                                    derived_types_01_m_01_y
-                                    2 y
-                                    derived_types_01_m_01
-                                    []
-                                    y
-                                    Public
-                                ),
-                            derived_types_01_m_01_y1:
-                                (ExternalSymbol
-                                    8
-                                    derived_types_01_m_01_y1
-                                    2 y
-                                    derived_types_01_m_01
-                                    []
-                                    y
-                                    Public
-                                ),
-                            derived_types_01_m_01_y2:
-                                (ExternalSymbol
-                                    8
-                                    derived_types_01_m_01_y2
-                                    2 y
-                                    derived_types_01_m_01
-                                    []
-                                    y
-                                    Public
-                                ),
-                            derived_types_01_m_01_y3:
-                                (ExternalSymbol
-                                    8
-                                    derived_types_01_m_01_y3
-                                    2 y
-                                    derived_types_01_m_01
-                                    []
-                                    y
-                                    Public
-                                ),
-                            derived_types_01_m_01_y4:
-                                (ExternalSymbol
-                                    8
-                                    derived_types_01_m_01_y4
-                                    2 y
-                                    derived_types_01_m_01
-                                    []
-                                    y
-                                    Public
-                                ),
-                            derived_types_01_m_01_y5:
-                                (ExternalSymbol
-                                    8
-                                    derived_types_01_m_01_y5
-                                    2 y
-                                    derived_types_01_m_01
-                                    []
-                                    y
-                                    Public
-                                ),
-                            derived_types_01_m_01_y6:
-                                (ExternalSymbol
-                                    8
-                                    derived_types_01_m_01_y6
-                                    2 y
-                                    derived_types_01_m_01
-                                    []
-                                    y
-                                    Public
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             set:
                                 (ExternalSymbol
@@ -220,6 +180,8 @@
                         )
                         (IntegerConstant 5 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (StructInstanceMember
@@ -233,6 +195,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
@@ -250,7 +214,9 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -259,6 +225,7 @@
                         ()
                         [((Var 8 b))]
                         ()
+                        .false.
                     )
                     (Print
                         (StringFormat
@@ -276,7 +243,9 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -287,13 +256,27 @@
                                     (Var 8 c)
                                     8 1_z_l
                                     (StructType
-                                        8 derived_types_01_m_01_y
+                                        [(Complex 4)
+                                        (StructType
+                                            [(Real 4)
+                                            (Integer 4)]
+                                            []
+                                            .true.
+                                            .false.
+                                        )]
+                                        []
+                                        .true.
+                                        .false.
                                     )
                                     ()
                                 )
                                 8 1_y_d
                                 (StructType
-                                    8 x
+                                    [(Real 4)
+                                    (Integer 4)]
+                                    []
+                                    .true.
+                                    .false.
                                 )
                                 ()
                             )
@@ -306,6 +289,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (StructInstanceMember
@@ -314,13 +299,27 @@
                                     (Var 8 c)
                                     8 1_z_l
                                     (StructType
-                                        8 derived_types_01_m_01_y1
+                                        [(Complex 4)
+                                        (StructType
+                                            [(Real 4)
+                                            (Integer 4)]
+                                            []
+                                            .true.
+                                            .false.
+                                        )]
+                                        []
+                                        .true.
+                                        .false.
                                     )
                                     ()
                                 )
                                 8 1_y_d
                                 (StructType
-                                    8 x
+                                    [(Real 4)
+                                    (Integer 4)]
+                                    []
+                                    .true.
+                                    .false.
                                 )
                                 ()
                             )
@@ -330,6 +329,8 @@
                         )
                         (IntegerConstant 2 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (StructInstanceMember
@@ -355,6 +356,8 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
@@ -365,13 +368,27 @@
                                         (Var 8 c)
                                         8 1_z_l
                                         (StructType
-                                            8 derived_types_01_m_01_y2
+                                            [(Complex 4)
+                                            (StructType
+                                                [(Real 4)
+                                                (Integer 4)]
+                                                []
+                                                .true.
+                                                .false.
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         ()
                                     )
                                     8 1_y_d
                                     (StructType
-                                        8 x
+                                        [(Real 4)
+                                        (Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
                                     ()
                                 )
@@ -385,13 +402,27 @@
                                         (Var 8 c)
                                         8 1_z_l
                                         (StructType
-                                            8 derived_types_01_m_01_y3
+                                            [(Complex 4)
+                                            (StructType
+                                                [(Real 4)
+                                                (Integer 4)]
+                                                []
+                                                .true.
+                                                .false.
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         ()
                                     )
                                     8 1_y_d
                                     (StructType
-                                        8 x
+                                        [(Real 4)
+                                        (Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
                                     ()
                                 )
@@ -406,7 +437,9 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -418,17 +451,32 @@
                                 (Var 8 c)
                                 8 1_z_l
                                 (StructType
-                                    8 derived_types_01_m_01_y4
+                                    [(Complex 4)
+                                    (StructType
+                                        [(Real 4)
+                                        (Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )]
+                                    []
+                                    .true.
+                                    .false.
                                 )
                                 ()
                             )
                             8 1_y_d
                             (StructType
-                                8 x
+                                [(Real 4)
+                                (Integer 4)]
+                                []
+                                .true.
+                                .false.
                             )
                             ()
                         ))]
                         ()
+                        .false.
                     )
                     (Print
                         (StringFormat
@@ -439,13 +487,27 @@
                                         (Var 8 c)
                                         8 1_z_l
                                         (StructType
-                                            8 derived_types_01_m_01_y5
+                                            [(Complex 4)
+                                            (StructType
+                                                [(Real 4)
+                                                (Integer 4)]
+                                                []
+                                                .true.
+                                                .false.
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         ()
                                     )
                                     8 1_y_d
                                     (StructType
-                                        8 x
+                                        [(Real 4)
+                                        (Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
                                     ()
                                 )
@@ -459,13 +521,27 @@
                                         (Var 8 c)
                                         8 1_z_l
                                         (StructType
-                                            8 derived_types_01_m_01_y6
+                                            [(Complex 4)
+                                            (StructType
+                                                [(Real 4)
+                                                (Integer 4)]
+                                                []
+                                                .true.
+                                                .false.
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         ()
                                     )
                                     8 1_y_d
                                     (StructType
-                                        8 x
+                                        [(Real 4)
+                                        (Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
                                     )
                                     ()
                                 )
@@ -480,7 +556,9 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]
@@ -525,21 +603,34 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 x
+                                                        [(Real 4)
+                                                        (Integer 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 x
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     set
                                     (FunctionType
                                         [(StructType
-                                            2 x
+                                            [(Real 4)
+                                            (Integer 4)]
+                                            []
+                                            .true.
+                                            .false.
                                         )]
                                         ()
                                         Source
@@ -564,6 +655,8 @@
                                         )
                                         (IntegerConstant 1 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (StructInstanceMember
@@ -577,11 +670,13 @@
                                             (Real 4)
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             x:
@@ -606,6 +701,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             r:
                                                 (Variable
@@ -624,12 +724,25 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     x
+                                    (StructType
+                                        [(Real 4)
+                                        (Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [r
                                     i]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -637,6 +750,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             y:
                                 (Struct
@@ -660,6 +774,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             d:
                                                 (Variable
@@ -671,21 +790,44 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 x
+                                                        [(Real 4)
+                                                        (Integer 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 x
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     y
+                                    (StructType
+                                        [(Complex 4)
+                                        (StructType
+                                            [(Real 4)
+                                            (Integer 4)]
+                                            []
+                                            .true.
+                                            .false.
+                                        )]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     [x]
                                     [c
                                     d]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -693,10 +835,13 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 )
                         })
                     derived_types_01_m_01
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -737,6 +882,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             l:
                                                 (Variable
@@ -748,21 +898,56 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        6 y
+                                                        [(Complex 4)
+                                                        (StructType
+                                                            [(Real 4)
+                                                            (Integer 4)]
+                                                            []
+                                                            .true.
+                                                            .false.
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    6 y
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     z
+                                    (StructType
+                                        [(Complex 4)
+                                        (StructType
+                                            [(Complex 4)
+                                            (StructType
+                                                [(Real 4)
+                                                (Integer 4)]
+                                                []
+                                                .true.
+                                                .false.
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
+                                        )]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     [y]
                                     [k
                                     l]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -770,10 +955,13 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 )
                         })
                     derived_types_01_m_02
+                    ()
                     [derived_types_01_m_01]
+                    .false.
                     .false.
                     .false.
                 )

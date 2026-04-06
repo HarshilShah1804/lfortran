@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             f2:
                                 (Variable
@@ -42,6 +47,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     f
@@ -65,6 +75,8 @@
                         (Var 1 x)
                         (IntegerConstant 6 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 f1)
@@ -76,6 +88,8 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 1 x)
@@ -87,6 +101,8 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 f2)
@@ -98,6 +114,8 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )]
                     (Var 2 f2)
                     Public
@@ -122,6 +140,11 @@
                     .false.
                     .false.
                     .false.
+                    ()
+                    .false.
+                    .false.
+                    NotMethod
+                    ()
                 )
         })
     []

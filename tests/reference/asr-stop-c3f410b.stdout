@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     stop
@@ -44,8 +49,11 @@
                             (IntegerConstant 25 (Integer 4) Decimal)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 x)
                             Eq

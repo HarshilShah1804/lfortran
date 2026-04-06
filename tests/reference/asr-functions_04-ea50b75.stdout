@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             to_negative:
                                 (ExternalSymbol
@@ -59,6 +64,7 @@
                     functions_04
                     [stdlib_int]
                     [(If
+                        ()
                         (IntegerCompare
                             (FunctionCall
                                 4 to_negative@to_negative~genericprocedure
@@ -90,8 +96,11 @@
                             (IntegerConstant -4 (Integer 4) Decimal)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (FunctionCall
                                 4 to_negative@to_negative~genericprocedure
@@ -150,6 +159,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             neg_int:
                                                 (Variable
@@ -168,6 +182,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     to_negative~genericprocedure
@@ -188,6 +207,7 @@
                                     []
                                     [(Var 3 int)]
                                     [(If
+                                        ()
                                         (IntegerCompare
                                             (Var 3 int)
                                             GtE
@@ -203,22 +223,28 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )]
                                         [(Assignment
                                             (Var 3 neg_int)
                                             (Var 3 int)
                                             ()
+                                            .false.
+                                            .false.
                                         )]
                                     )]
                                     (Var 3 neg_int)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })
                     stdlib_int
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

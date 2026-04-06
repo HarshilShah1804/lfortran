@@ -39,16 +39,55 @@ src/bin/lfortran integration_tests/intrinsics_04.f90 -o intrinsics_04
 # Run all tests (does not work on Windows yet):
 cmake --version
 if [[ $WIN != "1" ]]; then
-    ./run_tests.py
+    # using debugging option i.e. `-x` causes incorrect assignment
+    set +x
+    if [[ $MACOS == "1" ]]; then
+        # macOS ARM64 runners have 3 cores; higher parallelism overwhelms them
+        NPROC=3
+    else
+        # this works fine on Linux
+        NPROC=$(nproc)
+    fi
+    # we turn on the debugging again
+    set -x
+    echo "NPROC: ${NPROC}"
+
+    if [[ $LFORTRAN_LLVM_VERSION == "11" ]]; then
+        ./run_tests.py
+    fi
 
     cd integration_tests
     mkdir build-lfortran-llvm
     cd build-lfortran-llvm
     FC="../../src/bin/lfortran" cmake -DLFORTRAN_BACKEND=llvm -DCURRENT_BINARY_DIR=. ..
-    make
-    ctest -L llvm
+    make -j${NPROC}
+    ctest -L llvm -j${NPROC}
     cd ..
 
-    ./run_tests.py -b llvm2 llvm_rtlib llvm_nopragma
-    ./run_tests.py -b llvm2 llvm_rtlib llvm_nopragma -f
+    ./run_tests.py -b llvm llvm2 llvm_rtlib llvm_nopragma llvm_integer_8 llvmImplicit -j${NPROC}
+    if [[ $MACOS != "1" ]]; then
+        ./run_tests.py -b llvm -sc -j${NPROC}
+        ./run_tests.py -b llvm2 llvm_rtlib llvm_nopragma llvm_integer_8 -f -j${NPROC}
+    fi
+    if [[ $LFORTRAN_LLVM_VERSION == "11" ]]; then
+        if [[ $MACOS != "1" ]]; then
+            ./run_tests.py -b llvm llvmImplicit -f -nf16 -j${NPROC}
+        fi
+    else
+        if [[ $MACOS != "1" ]]; then
+            ./run_tests.py -b llvm llvmImplicit -f -j${NPROC}
+        fi
+    fi
+    ./run_tests.py -b llvm_submodule -j${NPROC}
+    if [[ $MACOS != "1" ]]; then
+        ./run_tests.py -b llvm_submodule -sc -j${NPROC}
+    fi
+    ./run_tests.py -b llvm --detect-leaks
+    cd ..
+
+    pip install src/server/tests tests/server
+    # NOTE: `--full-trace` tends to print excessively long stack traces. Please
+    # re-enable it if needed:
+    # pytest -vv --showlocals --full-trace --capture=no --timeout=5 tests/server
+#    pytest -vv --showlocals --capture=no --timeout=5 tests/server
 fi

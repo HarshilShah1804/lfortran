@@ -35,11 +35,16 @@
                                                     (Logical 4)
                                                     ()
                                                     Source
-                                                    Private
+                                                    Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             self:
                                                 (Variable
@@ -50,22 +55,33 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (ClassType
-                                                        2 bitset_type
+                                                    (StructType
+                                                        [(Integer 8)]
+                                                        []
+                                                        .false.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 bitset_type
                                                     Source
-                                                    Private
+                                                    Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     all_abstract
                                     (FunctionType
-                                        [(ClassType
-                                            2 bitset_type
+                                        [(StructType
+                                            [(Integer 8)]
+                                            []
+                                            .false.
+                                            .false.
                                         )]
                                         (Logical 4)
                                         Source
@@ -83,9 +99,9 @@
                                     [(Var 4 self)]
                                     []
                                     (Var 4 all)
-                                    Private
+                                    Public
                                     .false.
-                                    .false.
+                                    .true.
                                     ()
                                 ),
                             bitset_type:
@@ -94,7 +110,7 @@
                                         3
                                         {
                                             all:
-                                                (ClassProcedure
+                                                (StructMethodDeclaration
                                                     3
                                                     all
                                                     self
@@ -121,11 +137,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     bitset_type
+                                    (StructType
+                                        [(Integer 8)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [num_bits]
+                                    []
                                     Source
                                     Private
                                     .false.
@@ -133,10 +161,13 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 )
                         })
                     derived_types_04_bitset
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

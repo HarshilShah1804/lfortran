@@ -2,11 +2,11 @@
     "basename": "asr-template_add_04-1710dbc",
     "cmd": "lfortran --show-asr --no-color {infile} -o {outfile}",
     "infile": "tests/../integration_tests/template_add_04.f90",
-    "infile_hash": "2d7374a38a19d2b3ddcdc5b801b3ef70a6944c0e0eab26b8b9fe40ec",
+    "infile_hash": "3a87e933776c164b3f127859bb8ca5b6daabc9c6df7232173c427158",
     "outfile": null,
     "outfile_hash": null,
     "stdout": "asr-template_add_04-1710dbc.stdout",
-    "stdout_hash": "878527552969606c4eede415a2e95a3fa628a0c39aa6f8628d69acf0",
+    "stdout_hash": "69c99eadee0f99051844fee293f0a6f07ce9f1100914e784fe82b352",
     "stderr": null,
     "stderr_hash": null,
     "returncode": 0

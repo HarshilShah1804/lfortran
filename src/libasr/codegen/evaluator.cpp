@@ -35,8 +35,10 @@
 #include <llvm/Transforms/Scalar/InstSimplifyPass.h>
 #include <llvm/Transforms/IPO.h>
 #include <llvm/Transforms/IPO/AlwaysInliner.h>
+#if LLVM_VERSION_MAJOR >= 9
 #include <llvm/Transforms/Instrumentation/AddressSanitizer.h>
 #include <llvm/Transforms/Instrumentation/ThreadSanitizer.h>
+#endif
 #include <llvm/Transforms/InstCombine/InstCombine.h>
 #include <llvm/ExecutionEngine/ObjectCache.h>
 #include <llvm/Support/CommandLine.h>
@@ -53,6 +55,7 @@
 #endif
 #if LLVM_VERSION_MAJOR >= 17
     // TODO: removed from LLVM 17
+    #include <llvm/Passes/PassBuilder.h>
 #else
 #    include <llvm/Transforms/IPO/PassManagerBuilder.h>
 #endif
@@ -99,6 +102,16 @@ LLVMModule::~LLVMModule() = default;
 std::string LLVMModule::str()
 {
     return LLVMEvaluator::module_to_string(*m_m);
+}
+
+llvm::Function *LLVMModule::get_function(const std::string &fn_name) {
+    llvm::Module *m = m_m.get();
+    return m->getFunction(fn_name);
+}
+
+llvm::GlobalVariable *LLVMModule::get_global(const std::string &global_name) {
+    llvm::Module *m = m_m.get();
+    return m->getNamedGlobal(global_name);
 }
 
 std::string LLVMModule::get_return_type(const std::string &fn_name)
@@ -229,8 +242,26 @@ LLVMEvaluator::LLVMEvaluator(const std::string &t)
     std::string CPU = "generic";
     std::string features = "";
     llvm::TargetOptions opt;
+#if LLVM_VERSION_MAJOR >= 8
     RM_OPTIONAL_TYPE<llvm::Reloc::Model> RM = llvm::Reloc::Model::PIC_;
-    TM = target->createTargetMachine(target_triple, CPU, features, opt, RM);
+    TM = target->createTargetMachine(
+#if LLVM_VERSION_MAJOR >= 21
+        llvm::Triple(target_triple),
+#else
+        target_triple,
+#endif
+        CPU, features, opt, RM);
+#else
+    // LLVM 7: Use EngineBuilder with setRelocationModel to avoid ABI issues
+    // with Optional parameters while still specifying PIC relocation model
+    llvm::EngineBuilder builder;
+    builder.setEngineKind(llvm::EngineKind::JIT);
+    builder.setRelocationModel(llvm::Reloc::Model::PIC_ );
+    TM = builder.selectTarget();
+    if (!TM) {
+        throw LCompilersException("Could not create target machine");
+    }
+#endif
 
     // For some reason the JIT requires a different TargetMachine
     jit = cantFail(llvm::orc::KaleidoscopeJIT::Create());
@@ -261,7 +292,11 @@ std::unique_ptr<llvm::Module> LLVMEvaluator::parse_module(const std::string &sou
     if (v) {
         throw LCompilersException("parse_module(): module failed verification.");
     };
+#if LLVM_VERSION_MAJOR >= 21
+    module->setTargetTriple(llvm::Triple(target_triple));
+#else
     module->setTargetTriple(target_triple);
+#endif
     module->setDataLayout(jit->getDataLayout());
     return module;
 }
@@ -286,7 +321,11 @@ void LLVMEvaluator::add_module(const std::string &source) {
 void LLVMEvaluator::add_module(std::unique_ptr<llvm::Module> mod) {
     // These are already set in parse_module(), but we set it here again for
     // cases when the Module was constructed directly, not via parse_module().
+#if LLVM_VERSION_MAJOR >= 21
+    mod->setTargetTriple(llvm::Triple(target_triple));
+#else
     mod->setTargetTriple(target_triple);
+#endif
     mod->setDataLayout(jit->getDataLayout());
     llvm::Error err = jit->addModule(std::move(mod), context);
     if (err) {
@@ -305,6 +344,25 @@ void LLVMEvaluator::add_module(std::unique_ptr<LLVMModule> m) {
 }
 
 intptr_t LLVMEvaluator::get_symbol_address(const std::string &name) {
+#if LLVM_VERSION_MAJOR < 8
+    // LLVM 7: Use findSymbol which returns JITSymbol
+    llvm::JITSymbol s = jit->findSymbol(name);
+    if (!s) {
+        throw LCompilersException("findSymbol() failed to find the symbol '" + name + "'");
+    }
+    auto addr = s.getAddress();
+    if (!addr) {
+        llvm::Error e = addr.takeError();
+        llvm::SmallVector<char, 128> buf;
+        llvm::raw_svector_ostream dest(buf);
+        llvm::logAllUnhandledErrors(std::move(e), dest, "");
+        std::string msg = std::string(dest.str().data(), dest.str().size());
+        if (msg[msg.size()-1] == '\n') msg = msg.substr(0, msg.size()-1);
+        throw LCompilersException("getAddress() failed for symbol '"
+            + name + "', error: " + msg);
+    }
+    return (intptr_t)addr.get();
+#else
 #if LLVM_VERSION_MAJOR < 17
     llvm::Expected<llvm::JITEvaluatedSymbol>
 #else
@@ -336,6 +394,7 @@ intptr_t LLVMEvaluator::get_symbol_address(const std::string &name) {
         throw LCompilersException("JITSymbol::getAddress() returned an error: " + msg);
     }
     return (intptr_t)cantFail(std::move(addr0));
+#endif
 }
 
 void write_file(const std::string &filename, const std::string &contents)
@@ -348,7 +407,9 @@ void write_file(const std::string &filename, const std::string &contents)
 std::string LLVMEvaluator::get_asm(llvm::Module &m)
 {
     llvm::legacy::PassManager pass;
-#if LLVM_VERSION_MAJOR < 18
+#if LLVM_VERSION_MAJOR < 10
+    llvm::LLVMTargetMachine::CodeGenFileType ft = llvm::LLVMTargetMachine::CGFT_AssemblyFile;
+#elif LLVM_VERSION_MAJOR < 18
     llvm::CodeGenFileType ft = llvm::CGFT_AssemblyFile;
 #else
     llvm::CodeGenFileType ft = llvm::CodeGenFileType::AssemblyFile;
@@ -368,11 +429,17 @@ void LLVMEvaluator::save_asm_file(llvm::Module &m, const std::string &filename)
 }
 
 void LLVMEvaluator::save_object_file(llvm::Module &m, const std::string &filename) {
+#if LLVM_VERSION_MAJOR >= 21
+    m.setTargetTriple(llvm::Triple(target_triple));
+#else
     m.setTargetTriple(target_triple);
+#endif
     m.setDataLayout(TM->createDataLayout());
 
     llvm::legacy::PassManager pass;
-#if LLVM_VERSION_MAJOR < 18
+#if LLVM_VERSION_MAJOR < 10
+    llvm::LLVMTargetMachine::CodeGenFileType ft = llvm::LLVMTargetMachine::CGFT_ObjectFile;
+#elif LLVM_VERSION_MAJOR < 18
     llvm::CodeGenFileType ft = llvm::CGFT_ObjectFile;
 #else
     llvm::CodeGenFileType ft = llvm::CodeGenFileType::ObjectFile;
@@ -396,18 +463,33 @@ void LLVMEvaluator::create_empty_object_file(const std::string &filename) {
 }
 
 void LLVMEvaluator::opt(llvm::Module &m) {
+#if LLVM_VERSION_MAJOR >= 21
+    m.setTargetTriple(llvm::Triple(target_triple));
+#else
     m.setTargetTriple(target_triple);
+#endif
     m.setDataLayout(TM->createDataLayout());
 
+#if LLVM_VERSION_MAJOR >= 17
+    llvm::LoopAnalysisManager LAM;
+    llvm::FunctionAnalysisManager FAM;
+    llvm::CGSCCAnalysisManager CGAM;
+    llvm::ModuleAnalysisManager MAM;
+    llvm::PassBuilder PB = llvm::PassBuilder(TM);
+    PB.registerModuleAnalyses(MAM);
+    PB.registerCGSCCAnalyses(CGAM);
+    PB.registerFunctionAnalyses(FAM);
+    PB.registerLoopAnalyses(LAM);
+    PB.crossRegisterProxies(LAM, FAM, CGAM, MAM);
+    llvm::ModulePassManager MPM = PB.buildPerModuleDefaultPipeline(llvm::OptimizationLevel::O3);
+    MPM.run(m, MAM);
+
+#else
     llvm::legacy::PassManager mpm;
     mpm.add(new llvm::TargetLibraryInfoWrapperPass(TM->getTargetTriple()));
     mpm.add(llvm::createTargetTransformInfoWrapperPass(TM->getTargetIRAnalysis()));
     llvm::legacy::FunctionPassManager fpm(&m);
     fpm.add(llvm::createTargetTransformInfoWrapperPass(TM->getTargetIRAnalysis()));
-
-#if LLVM_VERSION_MAJOR >= 17
-    // TODO: https://llvm.org/docs/NewPassManager.html
-#else
     int optLevel = 3;
     int sizeLevel = 0;
     llvm::PassManagerBuilder builder;
@@ -420,16 +502,14 @@ void LLVMEvaluator::opt(llvm::Module &m) {
     builder.SLPVectorize = true;
     builder.populateFunctionPassManager(fpm);
     builder.populateModulePassManager(mpm);
-#endif
-
     fpm.doInitialization();
     for (llvm::Function &func : m) {
         fpm.run(func);
     }
     fpm.doFinalization();
-
     mpm.add(llvm::createVerifierPass());
     mpm.run(m);
+#endif
 }
 
 std::string LLVMEvaluator::module_to_string(llvm::Module &m) {
@@ -453,6 +533,10 @@ std::string LLVMEvaluator::llvm_version()
 llvm::LLVMContext &LLVMEvaluator::get_context()
 {
     return *context;
+}
+
+const llvm::DataLayout &LLVMEvaluator::get_jit_data_layout() {
+    return jit->getDataLayout();
 }
 
 void LLVMEvaluator::print_targets()

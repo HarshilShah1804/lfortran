@@ -89,12 +89,14 @@
                                 )
                         })
                     template_sort_02
-                    [template_sort_02_m]
+                    [template_sort_02_m
+                    template_sort_02_type]
                     [(SubroutineCall
                         16 test_template
                         ()
                         []
                         ()
+                        .false.
                     )]
                 ),
             template_sort_02_m:
@@ -124,6 +126,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             res:
                                                 (Variable
@@ -142,6 +149,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             rhs:
                                                 (Variable
@@ -160,6 +172,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     lt_integer
@@ -191,11 +208,13 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 14 res)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             lt_my_type:
@@ -230,6 +249,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             res:
                                                 (Variable
@@ -248,6 +272,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             rhs:
                                                 (Variable
@@ -266,6 +295,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     lt_real
@@ -297,11 +331,13 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 13 res)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             my_type:
@@ -343,6 +379,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             res:
                                                                 (Variable
@@ -363,6 +404,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             rhs:
                                                                 (Variable
@@ -383,6 +429,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     op_func
@@ -413,8 +464,8 @@
                                                     []
                                                     (Var 7 res)
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             t:
@@ -436,6 +487,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             u:
                                                 (Variable
@@ -456,6 +512,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             v:
                                                 (Variable
@@ -476,6 +537,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     op_r
@@ -514,6 +580,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             rhs:
                                                                 (Variable
@@ -534,6 +605,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             t:
                                                                 (Variable
@@ -554,6 +630,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             tmp:
                                                                 (Variable
@@ -574,6 +655,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     __instantiated_swap
@@ -603,21 +689,27 @@
                                                         (Var 17 tmp)
                                                         (Var 17 lhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 17 lhs)
                                                         (Var 17 rhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 17 rhs)
                                                         (Var 17 tmp)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )]
                                                     ()
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             __instantiated_swap1:
@@ -644,6 +736,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             rhs:
                                                                 (Variable
@@ -664,6 +761,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             t:
                                                                 (Variable
@@ -684,6 +786,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             tmp:
                                                                 (Variable
@@ -704,6 +811,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     __instantiated_swap1
@@ -733,21 +845,27 @@
                                                         (Var 18 tmp)
                                                         (Var 18 lhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 18 lhs)
                                                         (Var 18 rhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 18 rhs)
                                                         (Var 18 tmp)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )]
                                                     ()
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             logical:
@@ -767,6 +885,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             lt:
                                                 (Function
@@ -792,6 +915,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             res:
                                                                 (Variable
@@ -810,6 +938,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             rhs:
                                                                 (Variable
@@ -830,6 +963,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     lt
@@ -858,8 +996,8 @@
                                                     []
                                                     (Var 11 res)
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             quicksort:
@@ -891,6 +1029,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             high:
                                                                 (Variable
@@ -909,6 +1052,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             i:
                                                                 (Variable
@@ -927,6 +1075,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             last:
                                                                 (Variable
@@ -945,6 +1098,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             low:
                                                                 (Variable
@@ -963,6 +1121,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             pivot:
                                                                 (Variable
@@ -983,6 +1146,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     quicksort
@@ -1017,6 +1185,7 @@
                                                     (Var 12 low)
                                                     (Var 12 high)]
                                                     [(If
+                                                        ()
                                                         (IntegerCompare
                                                             (Var 12 low)
                                                             Lt
@@ -1038,6 +1207,8 @@
                                                                 ()
                                                             )
                                                             ()
+                                                            .false.
+                                                            .false.
                                                         )
                                                         (Assignment
                                                             (Var 12 last)
@@ -1049,6 +1220,8 @@
                                                                 ()
                                                             )
                                                             ()
+                                                            .false.
+                                                            .false.
                                                         )
                                                         (DoLoop
                                                             ()
@@ -1063,6 +1236,7 @@
                                                             )
                                                             ())
                                                             [(If
+                                                                ()
                                                                 (FunctionCall
                                                                     10 lt
                                                                     ()
@@ -1092,6 +1266,8 @@
                                                                         ()
                                                                     )
                                                                     ()
+                                                                    .false.
+                                                                    .false.
                                                                 )
                                                                 (SubroutineCall
                                                                     10 __instantiated_swap
@@ -1119,6 +1295,7 @@
                                                                         ()
                                                                     ))]
                                                                     ()
+                                                                    .false.
                                                                 )]
                                                                 []
                                                             )]
@@ -1156,6 +1333,7 @@
                                                                 ()
                                                             ))]
                                                             ()
+                                                            .false.
                                                         )
                                                         (SubroutineCall
                                                             10 quicksort
@@ -1177,6 +1355,7 @@
                                                             ((Var 12 low))
                                                             ((Var 12 last))]
                                                             ()
+                                                            .false.
                                                         )
                                                         (SubroutineCall
                                                             10 quicksort
@@ -1204,13 +1383,14 @@
                                                             ))
                                                             ((Var 12 high))]
                                                             ()
+                                                            .false.
                                                         )]
                                                         []
                                                     )]
                                                     ()
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             t:
@@ -1232,6 +1412,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     quicksort
@@ -1273,6 +1458,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             rhs:
                                                                 (Variable
@@ -1293,6 +1483,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             t:
                                                                 (Variable
@@ -1313,6 +1508,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             tmp:
                                                                 (Variable
@@ -1333,6 +1533,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     swap
@@ -1362,21 +1567,27 @@
                                                         (Var 9 tmp)
                                                         (Var 9 lhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 9 lhs)
                                                         (Var 9 rhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 9 rhs)
                                                         (Var 9 tmp)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )]
                                                     ()
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             t:
@@ -1398,6 +1609,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     swap
@@ -1431,6 +1647,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             rhs:
                                                                 (Variable
@@ -1449,6 +1670,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             t:
                                                                 (Variable
@@ -1467,6 +1693,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             tmp:
                                                                 (Variable
@@ -1485,6 +1716,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     __asr___instantiated_swap
@@ -1510,21 +1746,27 @@
                                                         (Var 20 tmp)
                                                         (Var 20 lhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 20 lhs)
                                                         (Var 20 rhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 20 rhs)
                                                         (Var 20 tmp)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )]
                                                     ()
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             __asr___instantiated_swap1:
@@ -1549,6 +1791,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             rhs:
                                                                 (Variable
@@ -1567,6 +1814,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             t:
                                                                 (Variable
@@ -1585,6 +1837,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             tmp:
                                                                 (Variable
@@ -1603,6 +1860,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     __asr___instantiated_swap1
@@ -1628,21 +1890,27 @@
                                                         (Var 21 tmp)
                                                         (Var 21 lhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 21 lhs)
                                                         (Var 21 rhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 21 rhs)
                                                         (Var 21 tmp)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )]
                                                     ()
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             __asr___instantiated_swap11:
@@ -1667,6 +1935,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             rhs:
                                                                 (Variable
@@ -1685,6 +1958,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             t:
                                                                 (Variable
@@ -1703,6 +1981,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             tmp:
                                                                 (Variable
@@ -1721,6 +2004,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     __asr___instantiated_swap11
@@ -1746,21 +2034,27 @@
                                                         (Var 24 tmp)
                                                         (Var 24 lhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 24 lhs)
                                                         (Var 24 rhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 24 rhs)
                                                         (Var 24 tmp)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )]
                                                     ()
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             __asr___instantiated_swap12:
@@ -1778,15 +2072,23 @@
                                                                     ()
                                                                     Default
                                                                     (StructType
-                                                                        5 my_type
+                                                                        [(Real 4)]
+                                                                        []
+                                                                        .true.
+                                                                        .false.
                                                                     )
-                                                                    ()
+                                                                    5 my_type
                                                                     Source
                                                                     Public
                                                                     Required
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             rhs:
                                                                 (Variable
@@ -1798,15 +2100,23 @@
                                                                     ()
                                                                     Default
                                                                     (StructType
-                                                                        5 my_type
+                                                                        [(Real 4)]
+                                                                        []
+                                                                        .true.
+                                                                        .false.
                                                                     )
-                                                                    ()
+                                                                    5 my_type
                                                                     Source
                                                                     Public
                                                                     Required
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             t:
                                                                 (Variable
@@ -1818,15 +2128,23 @@
                                                                     ()
                                                                     Default
                                                                     (StructType
-                                                                        5 my_type
+                                                                        [(Real 4)]
+                                                                        []
+                                                                        .true.
+                                                                        .false.
                                                                     )
-                                                                    ()
+                                                                    5 my_type
                                                                     Source
                                                                     Public
                                                                     Required
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             tmp:
                                                                 (Variable
@@ -1838,24 +2156,38 @@
                                                                     ()
                                                                     Default
                                                                     (StructType
-                                                                        5 my_type
+                                                                        [(Real 4)]
+                                                                        []
+                                                                        .true.
+                                                                        .false.
                                                                     )
-                                                                    ()
+                                                                    5 my_type
                                                                     Source
                                                                     Public
                                                                     Required
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     __asr___instantiated_swap12
                                                     (FunctionType
                                                         [(StructType
-                                                            5 my_type
+                                                            [(Real 4)]
+                                                            []
+                                                            .true.
+                                                            .false.
                                                         )
                                                         (StructType
-                                                            5 my_type
+                                                            [(Real 4)]
+                                                            []
+                                                            .true.
+                                                            .false.
                                                         )]
                                                         ()
                                                         Source
@@ -1876,21 +2208,27 @@
                                                         (Var 27 tmp)
                                                         (Var 27 lhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 27 lhs)
                                                         (Var 27 rhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 27 rhs)
                                                         (Var 27 tmp)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )]
                                                     ()
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             __asr___instantiated_swap2:
@@ -1915,6 +2253,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             rhs:
                                                                 (Variable
@@ -1933,6 +2276,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             t:
                                                                 (Variable
@@ -1951,6 +2299,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             tmp:
                                                                 (Variable
@@ -1969,6 +2322,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     __asr___instantiated_swap2
@@ -1994,21 +2352,27 @@
                                                         (Var 23 tmp)
                                                         (Var 23 lhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 23 lhs)
                                                         (Var 23 rhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 23 rhs)
                                                         (Var 23 tmp)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )]
                                                     ()
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             __asr___instantiated_swap3:
@@ -2026,15 +2390,23 @@
                                                                     ()
                                                                     Default
                                                                     (StructType
-                                                                        5 my_type
+                                                                        [(Real 4)]
+                                                                        []
+                                                                        .true.
+                                                                        .false.
                                                                     )
-                                                                    ()
+                                                                    5 my_type
                                                                     Source
                                                                     Public
                                                                     Required
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             rhs:
                                                                 (Variable
@@ -2046,15 +2418,23 @@
                                                                     ()
                                                                     Default
                                                                     (StructType
-                                                                        5 my_type
+                                                                        [(Real 4)]
+                                                                        []
+                                                                        .true.
+                                                                        .false.
                                                                     )
-                                                                    ()
+                                                                    5 my_type
                                                                     Source
                                                                     Public
                                                                     Required
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             t:
                                                                 (Variable
@@ -2066,15 +2446,23 @@
                                                                     ()
                                                                     Default
                                                                     (StructType
-                                                                        5 my_type
+                                                                        [(Real 4)]
+                                                                        []
+                                                                        .true.
+                                                                        .false.
                                                                     )
-                                                                    ()
+                                                                    5 my_type
                                                                     Source
                                                                     Public
                                                                     Required
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             tmp:
                                                                 (Variable
@@ -2086,24 +2474,38 @@
                                                                     ()
                                                                     Default
                                                                     (StructType
-                                                                        5 my_type
+                                                                        [(Real 4)]
+                                                                        []
+                                                                        .true.
+                                                                        .false.
                                                                     )
-                                                                    ()
+                                                                    5 my_type
                                                                     Source
                                                                     Public
                                                                     Required
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     __asr___instantiated_swap3
                                                     (FunctionType
                                                         [(StructType
-                                                            5 my_type
+                                                            [(Real 4)]
+                                                            []
+                                                            .true.
+                                                            .false.
                                                         )
                                                         (StructType
-                                                            5 my_type
+                                                            [(Real 4)]
+                                                            []
+                                                            .true.
+                                                            .false.
                                                         )]
                                                         ()
                                                         Source
@@ -2124,21 +2526,27 @@
                                                         (Var 26 tmp)
                                                         (Var 26 lhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 26 lhs)
                                                         (Var 26 rhs)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 26 rhs)
                                                         (Var 26 tmp)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )]
                                                     ()
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             __instantiated_quicksort:
@@ -2168,6 +2576,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             high:
                                                                 (Variable
@@ -2186,6 +2599,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             i:
                                                                 (Variable
@@ -2204,6 +2622,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             last:
                                                                 (Variable
@@ -2222,6 +2645,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             low:
                                                                 (Variable
@@ -2240,6 +2668,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             pivot:
                                                                 (Variable
@@ -2258,6 +2691,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     __instantiated_quicksort
@@ -2290,6 +2728,7 @@
                                                     (Var 19 low)
                                                     (Var 19 high)]
                                                     [(If
+                                                        ()
                                                         (IntegerCompare
                                                             (Var 19 low)
                                                             Lt
@@ -2309,6 +2748,8 @@
                                                                 ()
                                                             )
                                                             ()
+                                                            .false.
+                                                            .false.
                                                         )
                                                         (Assignment
                                                             (Var 19 last)
@@ -2320,6 +2761,8 @@
                                                                 ()
                                                             )
                                                             ()
+                                                            .false.
+                                                            .false.
                                                         )
                                                         (DoLoop
                                                             ()
@@ -2334,6 +2777,7 @@
                                                             )
                                                             ())
                                                             [(If
+                                                                ()
                                                                 (FunctionCall
                                                                     5 lt_integer
                                                                     ()
@@ -2361,6 +2805,8 @@
                                                                         ()
                                                                     )
                                                                     ()
+                                                                    .false.
+                                                                    .false.
                                                                 )
                                                                 (SubroutineCall
                                                                     15 __asr___instantiated_swap
@@ -2384,6 +2830,7 @@
                                                                         ()
                                                                     ))]
                                                                     ()
+                                                                    .false.
                                                                 )]
                                                                 []
                                                             )]
@@ -2417,6 +2864,7 @@
                                                                 ()
                                                             ))]
                                                             ()
+                                                            .false.
                                                         )
                                                         (SubroutineCall
                                                             15 __instantiated_quicksort
@@ -2436,6 +2884,7 @@
                                                             ((Var 19 low))
                                                             ((Var 19 last))]
                                                             ()
+                                                            .false.
                                                         )
                                                         (SubroutineCall
                                                             15 __instantiated_quicksort
@@ -2461,13 +2910,14 @@
                                                             ))
                                                             ((Var 19 high))]
                                                             ()
+                                                            .false.
                                                         )]
                                                         []
                                                     )]
                                                     ()
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             __instantiated_quicksort1:
@@ -2497,6 +2947,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             high:
                                                                 (Variable
@@ -2515,6 +2970,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             i:
                                                                 (Variable
@@ -2533,6 +2993,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             last:
                                                                 (Variable
@@ -2551,6 +3016,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             low:
                                                                 (Variable
@@ -2569,6 +3039,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             pivot:
                                                                 (Variable
@@ -2587,6 +3062,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     __instantiated_quicksort1
@@ -2619,6 +3099,7 @@
                                                     (Var 22 low)
                                                     (Var 22 high)]
                                                     [(If
+                                                        ()
                                                         (IntegerCompare
                                                             (Var 22 low)
                                                             Lt
@@ -2638,6 +3119,8 @@
                                                                 ()
                                                             )
                                                             ()
+                                                            .false.
+                                                            .false.
                                                         )
                                                         (Assignment
                                                             (Var 22 last)
@@ -2649,6 +3132,8 @@
                                                                 ()
                                                             )
                                                             ()
+                                                            .false.
+                                                            .false.
                                                         )
                                                         (DoLoop
                                                             ()
@@ -2663,6 +3148,7 @@
                                                             )
                                                             ())
                                                             [(If
+                                                                ()
                                                                 (FunctionCall
                                                                     5 lt_real
                                                                     ()
@@ -2690,6 +3176,8 @@
                                                                         ()
                                                                     )
                                                                     ()
+                                                                    .false.
+                                                                    .false.
                                                                 )
                                                                 (SubroutineCall
                                                                     15 __asr___instantiated_swap2
@@ -2713,6 +3201,7 @@
                                                                         ()
                                                                     ))]
                                                                     ()
+                                                                    .false.
                                                                 )]
                                                                 []
                                                             )]
@@ -2746,6 +3235,7 @@
                                                                 ()
                                                             ))]
                                                             ()
+                                                            .false.
                                                         )
                                                         (SubroutineCall
                                                             15 __instantiated_quicksort1
@@ -2765,6 +3255,7 @@
                                                             ((Var 22 low))
                                                             ((Var 22 last))]
                                                             ()
+                                                            .false.
                                                         )
                                                         (SubroutineCall
                                                             15 __instantiated_quicksort1
@@ -2790,13 +3281,14 @@
                                                             ))
                                                             ((Var 22 high))]
                                                             ()
+                                                            .false.
                                                         )]
                                                         []
                                                     )]
                                                     ()
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             __instantiated_quicksort2:
@@ -2815,19 +3307,27 @@
                                                                     Default
                                                                     (Array
                                                                         (StructType
-                                                                            5 my_type
+                                                                            [(Real 4)]
+                                                                            []
+                                                                            .true.
+                                                                            .false.
                                                                         )
                                                                         [(()
                                                                         ())]
                                                                         DescriptorArray
                                                                     )
-                                                                    ()
+                                                                    5 my_type
                                                                     Source
                                                                     Public
                                                                     Required
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             high:
                                                                 (Variable
@@ -2846,6 +3346,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             i:
                                                                 (Variable
@@ -2864,6 +3369,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             last:
                                                                 (Variable
@@ -2882,6 +3392,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             low:
                                                                 (Variable
@@ -2900,6 +3415,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             pivot:
                                                                 (Variable
@@ -2911,22 +3431,33 @@
                                                                     ()
                                                                     Default
                                                                     (StructType
-                                                                        5 my_type
+                                                                        [(Real 4)]
+                                                                        []
+                                                                        .true.
+                                                                        .false.
                                                                     )
-                                                                    ()
+                                                                    5 my_type
                                                                     Source
                                                                     Public
                                                                     Required
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     __instantiated_quicksort2
                                                     (FunctionType
                                                         [(Array
                                                             (StructType
-                                                                5 my_type
+                                                                [(Real 4)]
+                                                                []
+                                                                .true.
+                                                                .false.
                                                             )
                                                             [(()
                                                             ())]
@@ -2953,6 +3484,7 @@
                                                     (Var 25 low)
                                                     (Var 25 high)]
                                                     [(If
+                                                        ()
                                                         (IntegerCompare
                                                             (Var 25 low)
                                                             Lt
@@ -2968,12 +3500,17 @@
                                                                 (Var 25 high)
                                                                 ())]
                                                                 (StructType
-                                                                    5 my_type
+                                                                    [(Real 4)]
+                                                                    []
+                                                                    .true.
+                                                                    .false.
                                                                 )
                                                                 ColMajor
                                                                 ()
                                                             )
                                                             ()
+                                                            .false.
+                                                            .false.
                                                         )
                                                         (Assignment
                                                             (Var 25 last)
@@ -2985,6 +3522,8 @@
                                                                 ()
                                                             )
                                                             ()
+                                                            .false.
+                                                            .false.
                                                         )
                                                         (DoLoop
                                                             ()
@@ -2999,6 +3538,7 @@
                                                             )
                                                             ())
                                                             [(If
+                                                                ()
                                                                 (FunctionCall
                                                                     5 lt_my_type
                                                                     ()
@@ -3008,7 +3548,10 @@
                                                                         (Var 25 i)
                                                                         ())]
                                                                         (StructType
-                                                                            5 my_type
+                                                                            [(Real 4)]
+                                                                            []
+                                                                            .true.
+                                                                            .false.
                                                                         )
                                                                         ColMajor
                                                                         ()
@@ -3028,6 +3571,8 @@
                                                                         ()
                                                                     )
                                                                     ()
+                                                                    .false.
+                                                                    .false.
                                                                 )
                                                                 (SubroutineCall
                                                                     15 __asr___instantiated_swap3
@@ -3038,7 +3583,10 @@
                                                                         (Var 25 last)
                                                                         ())]
                                                                         (StructType
-                                                                            5 my_type
+                                                                            [(Real 4)]
+                                                                            []
+                                                                            .true.
+                                                                            .false.
                                                                         )
                                                                         ColMajor
                                                                         ()
@@ -3049,12 +3597,16 @@
                                                                         (Var 25 i)
                                                                         ())]
                                                                         (StructType
-                                                                            5 my_type
+                                                                            [(Real 4)]
+                                                                            []
+                                                                            .true.
+                                                                            .false.
                                                                         )
                                                                         ColMajor
                                                                         ()
                                                                     ))]
                                                                     ()
+                                                                    .false.
                                                                 )]
                                                                 []
                                                             )]
@@ -3075,7 +3627,10 @@
                                                                 )
                                                                 ())]
                                                                 (StructType
-                                                                    5 my_type
+                                                                    [(Real 4)]
+                                                                    []
+                                                                    .true.
+                                                                    .false.
                                                                 )
                                                                 ColMajor
                                                                 ()
@@ -3086,12 +3641,16 @@
                                                                 (Var 25 high)
                                                                 ())]
                                                                 (StructType
-                                                                    5 my_type
+                                                                    [(Real 4)]
+                                                                    []
+                                                                    .true.
+                                                                    .false.
                                                                 )
                                                                 ColMajor
                                                                 ()
                                                             ))]
                                                             ()
+                                                            .false.
                                                         )
                                                         (SubroutineCall
                                                             15 __instantiated_quicksort2
@@ -3102,7 +3661,10 @@
                                                                 DescriptorArray
                                                                 (Array
                                                                     (StructType
-                                                                        5 my_type
+                                                                        [(Real 4)]
+                                                                        []
+                                                                        .true.
+                                                                        .false.
                                                                     )
                                                                     [(()
                                                                     ())]
@@ -3113,6 +3675,7 @@
                                                             ((Var 25 low))
                                                             ((Var 25 last))]
                                                             ()
+                                                            .false.
                                                         )
                                                         (SubroutineCall
                                                             15 __instantiated_quicksort2
@@ -3123,7 +3686,10 @@
                                                                 DescriptorArray
                                                                 (Array
                                                                     (StructType
-                                                                        5 my_type
+                                                                        [(Real 4)]
+                                                                        []
+                                                                        .true.
+                                                                        .false.
                                                                     )
                                                                     [(()
                                                                     ())]
@@ -3140,13 +3706,14 @@
                                                             ))
                                                             ((Var 25 high))]
                                                             ()
+                                                            .false.
                                                         )]
                                                         []
                                                     )]
                                                     ()
                                                     Public
-                                                    .false.
-                                                    .false.
+                                                    .true.
+                                                    .true.
                                                     ()
                                                 ),
                                             i:
@@ -3166,6 +3733,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             xi:
                                                 (Variable
@@ -3189,6 +3761,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             xm:
                                                 (Variable
@@ -3201,19 +3778,27 @@
                                                     Default
                                                     (Array
                                                         (StructType
-                                                            5 my_type
+                                                            [(Real 4)]
+                                                            []
+                                                            .true.
+                                                            .false.
                                                         )
                                                         [((IntegerConstant 1 (Integer 4) Decimal)
                                                         (IntegerConstant 10 (Integer 4) Decimal))]
                                                         FixedSizeArray
                                                     )
-                                                    ()
+                                                    5 my_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             xr:
                                                 (Variable
@@ -3237,6 +3822,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     test_template
@@ -3270,6 +3860,8 @@
                                             ColMajor
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 15 xr)
@@ -3285,6 +3877,8 @@
                                             ColMajor
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (DoLoop
                                         ()
@@ -3299,7 +3893,10 @@
                                                 (Var 15 i)
                                                 ())]
                                                 (StructType
-                                                    5 my_type
+                                                    [(Real 4)]
+                                                    []
+                                                    .true.
+                                                    .false.
                                                 )
                                                 ColMajor
                                                 ()
@@ -3316,11 +3913,16 @@
                                                     ()
                                                 ))]
                                                 (StructType
-                                                    5 my_type
+                                                    [(Real 4)]
+                                                    []
+                                                    .true.
+                                                    .false.
                                                 )
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )]
                                         []
                                     )
@@ -3342,6 +3944,7 @@
                                         ((IntegerConstant 1 (Integer 4) Decimal))
                                         ((IntegerConstant 10 (Integer 4) Decimal))]
                                         ()
+                                        .false.
                                     )
                                     (SubroutineCall
                                         15 __instantiated_quicksort1
@@ -3361,6 +3964,7 @@
                                         ((IntegerConstant 1 (Integer 4) Decimal))
                                         ((IntegerConstant 10 (Integer 4) Decimal))]
                                         ()
+                                        .false.
                                     )
                                     (SubroutineCall
                                         15 __instantiated_quicksort2
@@ -3371,7 +3975,10 @@
                                             DescriptorArray
                                             (Array
                                                 (StructType
-                                                    5 my_type
+                                                    [(Real 4)]
+                                                    []
+                                                    .true.
+                                                    .false.
                                                 )
                                                 [((IntegerConstant 1 (Integer 4) Decimal)
                                                 (IntegerConstant 10 (Integer 4) Decimal))]
@@ -3382,13 +3989,16 @@
                                         ((IntegerConstant 1 (Integer 4) Decimal))
                                         ((IntegerConstant 10 (Integer 4) Decimal))]
                                         ()
+                                        .false.
                                     )
                                     (Print
                                         (StringFormat
                                             ()
                                             [(Var 15 xi)]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )
@@ -3397,7 +4007,9 @@
                                             ()
                                             [(Var 15 xr)]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )
@@ -3406,7 +4018,9 @@
                                             ()
                                             [(Var 15 xm)]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )]
@@ -3418,8 +4032,10 @@
                                 )
                         })
                     template_sort_02_m
+                    ()
                     [template_sort_02_type
                     template_sort_02_m]
+                    .false.
                     .false.
                     .false.
                 ),
@@ -3453,15 +4069,23 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 my_type
+                                                        [(Real 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 my_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             res:
                                                 (Variable
@@ -3480,6 +4104,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             rhs:
                                                 (Variable
@@ -3491,24 +4120,38 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 my_type
+                                                        [(Real 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 my_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     lt_my_type
                                     (FunctionType
                                         [(StructType
-                                            2 my_type
+                                            [(Real 4)]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         (StructType
-                                            2 my_type
+                                            [(Real 4)]
+                                            []
+                                            .true.
+                                            .false.
                                         )]
                                         (Logical 4)
                                         Source
@@ -3545,11 +4188,13 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 4 res)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             my_type:
@@ -3574,11 +4219,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     my_type
+                                    (StructType
+                                        [(Real 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [d]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -3586,10 +4243,13 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 )
                         })
                     template_sort_02_type
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

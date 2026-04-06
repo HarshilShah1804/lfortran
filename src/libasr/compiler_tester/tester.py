@@ -27,6 +27,8 @@ log.setLevel(level)
 TESTER_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 LIBASR_DIR = os.path.dirname(TESTER_DIR)
 SRC_DIR = os.path.dirname(LIBASR_DIR)
+if "lpython" in SRC_DIR:
+    SRC_DIR = os.path.join(os.path.dirname(os.path.dirname(SRC_DIR)), "src")
 ROOT_DIR = os.path.dirname(SRC_DIR)
 
 no_color = False
@@ -100,6 +102,7 @@ def _compare_eq_dict(
         explanation += pprint.pformat(same).splitlines()
     diff = {k for k in common if left[k] != right[k]}
     if diff:
+        explanation += ["ACTUAL != REFERENCE"]
         explanation += ["Differing items:"]
         for k in diff:
             explanation += [repr({k: left[k]}) + " != " + repr({k: right[k]})]
@@ -137,6 +140,13 @@ def test_for_duplicates(test_data):
 def fixdir(s: bytes) -> bytes:
     local_dir = os.getcwd()
     return s.replace(local_dir.encode(), "$DIR".encode())
+
+def fix_datalayout(s: bytes) -> bytes:
+    return re.sub(
+        rb'target datalayout = "[^"]*"',
+        b'target datalayout = "..."',
+        s
+    )
 
 
 def unl_loop_del(b):
@@ -190,12 +200,12 @@ def run(basename: str, cmd: Union[pathlib.Path, str],
         outfile = None
     if len(r.stdout):
         stdout_file = os.path.join(out_dir, basename + "." + "stdout")
-        open(stdout_file, "wb").write(fixdir(r.stdout))
+        open(stdout_file, "wb").write(fix_datalayout(fixdir(r.stdout)))
     else:
         stdout_file = None
     if len(r.stderr):
         stderr_file = os.path.join(out_dir, basename + "." + "stderr")
-        open(stderr_file, "wb").write(fixdir(r.stderr))
+        open(stderr_file, "wb").write(fix_datalayout(fixdir(r.stderr)))
     else:
         stderr_file = None
 
@@ -240,7 +250,92 @@ def run(basename: str, cmd: Union[pathlib.Path, str],
     return json_file
 
 
-def get_error_diff(reference_file, output_file, full_err_str) -> str:
+def get_error_diff(reference_file, output_file, full_err_str, field="") -> str:
+    import tempfile
+
+    ref_exists = os.path.exists(reference_file)
+    out_exists = os.path.exists(output_file)
+
+    # For stderr, always show as diff (even if one file is missing)
+    if field == "stderr":
+        # Create temp files for missing sides
+        temp_ref = None
+        temp_out = None
+        ref_to_use = reference_file
+        out_to_use = output_file
+
+        if not ref_exists:
+            temp_ref = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.stderr')
+            temp_ref.close()
+            ref_to_use = temp_ref.name
+
+        if not out_exists:
+            temp_out = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.stderr')
+            temp_out.close()
+            out_to_use = temp_out.name
+
+        # Run diff
+        diff_list = subprocess.Popen(
+            f"diff {ref_to_use} {out_to_use}",
+            stdout=subprocess.PIPE,
+            shell=True,
+            encoding='utf-8')
+        diff_str = ""
+        diffs = diff_list.stdout.readlines()
+        for d in diffs:
+            diff_str += d
+
+        full_err_str += f"\n=== STDERR DIFF ===\n"
+        if not ref_exists:
+            full_err_str += f"Reference: (missing - expected no stderr)\n"
+        else:
+            full_err_str += f"Reference: {reference_file}\n"
+        if not out_exists:
+            full_err_str += f"Output:    (missing - no stderr produced)\n"
+        else:
+            full_err_str += f"Output:    {output_file}\n"
+        full_err_str += diff_str if diff_str else "(files are identical)\n"
+
+        # Cleanup temp files
+        if temp_ref:
+            os.unlink(temp_ref.name)
+        if temp_out:
+            os.unlink(temp_out.name)
+
+        return full_err_str
+
+    # For stdout and outfile, use the original behavior with content preview
+    if not ref_exists and not out_exists:
+        full_err_str += f"\nNeither reference nor output file exists\n"
+        full_err_str += f"Reference: {reference_file}\n"
+        full_err_str += f"Output:    {output_file}\n"
+        return full_err_str
+
+    if not out_exists:
+        full_err_str += f"\n=== OUTPUT FILE MISSING ===\n"
+        full_err_str += f"Expected output file: {output_file}\n"
+        full_err_str += f"\n=== EXPECTED CONTENT (from reference) ===\n"
+        try:
+            with open(reference_file, 'r', encoding='utf-8', errors='replace') as f:
+                content = f.read()
+                full_err_str += content if content else "(empty file)\n"
+        except Exception as e:
+            full_err_str += f"(could not read reference file: {e})\n"
+        return full_err_str
+
+    if not ref_exists:
+        full_err_str += f"\n=== REFERENCE FILE MISSING ===\n"
+        full_err_str += f"Expected reference file: {reference_file}\n"
+        full_err_str += f"\n=== ACTUAL OUTPUT ===\n"
+        try:
+            with open(output_file, 'r', encoding='utf-8', errors='replace') as f:
+                content = f.read()
+                full_err_str += content if content else "(empty file)\n"
+        except Exception as e:
+            full_err_str += f"(could not read output file: {e})\n"
+        return full_err_str
+
+    # Both files exist - show diff
     diff_list = subprocess.Popen(
         f"diff {reference_file} {output_file}",
         stdout=subprocess.PIPE,
@@ -250,12 +345,17 @@ def get_error_diff(reference_file, output_file, full_err_str) -> str:
     diffs = diff_list.stdout.readlines()
     for d in diffs:
         diff_str += d
-    full_err_str += f"\nDiff against: {reference_file}\n"
-    full_err_str += diff_str
+
+    full_err_str += f"\n=== DIFF ===\n"
+    full_err_str += f"Reference: {reference_file}\n"
+    full_err_str += f"Output:    {output_file}\n"
+    full_err_str += diff_str if diff_str else "(files are identical)\n"
+
     return full_err_str
 
 
 def do_update_reference(jo, jr, do):
+    os.makedirs(os.path.dirname(jr), exist_ok=True)
     shutil.copyfile(jo, jr)
     for f in ["outfile", "stdout", "stderr"]:
         if do[f]:
@@ -355,17 +455,54 @@ def run_test(testname, basename, cmd, infile, update_reference=False,
         for field in ["outfile", "stdout", "stderr"]:
             hash_field = field + "_hash"
             if not do[hash_field] and dr[hash_field]:
-                full_err_str += f"No output {hash_field} available for {testname}\n"
-                break
-            if not dr[hash_field] and do[hash_field]:
-                full_err_str += f"No reference {hash_field} available for {testname}\n"
-                break
-            if do[hash_field] != dr[hash_field]:
+                full_err_str += f"\n=== MISSING OUTPUT {field.upper()} ===\n"
+                full_err_str += f"Expected {field} to be generated but it was not.\n"
+                reference_file = os.path.join("tests", "reference", dr[field])
+                if os.path.exists(reference_file):
+                    if field == "stdout":
+                        # For stdout, show only first 10 lines
+                        full_err_str += f"\n=== EXPECTED CONTENT (first 10 lines from reference) ===\n"
+                        try:
+                            with open(reference_file, 'r', encoding='utf-8', errors='replace') as f:
+                                lines = f.readlines()
+                                preview = ''.join(lines[:10])
+                                full_err_str += preview if preview else "(empty file)\n"
+                                if len(lines) > 10:
+                                    full_err_str += f"\n... ({len(lines) - 10} more lines, see {reference_file})\n"
+                        except Exception as e:
+                            full_err_str += f"(could not read reference file: {e})\n"
+                    else:
+                        # For stderr and outfile, use get_error_diff which will handle diff
+                        output_file = os.path.join("tests", "output", do[field] if do[field] else "missing")
+                        full_err_str = get_error_diff(
+                            reference_file, output_file, full_err_str, field)
+            elif not dr[hash_field] and do[hash_field]:
+                full_err_str += f"\n=== UNEXPECTED OUTPUT {field.upper()} ===\n"
+                full_err_str += f"Did not expect {field} to be generated but it was.\n"
+                output_file = os.path.join("tests", "output", do[field])
+                if os.path.exists(output_file):
+                    if field == "stdout":
+                        # For stdout, show only first 10 lines
+                        full_err_str += f"\n=== ACTUAL OUTPUT (first 10 lines) ===\n"
+                        try:
+                            with open(output_file, 'r', encoding='utf-8', errors='replace') as f:
+                                lines = f.readlines()
+                                preview = ''.join(lines[:10])
+                                full_err_str += preview if preview else "(empty file)\n"
+                                if len(lines) > 10:
+                                    full_err_str += f"\n... ({len(lines) - 10} more lines, see {output_file})\n"
+                        except Exception as e:
+                            full_err_str += f"(could not read output file: {e})\n"
+                    else:
+                        # For stderr and outfile, use get_error_diff
+                        reference_file = os.path.join("tests", "reference", dr[field] if dr[field] else "missing")
+                        full_err_str = get_error_diff(
+                            reference_file, output_file, full_err_str, field)
+            elif do[hash_field] != dr[hash_field]:
                 output_file = os.path.join("tests", "output", do[field])
                 reference_file = os.path.join("tests", "reference", dr[field])
                 full_err_str = get_error_diff(
-                    reference_file, output_file, full_err_str)
-                break
+                    reference_file, output_file, full_err_str, field)
         raise RunException(
             "Testing with reference output failed." +
             full_err_str)
@@ -424,6 +561,18 @@ def tester_main(compiler, single_test, is_lcompilers_executable_installed=False)
     skip_run_with_dbg = args.skip_run_with_dbg
     global no_color
     no_color = args.no_color
+
+    # While updating references, only wipe the whole reference directory if the
+    # user is updating the entire suite (no -t filters). For a targeted update
+    # (via -t), deleting everything is unexpected and breaks unrelated tests.
+    if update_reference and not specific_tests:
+        log.debug("REMOVE: old test references")
+        cmd = "rm -rf ./tests/reference/*"
+        log.debug(f"+ {cmd}")
+        process = subprocess.run(cmd, shell=True)
+        if process.returncode != 0:
+            print("Removing Old test references failed!")
+            exit(1)
 
     # So that the tests find the `lcompiler` executable
     if not is_lcompilers_executable_installed:

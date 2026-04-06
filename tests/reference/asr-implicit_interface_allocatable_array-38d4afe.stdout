@@ -31,6 +31,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             r_t:
                                 (Variable
@@ -56,6 +61,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             sub1:
                                 (Function
@@ -79,6 +89,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             sub1_arg_1:
                                                 (Variable
@@ -89,13 +104,11 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (Allocatable
-                                                        (Array
-                                                            (Real 4)
-                                                            [(()
-                                                            ())]
-                                                            PointerToDataArray
-                                                        )
+                                                    (Array
+                                                        (Real 4)
+                                                        [(()
+                                                        ())]
+                                                        PointerArray
                                                     )
                                                     ()
                                                     BindC
@@ -104,18 +117,21 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     sub1
                                     (FunctionType
                                         [(Integer 4)
-                                        (Allocatable
-                                            (Array
-                                                (Real 4)
-                                                [(()
-                                                ())]
-                                                PointerToDataArray
-                                            )
+                                        (Array
+                                            (Real 4)
+                                            [(()
+                                            ())]
+                                            PointerArray
                                         )]
                                         ()
                                         BindC
@@ -161,6 +177,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             sub2_arg_1:
                                                 (Variable
@@ -171,13 +192,11 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (Pointer
-                                                        (Array
-                                                            (Real 4)
-                                                            [(()
-                                                            ())]
-                                                            PointerToDataArray
-                                                        )
+                                                    (Array
+                                                        (Real 4)
+                                                        [(()
+                                                        ())]
+                                                        PointerArray
                                                     )
                                                     ()
                                                     BindC
@@ -186,18 +205,21 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     sub2
                                     (FunctionType
                                         [(Integer 4)
-                                        (Pointer
-                                            (Array
-                                                (Real 4)
-                                                [(()
-                                                ())]
-                                                PointerToDataArray
-                                            )
+                                        (Array
+                                            (Real 4)
+                                            [(()
+                                            ())]
+                                            PointerArray
                                         )]
                                         ()
                                         BindC
@@ -246,16 +268,17 @@
                         ((ArrayPhysicalCast
                             (Var 2 r_g)
                             DescriptorArray
-                            PointerToDataArray
+                            PointerArray
                             (Array
                                 (Real 4)
                                 [(()
                                 ())]
-                                PointerToDataArray
+                                PointerArray
                             )
                             ()
                         ))]
                         ()
+                        .false.
                     )
                     (SubroutineCall
                         2 sub2
@@ -264,18 +287,19 @@
                         ((ArrayPhysicalCast
                             (Var 2 r_t)
                             DescriptorArray
-                            PointerToDataArray
+                            PointerArray
                             (Pointer
                                 (Array
                                     (Real 4)
                                     [(()
                                     ())]
-                                    PointerToDataArray
+                                    PointerArray
                                 )
                             )
                             ()
                         ))]
                         ()
+                        .false.
                     )]
                     ()
                     Public

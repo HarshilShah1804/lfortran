@@ -54,6 +54,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             newshape:
                                 (Variable
@@ -77,6 +82,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             queries:
                                 (Variable
@@ -95,6 +105,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             x:
                                 (Variable
@@ -122,6 +137,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             xv:
                                 (Variable
@@ -147,6 +167,11 @@
                                     .false.
                                     .true.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     bindc2
@@ -163,6 +188,8 @@
                         )
                         (IntegerConstant 2 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (ArrayItem
@@ -176,6 +203,8 @@
                         )
                         (IntegerConstant 3 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Associate
                         (Var 2 x)
@@ -195,6 +224,7 @@
                         )
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (ArrayBound
                                 (Var 2 xv)
@@ -217,6 +247,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (ArrayBound
                                 (Var 2 xv)
@@ -239,6 +270,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (ArrayBound
                                 (Var 2 xv)
@@ -261,6 +293,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (ArrayBound
                                 (Var 2 xv)
@@ -283,6 +316,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (ArraySize
                                 (Var 2 xv)
@@ -310,6 +344,7 @@
                         ()
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (ArrayBound
                                 (Var 2 xv)
@@ -332,6 +367,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (ArrayBound
                                 (Var 2 xv)
@@ -354,6 +390,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (ArrayBound
                                 (Var 2 xv)
@@ -376,6 +413,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (ArrayBound
                                 (Var 2 xv)
@@ -398,6 +436,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (ArraySize
                                 (Var 2 xv)
@@ -436,7 +475,9 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -458,7 +499,9 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -472,11 +515,14 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (ArrayBound
                                 (Var 2 x)
@@ -496,6 +542,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (ArrayBound
                                 (Var 2 x)
@@ -515,6 +562,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (ArrayBound
                                 (Var 2 x)
@@ -534,6 +582,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (ArrayBound
                                 (Var 2 x)
@@ -553,6 +602,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (ArraySize
                                 (Var 2 x)

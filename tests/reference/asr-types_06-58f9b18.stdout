@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             r:
                                 (Variable
@@ -42,6 +47,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     types_06
@@ -56,15 +66,21 @@
                                 2.000000
                                 (Real 4)
                             )
+                            ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 i)
                         (IntegerConstant 2 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 i)
                             Lt
@@ -78,6 +94,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Var 2 r)
                             Lt
@@ -91,6 +108,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Var 2 r)
                             Lt
@@ -98,6 +116,7 @@
                                 (Var 2 i)
                                 IntegerToReal
                                 (Real 4)
+                                ()
                                 ()
                             )
                             (Logical 4)
@@ -109,11 +128,13 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Cast
                                 (Var 2 i)
                                 IntegerToReal
                                 (Real 4)
+                                ()
                                 ()
                             )
                             Lt
@@ -127,6 +148,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 i)
                             Gt
@@ -140,6 +162,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Var 2 r)
                             Gt
@@ -153,6 +176,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Var 2 r)
                             Gt
@@ -160,6 +184,7 @@
                                 (Var 2 i)
                                 IntegerToReal
                                 (Real 4)
+                                ()
                                 ()
                             )
                             (Logical 4)
@@ -171,11 +196,13 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Cast
                                 (Var 2 i)
                                 IntegerToReal
                                 (Real 4)
+                                ()
                                 ()
                             )
                             Gt
@@ -189,6 +216,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 i)
                             NotEq
@@ -202,6 +230,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Var 2 r)
                             NotEq
@@ -215,6 +244,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Var 2 r)
                             NotEq
@@ -222,6 +252,7 @@
                                 (Var 2 i)
                                 IntegerToReal
                                 (Real 4)
+                                ()
                                 ()
                             )
                             (Logical 4)
@@ -233,11 +264,13 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Cast
                                 (Var 2 i)
                                 IntegerToReal
                                 (Real 4)
+                                ()
                                 ()
                             )
                             NotEq
@@ -251,6 +284,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (IntegerBinOp
                                 (Var 2 i)
@@ -270,6 +304,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (RealBinOp
                                 (Var 2 r)
@@ -282,6 +317,7 @@
                                         1.000000
                                         (Real 4)
                                     )
+                                    ()
                                 )
                                 (Real 4)
                                 ()
@@ -297,6 +333,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (RealBinOp
                                 (Var 2 r)
@@ -309,6 +346,7 @@
                                         1.000000
                                         (Real 4)
                                     )
+                                    ()
                                 )
                                 (Real 4)
                                 ()
@@ -318,6 +356,7 @@
                                 (Var 2 i)
                                 IntegerToReal
                                 (Real 4)
+                                ()
                                 ()
                             )
                             (Logical 4)
@@ -329,6 +368,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Cast
                                 (IntegerBinOp
@@ -341,6 +381,7 @@
                                 IntegerToReal
                                 (Real 4)
                                 ()
+                                ()
                             )
                             LtE
                             (Var 2 r)
@@ -353,6 +394,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 i)
                             GtE
@@ -372,6 +414,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Var 2 r)
                             GtE
@@ -386,6 +429,7 @@
                                         1.000000
                                         (Real 4)
                                     )
+                                    ()
                                 )
                                 (Real 4)
                                 ()
@@ -399,6 +443,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Var 2 r)
                             GtE
@@ -413,6 +458,7 @@
                                 IntegerToReal
                                 (Real 4)
                                 ()
+                                ()
                             )
                             (Logical 4)
                             ()
@@ -423,11 +469,13 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Cast
                                 (Var 2 i)
                                 IntegerToReal
                                 (Real 4)
+                                ()
                                 ()
                             )
                             GtE
@@ -442,6 +490,7 @@
                                         1.000000
                                         (Real 4)
                                     )
+                                    ()
                                 )
                                 (Real 4)
                                 ()
@@ -455,6 +504,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 i)
                             Eq
@@ -474,6 +524,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Var 2 r)
                             Eq
@@ -488,6 +539,7 @@
                                         1.000000
                                         (Real 4)
                                     )
+                                    ()
                                 )
                                 (Real 4)
                                 ()
@@ -501,6 +553,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Var 2 r)
                             Eq
@@ -515,6 +568,7 @@
                                 IntegerToReal
                                 (Real 4)
                                 ()
+                                ()
                             )
                             (Logical 4)
                             ()
@@ -525,11 +579,13 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Cast
                                 (Var 2 i)
                                 IntegerToReal
                                 (Real 4)
+                                ()
                                 ()
                             )
                             Eq
@@ -544,6 +600,7 @@
                                         1.000000
                                         (Real 4)
                                     )
+                                    ()
                                 )
                                 (Real 4)
                                 ()

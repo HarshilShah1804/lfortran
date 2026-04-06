@@ -1,6 +1,215 @@
+! If you need a function, put it into the module below and remove the same
+! number of lines below the module to keep the rest of the lines in this file
+! intact.
+module continue_compilation_1_mod
+    use, intrinsic :: ieee_arithmetic, only: ieee_class, ieee_quiet_nan, ieee_class_type
+    type :: MyClass
+        integer :: value
+    contains
+        procedure :: display
+    end type MyClass
+
+    type :: logger_type
+    contains
+        private
+        procedure, public, pass(self) :: add_log_file
+    end type logger_type
+
+    type(MyClass), PROTECTED :: protected_module_my_class_obj
+
+    ! Test for Missing Declaration:
+    type :: ctx_missing_t
+        procedure(f_missing), pointer, nopass :: fn => null()
+    end type
+
+    procedure(missing_global_interface), pointer :: p => null()
+
+    interface assignment(=)
+        module procedure assign_func_bad
+        module procedure assign_wrong_nargs
+        module procedure assign_bad_lhs
+        module procedure assign_bad_rhs
+    end interface
+    
+    interface operator(.op.)
+        function op_clash_f(x) result(y)
+            integer, intent(in) :: x
+            integer :: y
+        end function
+    end interface
+    type :: Base
+        integer :: x
+    end type Base
+
+    interface frexp
+    function frexp(x,n) result(r)
+        real r
+        real, intent(in), value :: x
+        integer, intent(out) :: n
+    end function frexp
+    end interface frexp
+
+    interface frexp_duplicate
+    subroutine frexp(x,n)
+        real r
+        real, intent(in), value :: x
+        integer, intent(out) :: n
+    end subroutine frexp
+    end interface
+    
+    type, extends(Base) :: Derived
+        real :: r
+    end type Derived
+
+    type :: type_t
+    end type type_t
+
+
+
+
+
+
+
+
+
+contains
+
+    subroutine my_undefined_type_test()
+        implicit none
+        type(another_undefined_type) :: s3_in_subroutine
+    end subroutine my_undefined_type_test
+
+    subroutine my_func(x, y)
+        integer, intent(in) :: x, y
+        print *, "hi"
+    end subroutine
+
+    subroutine display(self, extra_arg)
+        class(MyClass), intent(in) :: self
+        integer, intent(in) :: extra_arg
+        print *, "Value in object:", self%value
+    end subroutine display
+
+    subroutine add_log_file(self, filename, unit)
+        class(logger_type), intent(inout) :: self
+        character(*), optional :: filename
+        integer :: unit
+        filename = "lfortran"
+        unit = 10
+    end subroutine add_log_file
+
+    subroutine s(c) bind(c)
+        use iso_c_binding
+        character(len=2, kind=c_char), intent(in) :: c
+    end subroutine s
+
+    subroutine ubound_assumed_size(a, b, c)
+        real :: a(*)       
+        real :: b(*)   
+        real :: c(10, *)
+        
+        print *, ubound(a, 1)
+        print *, ubound(b)
+        print *, ubound(c, 2)
+    end subroutine
+
+    subroutine assumed_size_star_pos_1(a)
+        real, intent(in) :: a(*, 10)
+    end subroutine
+
+    subroutine assumed_size_star_pos_2(a)
+        real :: a(*, 10)
+    end subroutine
+
+    subroutine proc_param(p)
+        procedure(ubound_assumed_size) :: p
+    end subroutine proc_param
+
+    subroutine modify_and_deallocate(s)
+        character(5), allocatable :: s
+        deallocate(s)
+    end subroutine modify_and_deallocate
+
+    subroutine intrinsic_polymorphic(generic)
+        class(*), intent(in) :: generic
+        print *, trim(generic)
+        print *, adjustl(generic)
+        print *, adjustr(generic)
+        print *, len_trim(generic)
+    end subroutine intrinsic_polymorphic
+
+    integer function assign_func_bad(lhs, rhs)
+        integer, intent(out) :: lhs
+        integer, intent(in)  :: rhs
+        assign_func_bad = rhs
+    end function assign_func_bad
+
+    subroutine assign_wrong_nargs(lhs)
+        integer, intent(out) :: lhs
+    end subroutine assign_wrong_nargs
+
+    subroutine assign_bad_lhs(lhs, rhs)
+        integer, intent(in)  :: lhs
+        integer, intent(in)  :: rhs
+    end subroutine assign_bad_lhs
+
+    subroutine assign_bad_rhs(lhs, rhs)
+        integer, intent(out) :: lhs
+        integer, intent(out) :: rhs
+    end subroutine assign_bad_rhs
+    subroutine slash_init_warning_paths()
+        enum, bind(c)
+            enumerator :: red/1/
+        end enum
+        type(MyClass), save :: slash_x/MyClass(1)/
+        integer, save :: slash_y/2/
+    end subroutine slash_init_warning_paths
+
+    function dummy_func() result(r)
+        integer :: r
+        r = 42
+    end function dummy_func
+
+    subroutine dummy_sub()
+       print *, "dummy subroutine"
+    end subroutine dummy_sub
+
+    subroutine proc_ptr_error_tests()
+        implicit none
+        procedure(), pointer :: pf1
+        pf1 => dummy_sub
+
+        procedure(sub_test), pointer :: pf2
+        pf2 => dummy_func
+    end subroutine proc_ptr_error_tests
+
+    function op_clash_f(x) result(y)
+        integer, intent(in) :: x
+        integer :: y
+        y = x
+    end function op_clash_f
+
+
+
+
+
+
+
+
+
+
+
+
+
+end module
+
+
+! Only put declarations and statements here, no subroutines (those go above).
 program continue_compilation_1
+    use continue_compilation_1_mod
     implicit integer(a-f), real(e-z)
 
+    ! Put declarations below without empty lines
     integer :: a(3), b(3), b1(3, 3), a3(3, 3, 3), b4(3, 3, 3, 3), a5, c5, i, arr1(3), arr2(2, 3), arr3(2, 1, 3)
     character :: a1(3, 3)
     logical :: a2(3, 3), mask1(3), mask2(2, 3), mask3(2, 1, 3), mask4(3, 2), mask5(2, 3, 1), y
@@ -9,30 +218,85 @@ program continue_compilation_1
     real :: z1
     integer, parameter :: i1 = 2
     character(len=5) :: string = "hello"
-	character(len=1) :: set(2) = ["l", "h"]
-
+    character(len=1) :: set(2) = ["l", "h"]
     integer :: q1
     real :: r1
     character :: c1
-
     complex :: c = (1.0, 2.0)
-
     real a_real(0)
-
-    integer, allocatable ::  shape_(:)
+    integer, allocatable ::  shape_(:), arr4(:), arr5(:)
     integer, dimension(2, 3) :: matrix
     integer, dimension(4) :: source = [1, 2, 3, 4]
     allocate(shape_(2))
-
     real :: v
     character(10) :: str
-
     character(3), parameter :: ar1 = repeat(["abc", "#^1", "123"], [1, 2, 3])
-
     integer, parameter :: zero = 0
     integer :: x = 1
-     
     real :: adwf = .true.
+    integer, volatile :: volatile_var
+    dimension array(3)
+    double precision array
+    integer , dimension(3) :: array
+    type(logger_type) :: logger
+    integer :: unit
+    character(len=100) :: filename
+    type(MyClass), parameter :: myclass_array(2) = [1, MyClass(10)]
+    type(MyClass), parameter :: myclass_array2(2) = [MyClass(1), MyClass(q1)]
+    character(width=10) :: str_c_1
+    character(len=10, len=20) :: str_c_2
+    character(len=10, 1) :: str_c_3
+    character(1, len=20) :: str_c_4
+    character(:), allocatable :: x(2)
+    integer, dimension(:,:), allocatable :: arr_size
+    logical :: mask_size(size(arr_size))
+    integer, protected :: protected_attr_var
+    integer, parameter, protected :: protected_parameter_var
+    type(MyClass) :: v1, v2, v3
+    type(MyClass) :: arr(3)
+    integer :: n = 2
+    type :: matrix
+      integer :: elements(n)
+    end type
+    type(bspline_3d) :: s3_in_program
+    integer :: j2, i2, k2(2), x2(2), y2(3)    
+    integer::tt = b'01' * 3
+    integer :: fmt_i1, fmt_i2, fmt_i3 ! for issue #8925
+    integer, allocatable :: allocate_int = 1
+    character(:), allocatable :: allocate_char = "H"
+    intrinsic :: not_real
+    call sub(not_real)
+    integer :: param_arr(3) = [5, 10, 15]
+    integer, parameter :: param_minloc = minloc(param_arr, 1, [.false., .false., .false.])
+    integer :: cc_a3(2) = [2, 3]
+    integer :: cc_temp3(2)
+    integer :: cc_i0 = 1
+    integer :: cc_a4(2)
+    integer :: cc_temp4(5)
+    integer :: cc_i1 = 1
+    character(10) :: strx
+    type(MyClass), parameter :: uninitialized_param_local
+    type(MyClass) :: err_obj1 = non_existent_symbol
+    type(MyClass) :: err_obj2 = my_func
+    integer :: non_parameter_var = 5
+    type(MyClass) :: err_obj3 = non_parameter_var
+    type(MyClass) :: err_obj4 = myclass_array
+    type(MyClass) :: err_obj5 = uninitialized_param_local
+
+    ! Unary defined operator with missing procedure
+    interface operator(.bad.)
+        module procedure bad_op
+    end interface
+
+    integer :: bad_x
+    type(ieee_class_type) :: ieee_cls
+    type(Base) :: base_var
+    type(Derived) :: derived_var
+    class(type_t) :: inst_tt
+    real(8), parameter :: erfc_param = erfc(40.12_8)
+    integer :: arr_idl(4)
+    contiguous :: contig_not_declared
+    contiguous :: MyClass
 
 
 
@@ -48,7 +312,20 @@ program continue_compilation_1
 
 
 
-    
+
+
+
+
+
+
+    ! Use the space above to insert new declarations, and remove the line, so
+    ! that the lines below do not shift, to keep the diff minimal.
+    !
+    ! Only put statements below. If you need to call a function, put it into a
+    ! module above.
+
+    a = 1
+    print *, a(10)
     a5 = 8
     b5 = 12_8
     c5 = 2
@@ -103,12 +380,6 @@ program continue_compilation_1
     !more_kwargs_than_acceptable_to_subroutine
     call my_func(y=1, x=2, z=1)
 
-    contains
-
-    subroutine my_func(x, y)
-        integer, intent(in) :: x, y
-        print *, "hi"
-    end subroutine
     !nint_overflow
     print*, nint(1e12_8)
     print*, nint(1000000000000.0000000000000000d0)
@@ -228,4 +499,193 @@ program continue_compilation_1
     matrix = reshape(source, shape_, pad=[0])
 
     deallocate(shape_)
+
+    ! c is Complex
+    print *, c%mymember
+    ! c1 is Character
+    print *, c1%mymember
+
+    print *, present(x,x)
+    print *, present()
+    print *, ieor(x)
+    print *, ieor()
+
+    exit
+
+    ! calling function with less arguments
+    call my_func(10)
+    call my_func()
+    ! checking for self argument too 
+    type(MyClass) :: obj
+    obj%value = 42
+    call obj%display()
+    ! checking source in allocate
+    allocate(arr4(5), source=[1, 2, 3])
+    allocate(arr4(5), source=v)
+    allocate(arr4(3), source=reshape([1, 2, 3, 4, 5, 6], [2, 3]))
+    allocate(arr4, source=7)
+
+    call logger % add_log_file(filename=filename)
+    call logger % add_log_file()
+
+    allocate(arr5, status=q1)
+    allocate(arr5, mold = arr4)
+
+    print *, ["aa", "aaa"]
+    cc_a3 = cc_temp3(cc_i0:cc_i0)
+    print *, pack(arr2, mask1)
+    print *, size(cc_a3)
+    ! assigning to a *PROTECTED* struct instance member, not allowed
+    protected_module_my_class_obj%value = 42
+    cc_a4 = cc_temp4(cc_i1+1:cc_i1+1)
+    arr = [type(MyClass) :: v1, v2, v3]
+    print *, size(cc_a4)
+    arr = [NonExistingType :: v1, v2, v3]
+
+    !Data Statements with different number of arguments on LHS and RHS
+    data j2, x2, (y2(i2), i2=1,3), k2 / 1,2,3,4,5,6,7,3*8 /
+
+    q1: do q1 = 1, 3
+        print *, q1
+    end do q1
+
+    ! Test assigned format WRITE 
+    ASSIGN 0012 TO fmt_i1
+    0012 FORMAT (" **** ASSIGN FORMAT NUMBER TO INTEGER VARIABLE ****" )
+    WRITE (6, fmt_i1)
+
+    ! Test assigned format PRINT 
+    assign 100 to fmt_i2
+    100 format (A)
+    print fmt_i2, "test"
+
+    ! Test assigned format READ 
+    assign 13 to fmt_i3
+    13 format ()
+    read (5, fmt_i3)
+
+    !passing non procedure to procedure parameter
+    call proc_param(42)
+
+    x = 9010
+    read (*, end=x) x
+    read (*, end=9011.0) x
+    x = 9012
+    read (*, err=x) x
+    read (*, err=9013.0) x
+    write (*, end=9014) x
+9014 continue
+    write (*, err=9015) x
+9015 continue
+
+    read(*, *, end=999) x   
+    read(*, *, err=500) x
+    
+    OPEN(unit=10, recl=10, recl=20)
+    OPEN(unit=10, recl=10.5)
+
+    i = 1
+    print *, string(i,i)
+    
+    allocate(strx)
+    strx = "hello12345"
+    call modify_and_deallocate(strx)
+    print *, allocated(strx)
+
+    call intrinsic_polymorphic("  Hello World  ")
+
+    OPEN(unit=10, encoding="UTF-8", encoding="UTF-8")
+    OPEN(unit=10, encoding=10)
+
+    character(len=10) :: str_var
+    read(str_var, rec=1) x
+    write(str_var, rec=1) x
+    read(unit=10, rec=1, rec=2) y
+    write(unit=10, rec=1, rec=2) y
+    read(10, rec=1.5) y
+    write(10, rec=2.5) y
+
+    ! unary defined operator with no matching function
+    bad_x = .bad. 10
+    bad_x = 5 .op. 3
+    ieee_cls = ieee_class(0.0)
+    b = (ieee_cls == ieee_quiet_nan)
+
+    integer, intent(out) :: out_intent
+    integer, intent(in) :: in_intent
+    
+    base_var = derived_var
+
+    type :: container(rk, ik)
+        integer, kind :: rk
+        integer, kind :: ik
+        integer(kind=ik)  :: i_val(20)
+        real(kind=rk)     :: r_val(20)
+    end type container
+
+    type(container(4)) :: obj1
+    type(container) :: obj2
+
+    arr_idl = (i, i = 1, 4)
+    integer :: minloc_shape_mismatch = minloc([2, 1, 3], 1, [.true., .false.])
+    integer :: maxloc_shape_mismatch = maxloc([2, 1, 3], 1, [.true., .false.])
+    write (*, "(a)", advance="hello") "Dothraki culture"
+    print *, sum(arr1, dim = mask1)
+    print*, ieee_is_nan(1.0)
+    open(unit=7, decimal=1, decimal="comma")
+    open(unit=7, decimal="POINT", decimal="comma")
+    integer :: char_len_var = 10
+    character(len = char_len_var) :: char_nonconst
+    interface undeclared_iface
+        module procedure undeclared_proc  ! {Error} Symbol 'undeclared_proc' not declared
+    end interface
+
+    integer, parameter :: n2 = "abc"
+    type(MyClass) :: ptr_src_no_target
+    type(MyClass), pointer :: ptr_requires_target => ptr_src_no_target
+    type(Base), target :: ptr_tgt_base
+    type(MyClass), pointer :: ptr_type_mismatch => ptr_tgt_base
+    a(1) = .true.
+
+
+
+
+
+
+
+
+    contains
+    subroutine test_uminus_struct()
+        use continue_compilation_1_mod, only: MyClass
+        implicit none
+        type(MyClass) :: tt
+        print *, -tt
+    end subroutine
+
+
+
+
+    subroutine sub(f)
+        interface
+            function f(x)
+                integer :: x, f
+            end function
+        end interface
+    end subroutine
+    subroutine sub_do_undeclared()
+        implicit none
+        integer :: n(3)
+        do k = 1, 3
+            n(k) = 42
+        end do
+    end subroutine
+    subroutine sub_real_logical_init()
+        implicit none
+        real :: adwf = .true.
+    end subroutine
+    subroutine sub_abs_array_index()
+        implicit none
+        integer(4) :: arr1(3) = [2471095, 820012001, 39024800]
+        if (abs(arr1)(1) /= 2471095) error stop
+    end subroutine
 end program

@@ -17,11 +17,13 @@
                                         (Pointer
                                             (Integer 4)
                                         )
+                                        ()
                                     )
                                     (PointerNullConstant
                                         (Pointer
                                             (Integer 4)
                                         )
+                                        ()
                                     )
                                     Save
                                     (Pointer
@@ -34,6 +36,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             p2:
                                 (Variable
@@ -52,6 +59,7 @@
                                                 DescriptorArray
                                             )
                                         )
+                                        ()
                                     )
                                     (PointerNullConstant
                                         (Pointer
@@ -64,6 +72,7 @@
                                                 DescriptorArray
                                             )
                                         )
+                                        ()
                                     )
                                     Save
                                     (Pointer
@@ -83,6 +92,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             p3:
                                 (Variable
@@ -101,6 +115,7 @@
                                                 DescriptorArray
                                             )
                                         )
+                                        ()
                                     )
                                     (PointerNullConstant
                                         (Pointer
@@ -113,6 +128,7 @@
                                                 DescriptorArray
                                             )
                                         )
+                                        ()
                                     )
                                     Save
                                     (Pointer
@@ -132,6 +148,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             t1:
                                 (Variable
@@ -150,6 +171,11 @@
                                     .false.
                                     .true.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             t2:
                                 (Variable
@@ -175,6 +201,11 @@
                                     .false.
                                     .true.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             t3:
                                 (Variable
@@ -200,6 +231,11 @@
                                     .false.
                                     .true.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     associate_07
@@ -226,6 +262,7 @@
                         )
                     )
                     (If
+                        ()
                         (LogicalNot
                             (PointerAssociated
                                 (Var 2 p1)
@@ -242,6 +279,7 @@
                         []
                     )
                     (If
+                        ()
                         (LogicalNot
                             (PointerAssociated
                                 (Var 2 p2)
@@ -258,6 +296,7 @@
                         []
                     )
                     (If
+                        ()
                         (LogicalNot
                             (PointerAssociated
                                 (Var 2 p1)
@@ -274,6 +313,7 @@
                         []
                     )
                     (If
+                        ()
                         (LogicalNot
                             (PointerAssociated
                                 (Var 2 p2)
@@ -290,6 +330,7 @@
                         []
                     )
                     (If
+                        ()
                         (PointerAssociated
                             (Var 2 p3)
                             ()
@@ -302,6 +343,7 @@
                         []
                     )
                     (If
+                        ()
                         (PointerAssociated
                             (Var 2 p3)
                             (Var 2 t3)

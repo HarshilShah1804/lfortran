@@ -34,9 +34,9 @@ class LLVMEvaluator;
 class FortranEvaluator
 {
 public:
-    CompilerOptions compiler_options;
+    CompilerOptions& compiler_options;
 
-    FortranEvaluator(CompilerOptions compiler_options);
+    FortranEvaluator(CompilerOptions& compiler_options);
     ~FortranEvaluator();
 
     struct EvalResult {
@@ -85,7 +85,8 @@ public:
         diag::Diagnostics &diagnostics);
     Result<std::unique_ptr<LLVMModule>> get_llvm3(ASR::TranslationUnit_t &asr,
         LCompilers::PassManager& pass_manager,
-        diag::Diagnostics &diagnostics, const std::string &infile);
+        diag::Diagnostics &diagnostics, LocationManager &lm, const std::string &infile,
+        int* time_opt);
     Result<std::string> get_asm(const std::string &code,
         LocationManager &lm,
         LCompilers::PassManager& pass_manager,
@@ -114,6 +115,9 @@ public:
     Result<std::string> get_fmt(const std::string &code, LocationManager &lm,
         diag::Diagnostics &diagnostics);
     Allocator &get_al() { return al; };
+#ifdef HAVE_LFORTRAN_LLVM
+    LLVMEvaluator &get_llvm_evaluator();
+#endif
 
 private:
     Allocator al;

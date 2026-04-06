@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             j:
                                 (Variable
@@ -42,6 +47,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             k:
                                 (Variable
@@ -60,6 +70,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     doloop_04
@@ -68,11 +83,15 @@
                         (Var 2 j)
                         (IntegerConstant 0 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 k)
                         (IntegerConstant 2 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (DoLoop
                         ()
@@ -90,10 +109,13 @@
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )]
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq
@@ -111,7 +133,9 @@
                             ()
                             [(Var 2 j)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -119,6 +143,8 @@
                         (Var 2 j)
                         (IntegerConstant 0 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 k)
@@ -128,6 +154,8 @@
                             (IntegerConstant -2 (Integer 4) Decimal)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (DoLoop
                         ()
@@ -145,10 +173,13 @@
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )]
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq
@@ -166,7 +197,9 @@
                             ()
                             [(Var 2 j)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -174,6 +207,8 @@
                         (Var 2 j)
                         (IntegerConstant 0 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (DoLoop
                         a
@@ -191,8 +226,11 @@
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )
                         (If
+                            ()
                             (IntegerCompare
                                 (Var 2 i)
                                 Eq
@@ -208,6 +246,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq
@@ -224,6 +263,8 @@
                         (Var 2 j)
                         (IntegerConstant 0 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (DoLoop
                         b
@@ -241,8 +282,11 @@
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )
                         (If
+                            ()
                             (IntegerCompare
                                 (Var 2 i)
                                 Eq
@@ -258,6 +302,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq
@@ -274,11 +319,15 @@
                         (Var 2 j)
                         (IntegerConstant 0 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 i)
                         (IntegerConstant 1 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (WhileLoop
                         c
@@ -296,8 +345,11 @@
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )
                         (If
+                            ()
                             (IntegerCompare
                                 (Var 2 i)
                                 Eq
@@ -320,10 +372,13 @@
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )]
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 j)
                             NotEq
@@ -340,6 +395,8 @@
                         (Var 2 k)
                         (IntegerConstant 2 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (DoLoop
                         ()

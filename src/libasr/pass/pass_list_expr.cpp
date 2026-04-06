@@ -41,8 +41,8 @@ public:
                            Vec<ASR::stmt_t*>& body, ASR::ttype_t* item_type) {
         Vec<ASR::expr_t*> idx_vars;
         PassUtils::create_idx_vars(idx_vars, 1, loc, al, symtab);
-        ASR::stmt_t* loop_stmt = ASRUtils::STMT(ASR::make_Assignment_t(
-            al, loc, idx_vars[0], start, nullptr));
+        ASR::stmt_t* loop_stmt = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(
+            al, loc, idx_vars[0], start, nullptr, false, false));
         body.push_back(al, loop_stmt);
 
         ASR::ttype_t* bool_type = ASRUtils::TYPE(ASR::make_Logical_t(al, loc, 4));
@@ -82,10 +82,10 @@ public:
                 al, loc, a_list, idx_vars[0], item_type, nullptr))));
         loop_body.push_back(al, loop_stmt);
 
-        loop_stmt = ASRUtils::STMT(ASR::make_Assignment_t(
+        loop_stmt = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(
             al, loc, idx_vars[0], ASRUtils::EXPR(ASR::make_IntegerBinOp_t(
                 al, loc, idx_vars[0], ASR::binopType::Add, step,
-                int_type, nullptr)), nullptr));
+                int_type, nullptr)), nullptr, false, false));
         loop_body.push_back(al, loop_stmt);
 
         loop_stmt = ASRUtils::STMT(ASR::make_WhileLoop_t(
@@ -181,8 +181,8 @@ public:
         ASR::expr_t* value = ASRUtils::EXPR(ASR::make_ListConstant_t(
             al, loc, nullptr, 0, list_type));
         // Initialize `result_list` with `empty value`
-        ASR::stmt_t* list_section_stmt = ASRUtils::STMT(ASR::make_Assignment_t(
-            al, loc, res_list, value, nullptr));
+        ASR::stmt_t* list_section_stmt = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(
+            al, loc, res_list, value, nullptr, false, false));
         body.push_back(al, list_section_stmt);
 
         ASR::expr_t *a_len = ASRUtils::EXPR(ASR::make_ListLen_t(
@@ -204,13 +204,13 @@ public:
 
             Vec<ASR::stmt_t*> if_body;
             if_body.reserve(al, 1);
-            ASR::stmt_t* if_body_stmt = ASRUtils::STMT(ASR::make_Assignment_t(
+            ASR::stmt_t* if_body_stmt = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(
                 al, loc, arg_exprs[i], ASRUtils::EXPR(ASR::make_IntegerBinOp_t(al,
                 loc, arg_exprs[i], ASR::binopType::Add, a_len,
-                int_type, nullptr)), nullptr));
+                int_type, nullptr)), nullptr, false, false));
             if_body.push_back(al, if_body_stmt);
 
-            list_section_stmt = ASRUtils::STMT(ASR::make_If_t(al, loc, a_test,
+            list_section_stmt = ASRUtils::STMT(ASR::make_If_t(al, loc, nullptr, a_test,
                 if_body.p, if_body.n, nullptr, 0));
             body.push_back(al, list_section_stmt);
         }
@@ -226,18 +226,18 @@ public:
             else_body_1.reserve(al, 1);
             ASR::expr_t* a_test_1 = ASRUtils::EXPR(ASR::make_IntegerCompare_t(al, loc,
                     arg_exprs[3], ASR::cmpopType::Gt, const_zero, bool_type, nullptr));
-            ASR::stmt_t* if_body_stmt_1 = ASRUtils::STMT(ASR::make_Assignment_t(
-                al, loc, arg_exprs[1], const_zero, nullptr));
+            ASR::stmt_t* if_body_stmt_1 = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(
+                al, loc, arg_exprs[1], const_zero, nullptr, false, false));
             if_body_1.push_back(al, if_body_stmt_1);
 
-            ASR::stmt_t* else_body_stmt_1 = ASRUtils::STMT(ASR::make_Assignment_t(
-                al, loc, arg_exprs[1], a_len_1, nullptr));
+            ASR::stmt_t* else_body_stmt_1 = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(
+                al, loc, arg_exprs[1], a_len_1, nullptr, false, false));
             else_body_1.push_back(al, else_body_stmt_1);
 
-            list_section_stmt = ASRUtils::STMT(ASR::make_If_t(al, loc, a_test_1,
+            list_section_stmt = ASRUtils::STMT(ASR::make_If_t(al, loc, nullptr, a_test_1,
                 if_body_1.p, if_body_1.n, else_body_1.p, else_body_1.n));
             if_body.push_back(al, list_section_stmt);
-            list_section_stmt = ASRUtils::STMT(ASR::make_If_t(al, loc, a_test,
+            list_section_stmt = ASRUtils::STMT(ASR::make_If_t(al, loc, nullptr, a_test,
                 if_body.p, if_body.n, nullptr, 0));
             body.push_back(al, list_section_stmt);
         }
@@ -253,18 +253,18 @@ public:
             else_body_1.reserve(al, 1);
             ASR::expr_t* a_test_1 = ASRUtils::EXPR(ASR::make_IntegerCompare_t(al, loc,
                     arg_exprs[3], ASR::cmpopType::Gt, const_zero, bool_type, nullptr));
-            ASR::stmt_t* if_body_stmt_1 = ASRUtils::STMT(ASR::make_Assignment_t(
-                al, loc, arg_exprs[2], a_len, nullptr));
+            ASR::stmt_t* if_body_stmt_1 = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(
+                al, loc, arg_exprs[2], a_len, nullptr, false, false));
             if_body_1.push_back(al, if_body_stmt_1);
 
-            ASR::stmt_t* else_body_stmt_1 = ASRUtils::STMT(ASR::make_Assignment_t(
-                al, loc, arg_exprs[2], minus_one, nullptr));
+            ASR::stmt_t* else_body_stmt_1 = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(
+                al, loc, arg_exprs[2], minus_one, nullptr, false, false));
             else_body_1.push_back(al, else_body_stmt_1);
 
-            list_section_stmt = ASRUtils::STMT(ASR::make_If_t(al, loc, a_test_1,
+            list_section_stmt = ASRUtils::STMT(ASR::make_If_t(al, loc, nullptr, a_test_1,
                 if_body_1.p, if_body_1.n, else_body_1.p, else_body_1.n));
             if_body.push_back(al, list_section_stmt);
-            list_section_stmt = ASRUtils::STMT(ASR::make_If_t(al, loc, a_test,
+            list_section_stmt = ASRUtils::STMT(ASR::make_If_t(al, loc, nullptr, a_test,
                 if_body.p, if_body.n, nullptr, 0));
             body.push_back(al, list_section_stmt);
         }
@@ -281,23 +281,23 @@ public:
             else_body.reserve(al, 1);
             ASR::expr_t* a_test_1 = ASRUtils::EXPR(ASR::make_IntegerCompare_t(al, loc,
                     arg_exprs[2], ASR::cmpopType::Gt, a_len, bool_type, nullptr));
-            ASR::stmt_t* if_body_stmt_1 = ASRUtils::STMT(ASR::make_Assignment_t(
-                al, loc, arg_exprs[2], a_len, nullptr));
+            ASR::stmt_t* if_body_stmt_1 = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(
+                al, loc, arg_exprs[2], a_len, nullptr, false, false));
             if_body_1.push_back(al, if_body_stmt_1);
-            list_section_stmt = ASRUtils::STMT(ASR::make_If_t(al, loc, a_test_1,
+            list_section_stmt = ASRUtils::STMT(ASR::make_If_t(al, loc, nullptr, a_test_1,
                 if_body_1.p, if_body_1.n, nullptr, 0));
             if_body.push_back(al, list_section_stmt);
 
             ASR::expr_t* a_test_2 = ASRUtils::EXPR(ASR::make_IntegerCompare_t(al, loc,
                     arg_exprs[1], ASR::cmpopType::GtE, a_len, bool_type, nullptr));
-            ASR::stmt_t* if_body_stmt_2 = ASRUtils::STMT(ASR::make_Assignment_t(
-                al, loc, arg_exprs[1], a_len_1, nullptr));
+            ASR::stmt_t* if_body_stmt_2 = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(
+                al, loc, arg_exprs[1], a_len_1, nullptr, false, false));
             if_body_2.push_back(al, if_body_stmt_2);
-            list_section_stmt = ASRUtils::STMT(ASR::make_If_t(al, loc, a_test_2,
+            list_section_stmt = ASRUtils::STMT(ASR::make_If_t(al, loc, nullptr, a_test_2,
                 if_body_2.p, if_body_2.n, nullptr, 0));
             else_body.push_back(al, list_section_stmt);
 
-            list_section_stmt = ASRUtils::STMT(ASR::make_If_t(al, loc, a_test,
+            list_section_stmt = ASRUtils::STMT(ASR::make_If_t(al, loc, nullptr, a_test,
                 if_body.p, if_body.n, else_body.p, else_body.n));
             body.push_back(al, list_section_stmt);
         }
@@ -406,7 +406,7 @@ public:
         }
         ASR::symbol_t *fn_sym = list_section_func_map[list_type_name];
         *current_expr = ASRUtils::EXPR(ASRUtils::make_FunctionCall_t_util(al, loc,
-            fn_sym, nullptr, args.p, args.n, x->m_type, nullptr, nullptr, false));
+            fn_sym, nullptr, args.p, args.n, x->m_type, nullptr, nullptr));
     }
 
     void create_concat_function(Location& loc,
@@ -443,7 +443,7 @@ public:
         // Declare `result_list`
         ASR::symbol_t* arg = ASR::down_cast<ASR::symbol_t>(
             ASRUtils::make_Variable_t_util(al, loc, list_concat_symtab,
-            s2c(al, "result_list"), nullptr, 0, ASR::intentType::Local, nullptr, nullptr,
+            s2c(al, "result_list"), nullptr, 0, ASR::intentType::Out, nullptr, nullptr,
             ASR::storage_typeType::Default, list_type, nullptr,
             ASR::abiType::Source, ASR::accessType::Public,
             ASR::presenceType::Required, false));
@@ -454,8 +454,8 @@ public:
         ASR::expr_t* value = ASRUtils::EXPR(ASR::make_ListConstant_t(
             al, loc, nullptr, 0, list_type));
         // Initialize `result_list` with `empty value`
-        ASR::stmt_t* list_concat_stmt = ASRUtils::STMT(ASR::make_Assignment_t(
-            al, loc, res_list, value, nullptr));
+        ASR::stmt_t* list_concat_stmt = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(
+            al, loc, res_list, value, nullptr, false, false));
         body.push_back(al, list_concat_stmt);
         ASR::ttype_t* int_type = ASRUtils::TYPE(ASR::make_Integer_t(al, loc, 4));
         ASR::ttype_t* item_type = ASR::down_cast<ASR::List_t>(list_type)->m_type;
@@ -530,7 +530,7 @@ public:
         }
         ASR::symbol_t *fn_sym = list_concat_func_map[list_type_name];
         *current_expr = ASRUtils::EXPR(ASRUtils::make_FunctionCall_t_util(al, loc,
-            fn_sym, nullptr, args.p, 2, x->m_type, nullptr, nullptr, false));
+            fn_sym, nullptr, args.p, 2, x->m_type, nullptr, nullptr));
     }
 
 };

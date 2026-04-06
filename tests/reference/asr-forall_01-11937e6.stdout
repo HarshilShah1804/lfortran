@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             ivec:
                                 (Variable
@@ -47,6 +52,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     forall_01
@@ -68,6 +78,8 @@
                             )
                             (Var 2 i)
                             ()
+                            .false.
+                            .false.
                         )
                     )
                     (Print
@@ -75,7 +87,9 @@
                             ()
                             [(Var 2 ivec)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]

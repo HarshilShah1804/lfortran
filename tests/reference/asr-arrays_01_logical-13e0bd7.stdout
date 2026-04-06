@@ -29,6 +29,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             b:
                                 (Variable
@@ -52,6 +57,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             c:
                                 (Variable
@@ -77,6 +87,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             i:
                                 (Variable
@@ -95,6 +110,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             j:
                                 (Variable
@@ -113,6 +133,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     arrays_01_logical
@@ -132,6 +157,8 @@
                             (Logical 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (DoLoop
                         ()
@@ -169,10 +196,13 @@
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )]
                         []
                     )
                     (If
+                        ()
                         (LogicalNot
                             (ArrayItem
                                 (Var 2 a)
@@ -192,6 +222,7 @@
                         []
                     )
                     (If
+                        ()
                         (ArrayItem
                             (Var 2 a)
                             [(()
@@ -207,6 +238,7 @@
                         []
                     )
                     (If
+                        ()
                         (LogicalNot
                             (ArrayItem
                                 (Var 2 a)
@@ -240,6 +272,8 @@
                             (Logical 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (DoLoop
                         ()
@@ -289,10 +323,13 @@
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )]
                         []
                     )
                     (If
+                        ()
                         (ArrayItem
                             (Var 2 b)
                             [(()
@@ -308,6 +345,7 @@
                         []
                     )
                     (If
+                        ()
                         (LogicalNot
                             (ArrayItem
                                 (Var 2 b)
@@ -327,6 +365,7 @@
                         []
                     )
                     (If
+                        ()
                         (ArrayItem
                             (Var 2 b)
                             [(()
@@ -342,6 +381,7 @@
                         []
                     )
                     (If
+                        ()
                         (LogicalNot
                             (ArrayItem
                                 (Var 2 b)
@@ -395,10 +435,13 @@
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )]
                         []
                     )
                     (If
+                        ()
                         (ArrayItem
                             (Var 2 b)
                             [(()
@@ -414,6 +457,7 @@
                         []
                     )
                     (If
+                        ()
                         (ArrayItem
                             (Var 2 b)
                             [(()
@@ -429,6 +473,7 @@
                         []
                     )
                     (If
+                        ()
                         (ArrayItem
                             (Var 2 b)
                             [(()
@@ -505,8 +550,11 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (LogicalNot
                             (ArrayItem
                                 (Var 2 b)
@@ -545,8 +593,11 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (LogicalNot
                             (ArrayItem
                                 (Var 2 b)
@@ -578,6 +629,7 @@
                             (IntegerConstant 2 (Integer 4) Decimal)
                             ())
                             [(If
+                                ()
                                 (IntegerCompare
                                     (IntegerBinOp
                                         (IntegerBinOp
@@ -633,6 +685,8 @@
                                         (Logical 4)
                                     )
                                     ()
+                                    .false.
+                                    .false.
                                 )]
                                 [(Assignment
                                     (ArrayItem
@@ -652,6 +706,8 @@
                                         (Logical 4)
                                     )
                                     ()
+                                    .false.
+                                    .false.
                                 )]
                             )]
                             []
@@ -659,6 +715,7 @@
                         []
                     )
                     (If
+                        ()
                         (ArrayItem
                             (Var 2 c)
                             [(()
@@ -677,6 +734,7 @@
                         []
                     )
                     (If
+                        ()
                         (LogicalNot
                             (ArrayItem
                                 (Var 2 c)
@@ -699,6 +757,7 @@
                         []
                     )
                     (If
+                        ()
                         (LogicalNot
                             (ArrayItem
                                 (Var 2 c)
@@ -721,6 +780,7 @@
                         []
                     )
                     (If
+                        ()
                         (ArrayItem
                             (Var 2 c)
                             [(()

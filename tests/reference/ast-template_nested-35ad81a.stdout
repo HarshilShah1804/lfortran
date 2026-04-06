@@ -30,6 +30,13 @@
             ()
             ()
             None
+            ())
+            (test_template
+            []
+            []
+            ()
+            ()
+            None
             ())]
             (TriviaNode
                 []
@@ -457,7 +464,7 @@
             (Print
                 0
                 ()
-                [(String "The result is ")
+                [(String "The result is " ())
                 (FuncCallOrArray
                     add_real
                     []

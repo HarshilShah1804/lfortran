@@ -29,6 +29,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             d:
                                                 (Variable
@@ -47,6 +52,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             e:
                                                 (Variable
@@ -65,6 +75,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             f:
                                                 (Function
@@ -88,6 +103,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             x:
                                                                 (Variable
@@ -106,6 +126,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     f
@@ -136,6 +161,7 @@
                                                                     2.000000
                                                                     (Real 4)
                                                                 )
+                                                                ()
                                                             )
                                                             Mul
                                                             (Var 4 x)
@@ -143,13 +169,17 @@
                                                             ()
                                                         )
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Print
                                                         (StringFormat
                                                             ()
                                                             [(Var 4 f)]
                                                             FormatFortran
-                                                            (String -1 0 () PointerString)
+                                                            (Allocatable
+                                                                (String 1 () DeferredLength DescriptorString)
+                                                            )
                                                             ()
                                                         )
                                                     )]
@@ -176,6 +206,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     foo
@@ -208,6 +243,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 3 g)
@@ -220,16 +257,20 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })
                     dflt_intent
+                    ()
                     [dflt_intent]
+                    .false.
                     .false.
                     .false.
                 ),
@@ -263,6 +304,7 @@
                             (Real 4)
                         ))]
                         ()
+                        .false.
                     )]
                 )
         })

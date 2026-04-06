@@ -34,6 +34,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     intrinsics_26
@@ -51,7 +56,9 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]
@@ -83,6 +90,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             pos:
                                                 (Variable
@@ -101,6 +113,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             res:
                                                 (Variable
@@ -119,6 +136,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -137,6 +159,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     all_set
@@ -165,6 +192,8 @@
                                             (Logical 4)
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (DoLoop
                                         ()
@@ -179,6 +208,7 @@
                                         )
                                         ())
                                         [(If
+                                            ()
                                             (LogicalNot
                                                 (IntrinsicElementalFunction
                                                     Btest
@@ -198,6 +228,8 @@
                                                     (Logical 4)
                                                 )
                                                 ()
+                                                .false.
+                                                .false.
                                             )]
                                             []
                                         )]
@@ -205,13 +237,15 @@
                                     )]
                                     (Var 3 res)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })
                     stdlib_bitsets_64
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

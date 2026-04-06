@@ -1,3 +1,4 @@
+#include <cctype>
 #include <iostream>
 #include <map>
 
@@ -7,6 +8,36 @@
 #include <libasr/string_utils.h>
 
 namespace LCompilers::LFortran {
+
+namespace {
+
+std::tm get_local_tm(std::time_t when) {
+    std::tm tm;
+#if defined(_WIN32)
+    localtime_s(&tm, &when);
+#else
+    localtime_r(&when, &tm);
+#endif
+    return tm;
+}
+
+std::string format_date(const std::tm &tm) {
+    static const char *months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    char buffer[16];
+    std::snprintf(buffer, sizeof(buffer), "%s %2d %04d",
+        months[tm.tm_mon], tm.tm_mday, tm.tm_year + 1900);
+    return std::string(buffer);
+}
+
+std::string format_time(const std::tm &tm) {
+    char buffer[16];
+    std::snprintf(buffer, sizeof(buffer), "%02d:%02d:%02d",
+        tm.tm_hour, tm.tm_min, tm.tm_sec);
+    return std::string(buffer);
+}
+
+} // namespace
 
 // This exception is only used internally for the preprocessor, nowhere else.
 
@@ -42,12 +73,16 @@ CPreprocessor::CPreprocessor(CompilerOptions &compiler_options)
         md.expansion = "1";
         macro_definitions["_WIN32"] = md;
     } else if (compiler_options.platform == Platform::macOS_ARM
+        || compiler_options.platform == Platform::macOS_PowerPC
         || compiler_options.platform == Platform::macOS_Intel) {
         md.expansion = "1";
         macro_definitions["__APPLE__"] = md;
         if (compiler_options.platform == Platform::macOS_ARM) {
             md.expansion = "1";
             macro_definitions["__aarch64__"] = md;
+        } else if (compiler_options.platform == Platform::macOS_PowerPC) {
+            md.expansion = "1";
+            macro_definitions["__POWERPC__"] = md;
         } else {
             md.expansion = "1";
             macro_definitions["__x86_64__"] = md;
@@ -99,6 +134,12 @@ CPreprocessor::CPreprocessor(CompilerOptions &compiler_options)
     macro_definitions["__FILE__"] = md;
     md.expansion = "0";
     macro_definitions["__LINE__"] = md;
+    std::time_t now = std::time(nullptr);
+    std::tm tm = get_local_tm(now);
+    md.expansion = "\"" + format_date(tm) + "\"";
+    macro_definitions["__DATE__"] = md;
+    md.expansion = "\"" + format_time(tm) + "\"";
+    macro_definitions["__TIME__"] = md;
 }
 std::string CPreprocessor::token(unsigned char *tok, unsigned char* cur) const
 {
@@ -150,6 +191,26 @@ std::string parse_argument(unsigned char *string_start, unsigned char *old_cur, 
     return arg;
 }
 
+void consume_string_literal(std::string &arg, unsigned char *&cur) {
+    unsigned char quote = *cur;
+    arg += *cur;
+    cur++;
+    while (*cur != '\0') {
+        arg += *cur;
+        if (*cur == quote) {
+            if (*(cur + 1) == quote) {
+                // escaped quote (doubled): consume the second one too
+                cur++;
+                arg += *cur;
+            } else {
+                // closing quote
+                return;
+            }
+        }
+        cur++;
+    }
+}
+
 std::string match_parentheses(unsigned char *string_start, unsigned char *&cur) {
     LCOMPILERS_ASSERT(*cur == '(')
     unsigned char *old_cur = cur;
@@ -166,6 +227,8 @@ std::string match_parentheses(unsigned char *string_start, unsigned char *&cur) 
         if (*cur == '(') {
             arg += match_parentheses(string_start, cur);
             LCOMPILERS_ASSERT(*cur == ')')
+        } else if (*cur == '"' || *cur == '\'') {
+            consume_string_literal(arg, cur);
         } else {
             arg += *cur;
         }
@@ -189,6 +252,8 @@ std::string parse_argument2(unsigned char *string_start, unsigned char *old_cur,
         if (*cur == '(') {
             arg += match_parentheses(string_start, cur);
             LCOMPILERS_ASSERT(*cur == ')')
+        } else if (*cur == '"' || *cur == '\'') {
+            consume_string_literal(arg, cur);
         } else {
             arg += *cur;
         }
@@ -228,15 +293,37 @@ void interval_end_type_0(LocationManager &lm, size_t output_len,
     interval_end(lm, output_len, input_len, input_interval_len, 0);
 }
 
-struct IfDef {
-    // The ifdef is active, meaning one of its branches might get executed
-    // Inactive ifdef is in a dead branch of another ifdef
+enum class DirectiveType {
+    If,
+    Ifdef,
+    Ifndef
+};
+
+inline std::string to_string(DirectiveType type) {
+    switch (type) {
+        case DirectiveType::If:
+            return "if";
+        case DirectiveType::Ifdef:
+            return "ifdef";
+        case DirectiveType::Ifndef:
+            return "ifndef";
+        default:
+            return "unknown";
+    }
+}
+
+struct ConditionalDirective {
+    // The conditional directive is active, meaning one of its branches might
+    // get executed
+    // Inactive conditional directive is in a dead branch of another conditional directive
     bool active=true;
-    // The current branch of ifdef is active
+    // The current branch of conditional directive is active
     bool branch_enabled=true;
-    // Ifdef's enabled branch has been executed, now we just need to process
+    // ConditionalDirective's enabled branch has been executed, now we just need to process
     // and skip all `elif` and `else`.
     bool enabled_branch_executed=false;
+    DirectiveType type;
+    Location loc;
 };
 
 namespace {
@@ -255,7 +342,7 @@ Result<std::string> CPreprocessor::run(const std::string &input, LocationManager
     lm.get_newlines(input, lm.files.back().in_newlines0);
     lm.files.back().out_start0.push_back(0);
     lm.files.back().in_start0.push_back(0);
-    std::vector<IfDef> ifdef_stack;
+    std::vector<ConditionalDirective> ConditionalDirective_stack;
     bool branch_enabled = true;
     macro_definitions["__FILE__"].expansion = "\"" + lm.files.back().in_filename + "\"";
     try {
@@ -274,6 +361,9 @@ Result<std::string> CPreprocessor::run(const std::string &input, LocationManager
             end = "\x00";
             newline = "\n";
             single_line_comment = "//" [^\n\x00]*;
+            multi_line_comment = "/*" ([^*\x00] | "*"[^/\x00])* "*/";
+            unterminated_multi_line_comment = "/*" ([^*\x00] | "*"[^/\x00])* "\x00";
+            comment = (single_line_comment | multi_line_comment);
             whitespace = [ \t\v\r]+;
             digit = [0-9];
             digits = digit+;
@@ -290,7 +380,20 @@ Result<std::string> CPreprocessor::run(const std::string &input, LocationManager
                 continue;
             }
             end {
+                if (ConditionalDirective_stack.size() > 0) {
+                    ConditionalDirective directive = ConditionalDirective_stack[ConditionalDirective_stack.size() - 1];
+                    std::string unterminated_directive = "#" + to_string(directive.type);
+                    throw PreprocessorError("Unterminated " + unterminated_directive, directive.loc);
+                }
                 break;
+            }
+
+            unterminated_multi_line_comment {
+                if (!branch_enabled) continue;
+                Location loc;
+                loc.first = tok - string_start;
+                loc.last = loc.first;
+                throw PreprocessorError("Unterminated comment", loc);
             }
             "!" [^\n\x00]* newline {
                 if (!branch_enabled) continue;
@@ -312,7 +415,19 @@ Result<std::string> CPreprocessor::run(const std::string &input, LocationManager
                 interval_end_type_0(lm, output.size(), cur-string_start);
                 continue;
             }
-            "#" whitespace? "define" whitespace @t1 name @t2 '(' whitespace? name whitespace? (',' whitespace? name whitespace?)* ')' whitespace @t3 [^\n\x00]* @t4 newline  {
+            "#" whitespace? "define" whitespace @t1 name @t2 '(' whitespace? ')' whitespace @t3 [^\n\x00]* @t4 newline  {
+                if (!branch_enabled) continue;
+                std::string macro_name = token(t1, t2),
+                        macro_subs = token(t3, t4);
+                CPPMacro fn;
+                fn.function_like = true;
+                fn.args = {};
+                fn.expansion = macro_subs;
+                macro_definitions[macro_name] = fn;
+                interval_end_type_0(lm, output.size(), cur-string_start);
+                continue;
+            }
+            "#" whitespace? "define" whitespace @t1 name @t2 '(' whitespace? name whitespace? (',' whitespace? name whitespace?)* ')' (whitespace @t3 [^\n\x00]* @t4)? newline  {
                 if (!branch_enabled) continue;
                 std::string macro_name = token(t1, t2),
                         macro_subs = token(t3, t4);
@@ -338,9 +453,14 @@ Result<std::string> CPreprocessor::run(const std::string &input, LocationManager
                 interval_end_type_0(lm, output.size(), cur-string_start);
                 continue;
             }
-            "#" whitespace? "ifdef" whitespace @t1 name @t2 whitespace? newline {
-                IfDef ifdef;
+            "#" whitespace? "ifdef" whitespace @t1 name @t2 [^\n\x00]* newline {
+                ConditionalDirective ifdef;
                 ifdef.active = branch_enabled;
+                ifdef.type = DirectiveType::Ifdef;
+                Location loc;
+                loc.first = tok - string_start;
+                loc.last = loc.first;
+                ifdef.loc = loc;
                 if (ifdef.active) {
                     std::string macro_name = token(t1, t2);
                     if (macro_definitions.find(macro_name) != macro_definitions.end()) {
@@ -353,63 +473,73 @@ Result<std::string> CPreprocessor::run(const std::string &input, LocationManager
                 } else {
                     ifdef.branch_enabled = false;
                 }
-                ifdef_stack.push_back(ifdef);
+                ConditionalDirective_stack.push_back(ifdef);
                 if (!ifdef.active) continue;
 
                 interval_end_type_0(lm, output.size(), cur-string_start);
                 continue;
             }
-            "#" whitespace? "ifndef" whitespace @t1 name @t2 whitespace? newline {
-                IfDef ifdef;
-                ifdef.active = branch_enabled;
-                if (ifdef.active) {
+            "#" whitespace? "ifndef" whitespace @t1 name @t2 [^\n\x00]* newline {
+                ConditionalDirective ifndef;
+                ifndef.active = branch_enabled;
+                ifndef.type = DirectiveType::Ifndef;
+                Location loc;
+                loc.first = tok - string_start;
+                loc.last = loc.first;
+                ifndef.loc = loc;
+                if (ifndef.active) {
                     std::string macro_name = token(t1, t2);
                     if (macro_definitions.find(macro_name) != macro_definitions.end()) {
-                        ifdef.branch_enabled = false;
+                        ifndef.branch_enabled = false;
                     } else {
-                        ifdef.branch_enabled = true;
-                        ifdef.enabled_branch_executed = true;
+                        ifndef.branch_enabled = true;
+                        ifndef.enabled_branch_executed = true;
                     }
-                    branch_enabled = ifdef.branch_enabled;
+                    branch_enabled = ifndef.branch_enabled;
                 } else {
-                    ifdef.branch_enabled = false;
+                    ifndef.branch_enabled = false;
                 }
-                ifdef_stack.push_back(ifdef);
-                if (!ifdef.active) continue;
+                ConditionalDirective_stack.push_back(ifndef);
+                if (!ifndef.active) continue;
 
                 interval_end_type_0(lm, output.size(), cur-string_start);
                 continue;
             }
             "#" whitespace? "if" whitespace @t1 [^\n\x00]* @t2 newline {
-                IfDef ifdef;
-                ifdef.active = branch_enabled;
-                if (ifdef.active) {
+                ConditionalDirective if_directive;
+                if_directive.active = branch_enabled;
+                if_directive.type = DirectiveType::If;
+                Location loc;
+                loc.first = tok - string_start;
+                loc.last = loc.first;
+                if_directive.loc = loc;
+                if (if_directive.active) {
                     bool test_true = parse_bexpr(string_start, t1, macro_definitions) > 0;
                     cur = t1;
                     if (test_true) {
-                        ifdef.branch_enabled = true;
-                        ifdef.enabled_branch_executed = true;
+                        if_directive.branch_enabled = true;
+                        if_directive.enabled_branch_executed = true;
                     } else {
-                        ifdef.branch_enabled = false;
+                        if_directive.branch_enabled = false;
                     }
-                    branch_enabled = ifdef.branch_enabled;
+                    branch_enabled = if_directive.branch_enabled;
                 } else {
-                    ifdef.branch_enabled = false;
+                    if_directive.branch_enabled = false;
                 }
-                ifdef_stack.push_back(ifdef);
-                if (!ifdef.active) continue;
+                ConditionalDirective_stack.push_back(if_directive);
+                if (!if_directive.active) continue;
 
                 interval_end_type_0(lm, output.size(), cur-string_start);
                 continue;
             }
-            "#" whitespace? "else" whitespace? single_line_comment? newline  {
-                if (ifdef_stack.size() == 0) {
+            "#" whitespace? "else" whitespace? comment? newline  {
+                if (ConditionalDirective_stack.size() == 0) {
                     Location loc;
                     loc.first = cur - string_start;
                     loc.last = loc.first;
                     throw PreprocessorError("#else encountered outside of #ifdef or #ifndef", loc);
                 }
-                IfDef ifdef = ifdef_stack[ifdef_stack.size()-1];
+                ConditionalDirective ifdef = ConditionalDirective_stack[ConditionalDirective_stack.size()-1];
                 if (ifdef.active) {
                     if (!ifdef.branch_enabled && !ifdef.enabled_branch_executed) {
                         ifdef.branch_enabled = true;
@@ -417,7 +547,7 @@ Result<std::string> CPreprocessor::run(const std::string &input, LocationManager
                     } else {
                         ifdef.branch_enabled = false;
                     }
-                    ifdef_stack[ifdef_stack.size()-1] = ifdef;
+                    ConditionalDirective_stack[ConditionalDirective_stack.size()-1] = ifdef;
                     branch_enabled = ifdef.branch_enabled;
                 } else {
                     continue;
@@ -427,13 +557,13 @@ Result<std::string> CPreprocessor::run(const std::string &input, LocationManager
                 continue;
             }
             "#" whitespace? "elif" whitespace @t1 [^\n\x00]* @t2 newline  {
-                if (ifdef_stack.size() == 0) {
+                if (ConditionalDirective_stack.size() == 0) {
                     Location loc;
                     loc.first = cur - string_start;
                     loc.last = loc.first;
                     throw PreprocessorError("#elif encountered outside of #ifdef or #ifndef", loc);
                 }
-                IfDef ifdef = ifdef_stack[ifdef_stack.size()-1];
+                ConditionalDirective ifdef = ConditionalDirective_stack[ConditionalDirective_stack.size()-1];
                 if (ifdef.active) {
                     if (!ifdef.branch_enabled && !ifdef.enabled_branch_executed) {
                         bool test_true = parse_bexpr(string_start, t1, macro_definitions) > 0;
@@ -448,7 +578,7 @@ Result<std::string> CPreprocessor::run(const std::string &input, LocationManager
                         ifdef.branch_enabled = false;
                     }
                     branch_enabled = ifdef.branch_enabled;
-                    ifdef_stack[ifdef_stack.size()-1] = ifdef;
+                    ConditionalDirective_stack[ConditionalDirective_stack.size()-1] = ifdef;
                 } else {
                     continue;
                 }
@@ -456,15 +586,15 @@ Result<std::string> CPreprocessor::run(const std::string &input, LocationManager
                 interval_end_type_0(lm, output.size(), cur-string_start);
                 continue;
             }
-            "#" whitespace? "endif" whitespace? single_line_comment? newline  {
-                if (ifdef_stack.size() == 0) {
+            "#" whitespace? "endif" whitespace? comment? newline  {
+                if (ConditionalDirective_stack.size() == 0) {
                     Location loc;
                     loc.first = cur - string_start;
                     loc.last = loc.first;
                     throw PreprocessorError("#endif encountered outside of #ifdef or #ifndef", loc);
                 }
-                IfDef ifdef = ifdef_stack[ifdef_stack.size()-1];
-                ifdef_stack.pop_back();
+                ConditionalDirective ifdef = ConditionalDirective_stack[ConditionalDirective_stack.size()-1];
+                ConditionalDirective_stack.pop_back();
                 if (ifdef.active) {
                     branch_enabled = true;
                 } else {
@@ -536,6 +666,7 @@ Result<std::string> CPreprocessor::run(const std::string &input, LocationManager
                     // Expand the macro once
                     std::string expansion;
                     if (macro_definitions[t].function_like) {
+                        while (*cur == ' ' || *cur == '\t') cur++;
                         if (*cur != '(') {
                             Location loc;
                             loc.first = cur - string_start;
@@ -551,10 +682,26 @@ Result<std::string> CPreprocessor::run(const std::string &input, LocationManager
                             throw PreprocessorError("expected ')'", loc);
                         }
                         cur++;
+                        std::vector<std::string> expanded_args = args;
+                        for (size_t i = 0; i < args.size(); i++) {
+                            LocationManager lm_tmp = lm;
+                            uint32_t pos = cur - string_start;
+                            uint32_t line, col;
+                            std::string filename;
+                            lm.pos_to_linecol(pos, line, col, filename);
+                            lm_tmp.files.back().current_line = line;
+                            Result<std::string> res = run(expanded_args[i], lm_tmp, macro_definitions, diagnostics);
+                            if (res.ok) {
+                                expanded_args[i] = res.result;
+                            } else {
+                                return res.error;
+                            }
+                        }
                         expansion = function_like_macro_expansion(
                             macro_definitions[t].args,
                             macro_definitions[t].expansion,
-                            args);
+                            args,
+                            expanded_args);
                     } else {
                         if (t == "__LINE__") {
                             uint32_t line;
@@ -673,12 +820,44 @@ std::string token(unsigned char *tok, unsigned char* cur)
     return std::string((char *)tok, cur - tok);
 }
 
+std::string stringize_macro_argument(const std::string &arg)
+{
+    size_t start = 0;
+    while (start < arg.size() && std::isspace(static_cast<unsigned char>(arg[start]))) {
+        start++;
+    }
+    size_t end = arg.size();
+    while (end > start && std::isspace(static_cast<unsigned char>(arg[end - 1]))) {
+        end--;
+    }
+
+    std::string body;
+    bool in_space = false;
+    for (size_t i = start; i < end; i++) {
+        unsigned char ch = static_cast<unsigned char>(arg[i]);
+        if (std::isspace(ch)) {
+            if (!in_space) {
+                body.push_back(' ');
+                in_space = true;
+            }
+            continue;
+        }
+        in_space = false;
+        if (ch == '\\' || ch == '"') {
+            body.push_back('\\');
+        }
+        body.push_back(static_cast<char>(ch));
+    }
+    return "\"" + body + "\"";
+}
+
 }
 
 std::string function_like_macro_expansion(
             std::vector<std::string> &def_args,
             std::string &expansion,
-            std::vector<std::string> &call_args) {
+            std::vector<std::string> &call_args,
+            std::vector<std::string> &expanded_args) {
     LCOMPILERS_ASSERT(expansion[expansion.size()] == '\0');
     unsigned char *string_start=(unsigned char*)(&expansion[0]);
     unsigned char *cur = string_start;
@@ -692,6 +871,27 @@ std::string function_like_macro_expansion(
             re2c:yyfill:enable = 0;
             re2c:define:YYCTYPE = "unsigned char";
 
+            "##" {
+                while (!output.empty() && (output.back() == ' ' || output.back() == '\t')) {
+                    output.pop_back();
+                }
+                while (*cur == ' ' || *cur == '\t') {
+                    cur++;
+                }
+                continue;
+            }
+            "#" name {
+                std::string t = token(tok + 1, cur);
+                auto search = std::find(def_args.begin(), def_args.end(), t);
+                if (search != def_args.end()) {
+                    size_t i = std::distance(def_args.begin(), search);
+                    output.append(stringize_macro_argument(call_args[i]));
+                } else {
+                    output.append("#");
+                    output.append(t);
+                }
+                continue;
+            }
             * {
                 output.append(token(tok, cur));
                 continue;
@@ -704,7 +904,7 @@ std::string function_like_macro_expansion(
                 auto search = std::find(def_args.begin(), def_args.end(), t);
                 if (search != def_args.end()) {
                     size_t i = std::distance(def_args.begin(), search);
-                    output.append(call_args[i]);
+                    output.append(expanded_args[i]);
                 } else {
                     output.append(t);
                 }
@@ -727,7 +927,7 @@ enum CPPTokenType {
     TK_EOF, TK_NAME, TK_INTEGER, TK_STRING, TK_AND, TK_OR, TK_NEG,
     TK_LPAREN, TK_RPAREN, TK_LT, TK_GT, TK_LTE, TK_GTE, TK_NE, TK_EQ,
     TK_PLUS, TK_MINUS, TK_MUL, TK_DIV, TK_PERCENT, TK_LSHIFT, TK_RSHIFT,
-    TK_BITAND, TK_BITOR
+    TK_BITAND, TK_BITOR, TK_BITXOR
 };
 
 std::string token_type_to_string(CPPTokenType type) {
@@ -756,6 +956,7 @@ std::string token_type_to_string(CPPTokenType type) {
         case (TK_RSHIFT)  : return ">>";
         case (TK_BITAND)  : return "&";
         case (TK_BITOR)   : return "|";
+        case (TK_BITXOR)  : return "^";
     }
     return "";
 }
@@ -791,6 +992,7 @@ void get_next_token(unsigned char *string_start, unsigned char *&cur, CPPTokenTy
             ">>" { type = CPPTokenType::TK_RSHIFT; return; }
             "&" { type = CPPTokenType::TK_BITAND; return; }
             "|" { type = CPPTokenType::TK_BITOR; return; }
+            "^" { type = CPPTokenType::TK_BITXOR; return; }
             "&&" { type = CPPTokenType::TK_AND; return; }
             "||" { type = CPPTokenType::TK_OR; return; }
             "!" { type = CPPTokenType::TK_NEG; return; }
@@ -875,10 +1077,17 @@ int parse_bexpr(unsigned char *string_start, unsigned char *&cur, const cpp_symt
     std::string str;
     unsigned char *old_cur = cur;
     get_next_token(string_start, cur, type, str);
-    while (type == CPPTokenType::TK_AND || type == CPPTokenType::TK_OR) {
+    while (type == CPPTokenType::TK_AND || type == CPPTokenType::TK_OR || type == CPPTokenType::TK_BITOR
+        || type == CPPTokenType::TK_BITAND || type == CPPTokenType::TK_BITXOR) {
         bool factor = parse_bfactor(string_start, cur, macro_definitions) > 0;
         if (type == CPPTokenType::TK_AND) {
             tmp = (int)( (tmp > 0) && (factor > 0) );
+        } else if (type == CPPTokenType::TK_BITOR) {
+            tmp = (int)( (tmp > 0) | (factor > 0) );
+        } else if (type == CPPTokenType::TK_BITAND) {
+            tmp = (int)( (tmp > 0) & (factor > 0) );
+        } else if (type == CPPTokenType::TK_BITXOR) {
+            tmp = (int)( (tmp > 0) ^ (factor > 0) );
         } else {
             tmp = (int)( (tmp > 0) || (factor > 0) );
         }
@@ -933,7 +1142,8 @@ int parse_term(unsigned char *string_start, unsigned char *&cur, const cpp_symta
            type == CPPTokenType::TK_LSHIFT ||
            type == CPPTokenType::TK_RSHIFT ||
            type == CPPTokenType::TK_BITAND ||
-           type == CPPTokenType::TK_BITOR) {
+           type == CPPTokenType::TK_BITOR ||
+           type == CPPTokenType::TK_BITXOR) {
         int term = parse_factor(string_start, cur, macro_definitions);
         if (type == CPPTokenType::TK_MUL) {
             tmp = tmp * term;
@@ -949,6 +1159,8 @@ int parse_term(unsigned char *string_start, unsigned char *&cur, const cpp_symta
             tmp = tmp & term;
         } else if (type == CPPTokenType::TK_BITOR) {
             tmp = tmp | term;
+        } else if (type == CPPTokenType::TK_BITXOR) {
+            tmp = tmp ^ term;
         } else {
             Location loc;
             loc.first = old_cur - string_start;
@@ -978,6 +1190,7 @@ int parse_factor(unsigned char *string_start, unsigned char *&cur, const cpp_sym
         if (macro_definitions.find(str) != macro_definitions.end()) {
             std::string v;
             if (macro_definitions.at(str).function_like) {
+                while (*cur == ' ' || *cur == '\t') cur++;
                 if (*cur != '(') {
                     Location loc;
                     loc.first = cur - string_start;
@@ -998,6 +1211,7 @@ int parse_factor(unsigned char *string_start, unsigned char *&cur, const cpp_sym
                 v = function_like_macro_expansion(
                     margs,
                     mexpansion,
+                    args,
                     args);
             } else {
                 v = macro_definitions.at(str).expansion;

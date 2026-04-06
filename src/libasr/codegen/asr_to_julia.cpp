@@ -70,6 +70,9 @@ binop_to_str_julia(const ASR::binopType t)
         case (ASR::binopType::BitRShift): {
             return " >> ";
         }
+        case (ASR::binopType::LBitRShift): {
+            return " >> ";
+        }
         default:
             throw LCompilersException("Cannot represent the binary operator as a string");
     }
@@ -307,7 +310,7 @@ public:
                     sub = format_type(type_name, v.m_name, use_ref);
                 }
             } else {
-                diag.codegen_error_label("Type '" + ASRUtils::type_to_str_python(v.m_type)
+                diag.codegen_error_label("Type '" + ASRUtils::type_to_str_python_symbol(v.m_type, v.m_type_declaration)
                                              + "' not supported",
                                          { v.base.base.loc },
                                          "");
@@ -390,8 +393,7 @@ public:
                 }
             } else if (ASR::is_a<ASR::StructType_t>(*v_m_type)) {
                 // TODO: handle this
-                ASR::StructType_t* t = ASR::down_cast<ASR::StructType_t>(v_m_type);
-                std::string der_type_name = ASRUtils::symbol_name(t->m_derived_type);
+                std::string der_type_name = ASRUtils::symbol_name(v.m_type_declaration);
                 if (is_array) {
                     generate_array_decl(sub,
                                         std::string(v.m_name),
@@ -404,7 +406,7 @@ public:
                     sub = format_type(der_type_name, v.m_name, use_ref);
                 }
             } else {
-                diag.codegen_error_label("Type '" + ASRUtils::type_to_str_python(v_m_type)
+                diag.codegen_error_label("Type '" + ASRUtils::type_to_str_python_symbol(v_m_type, v.m_type_declaration)
                                              + "' not supported",
                                          { v.base.base.loc },
                                          "");
@@ -564,7 +566,7 @@ public:
     {
         dependencies.clear();
         std::string module = "module " + std::string(x.m_name) + "\n\n";
-        if (startswith(x.m_name, "lfortran_intrinsic_")) {
+        if (x.m_intrinsic) {
             intrinsic_module = true;
         } else {
             intrinsic_module = false;
@@ -865,7 +867,8 @@ public:
                 break;
             }
             case (ASR::binopType::BitLShift):
-            case (ASR::binopType::BitRShift): {
+            case (ASR::binopType::BitRShift):
+            case (ASR::binopType::LBitRShift): {
                 last_expr_precedence = julia_prec::BitShift;
                 break;
             }
@@ -937,7 +940,7 @@ public:
                 tmp_sym = tmp_var->m_v;
             } else {
                 throw CodeGenError("Cannot deallocate variables in expression " +
-                                    ASRUtils::type_to_str_python(ASRUtils::expr_type(tmp_expr)),
+                                    ASRUtils::type_to_str_python_expr(ASRUtils::expr_type(tmp_expr), tmp_expr),
                                     tmp_expr->base.loc);
             }
             const ASR::Variable_t* v = ASR::down_cast<ASR::Variable_t>(
@@ -979,12 +982,11 @@ public:
                 generate_array_decl(
                     out, std::string(v->m_name), type_name, _dims, nullptr, n_dims, true, true);
             } else if (ASR::is_a<ASR::StructType_t>(*v->m_type)) {
-                ASR::StructType_t* t = ASR::down_cast<ASR::StructType_t>(v->m_type);
-                std::string der_type_name = ASRUtils::symbol_name(t->m_derived_type);
+                std::string der_type_name = ASRUtils::symbol_name(v->m_type_declaration);
                 generate_array_decl(
                     out, std::string(v->m_name), der_type_name, _dims, nullptr, n_dims, true, true);
             } else {
-                diag.codegen_error_label("Type '" + ASRUtils::type_to_str_python(v->m_type)
+                diag.codegen_error_label("Type '" + ASRUtils::type_to_str_python_symbol(v->m_type, v->m_type_declaration)
                                              + "' not supported",
                                          { v->base.base.loc },
                                          "");
@@ -1568,6 +1570,10 @@ public:
                 last_expr_precedence = julia_prec::Base;
                 break;
             }
+            case (ASR::cast_kindType::LogicalToLogical): {
+                // No conversion needed for logical-to-logical in Julia
+                break;
+            }
             case (ASR::cast_kindType::IntegerToLogical): {
                 src = "Bool" + broadcast + "(" + src + ")";
                 last_expr_precedence = julia_prec::Base;
@@ -1889,6 +1895,30 @@ public:
 
     void visit_IntrinsicElementalFunction(const ASR::IntrinsicElementalFunction_t &x) {
         std::string out;
+        switch (x.m_intrinsic_id) {
+            case (static_cast<int64_t>(ASRUtils::IntrinsicElementalFunctions::Max)) : {
+                visit_expr(*x.m_args[0]);
+                std::string result = src;
+                for (size_t i = 1; i < x.n_args; i++) {
+                    visit_expr(*x.m_args[i]);
+                    result = "max(" + result + ", " + src + ")";
+                }
+                src = result;
+                return;
+            }
+            case (static_cast<int64_t>(ASRUtils::IntrinsicElementalFunctions::Min)) : {
+                visit_expr(*x.m_args[0]);
+                std::string result = src;
+                for (size_t i = 1; i < x.n_args; i++) {
+                    visit_expr(*x.m_args[i]);
+                    result = "min(" + result + ", " + src + ")";
+                }
+                src = result;
+                return;
+            }
+            default:
+                break;
+        }
         LCOMPILERS_ASSERT(x.n_args == 1);
         visit_expr(*x.m_args[0]);
         switch (x.m_intrinsic_id) {

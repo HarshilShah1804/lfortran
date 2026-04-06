@@ -29,6 +29,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     a
@@ -65,11 +70,13 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 5 a)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             b:
@@ -84,7 +91,9 @@
                                 )
                         })
                     modules_06_a
+                    ()
                     [modules_06_b]
+                    .false.
                     .false.
                     .false.
                 ),
@@ -115,6 +124,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     b
@@ -138,16 +152,20 @@
                                         (Var 3 b)
                                         (IntegerConstant 5 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 3 b)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })
                     modules_06_b
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

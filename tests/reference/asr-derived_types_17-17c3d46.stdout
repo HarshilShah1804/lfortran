@@ -25,6 +25,7 @@
                         ()
                         []
                         ()
+                        .false.
                     )]
                 ),
             derived_types_17_module_1:
@@ -57,22 +58,33 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 t_1
+                                                        [(Integer 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 t_1
                                                     Source
                                                     Private
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     add
                                     (FunctionType
                                         []
                                         (StructType
-                                            2 t_1
+                                            [(Integer 4)]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         Source
                                         Implementation
@@ -112,11 +124,13 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 4 self)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             subtract:
@@ -144,22 +158,33 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 t_1
+                                                        [(Integer 4)]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 t_1
                                                     Source
                                                     Private
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     subtract
                                     (FunctionType
                                         []
                                         (StructType
-                                            2 t_1
+                                            [(Integer 4)]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         Source
                                         Implementation
@@ -199,11 +224,13 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 5 self)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             t_1:
@@ -228,11 +255,23 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     t_1
+                                    (StructType
+                                        [(Integer 4)]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [num]
+                                    []
                                     Source
                                     Private
                                     .false.
@@ -240,10 +279,13 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 )
                         })
                     derived_types_17_module_1
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -267,16 +309,7 @@
                                     (SymbolTable
                                         7
                                         {
-                                            1_t_1:
-                                                (ExternalSymbol
-                                                    7
-                                                    1_t_1
-                                                    2 t_1
-                                                    derived_types_17_module_1
-                                                    []
-                                                    t_1
-                                                    Public
-                                                )
+                                            
                                         })
                                     sub_2
                                     (FunctionType
@@ -303,13 +336,18 @@
                                                 ()
                                                 []
                                                 (StructType
-                                                    7 1_t_1
+                                                    [(Integer 4)]
+                                                    []
+                                                    .true.
+                                                    .false.
                                                 )
                                                 ()
                                                 ()
                                             )]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )
@@ -321,13 +359,18 @@
                                                 ()
                                                 []
                                                 (StructType
-                                                    7 1_t_1
+                                                    [(Integer 4)]
+                                                    []
+                                                    .true.
+                                                    .false.
                                                 )
                                                 ()
                                                 ()
                                             )]
                                             FormatFortran
-                                            (String -1 0 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                     )]
@@ -349,7 +392,9 @@
                                 )
                         })
                     derived_types_17_module_2
+                    ()
                     [derived_types_17_module_1]
+                    .false.
                     .false.
                     .false.
                 )

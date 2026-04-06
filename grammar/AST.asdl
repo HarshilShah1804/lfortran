@@ -73,6 +73,7 @@ unit_decl2
     | Requirement(identifier name, identifier* namelist, unit_decl2* decl,
         program_unit* funcs)
     | Require(unit_require* reqs)
+    | Union(identifier name, trivia? trivia, decl_attribute* attrtype, unit_decl2* items)
 
 interface_header
     = InterfaceHeader()
@@ -116,6 +117,7 @@ stmt
     = Allocate(int label, fnarg* args, keyword* keywords, trivia? trivia)
     | Assign(int label, int assign_label, identifier variable, trivia? trivia)
     | Assignment(int label, expr target, expr value, trivia? trivia)
+    | InferAssignment(int label, expr target, expr value, trivia? trivia)
     | Associate(int label, expr target, expr value, trivia? trivia)
     | Backspace(int label, expr* args, keyword* kwargs, trivia? trivia)
     | Close(int label, expr* args, keyword* kwargs, trivia? trivia)
@@ -176,7 +178,7 @@ stmt
             trivia? t_inside, trivia? trivia)
     | DoLoop(int label, identifier? stmt_name, int do_label, identifier? var,
             expr? start, expr? end, expr? increment, stmt* body,
-            trivia? t_inside, trivia? trivia)
+            trivia? t_inside, trivia? trivia, location var_loc)
     | ForAll(int label, identifier? stmt_name,
             concurrent_control *control, expr? mask,
             concurrent_locality* locality, stmt* body,
@@ -215,11 +217,11 @@ expr
     | Num(int n, string? kind)
     | Real(string n)
     | Complex(expr re, expr im)
-    | String(string s)
+    | String(string s, string? kind)
     | Substring(string s, fnarg* args)
     | BOZ(string s)
     | Name(identifier id, struct_member* member)
-    | Logical(bool value)
+    | Logical(bool value, string? kind)
     | DataImpliedDo(expr* object_list, decl_attribute? type,
         identifier var, expr start, expr end, expr? increment)
     | Parenthesis(expr operand)
@@ -288,6 +290,7 @@ decl_attribute
     | SimpleAttribute(simple_attribute attr)
     | AttrType(decl_type type, kind_item* kind, decl_attribute? attr,
         identifier? name, symbol sym)
+    | AttrTypeList(decl_type type, decl_attribute* attr)
     | AttrAssignment()
     | AttrIntrinsicOperator(intrinsicop op)
     | AttrDefinedOperator(string op_name)
@@ -317,6 +320,7 @@ simple_attribute
     | AttrPublic
     | AttrPure
     | AttrRecursive
+    | AttrNonRecursive
     | AttrSave
     | AttrSequence
     | AttrTarget
@@ -336,6 +340,10 @@ decl_type
     | TypeProcedure
     | TypeReal
     | TypeType
+    | TypeList
+    | TypeSet
+    | TypeDict
+    | TypeTuple
 
 event_attribute
     = AttrStat(identifier variable)
@@ -360,7 +368,7 @@ dimension_type = DimensionExpr | DimensionStar | AssumedRank
 codimension = (expr? start, expr? end, codimension_type end_star)
 codimension_type = CodimensionExpr | CodimensionStar
 
-symbol = None | Arrow | Equal | Asterisk | DoubleAsterisk | Slash
+symbol = None | Arrow | Equal | Asterisk | DoubleAsterisk | Slash | SlashInit
 
 equi = (expr* set_list)
 

@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     entry1
@@ -38,20 +43,25 @@
                                 10.000000
                                 (Real 4)
                             )
+                            ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (SubroutineCall
                         1 x
                         ()
                         [((Var 2 dummy))]
                         ()
+                        .false.
                     )
                     (SubroutineCall
                         1 y
                         ()
                         [((Var 2 dummy))]
                         ()
+                        .false.
                     )]
                 ),
             x:
@@ -76,6 +86,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     x
@@ -101,11 +116,12 @@
                         [((IntegerConstant 1 (Integer 4) Decimal))
                         ((Var 3 dummy))]
                         ()
+                        .false.
                     )]
                     ()
                     Public
-                    .false.
-                    .false.
+                    .true.
+                    .true.
                     ()
                 ),
             x_main__lcompilers:
@@ -130,6 +146,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             entry__lcompilers:
                                 (Variable
@@ -148,6 +169,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     x_main__lcompilers
@@ -170,6 +196,7 @@
                     [(Var 5 entry__lcompilers)
                     (Var 5 dummy)]
                     [(If
+                        ()
                         (IntegerCompare
                             (Var 5 entry__lcompilers)
                             Eq
@@ -184,6 +211,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 5 entry__lcompilers)
                             Eq
@@ -206,11 +234,13 @@
                             ()
                             [(StringConstant
                                 "Printed using subroutine call: "
-                                (String 1 31 () PointerString)
+                                (String 1 (IntegerConstant 31 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 5 dummy)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -221,6 +251,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Return)
                     (GoToTarget
@@ -232,19 +264,21 @@
                             ()
                             [(StringConstant
                                 "Printed using entry statement: "
-                                (String 1 31 () PointerString)
+                                (String 1 (IntegerConstant 31 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 5 dummy)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (Return)]
                     ()
                     Public
-                    .false.
-                    .false.
+                    .true.
+                    .true.
                     ()
                 ),
             y:
@@ -269,6 +303,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     y
@@ -294,11 +333,12 @@
                         [((IntegerConstant 2 (Integer 4) Decimal))
                         ((Var 4 dummy))]
                         ()
+                        .false.
                     )]
                     ()
                     Public
-                    .false.
-                    .false.
+                    .true.
+                    .true.
                     ()
                 )
         })

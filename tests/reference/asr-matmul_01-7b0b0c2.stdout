@@ -33,6 +33,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             b:
                                 (Variable
@@ -60,6 +65,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             c:
                                 (Variable
@@ -87,6 +97,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             c2:
                                 (Variable
@@ -114,6 +129,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             dp:
                                 (Variable
@@ -141,6 +161,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             err:
                                 (Variable
@@ -159,6 +184,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             fma_clock:
                                 (Variable
@@ -177,6 +207,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             freq:
                                 (Variable
@@ -195,6 +230,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             ghz:
                                 (Variable
@@ -213,6 +253,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             i:
                                 (Variable
@@ -231,6 +276,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             iter:
                                 (Variable
@@ -249,6 +299,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             matmul1:
                                 (ExternalSymbol
@@ -287,6 +342,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             n:
                                 (Variable
@@ -305,6 +365,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             percent_peak:
                                 (Variable
@@ -323,6 +388,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             t:
                                 (Variable
@@ -341,6 +411,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             t1:
                                 (Variable
@@ -359,6 +434,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             t2:
                                 (Variable
@@ -377,6 +457,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     matmul_01
@@ -385,22 +470,28 @@
                         (Var 6 n)
                         (IntegerConstant 96 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 iter)
                         (IntegerConstant 1 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(StringConstant
                                 "Size (n x n): n ="
-                                (String 1 17 () PointerString)
+                                (String 1 (IntegerConstant 17 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 6 n)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -409,11 +500,13 @@
                             ()
                             [(StringConstant
                                 "Iter ="
-                                (String 1 6 () PointerString)
+                                (String 1 (IntegerConstant 6 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 6 iter)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -422,7 +515,7 @@
                             ()
                             [(StringConstant
                                 "Size MB:"
-                                (String 1 8 () PointerString)
+                                (String 1 (IntegerConstant 8 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (RealBinOp
                                 (RealBinOp
@@ -437,6 +530,7 @@
                                             IntegerToReal
                                             (Real 8)
                                             ()
+                                            ()
                                         )
                                         (Real 8)
                                         ()
@@ -446,6 +540,7 @@
                                         (Var 6 n)
                                         IntegerToReal
                                         (Real 8)
+                                        ()
                                         ()
                                     )
                                     (Real 8)
@@ -466,12 +561,15 @@
                                         1048576.000000
                                         (Real 8)
                                     )
+                                    ()
                                 )
                                 (Real 8)
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -482,12 +580,14 @@
                         ((IntegerConstant 1 (Integer 4) Decimal)
                         (Var 6 n))]
                         ()
+                        ()
                         ())
                         ((Var 6 b)
                         [((IntegerConstant 1 (Integer 4) Decimal)
                         (Var 6 n))
                         ((IntegerConstant 1 (Integer 4) Decimal)
                         (Var 6 n))]
+                        ()
                         ()
                         ())
                         ((Var 6 c)
@@ -496,12 +596,14 @@
                         ((IntegerConstant 1 (Integer 4) Decimal)
                         (Var 6 n))]
                         ()
+                        ()
                         ())
                         ((Var 6 c2)
                         [((IntegerConstant 1 (Integer 4) Decimal)
                         (Var 6 n))
                         ((IntegerConstant 1 (Integer 4) Decimal)
                         (Var 6 n))]
+                        ()
                         ()
                         ())]
                         ()
@@ -521,7 +623,7 @@
                     (Print
                         (StringConstant
                             "Fortran intrinsic matmul:"
-                            (String 1 25 () PointerString)
+                            (String 1 (IntegerConstant 25 (Integer 4) Decimal) ExpressionLength DescriptorString)
                         )
                     )
                     (IntrinsicImpureSubroutine
@@ -542,19 +644,19 @@
                                 [(Var 6 a)
                                 (Var 6 b)]
                                 3
-                                (Allocatable
-                                    (Array
-                                        (Real 4)
-                                        [(()
-                                        ())
-                                        (()
-                                        ())]
-                                        DescriptorArray
-                                    )
+                                (Array
+                                    (Real 4)
+                                    [(()
+                                    ())
+                                    (()
+                                    ())]
+                                    DescriptorArray
                                 )
                                 ()
                             )
                             ()
+                            .false.
+                            .false.
                         )]
                         []
                     )
@@ -579,11 +681,14 @@
                                 IntegerToReal
                                 (Real 8)
                                 ()
+                                ()
                             )
                             (Real 8)
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 ghz)
@@ -592,6 +697,8 @@
                             (Real 8)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 fma_clock)
@@ -600,6 +707,8 @@
                             (Real 8)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 freq)
@@ -614,6 +723,8 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 measured)
@@ -637,11 +748,14 @@
                                 IntegerToReal
                                 (Real 8)
                                 ()
+                                ()
                             )
                             (Real 8)
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 percent_peak)
@@ -662,29 +776,34 @@
                                     100.000000
                                     (Real 8)
                                 )
+                                ()
                             )
                             (Real 8)
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(StringConstant
                                 "Time: "
-                                (String 1 6 () PointerString)
+                                (String 1 (IntegerConstant 6 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 6 t)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (Print
                         (StringConstant
                             "Clock cycles per element:"
-                            (String 1 25 () PointerString)
+                            (String 1 (IntegerConstant 25 (Integer 4) Decimal) ExpressionLength DescriptorString)
                         )
                     )
                     (Print
@@ -692,15 +811,17 @@
                             ()
                             [(StringConstant
                                 "Theoretical performance peak:"
-                                (String 1 29 () PointerString)
+                                (String 1 (IntegerConstant 29 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 6 fma_clock)
                             (StringConstant
                                 "cycles"
-                                (String 1 6 () PointerString)
+                                (String 1 (IntegerConstant 6 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -709,15 +830,17 @@
                             ()
                             [(StringConstant
                                 "Measured:                    "
-                                (String 1 29 () PointerString)
+                                (String 1 (IntegerConstant 29 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 6 measured)
                             (StringConstant
                                 "cycles"
-                                (String 1 6 () PointerString)
+                                (String 1 (IntegerConstant 6 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -726,15 +849,17 @@
                             ()
                             [(StringConstant
                                 "Percent peak:                "
-                                (String 1 29 () PointerString)
+                                (String 1 (IntegerConstant 29 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 6 percent_peak)
                             (StringConstant
                                 "%"
-                                (String 1 1 () PointerString)
+                                (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -743,14 +868,16 @@
                             ()
                             []
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (Print
                         (StringConstant
                             "matmul2:"
-                            (String 1 8 () PointerString)
+                            (String 1 (IntegerConstant 8 (Integer 4) Decimal) ExpressionLength DescriptorString)
                         )
                     )
                     (IntrinsicImpureSubroutine
@@ -771,6 +898,7 @@
                             ((Var 6 b))
                             ((Var 6 c2))]
                             ()
+                            .false.
                         )]
                         []
                     )
@@ -815,17 +943,21 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(StringConstant
                                 "Error:"
-                                (String 1 6 () PointerString)
+                                (String 1 (IntegerConstant 6 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 6 err)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -845,11 +977,14 @@
                                 IntegerToReal
                                 (Real 8)
                                 ()
+                                ()
                             )
                             (Real 8)
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 ghz)
@@ -858,6 +993,8 @@
                             (Real 8)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 fma_clock)
@@ -866,6 +1003,8 @@
                             (Real 8)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 freq)
@@ -880,6 +1019,8 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 measured)
@@ -903,11 +1044,14 @@
                                 IntegerToReal
                                 (Real 8)
                                 ()
+                                ()
                             )
                             (Real 8)
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 percent_peak)
@@ -928,29 +1072,34 @@
                                     100.000000
                                     (Real 8)
                                 )
+                                ()
                             )
                             (Real 8)
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(StringConstant
                                 "Time: "
-                                (String 1 6 () PointerString)
+                                (String 1 (IntegerConstant 6 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 6 t)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (Print
                         (StringConstant
                             "Clock cycles per element:"
-                            (String 1 25 () PointerString)
+                            (String 1 (IntegerConstant 25 (Integer 4) Decimal) ExpressionLength DescriptorString)
                         )
                     )
                     (Print
@@ -958,15 +1107,17 @@
                             ()
                             [(StringConstant
                                 "Theoretical performance peak:"
-                                (String 1 29 () PointerString)
+                                (String 1 (IntegerConstant 29 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 6 fma_clock)
                             (StringConstant
                                 "cycles"
-                                (String 1 6 () PointerString)
+                                (String 1 (IntegerConstant 6 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -975,15 +1126,17 @@
                             ()
                             [(StringConstant
                                 "Measured:                    "
-                                (String 1 29 () PointerString)
+                                (String 1 (IntegerConstant 29 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 6 measured)
                             (StringConstant
                                 "cycles"
-                                (String 1 6 () PointerString)
+                                (String 1 (IntegerConstant 6 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -992,19 +1145,22 @@
                             ()
                             [(StringConstant
                                 "Percent peak:                "
-                                (String 1 29 () PointerString)
+                                (String 1 (IntegerConstant 29 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 6 percent_peak)
                             (StringConstant
                                 "%"
-                                (String 1 1 () PointerString)
+                                (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (RealCompare
                             (Var 6 err)
                             Gt
@@ -1025,14 +1181,16 @@
                             ()
                             []
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (Print
                         (StringConstant
                             "matmul1:"
-                            (String 1 8 () PointerString)
+                            (String 1 (IntegerConstant 8 (Integer 4) Decimal) ExpressionLength DescriptorString)
                         )
                     )
                     (IntrinsicImpureSubroutine
@@ -1053,6 +1211,7 @@
                             ((Var 6 b))
                             ((Var 6 c2))]
                             ()
+                            .false.
                         )]
                         []
                     )
@@ -1097,17 +1256,21 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(StringConstant
                                 "Error:"
-                                (String 1 6 () PointerString)
+                                (String 1 (IntegerConstant 6 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 6 err)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -1127,11 +1290,14 @@
                                 IntegerToReal
                                 (Real 8)
                                 ()
+                                ()
                             )
                             (Real 8)
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 ghz)
@@ -1140,6 +1306,8 @@
                             (Real 8)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 fma_clock)
@@ -1148,6 +1316,8 @@
                             (Real 8)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 freq)
@@ -1162,6 +1332,8 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 measured)
@@ -1185,11 +1357,14 @@
                                 IntegerToReal
                                 (Real 8)
                                 ()
+                                ()
                             )
                             (Real 8)
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 6 percent_peak)
@@ -1210,29 +1385,34 @@
                                     100.000000
                                     (Real 8)
                                 )
+                                ()
                             )
                             (Real 8)
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(StringConstant
                                 "Time: "
-                                (String 1 6 () PointerString)
+                                (String 1 (IntegerConstant 6 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 6 t)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (Print
                         (StringConstant
                             "Clock cycles per element:"
-                            (String 1 25 () PointerString)
+                            (String 1 (IntegerConstant 25 (Integer 4) Decimal) ExpressionLength DescriptorString)
                         )
                     )
                     (Print
@@ -1240,15 +1420,17 @@
                             ()
                             [(StringConstant
                                 "Theoretical performance peak:"
-                                (String 1 29 () PointerString)
+                                (String 1 (IntegerConstant 29 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 6 fma_clock)
                             (StringConstant
                                 "cycles"
-                                (String 1 6 () PointerString)
+                                (String 1 (IntegerConstant 6 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -1257,15 +1439,17 @@
                             ()
                             [(StringConstant
                                 "Measured:                    "
-                                (String 1 29 () PointerString)
+                                (String 1 (IntegerConstant 29 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 6 measured)
                             (StringConstant
                                 "cycles"
-                                (String 1 6 () PointerString)
+                                (String 1 (IntegerConstant 6 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -1274,19 +1458,22 @@
                             ()
                             [(StringConstant
                                 "Percent peak:                "
-                                (String 1 29 () PointerString)
+                                (String 1 (IntegerConstant 29 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )
                             (Var 6 percent_peak)
                             (StringConstant
                                 "%"
-                                (String 1 1 () PointerString)
+                                (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (RealCompare
                             (Var 6 err)
                             Gt
@@ -1337,6 +1524,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             a0:
                                                 (Variable
@@ -1360,6 +1552,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             a1:
                                                 (Variable
@@ -1383,6 +1580,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             a2:
                                                 (Variable
@@ -1406,6 +1608,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             a3:
                                                 (Variable
@@ -1429,6 +1636,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             a4:
                                                 (Variable
@@ -1452,6 +1664,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             a5:
                                                 (Variable
@@ -1475,6 +1692,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             b:
                                                 (Variable
@@ -1500,6 +1722,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             c:
                                                 (Variable
@@ -1525,6 +1752,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             i1:
                                                 (Variable
@@ -1543,6 +1775,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             k:
                                                 (Variable
@@ -1561,6 +1798,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             s1:
                                                 (Variable
@@ -1579,6 +1821,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             u00:
                                                 (Variable
@@ -1602,6 +1849,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             u01:
                                                 (Variable
@@ -1625,6 +1877,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             u10:
                                                 (Variable
@@ -1648,6 +1905,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             u11:
                                                 (Variable
@@ -1671,6 +1933,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             u20:
                                                 (Variable
@@ -1694,6 +1961,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             u21:
                                                 (Variable
@@ -1717,6 +1989,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             u30:
                                                 (Variable
@@ -1740,6 +2017,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             u31:
                                                 (Variable
@@ -1763,6 +2045,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             u40:
                                                 (Variable
@@ -1786,6 +2073,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             u41:
                                                 (Variable
@@ -1809,6 +2101,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             u50:
                                                 (Variable
@@ -1832,6 +2129,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             u51:
                                                 (Variable
@@ -1855,6 +2157,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -1873,6 +2180,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             y:
                                                 (Variable
@@ -1891,6 +2203,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     kernel2
@@ -1974,6 +2291,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 4 u01)
@@ -2012,6 +2331,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 4 u10)
@@ -2044,6 +2365,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 4 u11)
@@ -2082,6 +2405,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 4 u20)
@@ -2114,6 +2439,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 4 u21)
@@ -2152,6 +2479,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 4 u30)
@@ -2184,6 +2513,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 4 u31)
@@ -2222,6 +2553,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 4 u40)
@@ -2254,6 +2587,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 4 u41)
@@ -2292,6 +2627,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 4 u50)
@@ -2324,6 +2661,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 4 u51)
@@ -2362,6 +2701,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (DoLoop
                                         ()
@@ -2433,6 +2774,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 4 u00)
@@ -2481,6 +2824,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 4 u01)
@@ -2535,6 +2880,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 4 a1)
@@ -2588,6 +2935,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 4 u10)
@@ -2636,6 +2985,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 4 u11)
@@ -2690,6 +3041,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 4 a2)
@@ -2743,6 +3096,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 4 u20)
@@ -2791,6 +3146,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 4 u21)
@@ -2845,6 +3202,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 4 a3)
@@ -2898,6 +3257,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 4 u30)
@@ -2946,6 +3307,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 4 u31)
@@ -3000,6 +3363,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 4 a4)
@@ -3053,6 +3418,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 4 u40)
@@ -3101,6 +3468,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 4 u41)
@@ -3155,6 +3524,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 4 a5)
@@ -3208,6 +3579,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 4 u50)
@@ -3256,6 +3629,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (Assignment
                                             (Var 4 u51)
@@ -3310,6 +3685,8 @@
                                                 ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )]
                                         []
                                     )
@@ -3344,6 +3721,8 @@
                                         )
                                         (Var 4 u00)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (ArraySection
@@ -3382,6 +3761,8 @@
                                         )
                                         (Var 4 u01)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (ArraySection
@@ -3414,6 +3795,8 @@
                                         )
                                         (Var 4 u10)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (ArraySection
@@ -3452,6 +3835,8 @@
                                         )
                                         (Var 4 u11)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (ArraySection
@@ -3484,6 +3869,8 @@
                                         )
                                         (Var 4 u20)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (ArraySection
@@ -3522,6 +3909,8 @@
                                         )
                                         (Var 4 u21)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (ArraySection
@@ -3554,6 +3943,8 @@
                                         )
                                         (Var 4 u30)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (ArraySection
@@ -3592,6 +3983,8 @@
                                         )
                                         (Var 4 u31)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (ArraySection
@@ -3624,6 +4017,8 @@
                                         )
                                         (Var 4 u40)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (ArraySection
@@ -3662,6 +4057,8 @@
                                         )
                                         (Var 4 u41)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (ArraySection
@@ -3694,6 +4091,8 @@
                                         )
                                         (Var 4 u50)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (ArraySection
@@ -3732,11 +4131,13 @@
                                         )
                                         (Var 4 u51)
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             matmul1:
@@ -3768,6 +4169,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             b:
                                                 (Variable
@@ -3793,6 +4199,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             c:
                                                 (Variable
@@ -3818,6 +4229,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             i:
                                                 (Variable
@@ -3836,6 +4252,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             j:
                                                 (Variable
@@ -3854,6 +4275,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             k:
                                                 (Variable
@@ -3872,6 +4298,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             n:
                                                 (Variable
@@ -3890,6 +4321,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     matmul1
@@ -3943,6 +4379,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 3 c)
@@ -3955,6 +4393,7 @@
                                                     0.000000
                                                     (Real 4)
                                                 )
+                                                ()
                                             )
                                             (IntrinsicArrayFunction
                                                 Shape
@@ -3979,6 +4418,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (DoLoop
                                         ()
@@ -4058,6 +4499,8 @@
                                                         ()
                                                     )
                                                     ()
+                                                    .false.
+                                                    .false.
                                                 )]
                                                 []
                                             )]
@@ -4067,8 +4510,8 @@
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             matmul2:
@@ -4100,6 +4543,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             b:
                                                 (Variable
@@ -4125,6 +4573,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             c:
                                                 (Variable
@@ -4150,6 +4603,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             i1:
                                                 (Variable
@@ -4168,6 +4626,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             i2:
                                                 (Variable
@@ -4186,6 +4649,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             i3:
                                                 (Variable
@@ -4204,6 +4672,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             n:
                                                 (Variable
@@ -4222,6 +4695,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             s1:
                                                 (Variable
@@ -4240,6 +4718,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             s2:
                                                 (Variable
@@ -4258,6 +4741,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             s3:
                                                 (Variable
@@ -4276,6 +4764,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -4294,6 +4787,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             y:
                                                 (Variable
@@ -4312,6 +4810,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     matmul2
@@ -4365,21 +4868,29 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 5 s3)
                                         (IntegerConstant 48 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 5 s2)
                                         (IntegerConstant 12 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 5 s1)
                                         (IntegerConstant 24 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 5 c)
@@ -4392,6 +4903,7 @@
                                                     0.000000
                                                     (Real 4)
                                                 )
+                                                ()
                                             )
                                             (IntrinsicArrayFunction
                                                 Shape
@@ -4416,6 +4928,8 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (DoLoop
                                         ()
@@ -4521,6 +5035,7 @@
                                                             ((Var 5 i1))
                                                             ((Var 5 s1))]
                                                             ()
+                                                            .false.
                                                         )]
                                                         []
                                                     )]
@@ -4534,13 +5049,15 @@
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })
                     matmul_01_cpu
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

@@ -1,0 +1,13 @@
+{
+    "basename": "llvm-volatile_03-914e4e5",
+    "cmd": "lfortran --no-color --show-llvm {infile} -o {outfile}",
+    "infile": "tests/../integration_tests/volatile_03.f90",
+    "infile_hash": "3b3be17b65561543509ed16a60574cc3a3e7c9f0f574b21b8b02c026",
+    "outfile": null,
+    "outfile_hash": null,
+    "stdout": "llvm-volatile_03-914e4e5.stdout",
+    "stdout_hash": "2c36296230b46c3beb20478ac4312596cb6e5b7ea4a6f04492a16a0c",
+    "stderr": null,
+    "stderr_hash": null,
+    "returncode": 0
+}

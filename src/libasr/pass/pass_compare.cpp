@@ -71,7 +71,7 @@ public:
 
     ASR::symbol_t* get_tuple_compare_func(Location& loc,
                 SymbolTable*& scope, ASR::ttype_t *t) {
-        std::string type_name = ASRUtils::type_to_str_python(t);
+        std::string type_name = ASRUtils::type_to_str_python_expr(t, nullptr);
         if (compare_func_map.find(type_name) == compare_func_map.end()) {
             create_tuple_compare(loc, scope, t);
         }
@@ -80,7 +80,7 @@ public:
 
     ASR::symbol_t* get_list_compare_func(Location& loc,
                 SymbolTable*& scope, ASR::ttype_t *t) {
-        std::string type_name = ASRUtils::type_to_str_python(t);
+        std::string type_name = ASRUtils::type_to_str_python_expr(t, nullptr);
         if (compare_func_map.find(type_name) == compare_func_map.end()) {
             create_list_compare(loc, scope, t);
         }
@@ -126,8 +126,8 @@ public:
 
                 return ASRUtils::EXPR(ASRUtils::make_FunctionCall_t_util(al, loc,
                     fn, nullptr, args.p, args.n,
-                    bool_type, nullptr, nullptr,
-                    false));
+                    bool_type, nullptr, nullptr
+                    ));
             }
             case ASR::ttypeType::List: {
                 ASR::symbol_t *fn = get_list_compare_func(loc, global_scope, type);
@@ -143,8 +143,7 @@ public:
 
                 return ASRUtils::EXPR(ASRUtils::make_FunctionCall_t_util(al, loc,
                     fn, nullptr, args.p, args.n,
-                    bool_type, nullptr, nullptr,
-                    false));
+                    bool_type, nullptr, nullptr));
             }
             default: {
                 LCOMPILERS_ASSERT(false);
@@ -163,7 +162,7 @@ public:
                 return res
         */
         SymbolTable* tup_compare_symtab = al.make_new<SymbolTable>(global_scope);
-        std::string tuple_type_name = ASRUtils::type_to_str_python(type);
+        std::string tuple_type_name = ASRUtils::type_to_str_python_expr(type, nullptr);
         ASR::Tuple_t *tuple_type = ASR::down_cast<ASR::Tuple_t>(type);
 
         std::string fn_name = global_scope->get_unique_name("_lcompilers_tuple_compare_" + tuple_type_name, false);
@@ -194,8 +193,8 @@ public:
         ASR::expr_t* value = ASRUtils::EXPR(ASR::make_LogicalConstant_t(al,
                         loc, true, bool_type));
         // Initialize `result` with `True`
-        ASR::stmt_t* init_stmt = ASRUtils::STMT(ASR::make_Assignment_t(al, loc,
-                        result, value, nullptr));
+        ASR::stmt_t* init_stmt = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(al, loc,
+                        result, value, nullptr, false, false));
         body.push_back(al, init_stmt);
 
         for (size_t i=0; i<tuple_type->n_type; i++) {
@@ -207,8 +206,8 @@ public:
             ASR::expr_t *cmp_i = compare_helper(loc, global_scope, a_i, b_i, tuple_type->m_type[i]);
             ASR::expr_t *cmp_and = ASRUtils::EXPR(ASR::make_LogicalBinOp_t(al, loc,
                     result, ASR::logicalbinopType::And, cmp_i, bool_type, nullptr));
-            ASR::stmt_t *t = ASRUtils::STMT(ASR::make_Assignment_t(al, loc,
-                        result, cmp_and, nullptr));
+            ASR::stmt_t *t = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(al, loc,
+                        result, cmp_and, nullptr, false, false));
             body.push_back(al, t);
         }
 
@@ -262,7 +261,7 @@ public:
         ASR::symbol_t *fn_sym = get_tuple_compare_func(unit.base.base.loc,
                 unit.m_symtab, ASRUtils::expr_type(x->m_left));
         *current_expr = ASRUtils::EXPR(ASRUtils::make_FunctionCall_t_util(al, loc,
-            fn_sym, nullptr, args.p, args.n, bool_type, nullptr, nullptr, false));
+            fn_sym, nullptr, args.p, args.n, bool_type, nullptr, nullptr));
         if (x->m_op == ASR::cmpopType::NotEq) {
             *current_expr = ASRUtils::EXPR(ASR::make_LogicalNot_t(al, loc,
                         *current_expr, bool_type, nullptr));
@@ -282,8 +281,8 @@ public:
                         al, loc, 0, int_type));
         ASR::expr_t *const_one = ASRUtils::EXPR(ASR::make_IntegerConstant_t(
                         al, loc, 1, int_type));
-        ASR::stmt_t* _tmp = ASRUtils::STMT(ASR::make_Assignment_t(
-            al, loc, idx_vars[0], const_zero, nullptr));
+        ASR::stmt_t* _tmp = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(
+            al, loc, idx_vars[0], const_zero, nullptr, false, false));
         body.push_back(al, _tmp);
 
 
@@ -300,14 +299,14 @@ public:
         ASR::expr_t *cmp_i = compare_helper(loc, symtab, a_i, b_i, item_type);
         ASR::expr_t *cmp_and = ASRUtils::EXPR(ASR::make_LogicalBinOp_t(al, loc,
                 result, ASR::logicalbinopType::And, cmp_i, bool_type, nullptr));
-        _tmp = ASRUtils::STMT(ASR::make_Assignment_t(al, loc,
-                    result, cmp_and, nullptr));
+        _tmp = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(al, loc,
+                    result, cmp_and, nullptr, false, false));
         loop_body.push_back(al, _tmp);
 
-        _tmp = ASRUtils::STMT(ASR::make_Assignment_t(
+        _tmp = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(
             al, loc, idx_vars[0], ASRUtils::EXPR(ASR::make_IntegerBinOp_t(
                 al, loc, idx_vars[0], ASR::binopType::Add, const_one,
-                int_type, nullptr)), nullptr));
+                int_type, nullptr)), nullptr, false, false));
         loop_body.push_back(al, _tmp);
 
         _tmp = ASRUtils::STMT(ASR::make_WhileLoop_t(
@@ -330,7 +329,7 @@ public:
                 return res
         */
         SymbolTable* list_compare_symtab = al.make_new<SymbolTable>(global_scope);
-        std::string list_type_name = ASRUtils::type_to_str_python(type);
+        std::string list_type_name = ASRUtils::type_to_str_python_expr(type, nullptr);
         ASR::List_t *list_type = ASR::down_cast<ASR::List_t>(type);
 
         std::string fn_name = global_scope->get_unique_name("_lcompilers_list_compare_" + list_type_name, false);
@@ -366,8 +365,8 @@ public:
                         loc, true, bool_type));
 
         // Initialize `result` with `True`
-        ASR::stmt_t* _tmp = ASRUtils::STMT(ASR::make_Assignment_t(al, loc,
-                        result, value, nullptr));
+        ASR::stmt_t* _tmp = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(al, loc,
+                        result, value, nullptr, false, false));
         body.push_back(al, _tmp);
 
         {
@@ -379,14 +378,14 @@ public:
             if_body.reserve(al, 2);
             value = ASRUtils::EXPR(ASR::make_LogicalConstant_t(al,
                         loc, false, bool_type));
-            ASR::stmt_t* if_body_stmt = ASRUtils::STMT(ASR::make_Assignment_t(
-                al, loc, result, value, nullptr));
+            ASR::stmt_t* if_body_stmt = ASRUtils::STMT(ASRUtils::make_Assignment_t_util(
+                al, loc, result, value, nullptr, false, false));
             if_body.push_back(al, if_body_stmt);
 
             // Return
             if_body.push_back(al, ASRUtils::STMT(ASR::make_Return_t(al, loc)));
 
-            _tmp = ASRUtils::STMT(ASR::make_If_t(al, loc, a_test,
+            _tmp = ASRUtils::STMT(ASR::make_If_t(al, loc, nullptr, a_test,
                 if_body.p, if_body.n, nullptr, 0));
             body.push_back(al, _tmp);
         }
@@ -447,8 +446,8 @@ public:
         ASR::symbol_t *fn_sym = get_list_compare_func(unit.base.base.loc,
                 unit.m_symtab, ASRUtils::expr_type(x->m_left));
         *current_expr = ASRUtils::EXPR(ASRUtils::make_FunctionCall_t_util(al, loc,
-            fn_sym, nullptr, args.p, args.n, bool_type, nullptr, nullptr,
-            false));
+            fn_sym, nullptr, args.p, args.n, bool_type, nullptr, nullptr
+            ));
         if (x->m_op == ASR::cmpopType::NotEq) {
             *current_expr = ASRUtils::EXPR(ASR::make_LogicalNot_t(al, loc,
                         *current_expr, bool_type, nullptr));

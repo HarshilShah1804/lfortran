@@ -34,6 +34,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     default_help
@@ -57,7 +62,7 @@
                                                         GetCommandArgument
                                                         [(IntegerConstant 0 (Integer 4) Decimal)
                                                         (Var 6 ilength)]
-                                                        0
+                                                        2
                                                     )]
                                                     ()
                                                     Public
@@ -88,17 +93,20 @@
                                         ()
                                         []
                                         ()
+                                        .false.
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })
                     m_cli2
+                    ()
                     []
                     .true.
+                    .false.
                     .false.
                 ),
             m_cli2_user:
@@ -118,7 +126,9 @@
                                 )
                         })
                     m_cli2_user
+                    ()
                     [m_cli2]
+                    .false.
                     .false.
                     .false.
                 )

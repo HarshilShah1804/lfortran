@@ -33,15 +33,25 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 string_type
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 string_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             string:
                                                 (Variable
@@ -52,7 +62,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 -1 () PointerString)
+                                                    (String 1 () AssumedLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -60,20 +70,30 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     new_string
                                     (FunctionType
-                                        [(String 1 -1 () PointerString)]
+                                        [(String 1 () AssumedLength DescriptorString)]
                                         (StructType
-                                            2 string_type
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         Source
                                         Interface
                                         ()
                                         .true.
                                         .true.
-                                        .false.
+                                        .true.
                                         .false.
                                         .false.
                                         []
@@ -85,7 +105,7 @@
                                     (Var 4 new)
                                     Public
                                     .false.
-                                    .false.
+                                    .true.
                                     ()
                                 ),
                             new_string_from_integer_int32:
@@ -103,15 +123,25 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 string_type
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 string_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             val:
                                                 (Variable
@@ -130,20 +160,30 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     new_string_from_integer_int32
                                     (FunctionType
                                         [(Integer 4)]
                                         (StructType
-                                            2 string_type
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         Source
                                         Interface
                                         ()
                                         .true.
                                         .true.
-                                        .false.
+                                        .true.
                                         .false.
                                         .false.
                                         []
@@ -155,7 +195,7 @@
                                     (Var 5 new)
                                     Public
                                     .false.
-                                    .false.
+                                    .true.
                                     ()
                                 ),
                             new_string_from_integer_int64:
@@ -173,15 +213,25 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 string_type
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 string_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             val:
                                                 (Variable
@@ -200,20 +250,30 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     new_string_from_integer_int64
                                     (FunctionType
                                         [(Integer 8)]
                                         (StructType
-                                            2 string_type
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         Source
                                         Interface
                                         ()
                                         .true.
                                         .true.
-                                        .false.
+                                        .true.
                                         .false.
                                         .false.
                                         []
@@ -225,7 +285,7 @@
                                     (Var 6 new)
                                     Public
                                     .false.
-                                    .false.
+                                    .true.
                                     ()
                                 ),
                             new_string_from_logical_lk:
@@ -243,15 +303,25 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        2 string_type
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    2 string_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             val:
                                                 (Variable
@@ -270,20 +340,30 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     new_string_from_logical_lk
                                     (FunctionType
                                         [(Logical 4)]
                                         (StructType
-                                            2 string_type
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         Source
                                         Interface
                                         ()
                                         .true.
                                         .true.
-                                        .false.
+                                        .true.
                                         .false.
                                         .false.
                                         []
@@ -295,7 +375,7 @@
                                     (Var 7 new)
                                     Public
                                     .false.
-                                    .false.
+                                    .true.
                                     ()
                                 ),
                             string_type:
@@ -313,7 +393,7 @@
                                                     ()
                                                     Default
                                                     (Allocatable
-                                                        (String 1 -2 () DescriptorString)
+                                                        (String 1 () DeferredLength DescriptorString)
                                                     )
                                                     ()
                                                     Source
@@ -322,11 +402,25 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     string_type
+                                    (StructType
+                                        [(Allocatable
+                                            (String 1 () DeferredLength DescriptorString)
+                                        )]
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [raw]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -334,6 +428,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             ~string_type:
                                 (GenericProcedure
@@ -347,9 +442,11 @@
                                 )
                         })
                     derived_types_05_stdlib_string_type
+                    ()
                     []
                     .false.
                     .false.
+                    .true.
                 ),
             stdlib_string_type_constructor:
                 (Module
@@ -371,15 +468,25 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        8 string_type
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    8 string_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             string:
                                                 (Variable
@@ -390,7 +497,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 -1 () PointerString)
+                                                    (String 1 () AssumedLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -398,20 +505,30 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     new_string
                                     (FunctionType
-                                        [(String 1 -1 () PointerString)]
+                                        [(String 1 () AssumedLength DescriptorString)]
                                         (StructType
-                                            8 string_type
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         Source
                                         Implementation
                                         ()
                                         .true.
                                         .false.
-                                        .false.
+                                        .true.
                                         .false.
                                         .false.
                                         []
@@ -422,8 +539,8 @@
                                     []
                                     (Var 9 new)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             new_string_from_integer_int32:
@@ -441,15 +558,25 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        8 string_type
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    8 string_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             val:
                                                 (Variable
@@ -468,20 +595,30 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     new_string_from_integer_int32
                                     (FunctionType
                                         [(Integer 4)]
                                         (StructType
-                                            8 string_type
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         Source
                                         Implementation
                                         ()
                                         .true.
                                         .false.
-                                        .false.
+                                        .true.
                                         .false.
                                         .false.
                                         []
@@ -492,8 +629,8 @@
                                     []
                                     (Var 10 new)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             new_string_from_integer_int64:
@@ -511,15 +648,25 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        8 string_type
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    8 string_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             val:
                                                 (Variable
@@ -538,20 +685,30 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     new_string_from_integer_int64
                                     (FunctionType
                                         [(Integer 8)]
                                         (StructType
-                                            8 string_type
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         Source
                                         Implementation
                                         ()
                                         .true.
                                         .false.
-                                        .false.
+                                        .true.
                                         .false.
                                         .false.
                                         []
@@ -562,8 +719,8 @@
                                     []
                                     (Var 11 new)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             new_string_from_logical_lk:
@@ -581,15 +738,25 @@
                                                     ()
                                                     Default
                                                     (StructType
-                                                        8 string_type
+                                                        [(Allocatable
+                                                            (String 1 () DeferredLength DescriptorString)
+                                                        )]
+                                                        []
+                                                        .true.
+                                                        .false.
                                                     )
-                                                    ()
+                                                    8 string_type
                                                     Source
                                                     Public
                                                     Required
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             val:
                                                 (Variable
@@ -608,20 +775,30 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     new_string_from_logical_lk
                                     (FunctionType
                                         [(Logical 4)]
                                         (StructType
-                                            8 string_type
+                                            [(Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )]
+                                            []
+                                            .true.
+                                            .false.
                                         )
                                         Source
                                         Implementation
                                         ()
                                         .true.
                                         .false.
-                                        .false.
+                                        .true.
                                         .false.
                                         .false.
                                         []
@@ -632,8 +809,8 @@
                                     []
                                     (Var 12 new)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             string_type:
@@ -658,7 +835,9 @@
                                 )
                         })
                     stdlib_string_type_constructor
-                    []
+                    derived_types_05_stdlib_string_type
+                    [derived_types_05_stdlib_string_type]
+                    .false.
                     .false.
                     .false.
                 )

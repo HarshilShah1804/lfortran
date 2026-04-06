@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             x:
                                 (Variable
@@ -38,7 +43,7 @@
                                         (Real 4)
                                         [((IntegerConstant 1 (Integer 4) Decimal)
                                         (IntegerConstant 3 (Integer 4) Decimal))]
-                                        FixedSizeArray
+                                        PointerArray
                                     )
                                     ()
                                     Source
@@ -47,6 +52,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             y:
                                 (Variable
@@ -70,6 +80,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     f
@@ -78,7 +93,7 @@
                             (Real 4)
                             [((IntegerConstant 1 (Integer 4) Decimal)
                             (IntegerConstant 3 (Integer 4) Decimal))]
-                            FixedSizeArray
+                            PointerArray
                         )]
                         (Integer 4)
                         Source
@@ -97,8 +112,8 @@
                     []
                     (Var 2 f)
                     Public
-                    .false.
-                    .false.
+                    .true.
+                    .true.
                     ()
                 )
         })

@@ -34,6 +34,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     modules_06
@@ -49,13 +54,17 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Print
                         (StringFormat
                             ()
                             [(Var 4 i)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]
@@ -87,6 +96,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     b
@@ -109,13 +123,15 @@
                                     [(Print
                                         (StringConstant
                                             "b()"
-                                            (String 1 3 () PointerString)
+                                            (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (Assignment
                                         (Var 3 r)
                                         (IntegerConstant 5 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 3 r)
                                     Public
@@ -125,7 +141,9 @@
                                 )
                         })
                     modules_06_a
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

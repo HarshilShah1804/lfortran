@@ -19,6 +19,10 @@ void Tokenizer::set_string(const std::string &str)
     // to end with \0, but we check this here just in case.
     LCOMPILERS_ASSERT(str[str.size()] == '\0');
     cur = (unsigned char *)(&str[0]);
+    // Skip UTF-8 BOM (EF BB BF) if present at start of file
+    if (str.size() >= 3 && cur[0] == 0xEF && cur[1] == 0xBB && cur[2] == 0xBF) {
+        cur += 3;
+    }
     string_start = cur;
     cur_line = cur;
     line_num = 1;
@@ -418,7 +422,7 @@ int Tokenizer::lex(Allocator &al, YYSTYPE &yylval, Location &loc, diag::Diagnost
             'format' {
                 if (last_token == yytokentype::TK_LABEL) {
                     unsigned char *start;
-                    lex_format(cur, loc, start, diagnostics, continue_compilation);
+                    lex_format(cur, loc, start, diagnostics, continue_compilation, this->string_start);
                     yylval.string.p = (char*) start;
                     yylval.string.n = cur-start-1;
                     RET(TK_FORMAT)
@@ -527,6 +531,13 @@ int Tokenizer::lex(Allocator &al, YYSTYPE &yylval, Location &loc, diag::Diagnost
             'where' { KW(WHERE) }
             'while' { KW(WHILE) }
             'write' { KW(WRITE) }
+            '_lfortran_list' { KW(LIST) }
+            '_lfortran_set' { KW(SET) }
+            '_lfortran_dict' { KW(DICT) }
+            '_lfortran_tuple' { KW(TUPLE) }
+            '_lfortran_union_type' { KW(UNION_TYPE) }
+
+            'end' whitespace '_lfortran_union_type' { KW(END_UNION_TYPE) }
 
             // Tokens
             newline {
@@ -572,6 +583,7 @@ int Tokenizer::lex(Allocator &al, YYSTYPE &yylval, Location &loc, diag::Diagnost
             // Multiple character symbols
             ".." { RET(TK_DBL_DOT) }
             "::" { RET(TK_DBL_COLON) }
+            ":=" { RET(TK_COLON_EQUAL) }
             "**" { RET(TK_POW) }
             "//" { RET(TK_CONCAT) }
             "=>" { RET(TK_ARROW) }
@@ -606,8 +618,8 @@ int Tokenizer::lex(Allocator &al, YYSTYPE &yylval, Location &loc, diag::Diagnost
 
             // True/False
 
-            '.true.' ("_" kind)? { RET(TK_TRUE) }
-            '.false.' ("_" kind)? { RET(TK_FALSE) }
+            '.true.' ("_" kind)? { token_logical_kind(yylval.string, 6); RET(TK_TRUE) }
+            '.false.' ("_" kind)? { token_logical_kind(yylval.string, 7); RET(TK_FALSE) }
 
             // This is needed to ensure that 2.op.3 gets tokenized as
             // TK_INTEGER(2), TK_DEFOP(.op.), TK_INTEGER(3), and not
@@ -673,8 +685,18 @@ int Tokenizer::lex(Allocator &al, YYSTYPE &yylval, Location &loc, diag::Diagnost
                 line_num++; cur_line=cur; continue;
             }
 
-            omp_end / newline { TK_TRIVIA(TK_OMP_END) }
-            omp / newline { TK_TRIVIA(TK_OMP) }
+            omp_end / newline {
+                if (!openmp_enabled) {
+                    TK_TRIVIA(TK_COMMENT)
+                }
+                TK_TRIVIA(TK_OMP_END)
+            }
+            omp / newline {
+                if (!openmp_enabled) {
+                    TK_TRIVIA(TK_COMMENT)
+                }
+                TK_TRIVIA(TK_OMP)
+            }
             pragma_decl / newline { TK_TRIVIA(TK_PRAGMA_DECL) }
 
             comment newline {
@@ -742,8 +764,8 @@ int Tokenizer::lex(Allocator &al, YYSTYPE &yylval, Location &loc, diag::Diagnost
                 line_num++; cur_line=cur; continue;
             }
 
-            string1 { token_str(al, yylval.string, '"'); RET(TK_STRING) }
-            string2 { token_str(al, yylval.string, '\''); RET(TK_STRING) }
+            string1 { lex_string(al, yylval.str_prefix, '"'); RET(TK_STRING) }
+            string2 { lex_string(al, yylval.str_prefix, '\''); RET(TK_STRING) }
 
             defop { token(yylval.string); RET(TK_DEF_OP) }
             name { token(yylval.string); RET(TK_NAME) }
@@ -756,14 +778,14 @@ std::string token(unsigned char *tok, unsigned char* cur)
     return std::string((char *)tok, cur - tok);
 }
 
-void token_loc(Location &loc)
+void token_loc(Location &loc, unsigned char *cur, unsigned char *tok, unsigned char *string_start)
 {
-    loc.first = 1;
-    loc.last = 1;
+    loc.first = tok-string_start;
+    loc.last = cur-string_start-1;
 }
 
 void lex_format(unsigned char *&cur, Location &loc,
-        unsigned char *&start, diag::Diagnostics &diagnostics, bool continue_compilation) {
+        unsigned char *&start, diag::Diagnostics &diagnostics, bool continue_compilation, unsigned char *&string_start) {
     int num_paren = 0;
     for (;;) {
         unsigned char *tok = cur;
@@ -791,7 +813,7 @@ void lex_format(unsigned char *&cur, Location &loc,
                 | 'L' whitespace? int
                 | 'A' whitespace? (int)?
                 | 'D' whitespace? int whitespace? dot_int
-                | 'P' whitespace? 'E' whitespace? int whitespace? dot_int
+                | 'P' whitespace? 'E' whitespace? int whitespace? dot_int whitespace? E_int?
                 | 'P' whitespace? 'F' whitespace? int whitespace? dot_int
                 | 'P'
                 | 'X'
@@ -801,14 +823,29 @@ void lex_format(unsigned char *&cur, Location &loc,
                 = 'T' whitespace? ('L' | 'R')? whitespace? int
                 | int whitespace? 'X'
                 ;
+            sign_edit_desc
+                = 'S' whitespace? ('P' | 'S')?
+                ;
+
+            rounding_mode_desc
+                = 'R' whitespace? ('U' | 'D' | 'N' | 'Z')
+                ;
+
+            blank_interp_edit_desc
+                = 'B' whitespace? ('N' | 'Z')
+                ;
+
             control_edit_desc
                 = position_edit_desc
+                | sign_edit_desc
+                | rounding_mode_desc
+                | blank_interp_edit_desc
                 | (int)? '/'
                 | ':'
                 ;
 
             * {
-                token_loc(loc);
+                token_loc(loc, cur, tok, string_start);
                 std::string t = token(tok, cur);
                 diagnostics.add(diag::Diagnostic(
                     "Token '" + t + "' is not recognized in `format` statement",
@@ -829,20 +866,20 @@ void lex_format(unsigned char *&cur, Location &loc,
                 } else {
                     cur--;
                     unsigned char *tmp;
-                    lex_format(cur, loc, tmp, diagnostics, continue_compilation);
+                    lex_format(cur, loc, tmp, diagnostics, continue_compilation, string_start);
                     continue;
                 }
             }
             int whitespace? '(' {
                 cur--;
                 unsigned char *tmp;
-                lex_format(cur, loc, tmp, diagnostics, continue_compilation);
+                lex_format(cur, loc, tmp, diagnostics, continue_compilation, string_start);
                 continue;
             }
             '*' whitespace? '(' {
                 cur--;
                 unsigned char *tmp;
-                lex_format(cur, loc, tmp, diagnostics, continue_compilation);
+                lex_format(cur, loc, tmp, diagnostics, continue_compilation, string_start);
                 continue;
             }
             ')' {
@@ -850,7 +887,7 @@ void lex_format(unsigned char *&cur, Location &loc,
                 return;
             }
             end {
-                token_loc(loc);
+                token_loc(loc, cur, tok, string_start);
                 std::string t = token(tok, cur);
                 diagnostics.add(diag::Diagnostic(
                     "End of file not expected in `format` statement '" + t + "'",
@@ -868,7 +905,7 @@ void lex_format(unsigned char *&cur, Location &loc,
             "&" ws_comment+ whitespace? "&"? { continue; }
             '"' ('""'|[^"\x00])* '"' { continue; }
             "'" ("''"|[^'\x00])* "'" { continue; }
-            '-' { continue; }
+            '-' | '+' { continue; }
             (int)? whitespace? data_edit_desc { continue; }
             control_edit_desc { continue; }
         */

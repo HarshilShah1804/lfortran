@@ -35,14 +35,14 @@
                                     Local
                                     (StringConstant
                                         "  abc"
-                                        (String 1 5 () PointerString)
+                                        (String 1 (IntegerConstant 5 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     (StringConstant
                                         "  abc"
-                                        (String 1 5 () PointerString)
+                                        (String 1 (IntegerConstant 5 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Save
-                                    (String 1 5 () PointerString)
+                                    (String 1 (IntegerConstant 5 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -50,6 +50,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             trim_wrapper:
                                 (ExternalSymbol
@@ -69,11 +74,11 @@
                             6 trim_wrapper
                             ()
                             [((Var 6 string))]
-                            (String 1 -3 (StringLen
+                            (String 1 (StringLen
                                 (Var 6 string)
                                 (Integer 4)
                                 ()
-                            ) PointerString)
+                            ) ExpressionLength DescriptorString)
                             ()
                             ()
                         )
@@ -93,13 +98,15 @@
                                         (Integer 4)
                                         ()
                                     ))]
-                                    PointerToDataArray
+                                    PointerArray
                                 )
                                 ()
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
@@ -118,13 +125,15 @@
                                         (Integer 4)
                                         ()
                                     ))]
-                                    PointerToDataArray
+                                    PointerArray
                                 )
                                 ()
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]
@@ -156,6 +165,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             r:
                                                 (Variable
@@ -174,7 +188,7 @@
                                                             (Integer 4)
                                                             ()
                                                         ))]
-                                                        PointerToDataArray
+                                                        PointerArray
                                                     )
                                                     ()
                                                     Source
@@ -183,6 +197,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             s:
                                                 (Variable
@@ -193,7 +212,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 -1 () PointerString)
+                                                    (String 1 () AssumedLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -201,24 +220,29 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     int_return
                                     (FunctionType
-                                        [(String 1 -1 () PointerString)]
+                                        [(String 1 () AssumedLength DescriptorString)]
                                         (Array
                                             (Integer 4)
                                             [((IntegerConstant 1 (Integer 4) Decimal)
                                             (StringLen
                                                 (FunctionParam
                                                     0
-                                                    (String 1 -1 () PointerString)
+                                                    (String 1 () AssumedLength DescriptorString)
                                                     ()
                                                 )
                                                 (Integer 4)
                                                 ()
                                             ))]
-                                            PointerToDataArray
+                                            PointerArray
                                         )
                                         Source
                                         Implementation
@@ -255,13 +279,15 @@
                                             )
                                             (IntegerConstant 2 (Integer 4) Decimal)
                                             ()
+                                            .false.
+                                            .false.
                                         )]
                                         []
                                     )]
                                     (Var 4 r)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             real_return:
@@ -286,6 +312,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             r:
                                                 (Variable
@@ -304,7 +335,7 @@
                                                             (Integer 4)
                                                             ()
                                                         ))]
-                                                        PointerToDataArray
+                                                        PointerArray
                                                     )
                                                     ()
                                                     Source
@@ -313,6 +344,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             s:
                                                 (Variable
@@ -323,7 +359,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 -1 () PointerString)
+                                                    (String 1 () AssumedLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -331,24 +367,29 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     real_return
                                     (FunctionType
-                                        [(String 1 -1 () PointerString)]
+                                        [(String 1 () AssumedLength DescriptorString)]
                                         (Array
                                             (Real 4)
                                             [((IntegerConstant 1 (Integer 4) Decimal)
                                             (StringLen
                                                 (FunctionParam
                                                     0
-                                                    (String 1 -1 () PointerString)
+                                                    (String 1 () AssumedLength DescriptorString)
                                                     ()
                                                 )
                                                 (Integer 4)
                                                 ()
                                             ))]
-                                            PointerToDataArray
+                                            PointerArray
                                         )
                                         Source
                                         Implementation
@@ -388,13 +429,15 @@
                                                 (Real 4)
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )]
                                         []
                                     )]
                                     (Var 5 r)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             trim_wrapper:
@@ -411,11 +454,11 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 -3 (StringLen
+                                                    (String 1 (StringLen
                                                         (Var 3 s)
                                                         (Integer 4)
                                                         ()
-                                                    ) PointerString)
+                                                    ) ExpressionLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -423,6 +466,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             s:
                                                 (Variable
@@ -433,7 +481,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 -1 () PointerString)
+                                                    (String 1 () AssumedLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -441,12 +489,25 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     trim_wrapper
                                     (FunctionType
-                                        [(String 1 -1 () PointerString)]
-                                        (String 1 -1 () PointerString)
+                                        [(String 1 () AssumedLength DescriptorString)]
+                                        (String 1 (StringLen
+                                            (FunctionParam
+                                                0
+                                                (String 1 () AssumedLength DescriptorString)
+                                                ()
+                                            )
+                                            (Integer 4)
+                                            ()
+                                        ) ExpressionLength DescriptorString)
                                         Source
                                         Implementation
                                         ()
@@ -466,20 +527,26 @@
                                             StringTrim
                                             [(Var 3 s)]
                                             0
-                                            (String 1 -1 () PointerString)
+                                            (Allocatable
+                                                (String 1 () DeferredLength DescriptorString)
+                                            )
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 3 r)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })
                     functions_06_m
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

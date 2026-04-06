@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             dp:
                                 (ExternalSymbol
@@ -56,6 +61,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             r1:
                                 (Variable
@@ -74,6 +84,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             r2:
                                 (Variable
@@ -92,6 +107,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             x:
                                 (Variable
@@ -110,6 +130,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     intrinsics_03
@@ -121,6 +146,8 @@
                             (Real 8)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 x)
@@ -138,8 +165,11 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -171,6 +201,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -194,6 +225,7 @@
                                             0.490261
                                             (Real 8)
                                         )
+                                        ()
                                     )
                                     (Real 8)
                                     ()
@@ -214,6 +246,7 @@
                                     0.000000
                                     (Real 8)
                                 )
+                                ()
                             )
                             (Logical 4)
                             ()
@@ -224,6 +257,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -251,6 +285,7 @@
                                                     0.070737
                                                     (Real 8)
                                                 )
+                                                ()
                                             )
                                             Add
                                             (IntrinsicElementalFunction
@@ -291,6 +326,7 @@
                                             0.716404
                                             (Real 8)
                                         )
+                                        ()
                                     )
                                     (Real 8)
                                     ()
@@ -311,6 +347,7 @@
                                     0.000000
                                     (Real 8)
                                 )
+                                ()
                             )
                             (Logical 4)
                             ()
@@ -330,6 +367,8 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 r2)
@@ -345,8 +384,11 @@
                             )
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -385,11 +427,14 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (IntrinsicElementalFunction
                                 Abs

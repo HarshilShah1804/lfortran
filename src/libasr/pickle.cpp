@@ -26,7 +26,11 @@ public:
         if (use_colors) {
             s.append(color(fg::yellow));
         }
-        s.append(ASRUtils::symbol_name(&x));
+        if (clojure) {
+            s.append(make_sym_clojure_compatible(ASRUtils::symbol_name(&x)));
+        } else {
+            s.append(ASRUtils::symbol_name(&x));
+        }
         if (use_colors) {
             s.append(color(fg::reset));
         }
@@ -58,7 +62,7 @@ public:
     }
     void visit_Module(const ASR::Module_t &x) {
         if (!show_intrinsic_modules &&
-            (x.m_intrinsic || startswith(x.m_name, "lfortran_intrinsic_") || startswith(x.m_name, "numpy"))) {
+            (x.m_intrinsic || startswith(x.m_name, "numpy"))) {
             s.append("(");
             if (use_colors) {
                 s.append(color(style::bold));
@@ -97,9 +101,15 @@ public:
         if(indent) s.append("\n" + indented);
         else s.append(" ");
         s.append("[");
-        int size = x.m_n_data / (ASRUtils::is_character(*x.m_type) ?
-                                ASR::down_cast<ASR::String_t>(ASRUtils::type_get_past_array(x.m_type))->m_len :
-                                ASRUtils::extract_kind_from_ttype_t(x.m_type));
+        int kind;
+        if(ASRUtils::is_character(*x.m_type)){
+            ASR::String_t* str = ASR::down_cast<ASR::String_t>(
+                ASRUtils::type_get_past_array(x.m_type));
+            if(!ASRUtils::extract_value(str->m_len, kind)){LCOMPILERS_ASSERT(false)}
+        } else {
+            kind = ASRUtils::extract_kind_from_ttype_t(x.m_type);
+        }
+        int size = x.m_n_data / kind;
         int curr = 0;
         for (int i = 0; i < 3; i++) {
             if (curr < size) {
@@ -191,17 +201,18 @@ public:
 };
 
 std::string pickle(ASR::asr_t &asr, bool colors, bool indent,
-        bool show_intrinsic_modules) {
+        bool show_intrinsic_modules, bool clojure) {
     ASRPickleVisitor v;
     v.use_colors = colors;
     v.indent = indent;
     v.show_intrinsic_modules = show_intrinsic_modules;
+    v.clojure = clojure;
     v.visit_asr(asr);
     return v.get_str();
 }
 
-std::string pickle(ASR::TranslationUnit_t &asr, bool colors, bool indent, bool show_intrinsic_modules) {
-    return pickle((ASR::asr_t &)asr, colors, indent, show_intrinsic_modules);
+std::string pickle(ASR::TranslationUnit_t &asr, bool colors, bool indent, bool show_intrinsic_modules, bool clojure) {
+    return pickle((ASR::asr_t &)asr, colors, indent, show_intrinsic_modules, clojure);
 }
 
 /********************** ASR Pickle Tree *******************/
@@ -261,6 +272,13 @@ public:
             s.append("\"name\": ");
             s.append("\"" + std::string(x.m_name) + "\"");
             s.append(",\n" + indtd);
+            s.append("\"parent_module\": ");
+            if (x.m_parent_module) {
+                s.append("\"" + std::string(x.m_parent_module) + "\"");
+            } else {
+                s.append("[]");
+            }
+            s.append(",\n" + indtd);
             s.append("\"dependencies\": ");
             s.append("[");
             if (x.n_dependencies > 0) {
@@ -284,6 +302,13 @@ public:
             s.append(",\n" + indtd);
             s.append("\"intrinsic\": ");
             if (x.m_intrinsic) {
+                s.append("true");
+            } else {
+                s.append("false");
+            }
+            s.append(",\n" + indtd);
+            s.append("\"has_submodules\": ");
+            if (x.m_has_submodules) {
                 s.append("true");
             } else {
                 s.append("false");

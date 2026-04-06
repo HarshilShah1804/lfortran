@@ -5,7 +5,7 @@
 #include <libasr/asr_utils.h>
 #include <libasr/pass/pass_utils.h>
 
-std::string lcompilers_unique_ID;
+std::string lcompilers_unique_ID_separate_compilation;
 std::string lcompilers_commandline_options;
 
 namespace LCompilers  {
@@ -35,24 +35,34 @@ void SymbolTable::mark_all_variables_external(Allocator &al) {
         switch (a.second->type) {
             case (ASR::symbolType::Variable) : {
                 ASR::Variable_t *v = ASR::down_cast<ASR::Variable_t>(a.second);
-                v->m_abi = ASR::abiType::Interactive;
+                if ( v->m_abi == ASR::abiType::BindC ) {
+                    return;
+                }
+                v->m_abi = ASR::abiType::ExternalUndefined;
+                break;
+            }
+            case (ASR::symbolType::Enum) : {
+                ASR::Enum_t *en = ASR::down_cast<ASR::Enum_t>(a.second);
+                en->m_abi = ASR::abiType::ExternalUndefined;
+                en->m_symtab->mark_all_variables_external(al);
                 break;
             }
             case (ASR::symbolType::Function) : {
                 ASR::Function_t *v = ASR::down_cast<ASR::Function_t>(a.second);
                 ASR::FunctionType_t* v_func_type = ASR::down_cast<ASR::FunctionType_t>(v->m_function_signature);
-                if (v_func_type->m_abi != ASR::abiType::Interactive) {
-                    v->m_body = nullptr;
-                    v->n_body = 0;
-                    PassUtils::UpdateDependenciesVisitor ud(al);
-                    ud.visit_Function(*v);
+                if (v_func_type->m_abi != ASR::abiType::ExternalUndefined && v_func_type->m_abi != ASR::abiType::BindC) {
+                    v_func_type->m_abi = ASR::abiType::ExternalUndefined;
+                } else if (v_func_type->m_abi == ASR::abiType::BindC) {
+                    v_func_type->m_deftype = ASR::deftypeType::Interface;
                 }
-                v_func_type->m_abi = ASR::abiType::Interactive;
+                v->m_symtab->mark_all_variables_external(al);
                 break;
             }
             case (ASR::symbolType::Module) : {
                 ASR::Module_t *v = ASR::down_cast<ASR::Module_t>(a.second);
-                v->m_symtab->mark_all_variables_external(al);
+                if ( !startswith(v->m_name, "lfortran_intrinsic") ) {
+                    v->m_symtab->mark_all_variables_external(al);
+                }
             }
             default : {};
         }
@@ -90,8 +100,8 @@ ASR::symbol_t *SymbolTable::find_scoped_symbol(const std::string &name,
 
 std::string SymbolTable::get_unique_name(const std::string &name, bool use_unique_id) {
     std::string unique_name = name;
-    if( use_unique_id && !lcompilers_unique_ID.empty()) {
-        unique_name += "_" + lcompilers_unique_ID;
+    if( use_unique_id && !lcompilers_unique_ID_separate_compilation.empty()) {
+        unique_name += "_" + lcompilers_unique_ID_separate_compilation;
     }
     int counter = 1;
     while (scope.find(unique_name) != scope.end()) {

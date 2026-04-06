@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             dg:
                                 (Function
@@ -47,6 +52,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             i:
                                                 (Variable
@@ -65,6 +75,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     dg
@@ -75,7 +90,7 @@
                                         Implementation
                                         ()
                                         .false.
-                                        .false.
+                                        .true.
                                         .false.
                                         .false.
                                         .false.
@@ -98,6 +113,7 @@
                                                     IntegerToReal
                                                     (Real 8)
                                                     ()
+                                                    ()
                                                 )
                                                 (Real 8)
                                                 ()
@@ -105,13 +121,16 @@
                                             RealToReal
                                             (Real 4)
                                             ()
+                                            ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 4 dg_return_var_name)
                                     Public
                                     .false.
-                                    .false.
+                                    .true.
                                     ()
                                 )
                         })
@@ -135,8 +154,8 @@
                     []
                     ()
                     Public
-                    .false.
-                    .false.
+                    .true.
+                    .true.
                     ()
                 ),
             statement_03:
@@ -153,6 +172,7 @@
                         ()
                         []
                         ()
+                        .false.
                     )]
                 )
         })

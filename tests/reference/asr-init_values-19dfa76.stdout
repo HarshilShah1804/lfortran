@@ -31,6 +31,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             b:
                                 (Variable
@@ -64,6 +69,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             c:
                                 (Variable
@@ -101,6 +111,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             i:
                                 (Variable
@@ -116,6 +131,7 @@
                                         RealToInteger
                                         (Integer 4)
                                         (IntegerConstant 1 (Integer 4) Decimal)
+                                        ()
                                     )
                                     (IntegerConstant 1 (Integer 4) Decimal)
                                     Parameter
@@ -127,6 +143,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             j:
                                 (Variable
@@ -142,6 +163,7 @@
                                         RealToInteger
                                         (Integer 4)
                                         (IntegerConstant 2 (Integer 4) Decimal)
+                                        ()
                                     )
                                     (IntegerConstant 2 (Integer 4) Decimal)
                                     Parameter
@@ -153,6 +175,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             l:
                                 (Variable
@@ -183,6 +210,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             r:
                                 (Variable
@@ -207,6 +239,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             r_minus:
                                 (Variable
@@ -235,6 +272,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             s:
                                 (Variable
@@ -243,21 +285,23 @@
                                     [s1
                                     s2]
                                     Local
-                                    (StringConcat
-                                        (Var 2 s1)
-                                        (Var 2 s2)
-                                        (String 1 4 () PointerString)
+                                    (IntrinsicElementalFunction
+                                        StringConcat
+                                        [(Var 2 s1)
+                                        (Var 2 s2)]
+                                        0
+                                        (String 1 (IntegerConstant 4 (Integer 8) Decimal) ExpressionLength DescriptorString)
                                         (StringConstant
                                             "left"
-                                            (String 1 4 () PointerString)
+                                            (String 1 (IntegerConstant 4 (Integer 8) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (StringConstant
                                         "left"
-                                        (String 1 4 () PointerString)
+                                        (String 1 (IntegerConstant 4 (Integer 8) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Parameter
-                                    (String 1 4 () PointerString)
+                                    (String 1 (IntegerConstant 4 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -265,6 +309,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             s1:
                                 (Variable
@@ -274,14 +323,14 @@
                                     Local
                                     (StringConstant
                                         "l"
-                                        (String 1 1 () PointerString)
+                                        (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     (StringConstant
                                         "l"
-                                        (String 1 1 () PointerString)
+                                        (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Parameter
-                                    (String 1 1 () PointerString)
+                                    (String 1 (IntegerConstant 1 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -289,6 +338,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             s2:
                                 (Variable
@@ -298,14 +352,14 @@
                                     Local
                                     (StringConstant
                                         "eft"
-                                        (String 1 3 () PointerString)
+                                        (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     (StringConstant
                                         "eft"
-                                        (String 1 3 () PointerString)
+                                        (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     )
                                     Parameter
-                                    (String 1 3 () PointerString)
+                                    (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                     ()
                                     Source
                                     Public
@@ -313,6 +367,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     init_values
@@ -330,7 +389,9 @@
                             (Var 2 r_minus)
                             (Var 2 s)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]

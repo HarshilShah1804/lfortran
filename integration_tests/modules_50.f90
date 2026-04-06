@@ -1,11 +1,11 @@
-module modules_42_fpm_integer
+module modules_50_fpm_integer
 type int_t
     integer :: i
 end type int_t
 end module
 
-module modules_42_fpm_targets
-use modules_42_fpm_integer, only: int_t
+module modules_50_fpm_targets
+use modules_50_fpm_integer, only: int_t
 implicit none
 
 contains
@@ -16,6 +16,9 @@ subroutine prune_build_targets()
     allocate(modules_used(1))
 
     modules_used(1)%i = 0
+    print *, modules_used
+    print *, modules_used(1)%i
+    if( modules_used(1)%i /= 0 ) error stop
     call collect_used_modules()
     print *, modules_used
     print *, modules_used(1)%i
@@ -33,12 +36,12 @@ subroutine prune_build_targets()
 
 end subroutine prune_build_targets
 
-end module modules_42_fpm_targets
+end module modules_50_fpm_targets
 
-program modules_42
-use modules_42_fpm_targets
+program modules_50
+use modules_50_fpm_targets
 implicit none
 
 call prune_build_targets()
 
-end program modules_42
+end program modules_50

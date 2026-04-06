@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             __libasr_created_variable_1:
                                 (Variable
@@ -42,6 +47,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             __libasr_created_variable_2:
                                 (Variable
@@ -60,6 +70,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             __libasr_created_variable_3:
                                 (Variable
@@ -78,6 +93,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             __libasr_created_variable_4:
                                 (Variable
@@ -96,6 +116,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             a:
                                 (Variable
@@ -114,6 +139,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             b:
                                 (Variable
@@ -132,12 +162,40 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             f:
                                 (Function
                                     (SymbolTable
                                         5
                                         {
+                                            __libasr_is_present_x:
+                                                (Variable
+                                                    5
+                                                    __libasr_is_present_x
+                                                    []
+                                                    In
+                                                    ()
+                                                    ()
+                                                    Default
+                                                    (Logical 4)
+                                                    ()
+                                                    Source
+                                                    Public
+                                                    Required
+                                                    .false.
+                                                    .false.
+                                                    .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
+                                                ),
                                             f:
                                                 (Variable
                                                     5
@@ -155,24 +213,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
-                                                ),
-                                            is_x_present_:
-                                                (Variable
-                                                    5
-                                                    is_x_present_
-                                                    []
-                                                    In
                                                     ()
-                                                    ()
-                                                    Default
-                                                    (Logical 4)
-                                                    ()
-                                                    Source
-                                                    Public
-                                                    Required
                                                     .false.
                                                     .false.
-                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -191,6 +236,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     f
@@ -211,16 +261,18 @@
                                     )
                                     []
                                     [(Var 5 x)
-                                    (Var 5 is_x_present_)]
+                                    (Var 5 __libasr_is_present_x)]
                                     [(Assignment
                                         (Var 5 f)
-                                        (Var 5 is_x_present_)
+                                        (Var 5 __libasr_is_present_x)
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 5 f)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 ),
                             sub_1:
@@ -240,6 +292,8 @@
                         (Var 4 a)
                         (IntegerConstant 1 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 4 b)
@@ -251,8 +305,11 @@
                                 2.000000
                                 (Real 4)
                             )
+                            ()
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (SubroutineCall
                         4 sub_1
@@ -281,6 +338,7 @@
                             (Real 4)
                         ))]
                         ()
+                        .false.
                     )
                     (SubroutineCall
                         4 sub_1
@@ -306,6 +364,7 @@
                             (Real 4)
                         ))]
                         ()
+                        .false.
                     )
                     (SubroutineCall
                         4 sub_1
@@ -331,6 +390,7 @@
                             (Real 4)
                         ))]
                         ()
+                        .false.
                     )
                     (SubroutineCall
                         4 sub_1
@@ -359,6 +419,7 @@
                             (Real 4)
                         ))]
                         ()
+                        .false.
                     )
                     (Print
                         (StringFormat
@@ -366,11 +427,14 @@
                             [(Var 4 a)
                             (Var 4 b)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 4 a)
                             NotEq
@@ -384,6 +448,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (Var 4 b)
                             NotEq
@@ -427,7 +492,9 @@
                                 ()
                             )]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]
@@ -442,6 +509,52 @@
                                     (SymbolTable
                                         3
                                         {
+                                            __libasr_is_present_d:
+                                                (Variable
+                                                    3
+                                                    __libasr_is_present_d
+                                                    []
+                                                    In
+                                                    ()
+                                                    ()
+                                                    Default
+                                                    (Logical 4)
+                                                    ()
+                                                    Source
+                                                    Public
+                                                    Required
+                                                    .false.
+                                                    .false.
+                                                    .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
+                                                ),
+                                            __libasr_is_present_e:
+                                                (Variable
+                                                    3
+                                                    __libasr_is_present_e
+                                                    []
+                                                    In
+                                                    ()
+                                                    ()
+                                                    Default
+                                                    (Logical 4)
+                                                    ()
+                                                    Source
+                                                    Public
+                                                    Required
+                                                    .false.
+                                                    .false.
+                                                    .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
+                                                ),
                                             a:
                                                 (Variable
                                                     3
@@ -459,6 +572,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             b:
                                                 (Variable
@@ -477,6 +595,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             c:
                                                 (Variable
@@ -495,6 +618,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             d:
                                                 (Variable
@@ -513,6 +641,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             e:
                                                 (Variable
@@ -531,6 +664,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             f:
                                                 (Variable
@@ -549,42 +687,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
-                                                ),
-                                            is_d_present_:
-                                                (Variable
-                                                    3
-                                                    is_d_present_
-                                                    []
-                                                    In
                                                     ()
-                                                    ()
-                                                    Default
-                                                    (Logical 4)
-                                                    ()
-                                                    Source
-                                                    Public
-                                                    Required
                                                     .false.
                                                     .false.
-                                                    .false.
-                                                ),
-                                            is_e_present_:
-                                                (Variable
-                                                    3
-                                                    is_e_present_
-                                                    []
-                                                    In
+                                                    NotMethod
                                                     ()
-                                                    ()
-                                                    Default
-                                                    (Logical 4)
-                                                    ()
-                                                    Source
-                                                    Public
-                                                    Required
-                                                    .false.
-                                                    .false.
-                                                    .false.
                                                 )
                                         })
                                     sub_1
@@ -614,12 +721,13 @@
                                     (Var 3 b)
                                     (Var 3 c)
                                     (Var 3 d)
-                                    (Var 3 is_d_present_)
+                                    (Var 3 __libasr_is_present_d)
                                     (Var 3 e)
-                                    (Var 3 is_e_present_)
+                                    (Var 3 __libasr_is_present_e)
                                     (Var 3 f)]
                                     [(If
-                                        (Var 3 is_d_present_)
+                                        ()
+                                        (Var 3 __libasr_is_present_d)
                                         [(Assignment
                                             (Var 3 a)
                                             (Cast
@@ -639,11 +747,15 @@
                                                 RealToInteger
                                                 (Integer 4)
                                                 ()
+                                                ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (If
-                                            (Var 3 is_e_present_)
+                                            ()
+                                            (Var 3 __libasr_is_present_e)
                                             [(Assignment
                                                 (Var 3 b)
                                                 (RealBinOp
@@ -660,11 +772,14 @@
                                                         IntegerToReal
                                                         (Real 4)
                                                         ()
+                                                        ()
                                                     )
                                                     (Real 4)
                                                     ()
                                                 )
                                                 ()
+                                                .false.
+                                                .false.
                                             )]
                                             [(Assignment
                                                 (Var 3 b)
@@ -676,6 +791,8 @@
                                                     ()
                                                 )
                                                 ()
+                                                .false.
+                                                .false.
                                             )]
                                         )]
                                         [(Assignment
@@ -691,11 +808,15 @@
                                                 RealToInteger
                                                 (Integer 4)
                                                 ()
+                                                ()
                                             )
                                             ()
+                                            .false.
+                                            .false.
                                         )
                                         (If
-                                            (Var 3 is_e_present_)
+                                            ()
+                                            (Var 3 __libasr_is_present_e)
                                             [(Assignment
                                                 (Var 3 b)
                                                 (RealBinOp
@@ -712,11 +833,14 @@
                                                         IntegerToReal
                                                         (Real 4)
                                                         ()
+                                                        ()
                                                     )
                                                     (Real 4)
                                                     ()
                                                 )
                                                 ()
+                                                .false.
+                                                .false.
                                             )]
                                             [(Assignment
                                                 (Var 3 b)
@@ -728,18 +852,22 @@
                                                     ()
                                                 )
                                                 ()
+                                                .false.
+                                                .false.
                                             )]
                                         )]
                                     )]
                                     ()
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })
                     functions_15_module_1
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 )

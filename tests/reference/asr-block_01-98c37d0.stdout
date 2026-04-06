@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             associate_block:
                                 (AssociateBlock
@@ -52,6 +57,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 ),
                                                             c:
                                                                 (Variable
@@ -70,6 +80,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     block
@@ -83,8 +98,11 @@
                                                                 3.000000
                                                                 (Real 4)
                                                             )
+                                                            ()
                                                         )
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 4 c)
@@ -100,8 +118,11 @@
                                                                 -3.000000
                                                                 (Real 4)
                                                             )
+                                                            ()
                                                         )
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )
                                                     (Assignment
                                                         (Var 2 d)
@@ -122,8 +143,11 @@
                                                             RealToInteger
                                                             (Integer 4)
                                                             ()
+                                                            ()
                                                         )
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )]
                                                 ),
                                             n:
@@ -145,6 +169,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     associate_block
@@ -174,6 +203,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             d:
                                 (Variable
@@ -192,6 +226,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     block_01
@@ -200,16 +239,21 @@
                         (Var 2 a)
                         (IntegerConstant 1 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (Var 2 b)
                         (IntegerConstant 2 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (AssociateBlockCall
                         2 associate_block
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 b)
                             NotEq
@@ -223,6 +267,7 @@
                         []
                     )
                     (If
+                        ()
                         (IntegerCompare
                             (Var 2 d)
                             NotEq

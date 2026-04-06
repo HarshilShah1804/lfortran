@@ -9,11 +9,14 @@ cmake \
     -DLFORTRAN_BUILD_ALL=yes \
     -DWITH_STACKTRACE=yes \
     -DWITH_RUNTIME_STACKTRACE=yes \
-    -DWITH_LSP=yes \
+    -DWITH_LSP=no \
+    -DWITH_INTERNAL_ALLOC_CHECK=yes \
+    -DUSE_DYNAMIC_ZSTD=no \
     -DCMAKE_PREFIX_PATH="$CMAKE_PREFIX_PATH_LFORTRAN;$CONDA_PREFIX" \
-    -DCMAKE_INSTALL_PREFIX=`pwd`/inst \
     -DCMAKE_INSTALL_LIBDIR=share/lfortran/lib \
-    -DCMAKE_EXPORT_COMPILE_COMMANDS=yes \
--G Ninja \
+    -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+    -DCMAKE_C_FLAGS="${CFLAGS} -fdiagnostics-color=always" \
+    -DCMAKE_CXX_FLAGS="${CXXFLAGS} -fdiagnostics-color=always" \
+    -G Ninja \
     .
-cmake --build . --target install
+cmake --build .

@@ -24,6 +24,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             piv:
                                 (Variable
@@ -38,7 +43,7 @@
                                         (Integer 4)
                                         [((IntegerConstant 1 (Integer 4) Decimal)
                                         (Var 2 k))]
-                                        PointerToDataArray
+                                        PointerArray
                                     )
                                     ()
                                     Source
@@ -47,6 +52,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     redeclare1
@@ -59,7 +69,7 @@
                                 (Integer 4)
                                 ()
                             ))]
-                            PointerToDataArray
+                            PointerArray
                         )
                         (Integer 4)]
                         ()
@@ -80,8 +90,8 @@
                     []
                     ()
                     Public
-                    .false.
-                    .false.
+                    .true.
+                    .true.
                     ()
                 )
         })

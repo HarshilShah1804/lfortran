@@ -34,6 +34,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     nested_01
@@ -49,6 +54,8 @@
                             ()
                         )
                         ()
+                        .false.
+                        .false.
                     )]
                 ),
             nested_01_a:
@@ -78,6 +85,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             d:
                                                 (Function
@@ -101,6 +113,11 @@
                                                                     .false.
                                                                     .false.
                                                                     .false.
+                                                                    ()
+                                                                    .false.
+                                                                    .false.
+                                                                    NotMethod
+                                                                    ()
                                                                 )
                                                         })
                                                     d
@@ -123,13 +140,15 @@
                                                     [(Print
                                                         (StringConstant
                                                             "d()"
-                                                            (String 1 3 () PointerString)
+                                                            (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                                         )
                                                     )
                                                     (Assignment
                                                         (Var 4 d)
                                                         (IntegerConstant 1 (Integer 4) Decimal)
                                                         ()
+                                                        .false.
+                                                        .false.
                                                     )]
                                                     (Var 4 d)
                                                     Public
@@ -154,6 +173,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     b
@@ -176,7 +200,7 @@
                                     [(Print
                                         (StringConstant
                                             "b()"
-                                            (String 1 3 () PointerString)
+                                            (String 1 (IntegerConstant 3 (Integer 4) Decimal) ExpressionLength DescriptorString)
                                         )
                                     )
                                     (Assignment
@@ -190,11 +214,15 @@
                                             ()
                                         )
                                         ()
+                                        .false.
+                                        .false.
                                     )
                                     (Assignment
                                         (Var 3 b)
                                         (IntegerConstant 0 (Integer 4) Decimal)
                                         ()
+                                        .false.
+                                        .false.
                                     )]
                                     (Var 3 b)
                                     Public
@@ -204,7 +232,9 @@
                                 )
                         })
                     nested_01_a
+                    ()
                     [nested_01_a]
+                    .false.
                     .false.
                     .false.
                 )

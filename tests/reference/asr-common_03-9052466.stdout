@@ -94,6 +94,8 @@
                             ColMajor
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (StructInstanceMember
@@ -107,6 +109,8 @@
                             (Real 4)
                         )
                         ()
+                        .false.
+                        .false.
                     )
                     (Assignment
                         (StructInstanceMember
@@ -117,12 +121,15 @@
                         )
                         (IntegerConstant 123 (Integer 4) Decimal)
                         ()
+                        .false.
+                        .false.
                     )
                     (SubroutineCall
                         1 pass
                         ()
                         []
                         ()
+                        .false.
                     )]
                 ),
             file_common_block_b:
@@ -152,6 +159,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             e:
                                                 (Variable
@@ -170,6 +182,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             f:
                                                 (Variable
@@ -188,13 +205,25 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     b
+                                    (StructType
+                                        []
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [d
                                     e
                                     f]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -202,6 +231,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             struct_instance_b:
                                 (Variable
@@ -213,19 +243,29 @@
                                     ()
                                     Default
                                     (StructType
-                                        6 b
+                                        []
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    6 b
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     file_common_block_b
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -256,6 +296,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             z2:
                                                 (Variable
@@ -274,12 +319,24 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     blank#block
+                                    (StructType
+                                        []
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [z1
                                     z2]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -287,6 +344,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             struct_instance_blank#block:
                                 (Variable
@@ -298,19 +356,29 @@
                                     ()
                                     Default
                                     (StructType
-                                        8 blank#block
+                                        []
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    8 blank#block
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     file_common_block_blank#block
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -341,6 +409,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             g:
                                                 (Variable
@@ -359,6 +432,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             h:
                                                 (Variable
@@ -377,6 +455,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             j:
                                                 (Variable
@@ -395,14 +478,26 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     c
+                                    (StructType
+                                        []
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [c
                                     g
                                     h
                                     j]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -410,6 +505,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             struct_instance_c:
                                 (Variable
@@ -421,19 +517,29 @@
                                     ()
                                     Default
                                     (StructType
-                                        10 c
+                                        []
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    10 c
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     file_common_block_c
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -469,6 +575,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             b:
                                                 (Variable
@@ -487,6 +598,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             i:
                                                 (Variable
@@ -510,13 +626,25 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     sample
+                                    (StructType
+                                        []
+                                        []
+                                        .true.
+                                        .false.
+                                    )
                                     []
                                     [a
                                     b
                                     i]
+                                    []
                                     Source
                                     Public
                                     .false.
@@ -524,6 +652,7 @@
                                     []
                                     ()
                                     ()
+                                    []
                                 ),
                             struct_instance_sample:
                                 (Variable
@@ -535,19 +664,29 @@
                                     ()
                                     Default
                                     (StructType
-                                        3 sample
+                                        []
+                                        []
+                                        .true.
+                                        .false.
                                     )
-                                    ()
+                                    3 sample
                                     Source
                                     Public
                                     Required
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 )
                         })
                     file_common_block_sample
+                    ()
                     []
+                    .false.
                     .false.
                     .false.
                 ),
@@ -593,6 +732,11 @@
                                     .false.
                                     .false.
                                     .false.
+                                    ()
+                                    .false.
+                                    .false.
+                                    NotMethod
+                                    ()
                                 ),
                             sample:
                                 (ExternalSymbol
@@ -633,6 +777,7 @@
                     []
                     []
                     [(If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -682,6 +827,7 @@
                         []
                     )
                     (If
+                        ()
                         (RealCompare
                             (IntrinsicElementalFunction
                                 Abs
@@ -739,7 +885,9 @@
                             )
                             (Var 2 e)]
                             FormatFortran
-                            (String -1 0 () PointerString)
+                            (Allocatable
+                                (String 1 () DeferredLength DescriptorString)
+                            )
                             ()
                         )
                     )]

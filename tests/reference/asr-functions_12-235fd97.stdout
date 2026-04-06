@@ -29,6 +29,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             string:
                                                 (Variable
@@ -39,7 +44,7 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 -1 () PointerString)
+                                                    (String 1 () AssumedLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -47,6 +52,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             string_local:
                                                 (Variable
@@ -57,11 +67,11 @@
                                                     ()
                                                     ()
                                                     Default
-                                                    (String 1 -3 (StringLen
+                                                    (String 1 (StringLen
                                                         (Var 3 string)
                                                         (Integer 4)
                                                         ()
-                                                    ) PointerString)
+                                                    ) ExpressionLength DescriptorString)
                                                     ()
                                                     Source
                                                     Public
@@ -69,6 +79,11 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 ),
                                             x:
                                                 (Variable
@@ -105,11 +120,16 @@
                                                     .false.
                                                     .false.
                                                     .false.
+                                                    ()
+                                                    .false.
+                                                    .false.
+                                                    NotMethod
+                                                    ()
                                                 )
                                         })
                                     decodebase
                                     (FunctionType
-                                        [(String 1 -1 () PointerString)]
+                                        [(String 1 () AssumedLength DescriptorString)]
                                         (Logical 4)
                                         Source
                                         Implementation
@@ -127,8 +147,8 @@
                                     []
                                     (Var 3 r)
                                     Public
-                                    .false.
-                                    .false.
+                                    .true.
+                                    .true.
                                     ()
                                 )
                         })

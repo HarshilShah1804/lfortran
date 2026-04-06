@@ -19,6 +19,11 @@
                     .false.
                     .false.
                     .false.
+                    ()
+                    .false.
+                    .false.
+                    NotMethod
+                    ()
                 )
         })
     [(IntegerBinOp
@@ -38,5 +43,7 @@
             ()
         )
         ()
+        .false.
+        .false.
     )]
 )
