@@ -10970,10 +10970,41 @@ public:
                     // into the target's data buffer using the character length.
                     llvm::Value* src_data = llvm_utils->get_stringArray_data(value_type, value);
                     llvm::Value* dst_data = llvm_utils->get_stringArray_data(target_type, target);
-                    llvm::Value* char_len = llvm_utils->get_stringArray_length(target_type, target);
-                    char_len = builder->CreateTrunc(char_len, llvm::Type::getInt32Ty(context));
-                    llvm_size = builder->CreateMul(llvm_size, char_len);
-                    builder->CreateMemCpy(dst_data, llvm::MaybeAlign(), src_data, llvm::MaybeAlign(), llvm_size);
+                    llvm::Value* dst_char_len = llvm_utils->get_stringArray_length(target_type, target);
+                    llvm::Value* src_char_len = llvm_utils->get_stringArray_length(value_type, value);
+
+                    llvm::Value* dst_char_len_i32 = builder->CreateTrunc(dst_char_len, llvm::Type::getInt32Ty(context));
+                    llvm::Value* src_char_len_i32 = builder->CreateTrunc(src_char_len, llvm::Type::getInt32Ty(context));
+
+                    llvm::Value* idx = llvm_utils->CreateAlloca(builder->getInt32Ty(), nullptr, "idx");
+                    builder->CreateStore(builder->getInt32(0), idx);
+                    llvm::Value* llvm_size_i32 = builder->CreateTrunc(llvm_size, builder->getInt32Ty());
+
+                    create_loop((char*)"str_copy_loop", [&]() {
+                        llvm::Value* curr_idx = builder->CreateLoad(builder->getInt32Ty(), idx);
+                        return builder->CreateICmpSLT(curr_idx, llvm_size_i32);
+                    }, [&]() {
+                        llvm::Value* curr_idx = builder->CreateLoad(builder->getInt32Ty(), idx);
+                        llvm::Value* src_offset = builder->CreateMul(curr_idx, src_char_len_i32);
+                        llvm::Value* dst_offset = builder->CreateMul(curr_idx, dst_char_len_i32);
+
+                        llvm::Value* src_char_ptr = builder->CreateGEP(builder->getInt8Ty(), src_data, src_offset);
+                        llvm::Value* dst_char_ptr = builder->CreateGEP(builder->getInt8Ty(), dst_data, dst_offset);
+
+                        // lhs_data and lhs_len need to be passed by reference
+                        llvm::Value* lhs_data_ptr = llvm_utils->CreateAlloca(llvm_utils->i8_ptr, nullptr, "lhs_data_ptr");
+                        builder->CreateStore(dst_char_ptr, lhs_data_ptr);
+                        
+                        llvm::Value* lhs_len_ptr = llvm_utils->CreateAlloca(builder->getInt64Ty(), nullptr, "lhs_len_ptr");
+                        builder->CreateStore(builder->CreateZExt(dst_char_len_i32, builder->getInt64Ty()), lhs_len_ptr);
+
+                        llvm::Value* rhs_len_i64 = builder->CreateZExt(src_char_len_i32, builder->getInt64Ty());
+
+                        llvm_utils->lfortran_str_copy_with_data(lhs_data_ptr, lhs_len_ptr, src_char_ptr, rhs_len_i64, false, false);
+
+                        llvm::Value* next_idx = builder->CreateAdd(curr_idx, builder->getInt32(1));
+                        builder->CreateStore(next_idx, idx);
+                    });
                 } else {
                     target = llvm_utils->CreateLoad2(target_el_type->getPointerTo(), arr_descr->get_pointer_to_data(llvm_utils->get_type_from_ttype_t_util(x.m_target,
                         ASRUtils::type_get_past_allocatable_pointer(target_type),
