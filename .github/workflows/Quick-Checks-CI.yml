@@ -129,4 +129,4 @@ jobs:
         shell: bash -e -l {0}
         if: contains(matrix.os, 'ubuntu') || contains(matrix.os, 'macos')
         run: |
-            lfortran integration_tests/print_arr_06.f90 --std=f23
+            src/bin/lfortran integration_tests/print_arr_06.f90 --std=f23
