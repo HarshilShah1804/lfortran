@@ -15,6 +15,6 @@ set -ex
 
 # Hardcode version
 # version=$(git describe --tags --dirty)
-version ="v0.6.0-37-g3878937f-dirty"
-version="${version:1}"
+
+version=0.6.0-37-g3878937f-dirty
 echo $version > version
