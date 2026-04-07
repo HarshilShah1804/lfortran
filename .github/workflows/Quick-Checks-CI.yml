@@ -130,7 +130,7 @@ jobs:
         if: contains(matrix.os, 'ubuntu') || contains(matrix.os, 'macos')
         run: |
             case "$OSTYPE" in darwin*) J_FLAG="-j3";; *) J_FLAG="";; esac
-            ./run_tests.py $J_FLAG
+            ./run_tests.py
             if [[ "$OSTYPE" != darwin* ]]; then
-                ./run_tests.py $J_FLAG
+                ./run_tests.py
             fi
