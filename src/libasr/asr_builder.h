@@ -106,6 +106,14 @@ class ASRBuilder {
         deftype, bindc_name, false, false, false, false,      \
         false, nullptr, 0, false, false, false));
 
+    #define make_ASR_Function_t_elemental(name, symtab, dep, args, body, return_var, abi,     \
+            deftype, bindc_name)                                                \
+        ASR::down_cast<ASR::symbol_t>( ASRUtils::make_Function_t_util(al, loc,  \
+        symtab, s2c(al, name), dep.p, dep.n, args.p, args.n, body.p, body.n,    \
+        return_var, abi, ASR::accessType::Public,                 \
+        deftype, bindc_name, true, false, false, false,      \
+        false, nullptr, 0, false, false, false));
+
     #define make_Function_Without_ReturnVar_t(name, symtab, dep, args, body,    \
             abi, deftype, bindc_name)                                           \
         ASR::down_cast<ASR::symbol_t>( ASRUtils::make_Function_t_util(al, loc,  \

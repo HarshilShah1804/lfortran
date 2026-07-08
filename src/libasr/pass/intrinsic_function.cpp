@@ -75,13 +75,21 @@ class ReplaceIntrinsicFunctions: public ASR::BaseExprReplacer<ReplaceIntrinsicFu
         Vec<ASR::ttype_t*> arg_types;
         arg_types.reserve(al, x->n_args);
         for( size_t i = 0; i < x->n_args; i++ ) {
-            arg_types.push_back(al, ASRUtils::expr_type(x->m_args[i]));
+            ASR::ttype_t* arg_type = ASRUtils::expr_type(x->m_args[i]);
+            if (ASRUtils::is_array(arg_type)) {
+                arg_type = ASRUtils::extract_type(arg_type);
+            }
+            arg_types.push_back(al, arg_type);
         }
         ASR::ttype_t* type = nullptr;
         type = ASRUtils::extract_type(x->m_type);
         ASR::expr_t* current_expr_ = instantiate_function(al, x->base.base.loc,
             global_scope, arg_types, type, new_args, x->m_overload_id, index_kind);
         if (current_expr_) {
+            if (ASR::is_a<ASR::FunctionCall_t>(*current_expr_)) {
+                ASR::FunctionCall_t* fc = ASR::down_cast<ASR::FunctionCall_t>(current_expr_);
+                fc->m_type = x->m_type;
+            }
             *current_expr = current_expr_;
         }
     }

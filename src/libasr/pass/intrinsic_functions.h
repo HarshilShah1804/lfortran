@@ -289,6 +289,8 @@ static inline ASR::expr_t* instantiate_functions(Allocator &al,
         default : {
             if (ASRUtils::extract_kind_from_ttype_t(arg_type) == 4) {
                 c_func_name = "_lfortran_s" + new_name;
+            } else if (ASRUtils::extract_kind_from_ttype_t(arg_type) == 16) {
+                c_func_name = "lf_f128_" + new_name;
             } else {
                 c_func_name = "_lfortran_d" + new_name;
             }
@@ -674,6 +676,8 @@ namespace MathIntrinsicFunction{
         std::string c_func_name;
         if (ASRUtils::extract_kind_from_ttype_t(arg_types[0]) == 4) {
             c_func_name = "_lfortran_s" + lcompiler_name;
+        } else if (ASRUtils::extract_kind_from_ttype_t(arg_types[0]) == 16) {
+            c_func_name = "lf_f128_" + lcompiler_name;
         } else {
             c_func_name = "_lfortran_d" + lcompiler_name;
         }
@@ -2644,7 +2648,7 @@ namespace Int {
             return nullptr;
         }
 
-        ASR::symbol_t *f_sym = make_ASR_Function_t(fn_name, fn_symtab, dep, args,
+        ASR::symbol_t *f_sym = make_ASR_Function_t_elemental(fn_name, fn_symtab, dep, args,
             body, result, ASR::abiType::Source, ASR::deftypeType::Implementation, nullptr);
         scope->add_symbol(fn_name, f_sym);
         return b.Call(f_sym, new_args, return_type, nullptr);
