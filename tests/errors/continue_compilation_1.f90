@@ -306,7 +306,7 @@ program continue_compilation_1
         real :: data(n)
     end type
     type(MyClass) :: eoshift_derived_array(1), eoshift_derived_result(1)
-
+    character(-1) :: neg_length_string
 
 
 

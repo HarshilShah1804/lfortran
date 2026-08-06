@@ -388,6 +388,12 @@ semantic error: LEN parameters in parameterized derived types are not supported 
 305 |         integer, len :: n
     |         ^^^^^^^^^^^^^^^^^ 
 
+semantic error: String length cannot be negative
+   --> tests/errors/continue_compilation_1.f90:309:15
+    |
+309 |     character(-1) :: neg_length_string
+    |               ^^ 
+
 semantic error: Intent attribute can only be applied to procedure arguments
    --> tests/errors/continue_compilation_1.f90:614:14
     |
